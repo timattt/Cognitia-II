@@ -1,13 +1,7 @@
 # Cognitia II
 В этом репозитории находится вторая версия программы для оптимизации процесса обучения студентов, а также планирования курсов.
 
-# Концепция
-Рассмотрим несколько старых картинок из незаконченного аналогичного проекта.   
-![](https://github.com/timattt/Project-Cognitia-II/blob/main/About/old/0.png)
-
-![](https://github.com/timattt/Project-Cognitia-II/blob/main/About/old/1.png)
-
-![](https://github.com/timattt/Project-Cognitia-II/blob/main/About/old/2.png)
+# План
 
 ## Структуры
 Введем несколько структур для хранения данных, сохранения и загрузки данных.
