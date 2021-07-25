@@ -1,2 +1,1 @@
-# Project-Cognitia-II
-Cognitia II
+# Cognitia II
