@@ -77,14 +77,20 @@
 В середине экрана будет кнопка, в которой можно выбрать, что именно запустить. А справа от нее кнопка запуска.
 Сверху - лого. Снизу справа - автор.
 
+![](https://github.com/timattt/Project-Cognitia-II/blob/main/About/gui/Launcher.jpg)
+
 ### SkillPackEditor
 Программа для редактирования файлов со скилами. Все просто - три колонки: первая - список скилов, вторая - список уровней скила, третья - описание текущего уровня скила.
 Сверху есть меню, где можно сохранить, открыть и т.д.
+
+![](https://github.com/timattt/Project-Cognitia-II/blob/main/About/gui/SkillPackEditor.jpg)
 
 ### CourseEditor
 Редактор курса.
 Справа меню для редактирования единицы курса. Слева OpenGL отображение графа.
 Сверху меню для сохранения, загрузки и т.д.
+
+![](https://github.com/timattt/Project-Cognitia-II/blob/main/About/gui/CourseEditor.jpg)
 
 ### CognitiaRepository
 Здесь можно активировать облачное хранилище для студентов и менторов.
@@ -94,16 +100,22 @@
 Кнопки запуска и остановки сервера.
 Справа консоль для информации о работе сервера.
 
+![](https://github.com/timattt/Project-Cognitia-II/blob/main/About/gui/CognitiaRepository.jpg)
+
 ### StudentClient
 Интерфейс для студента.
 Панель со списком скилов и индивидуальном прогерессе в каждом.
 Панель для подключения к репозиторию.
 Справа окно с графом курса. В нем отображается прогресс обучения.
 
+![](https://github.com/timattt/Project-Cognitia-II/blob/main/About/gui/StudentClient.jpg)
+
 ### MentorClient
 Интерфейс для ментора.
 Слева понель для подключения к репозитрию, панель для выбора студента, панель для взаимодействия с единицей курса (тут есть кнопка, что единица курса пройдена)
 Справа панель с графом курса.
+
+![](https://github.com/timattt/Project-Cognitia-II/blob/main/About/gui/MentorClient.jpg)
 
 
 
