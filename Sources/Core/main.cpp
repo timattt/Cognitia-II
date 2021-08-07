@@ -1,4 +1,6 @@
 #include "Launcher/launcher.h"
+#include "../Structures/SkillPack/skill.h"
+#include "../Structures/SkillPack/skillpack.h"
 
 #include <QApplication>
 

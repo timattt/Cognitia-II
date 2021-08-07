@@ -11,10 +11,14 @@ CONFIG += static
 
 SOURCES += \
     Launcher/launcher.cpp \
-    Core/main.cpp
+    Core/main.cpp \
+    Structures/SkillPack/skill.cpp \
+    Structures/SkillPack/skillpack.cpp
 
 HEADERS += \
-    Launcher/launcher.h
+    Launcher/launcher.h \
+    Structures/SkillPack/skill.h \
+    Structures/SkillPack/skillpack.h
 
 FORMS += \
     Launcher/launcher.ui
