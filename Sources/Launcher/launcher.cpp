@@ -15,8 +15,11 @@ Launcher::~Launcher()
     delete ui;
 }
 
-void Launcher::on_pushButton_clicked()
+void Launcher::on_runButton_clicked()
 {
+     if (ui->modesChooser->currentText() == "Skill pack editor") {this->hide();
+        emit startSkillPackEditor();
 
+     }
 }
 

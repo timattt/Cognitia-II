@@ -12,16 +12,19 @@ CONFIG += static
 SOURCES += \
     Launcher/launcher.cpp \
     Core/main.cpp \
+    SkillPackEditor/skillpackeditor.cpp \
     Structures/SkillPack/skill.cpp \
     Structures/SkillPack/skillpack.cpp
 
 HEADERS += \
     Launcher/launcher.h \
+    SkillPackEditor/skillpackeditor.h \
     Structures/SkillPack/skill.h \
     Structures/SkillPack/skillpack.h
 
 FORMS += \
-    Launcher/launcher.ui
+    Launcher/launcher.ui \
+    SkillPackEditor/skillpackeditor.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

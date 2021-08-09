@@ -16,10 +16,13 @@ public:
     ~Launcher();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_runButton_clicked();
 
 private:
     Ui::Launcher *ui;
+
+signals:
+    void startSkillPackEditor();
 };
 
 #endif // LAUNCHER_H
