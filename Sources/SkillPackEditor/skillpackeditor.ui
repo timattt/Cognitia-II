@@ -13,85 +13,158 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">
+QPushButton:pressed {color:red}
+
+QWidget { border: 1px solid lightgray}
+
+QLabel {border: 1px solid gray}
+QPushButton {border: 1px solid gray}
+
+QPushButton:hover { border-radius:5px; background:lightgreen}
+QLabel:hover { border-radius:5px; background:lightgreen}</string>
+   </property>
    <layout class="QHBoxLayout" name="horizontalLayout_3">
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QLabel" name="SkillsLabel">
-        <property name="text">
-         <string>Skills:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QListView" name="skillsList"/>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item alignment="Qt::AlignRight">
-         <widget class="QPushButton" name="AddSkill">
-          <property name="text">
-           <string>Add skill</string>
-          </property>
-         </widget>
-        </item>
-        <item alignment="Qt::AlignLeft">
-         <widget class="QPushButton" name="RemoveSkill">
-          <property name="text">
-           <string>Remove skill</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
+     <widget class="QWidget" name="skillsWidget" native="true">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="SkillsLabel">
+         <property name="text">
+          <string>Skills:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QListView" name="skillsList"/>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item alignment="Qt::AlignLeft">
+          <widget class="QPushButton" name="AddSkill">
+           <property name="text">
+            <string>Add skill</string>
+           </property>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignRight">
+          <widget class="QPushButton" name="RemoveSkill">
+           <property name="text">
+            <string>Remove skill</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QLabel" name="LevelsLabel">
-        <property name="text">
-         <string>Levels:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QListView" name="levelsList"/>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item alignment="Qt::AlignRight">
-         <widget class="QPushButton" name="AddLevel">
-          <property name="text">
-           <string>Add level</string>
-          </property>
-         </widget>
-        </item>
-        <item alignment="Qt::AlignLeft">
-         <widget class="QPushButton" name="RemoveLevel">
-          <property name="text">
-           <string>Remove level</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
+     <widget class="QWidget" name="levelsWidget" native="true">
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QLabel" name="LevelsLabel">
+         <property name="text">
+          <string>Levels:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QListView" name="levelsList"/>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item alignment="Qt::AlignLeft">
+          <widget class="QPushButton" name="AddLevel">
+           <property name="text">
+            <string>Add level</string>
+           </property>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignRight">
+          <widget class="QPushButton" name="RemoveLevel">
+           <property name="text">
+            <string>Remove level</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <widget class="QLabel" name="LevelDescriptionLabel">
-        <property name="text">
-         <string>Level description:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QTextEdit" name="descrEdit"/>
-      </item>
-     </layout>
+     <widget class="QWidget" name="toolsAndDescriptionWidget_2" native="true">
+      <layout class="QVBoxLayout" name="toolsAndDescriptionWidget">
+       <item>
+        <widget class="QLabel" name="LevelDescriptionLabel">
+         <property name="text">
+          <string>Level description:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTextEdit" name="descrEdit"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="SettingsLabel">
+         <property name="text">
+          <string>Skill pack settings:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="tools" native="true">
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <layout class="QFormLayout" name="formLayout_2">
+          <item row="0" column="0">
+           <widget class="QLabel" name="currentFileLabel">
+            <property name="text">
+             <string>Current file:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="currentFileName">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -140,12 +213,12 @@
    <slot>setRootIndex(QModelIndex)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>321</x>
-     <y>278</y>
+     <x>180</x>
+     <y>318</y>
     </hint>
     <hint type="destinationlabel">
-     <x>473</x>
-     <y>303</y>
+     <x>389</x>
+     <y>338</y>
     </hint>
    </hints>
   </connection>

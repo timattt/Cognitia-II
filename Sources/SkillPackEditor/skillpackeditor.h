@@ -35,19 +35,19 @@ private slots:
     void on_AddSkill_clicked();
     void on_AddLevel_clicked();
     void on_levelsList_clicked(const QModelIndex &index);
-     //--------------------------------
-
     void on_descrEdit_textChanged();
-
     void on_RemoveSkill_clicked();
-
     void on_RemoveLevel_clicked();
+    //--------------------------------
+
+    void on_actionOpen_triggered();
+
+    void on_actionSave_triggered();
 
 private:
 
     // Fields
     //--------------------------------
-    SkillPack * skp;
     Ui::SkillPackEditor *ui;
     QFile * skillPackFile;
     QStandardItemModel * model;
@@ -59,8 +59,10 @@ private:
 
     // Methods
     //--------------------------------
-    void resave();
-    void refreshDescrPanel();
+    void fromGui();
+    void toGui();
+    void transferToSkillPackStructure(SkillPack * skp);
+    void transferFromSkillPackStructure(SkillPack * skp);
     //--------------------------------
 };
 

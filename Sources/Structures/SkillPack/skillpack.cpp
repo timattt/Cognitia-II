@@ -105,6 +105,11 @@ int SkillPack::getSkillsCount()
     return skills.size();
 }
 
+Skill *SkillPack::getSkill(int i)
+{
+    return skills[i];
+}
+
 void SkillPack::addSkill(Skill *sk)
 {
     skills.push_back(sk);

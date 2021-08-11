@@ -33,6 +33,7 @@ public:
     void addLevel(QString descr);
     void clear();
     int getLevelsCount();
+    QString getLevelDescription(int i);
     void print();
     //------------------------------------
 };

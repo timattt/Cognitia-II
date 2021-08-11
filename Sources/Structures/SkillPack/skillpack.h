@@ -45,6 +45,7 @@ public:
     void save(QDir dr);
     void print();
     int getSkillsCount();
+    Skill* getSkill(int i);
     void addSkill(Skill * sk);
     void clear();
     //------------------------------------

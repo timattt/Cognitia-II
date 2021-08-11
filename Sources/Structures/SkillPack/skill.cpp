@@ -27,18 +27,18 @@ void Skill::loadSkill(QFile * file) {
         throw QString("Can not open skill file [" + file->fileName() + "]");
     }
 
-    QStringList divs = dat.split(SKILL_DELIMITER, Qt::SkipEmptyParts);
+    QStringList divs = dat.split(SKILL_DELIMITER);
 
-    if (divs.size() == 0) {
+    if (divs.size() < 2) {
         throw QString("Bad skill file [" + file->fileName() + "]");
     }
 
     setObjectName(divs[0]);
 
     levelsDescriptions.clear();
-    levelsDescriptions.reserve(divs.size() - 1);
+    levelsDescriptions.reserve(divs.size() - 2);
 
-    for (int i = 0; i < divs.size() - 1; i++) {
+    for (int i = 0; i < divs.size() - 2; i++) {
         levelsDescriptions.push_back(divs[i + 1]);
     }
 }
@@ -75,6 +75,11 @@ void Skill::clear()
 int Skill::getLevelsCount()
 {
     return levelsDescriptions.size();
+}
+
+QString Skill::getLevelDescription(int i)
+{
+    return levelsDescriptions[i];
 }
 
 void Skill::print()
