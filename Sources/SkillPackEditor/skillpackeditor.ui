@@ -29,91 +29,56 @@ QPushButton {border: 1px solid gray}
 QPushButton:hover { border-radius:5px; background:lightgreen}
 QLabel:hover { border-radius:5px; background:lightgreen}</string>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_3">
+   <layout class="QHBoxLayout" name="horizontalLayout_4">
     <item>
-     <widget class="QWidget" name="skillsWidget" native="true">
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QLabel" name="SkillsLabel">
-         <property name="text">
-          <string>Skills:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QListView" name="skillsList"/>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item alignment="Qt::AlignLeft">
-          <widget class="QPushButton" name="AddSkill">
-           <property name="text">
-            <string>Add skill</string>
-           </property>
-          </widget>
-         </item>
-         <item alignment="Qt::AlignRight">
-          <widget class="QPushButton" name="RemoveSkill">
-           <property name="text">
-            <string>Remove skill</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="QWidget" name="levelsWidget" native="true">
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <widget class="QLabel" name="LevelsLabel">
-         <property name="text">
-          <string>Levels:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QListView" name="levelsList"/>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item alignment="Qt::AlignLeft">
-          <widget class="QPushButton" name="AddLevel">
-           <property name="text">
-            <string>Add level</string>
-           </property>
-          </widget>
-         </item>
-         <item alignment="Qt::AlignRight">
-          <widget class="QPushButton" name="RemoveLevel">
-           <property name="text">
-            <string>Remove level</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
+     <layout class="QVBoxLayout" name="skillPackTree">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Skillpack tree:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTreeView" name="tree"/>
+      </item>
+      <item>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="AddSkill">
+          <property name="text">
+           <string>Add skill</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QPushButton" name="RemoveSkill">
+          <property name="text">
+           <string>Remove skill</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="AddLevel">
+          <property name="text">
+           <string>Add level</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="RemoveLevel">
+          <property name="text">
+           <string>Remove level</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </item>
     <item>
      <widget class="QWidget" name="toolsAndDescriptionWidget_2" native="true">
       <layout class="QVBoxLayout" name="toolsAndDescriptionWidget">
-       <item>
-        <widget class="QLabel" name="LevelDescriptionLabel">
-         <property name="text">
-          <string>Level description:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QTextEdit" name="descrEdit"/>
-       </item>
        <item>
         <widget class="QLabel" name="SettingsLabel">
          <property name="text">
@@ -205,22 +170,5 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
   </action>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>skillsList</sender>
-   <signal>clicked(QModelIndex)</signal>
-   <receiver>levelsList</receiver>
-   <slot>setRootIndex(QModelIndex)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>180</x>
-     <y>318</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>389</x>
-     <y>338</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
