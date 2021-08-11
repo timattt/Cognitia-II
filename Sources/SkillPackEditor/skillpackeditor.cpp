@@ -122,13 +122,19 @@ void SkillPackEditor::on_AddLevel_clicked()
 
 void SkillPackEditor::on_levelsList_clicked(const QModelIndex &index)
 {
-    ui->descrEdit->setText(model->data(model->index(0, 0, index)).toString());
+    if (index.isValid()) {
+        ui->descrEdit->setText(model->data(model->index(0, 0, index)).toString());
+    } else {
+        ui->descrEdit->setText("");
+    }
 }
 
 
 void SkillPackEditor::on_descrEdit_textChanged()
 {
-    model->setData(model->index(0, 0, ui->levelsList->currentIndex()), ui->descrEdit->toPlainText());
+    if (ui->levelsList->currentIndex().isValid()) {
+        model->setData(model->index(0, 0, ui->levelsList->currentIndex()), ui->descrEdit->toPlainText());
+    }
 }
 
 
