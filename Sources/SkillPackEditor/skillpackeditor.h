@@ -8,6 +8,7 @@
 #include <QStringListModel>
 #include <QModelIndex>
 #include <QItemSelectionModel>
+#include <QMessageBox>
 
 #include "../Structures/SkillPack/skillpack.h"
 
@@ -33,14 +34,21 @@ private slots:
     //--------------------------------
     void on_AddSkill_clicked();
     void on_AddLevel_clicked();
-    void on_RemoveSkill_clicked();
-    void on_RemoveLevel_clicked();
+    void on_remove_clicked();
     void on_actionCreate_triggered();
     void on_actionOpen_triggered();
     void on_actionSave_triggered();
+    void on_actionClose_triggered();
+    void on_actionHelp_me_triggered();
+    void on_actionReturn_to_launcher_triggered();
     //--------------------------------
 
+signals:
 
+    // Signals
+    //--------------------------------
+    void onClose();
+    //--------------------------------
 
 private:
 
@@ -61,6 +69,10 @@ private:
     void toGui();
     void transferToSkillPackStructure(SkillPack * skp);
     void transferFromSkillPackStructure(SkillPack * skp);
+    int getTreeItemLevel(QModelIndex ind);
+    void setSkillPackFile(QString path, bool mayExist);
+    bool ensureFileIsValid();
+    void ensureFileIsNull();
     //--------------------------------
 };
 

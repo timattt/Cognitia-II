@@ -1,19 +1,19 @@
 #include "skillpackeditor.h"
 #include "ui_skillpackeditor.h"
 
-const char * DEFAULT_SKILL_NAME = "New skill";
+const char * helpMessage = "Here you can create and edit skill sets. You can make a skill multilevel, so in order to have a certain level you need to develop the corresponding skill. A description can be added to each level so that the user can understand which level corresponds to his knowledge.";
 
 SkillPackEditor::SkillPackEditor() :
     QMainWindow(nullptr),
     ui(new Ui::SkillPackEditor),
     skillPackFile(nullptr),
-    model(new QStandardItemModel(this)),
+    model(new QStandardItemModel(0, 1, this)),
     skillsSelection(new QItemSelectionModel(model, this)),
     levelsSelection(new QItemSelectionModel(model, this))
 {
     ui->setupUi(this);
 
-    model->insertColumn(0);
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("Skills, levels, descriptions"));
 
     ui->tree->setModel(model);
     ui->tree->setEditTriggers(QAbstractItemView::DoubleClicked);
@@ -32,18 +32,30 @@ SkillPackEditor::~SkillPackEditor()
 
 void SkillPackEditor::on_AddSkill_clicked()
 {
+    if (ensureFileIsValid()) {
+        return;
+    }
+
     // Add new skill
     int row = model->rowCount();
 
-    model->insertRow(row);
-    model->setData(model->index(row, 0), "New skill");
+    model->insertRows(row, 1);
+
+    model->setData(model->index(row, 0), "Skill " + QString::number(row + 1));
 
     // Add new subdir for level
     model->item(row, 0)->insertColumns(0, 1);
+
+    ui->statusbar->showMessage("New skill added!");
+    ui->totalSkills->setText(QString::number(model->rowCount()));
 }
 
 void SkillPackEditor::on_AddLevel_clicked()
 {
+    if (ensureFileIsValid()) {
+        return;
+    }
+
     QModelIndex ind = ui->tree->currentIndex();
     if (ind.isValid()) {
         // Add new list
@@ -56,43 +68,16 @@ void SkillPackEditor::on_AddLevel_clicked()
         QModelIndex levelInd = model->index(row, 0, skill->index());
 
         QStandardItem * level = model->itemFromIndex(levelInd);
-        level->setData("New level", Qt::EditRole);
+        level->setData("Level " + QString::number(levelInd.row() + 1), Qt::EditRole);
 
         // Add subdir for text
         level->insertColumns(0, 1);
         level->insertRows(0, 1);
         QStandardItem * desc = model->itemFromIndex(model->index(0, 0, level->index()));
         desc->setData("Empty description", Qt::EditRole);
+
+        ui->statusbar->showMessage("New level added!");
     }
-}
-
-void SkillPackEditor::on_RemoveSkill_clicked()
-{
-    QModelIndex ind = ui->tree->currentIndex();
-
-    if (!ind.isValid()) {
-        return;
-    }
-
-    int row = ind.row();
-
-    // remove old
-    model->removeRow(row);
-}
-
-
-void SkillPackEditor::on_RemoveLevel_clicked()
-{
-    QModelIndex ind = ui->tree->currentIndex();
-
-    if (!ind.isValid()) {
-        return;
-    }
-
-    int row = ind.row();
-
-    // remove old
-    model->removeRow(row);
 }
 
 void SkillPackEditor::fromGui() {
@@ -104,6 +89,7 @@ void SkillPackEditor::fromGui() {
         QFileInfo in = QFileInfo(*skillPackFile);
         transferToSkillPackStructure(&skp);
         skp.save(in.dir());
+        ui->totalSkills->setText(QString::number(model->rowCount()));
         ui->statusbar->showMessage("SkillPack " + skp.objectName() + " is saved!");
     } catch (QString err) {
         ui->statusbar->showMessage("Error while saving file: " + err);
@@ -118,6 +104,7 @@ void SkillPackEditor::toGui() {
         SkillPack skp;
         skp.load(skillPackFile);
         transferFromSkillPackStructure(&skp);
+        ui->totalSkills->setText(QString::number(model->rowCount()));
     } catch (QString err) {
         ui->statusbar->showMessage("Error while opening file: " + err);
     }
@@ -166,34 +153,32 @@ void SkillPackEditor::transferFromSkillPackStructure(SkillPack * skp)
     ui->currentFileName->setText(skp->objectName());
 }
 
-void SkillPackEditor::on_actionCreate_triggered()
+int SkillPackEditor::getTreeItemLevel(QModelIndex ind)
 {
-    QString path = QFileDialog::getSaveFileName(this, "Create skill pack file");
-
-    if (skillPackFile != nullptr) {
-        delete skillPackFile;
+    if (!ind.isValid()) {
+        return -1;
     }
+    if (ind.parent() == QModelIndex()) {
+        return 1;//skill
+    }
+    if (ind.parent().parent() == QModelIndex()) {
+        return 2;//level
+    }
+    if (ind.parent().parent().parent() == QModelIndex()) {
+        return 3;//description
+    }
+
+    return -1;
+}
+
+void SkillPackEditor::setSkillPackFile(QString path, bool mayExist)
+{
+    ensureFileIsNull();
 
     QFileInfo info(path);
     skillPackFile = new QFile(info.path() + "/" + info.completeBaseName() + SKILL_PACK_FILE_EXTENSION);
 
-    model->clear();
-    model->insertColumns(0, 1);
-    ui->currentFileName->setText(info.baseName());
-
-    fromGui();
-}
-
-void SkillPackEditor::on_actionOpen_triggered()
-{
-    QString path = QFileDialog::getOpenFileName(this, "Select skill pack file");
-
-    if (skillPackFile != nullptr) {
-        delete skillPackFile;
-    }
-    skillPackFile = new QFile(path);
-
-    if (!skillPackFile->exists()) {
+    if (!skillPackFile->exists() && mayExist) {
         ui->statusbar->showMessage("Opened file not exists");
         delete skillPackFile;
         skillPackFile = nullptr;
@@ -203,6 +188,53 @@ void SkillPackEditor::on_actionOpen_triggered()
     model->clear();
     model->insertColumns(0, 1);
     ui->currentFileName->setText(QFileInfo(*skillPackFile).baseName());
+}
+
+bool SkillPackEditor::ensureFileIsValid()
+{
+    if (skillPackFile == nullptr || !skillPackFile->exists()) {
+         ui->statusbar->showMessage("No skill pack file! Create it!");
+         return 1;
+    }
+
+    return 0;
+}
+
+void SkillPackEditor::ensureFileIsNull()
+{
+    if (skillPackFile != nullptr) {
+        if (QMessageBox::question(this, "Save file or not",
+                              "Would you like to save your file before closing it?",
+                              QMessageBox::Save | QMessageBox::Discard) == QMessageBox::Save) {
+            on_actionSave_triggered();
+        }
+        delete skillPackFile;
+        skillPackFile = nullptr;
+    }
+}
+
+void SkillPackEditor::on_actionCreate_triggered()
+{
+    QString path = QFileDialog::getSaveFileName(this, "Create skill pack file");
+
+    if (path.size() == 0) {
+        return;
+    }
+
+    setSkillPackFile(path, false);
+
+    fromGui();
+}
+
+void SkillPackEditor::on_actionOpen_triggered()
+{
+    QString path = QFileDialog::getOpenFileName(this, "Select skill pack file");
+
+    if (path.size() == 0) {
+        return;
+    }
+
+    setSkillPackFile(path, true);
 
     toGui();
 }
@@ -211,5 +243,53 @@ void SkillPackEditor::on_actionOpen_triggered()
 void SkillPackEditor::on_actionSave_triggered()
 {
     fromGui();
+}
+
+
+void SkillPackEditor::on_remove_clicked()
+{
+    if (ensureFileIsValid()) {
+        return;
+    }
+
+    QModelIndex ind = ui->tree->currentIndex();
+    int level = getTreeItemLevel(ind);
+
+    qDebug() << getTreeItemLevel(ind) << ind.row();
+
+    QString dat = model->data(ind).toString();
+
+    if (level == 1 || level == 2) {
+        model->removeRow(ind.row(), ind.parent());
+        ui->statusbar->showMessage("[" + dat + "] was removed!");
+    } else {
+         ui->statusbar->showMessage("Nothing to remove!");
+    }
+}
+
+
+void SkillPackEditor::on_actionClose_triggered()
+{
+    ensureFileIsNull();
+    model->clear();
+    if (skillPackFile != nullptr) {
+        delete skillPackFile;
+        skillPackFile = nullptr;
+    }
+    ui->totalSkills->setText("");
+    ui->currentFileName->setText("");
+}
+
+
+void SkillPackEditor::on_actionHelp_me_triggered()
+{
+    QMessageBox::about(this, "Help", helpMessage);
+}
+
+
+void SkillPackEditor::on_actionReturn_to_launcher_triggered()
+{
+    on_actionClose_triggered();
+    emit onClose();
 }
 

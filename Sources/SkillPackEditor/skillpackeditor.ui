@@ -29,11 +29,11 @@ QPushButton {border: 1px solid gray}
 QPushButton:hover { border-radius:5px; background:lightgreen}
 QLabel:hover { border-radius:5px; background:lightgreen}</string>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_4">
+   <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <layout class="QVBoxLayout" name="skillPackTree">
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="skillpakcTreeLabel">
         <property name="text">
          <string>Skillpack tree:</string>
         </property>
@@ -43,32 +43,25 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
        <widget class="QTreeView" name="tree"/>
       </item>
       <item>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
+       <layout class="QHBoxLayout" name="skillpackeditorbuttons">
+        <item alignment="Qt::AlignTop">
          <widget class="QPushButton" name="AddSkill">
           <property name="text">
            <string>Add skill</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="QPushButton" name="RemoveSkill">
-          <property name="text">
-           <string>Remove skill</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
+        <item>
          <widget class="QPushButton" name="AddLevel">
           <property name="text">
            <string>Add level</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QPushButton" name="RemoveLevel">
+        <item>
+         <widget class="QPushButton" name="remove">
           <property name="text">
-           <string>Remove level</string>
+           <string>Remove</string>
           </property>
          </widget>
         </item>
@@ -82,7 +75,7 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
        <item>
         <widget class="QLabel" name="SettingsLabel">
          <property name="text">
-          <string>Skill pack settings:</string>
+          <string>Skill pack settings and information:</string>
          </property>
         </widget>
        </item>
@@ -107,6 +100,20 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
             <property name="text">
              <string/>
             </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Total skills:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="totalSkills">
             <property name="readOnly">
              <bool>true</bool>
             </property>
@@ -149,23 +156,72 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
     <addaction name="actionCreate"/>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
+    <addaction name="actionClose"/>
+    <addaction name="actionReturn_to_launcher"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionHelp_me"/>
    </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::AllToolBarAreas</set>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionCreate"/>
+   <addaction name="actionOpen"/>
+   <addaction name="actionSave"/>
+   <addaction name="actionClose"/>
+   <addaction name="separator"/>
+   <addaction name="actionHelp_me"/>
+   <addaction name="separator"/>
+   <addaction name="actionReturn_to_launcher"/>
+  </widget>
   <action name="actionCreate">
    <property name="text">
-    <string>Create</string>
+    <string>Create skillpack file</string>
    </property>
   </action>
   <action name="actionOpen">
    <property name="text">
-    <string>Open</string>
+    <string>Open skillpack file</string>
    </property>
   </action>
   <action name="actionSave">
    <property name="text">
-    <string>Save</string>
+    <string>Save skillpack file</string>
+   </property>
+  </action>
+  <action name="actionClose">
+   <property name="text">
+    <string>Close skilpack file</string>
+   </property>
+  </action>
+  <action name="actionHelp_me">
+   <property name="text">
+    <string>Help me!</string>
+   </property>
+  </action>
+  <action name="actionReturn_to_launcher">
+   <property name="text">
+    <string>Return to launcher</string>
    </property>
   </action>
  </widget>
