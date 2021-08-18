@@ -59,6 +59,7 @@ private:
     QStandardItemModel * model;
     QItemSelectionModel * skillsSelection;
     QItemSelectionModel * levelsSelection;
+    QString helpMessage;
     //--------------------------------
 
 private:

@@ -1,16 +1,20 @@
 #include "skillpackeditor.h"
 #include "ui_skillpackeditor.h"
 
-const char * helpMessage = "Here you can create and edit skill sets. You can make a skill multilevel, so in order to have a certain level you need to develop the corresponding skill. A description can be added to each level so that the user can understand which level corresponds to his knowledge.";
-
 SkillPackEditor::SkillPackEditor() :
     QMainWindow(nullptr),
     ui(new Ui::SkillPackEditor),
     skillPackFile(nullptr),
     model(new QStandardItemModel(0, 1, this)),
     skillsSelection(new QItemSelectionModel(model, this)),
-    levelsSelection(new QItemSelectionModel(model, this))
+    levelsSelection(new QItemSelectionModel(model, this)),
+    helpMessage("")
 {
+    QFile helpm = QFile(":/help/Help/SkillPackEditorHelp.txt");
+    helpm.open(QIODevice::ReadOnly);
+    helpMessage = helpm.readAll();
+    helpm.close();
+
     ui->setupUi(this);
 
     model->setHeaderData(0, Qt::Horizontal, QObject::tr("Skills, levels, descriptions"));

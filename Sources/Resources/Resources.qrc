@@ -1,5 +1,8 @@
 <RCC>
-    <qresource prefix="/">
-        <file>Logo.png</file>
+    <qresource prefix="/logos/">
+        <file>Logos/Logo.png</file>
+    </qresource>
+	<qresource prefix="/help/">
+        <file>Help/SkillPackEditorHelp.txt</file>
     </qresource>
 </RCC>
