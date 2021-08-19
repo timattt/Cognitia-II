@@ -17,9 +17,8 @@ Launcher::~Launcher()
 
 void Launcher::on_runButton_clicked()
 {
-     if (ui->modesChooser->currentText() == "Skill pack editor") {this->hide();
+     if (ui->modesChooser->currentText() == "Skill pack editor") {
         emit startSkillPackEditor();
-
      }
 }
 

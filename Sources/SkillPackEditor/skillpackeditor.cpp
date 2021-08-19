@@ -61,7 +61,7 @@ void SkillPackEditor::on_AddLevel_clicked()
     }
 
     QModelIndex ind = ui->tree->currentIndex();
-    if (ind.isValid()) {
+    if (ind.isValid() && getTreeItemLevel(ind) == 1) {
         // Add new list
         QStandardItem * skill = model->item(ind.row(), 0);
 

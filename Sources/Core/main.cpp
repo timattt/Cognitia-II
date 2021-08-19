@@ -2,6 +2,7 @@
 #include "../Structures/SkillPack/skill.h"
 #include "../Structures/SkillPack/skillpack.h"
 #include "../SkillPackEditor/skillpackeditor.h"
+#include "../CourseEditor/courseeditor.h"
 
 #include <QApplication>
 #include <QObject>
@@ -9,9 +10,10 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Launcher launcher;
 
+    Launcher launcher;
     SkillPackEditor skillPackEditor;
+    CourseEditor courseEditor;
 
     QObject::connect(&launcher, SIGNAL(startSkillPackEditor()), &skillPackEditor, SLOT(show()));
     QObject::connect(&skillPackEditor, SIGNAL(onClose()), &launcher, SLOT(show()));
