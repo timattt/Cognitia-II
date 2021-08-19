@@ -276,10 +276,6 @@ void SkillPackEditor::on_actionClose_triggered()
 {
     ensureFileIsNull();
     model->clear();
-    if (skillPackFile != nullptr) {
-        delete skillPackFile;
-        skillPackFile = nullptr;
-    }
     ui->totalSkills->setText("");
     ui->currentFileName->setText("");
 }
@@ -295,5 +291,22 @@ void SkillPackEditor::on_actionReturn_to_launcher_triggered()
 {
     on_actionClose_triggered();
     emit onClose();
+}
+
+
+void SkillPackEditor::on_actionSet_style_triggered()
+{
+    QString path = QFileDialog::getOpenFileName(this, "Select CSS file");
+    QFile st = QFile(path);
+    if (!st.exists()) {
+        ui->statusbar->showMessage("CSS file not exists!");
+    }
+    if (st.open(QIODevice::ReadOnly)) {
+        QString css = st.readAll();
+        this->setStyleSheet(css);
+        st.close();
+    } else {
+        ui->statusbar->showMessage("CSS file can not be opened!");
+    }
 }
 

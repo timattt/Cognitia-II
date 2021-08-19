@@ -165,8 +165,15 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
     </property>
     <addaction name="actionHelp_me"/>
    </widget>
+   <widget class="QMenu" name="menuDebug">
+    <property name="title">
+     <string>Dev</string>
+    </property>
+    <addaction name="actionSet_style"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuHelp"/>
+   <addaction name="menuDebug"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -193,6 +200,7 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
    <addaction name="actionHelp_me"/>
    <addaction name="separator"/>
    <addaction name="actionReturn_to_launcher"/>
+   <addaction name="actionSet_style"/>
   </widget>
   <action name="actionCreate">
    <property name="text">
@@ -222,6 +230,11 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
   <action name="actionReturn_to_launcher">
    <property name="text">
     <string>Return to launcher</string>
+   </property>
+  </action>
+  <action name="actionSet_style">
+   <property name="text">
+    <string>Set style (Developers only)</string>
    </property>
   </action>
  </widget>

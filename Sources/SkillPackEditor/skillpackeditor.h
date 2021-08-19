@@ -43,6 +43,8 @@ private slots:
     void on_actionReturn_to_launcher_triggered();
     //--------------------------------
 
+    void on_actionSet_style_triggered();
+
 signals:
 
     // Signals
