@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CourseEditor</class>
+ <widget class="QWidget" name="CourseEditor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>717</width>
+    <height>523</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <layout class="QFormLayout" name="formLayout"/>
+   </item>
+   <item>
+    <widget class="CourseUnitViewer" name="widget" native="true">
+     <property name="styleSheet">
+      <string notr="true">QWidget {border: 2px solid blue}</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CourseUnitViewer</class>
+   <extends>QWidget</extends>
+   <header>CourseUnitViewer/courseunitviewer.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
