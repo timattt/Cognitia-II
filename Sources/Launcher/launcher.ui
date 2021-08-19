@@ -74,12 +74,12 @@
          </property>
          <item>
           <property name="text">
-           <string>Skill pack editor</string>
+           <string>Course editor</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Course unit editor</string>
+           <string>Skill pack editor</string>
           </property>
          </item>
          <item>

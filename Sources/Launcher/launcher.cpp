@@ -20,5 +20,8 @@ void Launcher::on_runButton_clicked()
      if (ui->modesChooser->currentText() == "Skill pack editor") {
         emit startSkillPackEditor();
      }
+     if (ui->modesChooser->currentText() == "Course editor") {
+        emit startCourseEditor();
+     }
 }
 

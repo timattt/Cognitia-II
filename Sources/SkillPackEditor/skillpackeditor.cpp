@@ -92,9 +92,9 @@ void SkillPackEditor::fromGui() {
         SkillPack skp;
         QFileInfo in = QFileInfo(*skillPackFile);
         transferToSkillPackStructure(&skp);
-        skp.save(in.dir());
+        skp.save(skillPackFile);
         ui->totalSkills->setText(QString::number(model->rowCount()));
-        ui->statusbar->showMessage("SkillPack " + skp.objectName() + " is saved!");
+        ui->statusbar->showMessage("SkillPack " + skp.objectName() + " is saved into file " + in.baseName() + "!");
     } catch (QString err) {
         ui->statusbar->showMessage("Error while saving file: " + err);
     }
@@ -108,7 +108,6 @@ void SkillPackEditor::toGui() {
         SkillPack skp;
         skp.load(skillPackFile);
         transferFromSkillPackStructure(&skp);
-        ui->totalSkills->setText(QString::number(model->rowCount()));
     } catch (QString err) {
         ui->statusbar->showMessage("Error while opening file: " + err);
     }
@@ -127,7 +126,7 @@ void SkillPackEditor::transferToSkillPackStructure(SkillPack * skp)
         skp->addSkill(sk);
     }
 
-    skp->setObjectName(ui->currentFileName->text());
+    skp->setObjectName(ui->skillPackName->text());
 }
 
 void SkillPackEditor::transferFromSkillPackStructure(SkillPack * skp)
@@ -154,7 +153,8 @@ void SkillPackEditor::transferFromSkillPackStructure(SkillPack * skp)
         }
     }
 
-    ui->currentFileName->setText(skp->objectName());
+    ui->totalSkills->setText(QString::number(model->rowCount()));
+    ui->skillPackName->setText(skp->objectName());
 }
 
 int SkillPackEditor::getTreeItemLevel(QModelIndex ind)
@@ -190,7 +190,9 @@ void SkillPackEditor::setSkillPackFile(QString path, bool mayExist)
     }
 
     model->clear();
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("Skills, levels, descriptions"));
     model->insertColumns(0, 1);
+    ui->skillPackName->setReadOnly(false);
     ui->currentFileName->setText(QFileInfo(*skillPackFile).baseName());
 }
 
@@ -214,6 +216,8 @@ void SkillPackEditor::ensureFileIsNull()
         }
         delete skillPackFile;
         skillPackFile = nullptr;
+        ui->currentFileName->clear();
+        ui->skillPackName->setReadOnly(true);
     }
 }
 
@@ -276,6 +280,7 @@ void SkillPackEditor::on_actionClose_triggered()
 {
     ensureFileIsNull();
     model->clear();
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("Skills, levels, descriptions"));
     ui->totalSkills->setText("");
     ui->currentFileName->setText("");
 }
@@ -309,4 +314,3 @@ void SkillPackEditor::on_actionSet_style_triggered()
         ui->statusbar->showMessage("CSS file can not be opened!");
     }
 }
-

@@ -23,6 +23,7 @@ private:
 
 signals:
     void startSkillPackEditor();
+    void startCourseEditor();
 };
 
 #endif // LAUNCHER_H

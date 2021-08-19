@@ -57,18 +57,19 @@ void SkillPack::load(QFile * file)
     }
 }
 
-void SkillPack::save(QDir dr)
+void SkillPack::save(QFile * file)
 {
     qDebug() << "Saving skillPack" << objectName();
+
+    QFileInfo in = QFileInfo(*file);
+    QDir dr = in.dir();
 
     if (!dr.exists()) {
         dr.mkpath(dr.absolutePath());
     }
 
-    QFile dest = QFile(dr.filePath(this->objectName() + SKILL_PACK_FILE_EXTENSION));
-
-    if (dest.open(QIODevice::WriteOnly)) {
-        QTextStream stream(&dest);
+    if (file->open(QIODevice::WriteOnly)) {
+        QTextStream stream(file);
 
         stream << objectName() << SKILL_PACK_DELIMITER;
 
@@ -86,9 +87,9 @@ void SkillPack::save(QDir dr)
             stream << skillFileName << SKILL_PACK_DELIMITER;
         }
 
-        dest.close();
+        file->close();
     } else {
-        throw QString("Can not open skill pack file [" + dest.fileName() + "]");
+        throw QString("Can not open skill pack file [" + file->fileName() + "]");
     }
 }
 

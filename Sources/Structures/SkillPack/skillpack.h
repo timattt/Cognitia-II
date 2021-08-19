@@ -42,7 +42,7 @@ public:
     // Methods
     //------------------------------------
     void load(QFile * file);
-    void save(QDir dr);
+    void save(QFile * file);
     void print();
     int getSkillsCount();
     Skill* getSkill(int i);

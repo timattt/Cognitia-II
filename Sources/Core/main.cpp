@@ -16,6 +16,8 @@ int main(int argc, char *argv[])
     CourseEditor courseEditor;
 
     QObject::connect(&launcher, SIGNAL(startSkillPackEditor()), &skillPackEditor, SLOT(show()));
+    QObject::connect(&launcher, SIGNAL(startCourseEditor()), &courseEditor, SLOT(show()));
+
     QObject::connect(&skillPackEditor, SIGNAL(onClose()), &launcher, SLOT(show()));
     QObject::connect(&skillPackEditor, SIGNAL(onClose()), &skillPackEditor, SLOT(hide()));
 
