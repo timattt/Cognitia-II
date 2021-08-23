@@ -34,7 +34,7 @@ void SkillPack::load(QFile * file)
 
     QStringList divs = dat.split(SKILL_PACK_DELIMITER, Qt::SkipEmptyParts);
 
-    if (divs.size() == 0) {
+    if (divs.empty()) {
         throw QString("Empty skill pack file [" + file->fileName() + "]");
     }
 
