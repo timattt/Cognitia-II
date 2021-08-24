@@ -1,5 +1,5 @@
 #include <QtTest/QtTest>
-#include "../Structures/CourseUnit/courseunit.h"
+#include "../App/Structures/CourseUnit/courseunit.h"
 
 class Test_courseUnit : public QObject{
     Q_OBJECT
@@ -58,4 +58,4 @@ void Test_courseUnit::saveAndLoad(){
 }
 
 QTEST_MAIN(Test_courseUnit)
-#include "test.moc"
+#include "CourseUnitTests.moc"
