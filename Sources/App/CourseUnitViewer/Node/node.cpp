@@ -131,6 +131,9 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
     update();
     QGraphicsItem::mousePressEvent(event);
 
+    if (event->button() == Qt::LeftButton && this->graph->deleteModeIsOn()) {
+    	scene()->removeItem(this);
+    }
     if (event->button() == Qt::RightButton) {
         scene()->addItem(new DragableEdge(this));
     }

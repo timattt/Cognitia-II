@@ -85,3 +85,6 @@ void CourseUnitViewer::on_pushButton_2_clicked()
     scene->addItem(nd);
 }
 
+bool CourseUnitViewer::deleteModeIsOn() {
+	return ui->deleteModeCheckbox->isChecked();
+}

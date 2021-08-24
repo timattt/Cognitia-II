@@ -46,8 +46,8 @@ public:
     //----------------------------------
     void itemMoved();
     bool nodesCanMove();
+    bool deleteModeIsOn();
     //----------------------------------
-
 
 private slots:
 
