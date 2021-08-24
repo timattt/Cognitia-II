@@ -15,6 +15,7 @@ SOURCES += \
     Launcher/launcher.cpp \
     Core/main.cpp \
     SkillPackEditor/skillpackeditor.cpp \
+    Structures/CourseUnit/courseunit.cpp \
     Structures/SkillPack/skill.cpp \
     Structures/SkillPack/skillpack.cpp \
     CourseUnitViewer/Node/node.cpp \
@@ -26,6 +27,7 @@ HEADERS += \
     CourseUnitViewer/courseunitwidget.h \
     Launcher/launcher.h \
     SkillPackEditor/skillpackeditor.h \
+    Structures/CourseUnit/courseunit.h \
     Structures/SkillPack/skill.h \
     Structures/SkillPack/skillpack.h \
     CourseUnitViewer/Node/node.h \
