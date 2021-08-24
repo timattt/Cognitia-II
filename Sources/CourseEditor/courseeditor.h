@@ -1,13 +1,13 @@
 #ifndef COURSEEDITOR_H
 #define COURSEEDITOR_H
 
-#include <QWidget>
+#include <QMainWindow>
 
 namespace Ui {
 class CourseEditor;
 }
 
-class CourseEditor : public QWidget
+class CourseEditor : public QMainWindow
 {
     Q_OBJECT
 
