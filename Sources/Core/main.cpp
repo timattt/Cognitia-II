@@ -1,11 +1,13 @@
 #include "Launcher/launcher.h"
 #include "../Structures/SkillPack/skill.h"
 #include "../Structures/SkillPack/skillpack.h"
+#include "../Structures/CourseUnit/courseunit.h"
 #include "../SkillPackEditor/skillpackeditor.h"
 #include "../CourseEditor/courseeditor.h"
 
 #include <QApplication>
 #include <QObject>
+
 
 int main(int argc, char *argv[])
 {
@@ -21,4 +23,5 @@ int main(int argc, char *argv[])
     QObject::connect(&skillPackEditor, SIGNAL(onClose()), &skillPackEditor, SLOT(hide()));
 
     return a.exec();
+
 }
