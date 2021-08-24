@@ -11,25 +11,33 @@ CONFIG += c++11
 SOURCES += \
     CourseEditor/courseeditor.cpp \
     CourseUnitViewer/courseunitviewer.cpp \
+    CourseUnitViewer/courseunitwidget.cpp \
     Launcher/launcher.cpp \
     Core/main.cpp \
     SkillPackEditor/skillpackeditor.cpp \
     Structures/CourseUnit/courseunit.cpp \
     Structures/SkillPack/skill.cpp \
     Structures/SkillPack/skillpack.cpp \
+    CourseUnitViewer/Node/node.cpp \
+    CourseUnitViewer/Node/edge.cpp
+
 
 HEADERS += \
     CourseEditor/courseeditor.h \
     CourseUnitViewer/courseunitviewer.h \
+    CourseUnitViewer/courseunitwidget.h \
     Launcher/launcher.h \
     SkillPackEditor/skillpackeditor.h \
     Structures/CourseUnit/courseunit.h \
     Structures/SkillPack/skill.h \
-    Structures/SkillPack/skillpack.h
+    Structures/SkillPack/skillpack.h \
+    CourseUnitViewer/Node/node.h \
+    CourseUnitViewer/Node/edge.h
 
 FORMS += \
     CourseEditor/courseeditor.ui \
     CourseUnitViewer/courseunitviewer.ui \
+    CourseUnitViewer/courseunitwidget.ui \
     Launcher/launcher.ui \
     SkillPackEditor/skillpackeditor.ui
 
