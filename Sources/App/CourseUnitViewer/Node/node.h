@@ -3,7 +3,8 @@
 
 #include <QtWidgets>
 
-#include "../nodesdefs.h"
+class Edge;
+class CourseUnitViewer;
 
 class Node : public QGraphicsItem
 {

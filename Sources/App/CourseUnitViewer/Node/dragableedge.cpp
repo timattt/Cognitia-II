@@ -1,4 +1,7 @@
-#include "../nodesheader.h"
+#include "dragableedge.h"
+#include "edge.h"
+#include "node.h"
+#include "../courseunitviewer.h"
 
 DragableEdge::DragableEdge(Node *from) : Edge(from)
 {

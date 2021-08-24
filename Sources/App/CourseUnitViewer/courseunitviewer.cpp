@@ -1,4 +1,7 @@
-#include "nodesheader.h"
+#include "Node/edge.h"
+#include "Node/node.h"
+#include "Node/dragableedge.h"
+#include "courseunitviewer.h"
 #include "ui_courseunitviewer.h"
 
 #define MIDDLE_SCROOL_NUM 5

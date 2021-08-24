@@ -28,8 +28,6 @@ HEADERS += \
     CourseEditor/courseeditor.h \
     CourseUnitViewer/Node/dragableedge.h \
     CourseUnitViewer/courseunitviewer.h \
-    CourseUnitViewer/nodesdefs.h \
-    CourseUnitViewer/nodesheader.h \
     Launcher/launcher.h \
     SkillPackEditor/skillpackeditor.h \
     Structures/CourseUnit/courseunit.h \

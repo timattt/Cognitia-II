@@ -3,8 +3,6 @@
 
 #include <QtWidgets>
 
-#include "../nodesdefs.h"
-
 #include "edge.h"
 
 class DragableEdge : public Edge

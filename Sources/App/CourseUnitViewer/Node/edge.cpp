@@ -1,4 +1,5 @@
-#include "../nodesheader.h"
+#include "edge.h"
+#include "node.h"
 
 Edge::Edge(Node *sourceNode, Node *destNode)
     : source(sourceNode), dest(destNode)

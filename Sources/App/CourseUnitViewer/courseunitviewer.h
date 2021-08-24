@@ -3,7 +3,7 @@
 
 #include <QtWidgets>
 
-#include "nodesdefs.h"
+class Edge;
 
 namespace Ui {
 class CourseUnitViewer;

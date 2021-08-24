@@ -1,4 +1,7 @@
-#include "../nodesheader.h"
+#include "node.h"
+#include "edge.h"
+#include "dragableedge.h"
+#include "../courseunitviewer.h"
 
 Node::Node(CourseUnitViewer *graphWidget)
     : graph(graphWidget)
