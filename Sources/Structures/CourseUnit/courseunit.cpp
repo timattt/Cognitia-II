@@ -2,9 +2,9 @@
 
 // Constants
 //-----------------------------------------------
-#define UNITSEPARATOR "|^|"
-#define FIELDSSEPARATOR "!!"
-#define VECTORSEPARATOR "??"
+#define UNITSEPARATOR "|~^|"
+#define FIELDSSEPARATOR "!(!"
+#define VECTORSEPARATOR "?(?"
 #define COURSE_UNIT_FILE_EXTENSION ".courseunit"
 //-----------------------------------------------
 
@@ -90,7 +90,7 @@ void courseUnit::loadCourseUnit(QFile *res){
 
     QFileInfo info = QFileInfo(*res);
 
-    qDebug() << "Loading courseUnit from" << info.fileName();
+    qDebug() <<  "Loading courseUnit from" << info.fileName();
 
     QString data = nullptr;
 
@@ -110,7 +110,7 @@ void courseUnit::loadCourseUnit(QFile *res){
         throw QString("Empty courseUnit [" + res->fileName() + "]");
     }
 
-    QStringList fields_data = unit_data[0].split(FIELDSSEPARATOR, Qt::SkipEmptyParts);
+    QStringList fields_data = unit_data[0].split(FIELDSSEPARATOR);
     this->setObjectName(fields_data[0]);
 
     width = fields_data[1].toULong();
@@ -222,6 +222,38 @@ void courseUnit::addEmbedded(courseUnit* unit){
     embedded_units.push_back(unit);
 }
 
+
+QString courseUnit::print(){
+    QString buff;
+    buff += objectName();
+    buff += "width = " + QString::number(width);
+    buff += "height = " + QString::number(height);
+    buff += "x = " + QString::number(x) ;
+    buff +=  "y = " + QString::number(y);
+    buff +=  "description = " + description;
+    buff +=  "income skills: \n";
+    for (int i = 0; i < income.size(); ++i){
+        buff +=  income[i].first + " : " + QString::number(income[i].second);
+    }
+    buff +=  "outcome skills: \n";
+    for (int i = 0; i < outcome.size(); ++i){
+        buff +=  outcome[i].first + " : " + QString::number(outcome[i].second);
+    }
+    buff +=  "linked units:";
+    for (int i = 0; i < linked_units.size(); ++i){
+        buff +=  linked_units[i] + " ";
+    }
+    buff +=  "embedded units:";
+    for(int i = 0; i < embedded_units.size(); ++i){
+        buff +=  embedded_units[i] -> objectName() + " ";
+    }
+    buff +=  "\n\n";
+    for(int i = 0; i < embedded_units.size(); ++i){
+        buff += embedded_units[i] -> print();
+    }
+
+    return buff;
+}
 
 
 

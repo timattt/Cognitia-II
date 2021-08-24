@@ -33,7 +33,8 @@ public:
     courseUnit(QObject* pobj = nullptr);
     courseUnit(size_t width, size_t height, size_t x, size_t y, QObject* pobj = nullptr);
     //------------------------------------------------------------------------------------
-   // courseUnit(const courseUnit&);
+    courseUnit(const courseUnit&) = default;
+    courseUnit( courseUnit&&) = default;
    // ~courseUnit();
 
 
@@ -63,6 +64,8 @@ public:
 
     void addEmbedded(courseUnit*);
     const QVector<courseUnit*>& getEmbedded() const;
+
+    QString print();
     //----------------------------------------------------------------------------
 
 };

@@ -16,7 +16,7 @@ SOURCES += \
     SkillPackEditor/skillpackeditor.cpp \
     Structures/CourseUnit/courseunit.cpp \
     Structures/SkillPack/skill.cpp \
-    Structures/SkillPack/skillpack.cpp
+    Structures/SkillPack/skillpack.cpp \
 
 HEADERS += \
     CourseEditor/courseeditor.h \
