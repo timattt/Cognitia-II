@@ -81,7 +81,7 @@
   <customwidget>
    <class>CourseUnitViewer</class>
    <extends>QWidget</extends>
-   <header>CourseUnitViewer/courseunitviewer.h</header>
+   <header>CourseUnitViewer/nodesheader.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

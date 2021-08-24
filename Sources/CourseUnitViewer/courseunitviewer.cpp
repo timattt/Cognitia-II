@@ -1,4 +1,4 @@
-#include "courseunitviewer.h"
+#include "nodesheader.h"
 #include "ui_courseunitviewer.h"
 
 #define MIDDLE_SCROOL_NUM 5
@@ -11,19 +11,6 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->graphicsView->setScene(scene);
-
-    Node * test1 = new Node(this);
-    Node * test2 = new Node(this);
-
-    test1->setPos(0, 0);
-
-    Edge * edge = new Edge(test1, test2);
-
-    scene->addItem(edge);
-
-    scene->addItem(test1);
-    scene->addItem(test2);
-
 }
 
 CourseUnitViewer::~CourseUnitViewer()
@@ -64,6 +51,11 @@ void CourseUnitViewer::itemMoved()
         timerId = startTimer(1);
 }
 
+bool CourseUnitViewer::nodesCanMove()
+{
+    return !ui->freezeCheckbox->isChecked();
+}
+
 qreal CourseUnitViewer::scrollPosToScale(int pos) {
     return qreal((MIN_SCALE * MIDDLE_SCROOL_NUM - 1) / (MIDDLE_SCROOL_NUM - 1) + qreal(pos) * (1 - MIN_SCALE) / (MIDDLE_SCROOL_NUM - 1));
 }
@@ -78,17 +70,18 @@ void CourseUnitViewer::on_scaleScroll_sliderMoved(int position)
     currentScale = nsc;
 }
 
-void CourseUnitViewer::dragEnterEvent(QDragEnterEvent *event)
+void CourseUnitViewer::on_freezeCheckbox_stateChanged(int arg1)
 {
+    if (!ui->freezeCheckbox->isChecked()) {
+        itemMoved();
+    }
 }
 
-void CourseUnitViewer::dragMoveEvent(QDragMoveEvent *event)
+void CourseUnitViewer::on_pushButton_2_clicked()
 {
-    
-}
-
-void CourseUnitViewer::dragLeaveEvent(QDragLeaveEvent *event)
-{
-    
+    Node * nd = new Node(this);
+    QPointF pt = ui->graphicsView->mapToScene(ui->graphicsView->rect().center());
+    nd->setPos(pt);
+    scene->addItem(nd);
 }
 

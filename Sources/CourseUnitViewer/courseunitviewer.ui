@@ -68,16 +68,16 @@
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="checkBox">
+      <widget class="QCheckBox" name="freezeCheckbox">
        <property name="text">
-        <string>Delete mode</string>
+        <string>Freeze</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="checkBox_2">
+      <widget class="QCheckBox" name="deleteModeCheckbox">
        <property name="text">
-        <string>Edge mode</string>
+        <string>Delete mode</string>
        </property>
       </widget>
      </item>

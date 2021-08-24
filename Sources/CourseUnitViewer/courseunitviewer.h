@@ -2,10 +2,8 @@
 #define COURSEUNITVIEWER_H
 
 #include <QtWidgets>
-#include <QGraphicsScene>
-#include "courseunitwidget.h"
-#include "Node/node.h"
-#include "Node/edge.h"
+
+#include "nodesdefs.h"
 
 namespace Ui {
 class CourseUnitViewer;
@@ -31,6 +29,7 @@ private:
     QGraphicsScene * scene;
     int timerId = 0;
     qreal currentScale = 1;
+    Edge* dragEdge;
     //----------------------------------
 
 private:
@@ -46,6 +45,7 @@ public:
     // Public functions
     //----------------------------------
     void itemMoved();
+    bool nodesCanMove();
     //----------------------------------
 
 
@@ -54,17 +54,9 @@ private slots:
     // Slots
     //----------------------------------
     void on_scaleScroll_sliderMoved(int position);
-    //----------------------------------
-
-protected:
-
-    // Protected functions
-    //----------------------------------
-    void dragEnterEvent(QDragEnterEvent *event) override;
-    void dragMoveEvent(QDragMoveEvent *event) override;
-    void dragLeaveEvent(QDragLeaveEvent *event) override;
+    void on_freezeCheckbox_stateChanged(int arg1);
+    void on_pushButton_2_clicked();
     //----------------------------------
 
 };
-
-#endif // COURSEUNITVIEWER_H
+#endif
