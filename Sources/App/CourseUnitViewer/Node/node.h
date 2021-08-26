@@ -6,6 +6,10 @@
 class Edge;
 class CourseUnitViewer;
 
+#define DEFAULT_ATT_FAC 10
+#define DEFAULT_REP_FAC 1
+#define DEFAULT_MASS_FAC 100
+
 class Node : public QGraphicsItem
 {
 
@@ -21,6 +25,7 @@ public:
     // Constructor
     //--------------------------------------
     Node(CourseUnitViewer *viewer);
+    ~Node();
     //--------------------------------------
 
 public:
@@ -31,10 +36,11 @@ public:
     QList<Edge *> edges() const;
     int type() const override { return Type; }
     void calculateForces();
-    bool advancePosition();
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    void removeEdge(Edge * e);
+    bool hasEdgeToNode(Node * nd);
     //--------------------------------------
 
 protected:
@@ -51,7 +57,6 @@ private:
     // Fields
     //--------------------------------------
     QList<Edge *> edgeList;
-    QPointF newPos;
     CourseUnitViewer *graph;
     //--------------------------------------
 };

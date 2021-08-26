@@ -7,12 +7,11 @@ Edge::Edge(Node *sourceNode, Node *destNode)
     setAcceptedMouseButtons(Qt::NoButton);
     source->addEdge(this);
     dest->addEdge(this);
-    adjust();
 }
 
 Edge::Edge(Node *sourceNode) : source(sourceNode), dest(nullptr)
 {
-
+    setAcceptedMouseButtons(Qt::NoButton);
 }
 
 Node *Edge::sourceNode() const
@@ -26,31 +25,33 @@ Node *Edge::destNode() const
 }
 
 void Edge::adjust()
-{
-    if (!source || !dest)
-        return;
+ {
+	QLineF line;
 
-    QLineF line(mapFromItem(source, 0, 0), mapFromItem(dest, 0, 0));
-    qreal length = line.length();
+	if (dest != nullptr) {
+		line = QLineF(mapFromItem(source, 0, 0), mapFromItem(dest, 0, 0));
+	} else {
+		line = QLineF(mapFromItem(source, 0, 0), target);
+	}
+	qreal length = line.length();
 
-    prepareGeometryChange();
+	prepareGeometryChange();
 
-    if (length > qreal(20.)) {
-        QPointF edgeOffset((line.dx() * 10) / length, (line.dy() * 10) / length);
-        sourcePoint = line.p1() + edgeOffset;
-        destPoint = line.p2() - edgeOffset;
-    } else {
-        sourcePoint = destPoint = line.p1();
-    }
+	if (length > qreal(20.)) {
+		QPointF edgeOffset((line.dx() * 10) / length,
+				(line.dy() * 10) / length);
+		sourcePoint = line.p1() + edgeOffset;
+		destPoint = line.p2() - edgeOffset;
+	} else {
+		sourcePoint = destPoint = line.p1();
+	}
 }
 
 QRectF Edge::boundingRect() const
 {
-    if (!source || !dest)
-        return QRectF();
-
     qreal penWidth = 1;
-    qreal extra = (penWidth + arrowSize) / 2.0;
+
+    qreal extra = (penWidth + getArrowSize()) / 2.0;
 
     return QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
                                       destPoint.y() - sourcePoint.y()))
@@ -58,18 +59,26 @@ QRectF Edge::boundingRect() const
         .adjusted(-extra, -extra, extra, extra);
 }
 
+void Edge::setTarget(QPointF p) {
+	target = p;
+	adjust();
+}
+
 void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    if (!source || !dest)
+	if (source == nullptr) {
+		return;
+	}
+	QLineF line(sourcePoint, destPoint);
+    if (line.length() < 0.5) {
         return;
-
-    QLineF line(sourcePoint, destPoint);
-    if (qFuzzyCompare(line.length(), qreal(0.)))
-        return;
+    }
 
     // Draw the line itself
     painter->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter->drawLine(line);
+
+    qreal arrowSize = getArrowSize();
 
     // Draw the arrows
     double angle = std::atan2(-line.dy(), line.dx());
@@ -86,4 +95,31 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     painter->setBrush(Qt::black);
     painter->drawPolygon(QPolygonF() << line.p1() << sourceArrowP1 << sourceArrowP2);
     painter->drawPolygon(QPolygonF() << line.p2() << destArrowP1 << destArrowP2);
+}
+
+Edge::~Edge() {
+	if (source != nullptr) {
+		source->removeEdge(this);
+	}
+	if (dest != nullptr) {
+		dest->removeEdge(this);
+	}
+	if (scene() != nullptr) {
+		scene()->removeItem(this);
+	}
+}
+
+bool Edge::isDragable() {
+	return dest == nullptr;
+}
+
+void Edge::connectToNode(Node * dest) {
+	this->dest = dest;
+	dest->addEdge(this);
+	source->addEdge(this);
+}
+
+double Edge::getArrowSize() const {
+	QLineF line(sourcePoint, destPoint);
+	return qMin(line.length(), 4.0);
 }

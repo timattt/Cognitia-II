@@ -1,93 +1,157 @@
+#include "courseunitviewer.h"
 #include "Node/edge.h"
 #include "Node/node.h"
-#include "Node/dragableedge.h"
-#include "courseunitviewer.h"
+#include "coursescene.h"
 #include "ui_courseunitviewer.h"
 
-#define MIDDLE_SCROOL_NUM 5
-#define MIN_SCALE 0.25
+#define SCALE_PER_PUSH 1.3
 
 CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::CourseUnitViewer),
-    scene(new QGraphicsScene())
-{
-    ui->setupUi(this);
-    ui->graphicsView->setScene(scene);
+		QWidget(parent), ui(new Ui::CourseUnitViewer), scene(
+				new CourseScene(this)), attFac(DEFAULT_ATT_FAC), repFac(
+				DEFAULT_REP_FAC), massFac(DEFAULT_MASS_FAC) {
+	ui->setupUi(this);
+	ui->graphicsView->setScene(scene);
+	timerId = startTimer(1);
+
+	ui->repFact->setText(QString::number(DEFAULT_REP_FAC));
+	ui->massFac->setText(QString::number(DEFAULT_MASS_FAC));
+	ui->attFact->setText(QString::number(DEFAULT_ATT_FAC));
 }
 
-CourseUnitViewer::~CourseUnitViewer()
-{
-    delete ui;
-    delete scene;
+CourseUnitViewer::~CourseUnitViewer() {
+	delete ui;
+	delete scene;
+	killTimer(timerId);
 }
 
-void CourseUnitViewer::timerEvent(QTimerEvent *event)
-{
-    Q_UNUSED(event);
+void CourseUnitViewer::timerEvent(QTimerEvent *event) {
+	Q_UNUSED(event);
 
-    QList<Node *> nodes;
-    const QList<QGraphicsItem *> items = scene->items();
-    for (QGraphicsItem *item : items) {
-        if (Node *node = qgraphicsitem_cast<Node *>(item))
-            nodes << node;
-    }
+	int total_nodes = 0;
+	int total_edges = 0;
+	int total_items = 0;
 
-    for (Node *node : qAsConst(nodes))
-        node->calculateForces();
+	// Update physics
+	QList<Node*> nodes;
+	const QList<QGraphicsItem*> items = scene->items();
+	for (QGraphicsItem *item : items) {
+		if (Node *node = qgraphicsitem_cast<Node*>(item)) {
+			nodes << node;
+			total_nodes++;
+		}
+		if (qgraphicsitem_cast<Edge*>(item)) {
+			total_edges++;
+		}
+		total_items++;
+	}
 
-    bool itemsMoved = false;
-    for (Node *node : qAsConst(nodes)) {
-        if (node->advancePosition())
-            itemsMoved = true;
-    }
+	for (Node *node : qAsConst(nodes)) {
+		node->calculateForces();
+	}
 
-    if (!itemsMoved) {
-        killTimer(timerId);
-        timerId = 0;
-    }
+	// Update quantity
+	ui->totalItems->setText(QString::number(total_items));
+	ui->totalEdges->setText(QString::number(total_edges));
+	ui->totalNodes->setText(QString::number(total_nodes));
 }
 
-void CourseUnitViewer::itemMoved()
-{
-    if (!timerId)
-        timerId = startTimer(1);
+bool CourseUnitViewer::nodesCanMove() {
+	return !ui->freezeCheckbox->isChecked();
 }
 
-bool CourseUnitViewer::nodesCanMove()
-{
-    return !ui->freezeCheckbox->isChecked();
-}
-
-qreal CourseUnitViewer::scrollPosToScale(int pos) {
-    return qreal((MIN_SCALE * MIDDLE_SCROOL_NUM - 1) / (MIDDLE_SCROOL_NUM - 1) + qreal(pos) * (1 - MIN_SCALE) / (MIDDLE_SCROOL_NUM - 1));
-}
-
-void CourseUnitViewer::on_scaleScroll_sliderMoved(int position)
-{
-    qreal nsc = scrollPosToScale(position);
-
-    ui->zoomPercentage->setText(QString::number(nsc * 100.0) + "%");
-
-    ui->graphicsView->scale(nsc / currentScale, nsc / currentScale);
-    currentScale = nsc;
-}
-
-void CourseUnitViewer::on_freezeCheckbox_stateChanged(int arg1)
-{
-    if (!ui->freezeCheckbox->isChecked()) {
-        itemMoved();
-    }
-}
-
-void CourseUnitViewer::on_pushButton_2_clicked()
-{
-    Node * nd = new Node(this);
-    QPointF pt = ui->graphicsView->mapToScene(ui->graphicsView->rect().center());
-    nd->setPos(pt);
-    scene->addItem(nd);
+void CourseUnitViewer::on_pushButton_2_clicked() {
+	Node *nd = new Node(this);
+	QPointF pt = ui->graphicsView->mapToScene(
+			ui->graphicsView->rect().center());
+	nd->setPos(pt);
+	scene->addItem(nd);
 }
 
 bool CourseUnitViewer::deleteModeIsOn() {
 	return ui->deleteModeCheckbox->isChecked();
 }
+
+void CourseUnitViewer::on_zoomOut_clicked() {
+	ui->graphicsView->scale(1.0 / SCALE_PER_PUSH, 1.0 / SCALE_PER_PUSH);
+	ui->zoomPercentage->setText(
+			QString::number(
+					ui->zoomPercentage->text().split("%")[0].toDouble() / SCALE_PER_PUSH)
+					+ "%");
+}
+
+void CourseUnitViewer::on_zoomIn_clicked() {
+	ui->graphicsView->scale(SCALE_PER_PUSH, SCALE_PER_PUSH);
+	ui->zoomPercentage->setText(
+			QString::number(
+					ui->zoomPercentage->text().split("%")[0].toDouble() * SCALE_PER_PUSH)
+					+ "%");
+}
+
+void CourseUnitViewer::on_areaDec_clicked() {
+	QRectF r = scene->sceneRect();
+	QRectF n = QRectF(r);
+	n.setWidth(n.width() / 2);
+	n.setHeight(n.height() / 2);
+	scene->setSceneRect(n);
+}
+
+void CourseUnitViewer::on_areaIn_clicked() {
+	QRectF r = scene->sceneRect();
+	QRectF n = QRectF(r);
+	n.setWidth(n.width() * 2);
+	n.setHeight(n.height() * 2);
+	scene->setSceneRect(n);
+}
+
+double CourseUnitViewer::getAttFac() const {
+	return attFac;
+}
+
+double CourseUnitViewer::getMassFac() const {
+	return massFac;
+}
+
+double CourseUnitViewer::getRepFac() const {
+	return repFac;
+}
+
+void CourseUnitViewer::on_attFact_textChanged(const QString &arg1) {
+}
+
+void CourseUnitViewer::on_repFact_textChanged(const QString &arg1) {
+}
+
+void CourseUnitViewer::on_massFac_textChanged(const QString &arg1) {
+}
+
+void CourseUnitViewer::on_attFact_editingFinished() {
+	bool ok = 0;
+	double v = ui->attFact->text().toDouble(&ok);
+	if (!ok) {
+		ui->attFact->setText(QString::number(DEFAULT_ATT_FAC));
+	} else {
+		attFac = v;
+	}
+}
+
+void CourseUnitViewer::on_repFact_editingFinished() {
+	bool ok = 0;
+	double v = ui->repFact->text().toDouble(&ok);
+	if (!ok) {
+		ui->repFact->setText(QString::number(DEFAULT_REP_FAC));
+	} else {
+		repFac = v;
+	}
+}
+
+void CourseUnitViewer::on_massFac_editingFinished() {
+	bool ok = 0;
+	double v = ui->massFac->text().toDouble(&ok);
+	if (!ok) {
+		ui->massFac->setText(QString::number(DEFAULT_MASS_FAC));
+	} else {
+		massFac = v;
+	}
+}
+

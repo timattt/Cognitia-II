@@ -21,6 +21,7 @@ public:
     //--------------------------------------
     Edge(Node *sourceNode);
     Edge(Node *sourceNode, Node *destNode);
+    ~Edge();
     //--------------------------------------
 
 public:
@@ -31,14 +32,18 @@ public:
     Node *destNode() const;
     void adjust();
     int type() const override { return Type; }
+    bool isDragable();
+    void setTarget(QPointF p);
+	void connectToNode(Node * dest);
     //--------------------------------------
 
 protected:
 
     // protected functions
     //--------------------------------------
-    virtual QRectF boundingRect() const override;
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    QRectF boundingRect() const override;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    double getArrowSize() const;
     //--------------------------------------
 
 protected:
@@ -48,7 +53,7 @@ protected:
     Node *source, *dest;
     QPointF sourcePoint;
     QPointF destPoint;
-    qreal arrowSize = 10;
+    QPointF target;
     //--------------------------------------
 
 };

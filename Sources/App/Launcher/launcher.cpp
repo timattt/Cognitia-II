@@ -24,4 +24,3 @@ void Launcher::on_runButton_clicked()
         emit startCourseEditor();
      }
 }
-

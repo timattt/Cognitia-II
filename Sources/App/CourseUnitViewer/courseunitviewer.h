@@ -4,6 +4,8 @@
 #include <QtWidgets>
 
 class Edge;
+class Node;
+class CourseScene;
 
 namespace Ui {
 class CourseUnitViewer;
@@ -26,10 +28,11 @@ private:
     // Fields
     //----------------------------------
     Ui::CourseUnitViewer *ui;
-    QGraphicsScene * scene;
+    CourseScene * scene;
     int timerId = 0;
-    qreal currentScale = 1;
-    Edge* dragEdge;
+    double attFac;
+    double repFac;
+    double massFac;
     //----------------------------------
 
 private:
@@ -37,26 +40,34 @@ private:
     // Private functions
     //----------------------------------
     void timerEvent(QTimerEvent * event);
-    qreal scrollPosToScale(int pos);
     //----------------------------------
 
 public:
 
     // Public functions
     //----------------------------------
-    void itemMoved();
     bool nodesCanMove();
     bool deleteModeIsOn();
+	double getAttFac() const;
+	double getMassFac() const;
+	double getRepFac() const;
     //----------------------------------
-
+    
 private slots:
 
     // Slots
+	//----------------------------------
+	void on_pushButton_2_clicked();
+	void on_zoomOut_clicked();
+	void on_zoomIn_clicked();
+	void on_areaDec_clicked();
+	void on_areaIn_clicked();
+	void on_attFact_textChanged(const QString &arg1);
+	void on_repFact_textChanged(const QString &arg1);
+	void on_massFac_textChanged(const QString &arg1);
+	void on_attFact_editingFinished();
+    void on_repFact_editingFinished();
+    void on_massFac_editingFinished();
     //----------------------------------
-    void on_scaleScroll_sliderMoved(int position);
-    void on_freezeCheckbox_stateChanged(int arg1);
-    void on_pushButton_2_clicked();
-    //----------------------------------
-
 };
 #endif

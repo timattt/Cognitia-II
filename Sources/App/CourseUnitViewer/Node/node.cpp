@@ -1,6 +1,5 @@
 #include "node.h"
 #include "edge.h"
-#include "dragableedge.h"
 #include "../courseunitviewer.h"
 
 Node::Node(CourseUnitViewer *graphWidget)
@@ -26,9 +25,10 @@ QList<Edge *> Node::edges() const
 void Node::calculateForces()
 {
     if (!scene() || scene()->mouseGrabberItem() == this || !graph->nodesCanMove()) {
-        newPos = pos();
-        return;
+    	return;
     }
+
+    QPointF newPos(0, 0);
 
     // Sum up all forces pushing this item away
     qreal xvel = 0;
@@ -36,29 +36,35 @@ void Node::calculateForces()
     const QList<QGraphicsItem *> items = scene()->items();
     for (QGraphicsItem *item : items) {
         Node *node = qgraphicsitem_cast<Node *>(item);
-        if (!node)
+        if (!node) {
             continue;
+        }
 
         QPointF vec = mapToItem(node, 0, 0);
         qreal dx = vec.x();
         qreal dy = vec.y();
-        double l = 2.0 * (dx * dx + dy * dy);
+        double l = (dx * dx + dy * dy);
         if (l > 0) {
-            xvel += (dx * 150.0) / l;
-            yvel += (dy * 150.0) / l;
+            xvel += dx / l;
+            yvel += dy / l;
         }
     }
 
+    xvel *= graph->getAttFac();
+    yvel *= graph->getAttFac();
+
     // Now subtract all forces pulling items together
-    double weight = (edgeList.size() + 1) * 10;
+    double weight = (edgeList.size() + 1) * graph->getMassFac();
     for (const Edge *edge : qAsConst(edgeList)) {
         QPointF vec;
-        if (edge->sourceNode() == this)
+
+        if (edge->sourceNode() == this) {
             vec = mapToItem(edge->destNode(), 0, 0);
-        else
+        } else {
             vec = mapToItem(edge->sourceNode(), 0, 0);
-        xvel -= vec.x() / weight;
-        yvel -= vec.y() / weight;
+        }
+        xvel -= graph->getRepFac() * vec.x() / weight;
+        yvel -= graph->getRepFac() * vec.y() / weight;
     }
 
     if (qAbs(xvel) < 0.1 && qAbs(yvel) < 0.1)
@@ -68,15 +74,8 @@ void Node::calculateForces()
     newPos = pos() + QPointF(xvel, yvel);
     newPos.setX(qMin(qMax(newPos.x(), sceneRect.left() + 10), sceneRect.right() - 10));
     newPos.setY(qMin(qMax(newPos.y(), sceneRect.top() + 10), sceneRect.bottom() - 10));
-}
-
-bool Node::advancePosition()
-{
-    if (newPos == pos())
-        return false;
 
     setPos(newPos);
-    return true;
 }
 
 QRectF Node::boundingRect() const
@@ -118,9 +117,9 @@ QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     switch (change) {
     case ItemPositionHasChanged:
-        for (Edge *edge : qAsConst(edgeList))
+        for (Edge *edge : qAsConst(edgeList)) {
             edge->adjust();
-        graph->itemMoved();
+        }
         break;
     default:
         break;
@@ -133,17 +132,35 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     update();
     QGraphicsItem::mousePressEvent(event);
-
-    if (event->button() == Qt::LeftButton && this->graph->deleteModeIsOn()) {
-    	scene()->removeItem(this);
-    }
-    if (event->button() == Qt::RightButton) {
-        scene()->addItem(new DragableEdge(this));
-    }
 }
 
 void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     update();
     QGraphicsItem::mouseReleaseEvent(event);
+}
+
+Node::~Node() {
+	while (!edgeList.isEmpty()) {
+		Edge * e = edgeList.first();
+		edgeList.removeFirst();
+		delete e;
+	}
+	if (scene() != nullptr) {
+		scene()->removeItem(this);
+	}
+}
+
+void Node::removeEdge(Edge *e) {
+	edgeList.removeAll(e);
+}
+
+bool Node::hasEdgeToNode(Node *nd) {
+	for (Edge * e : edgeList) {
+		if (e->sourceNode() == nd || e->destNode() == nd) {
+			return true;
+		}
+	}
+
+	return false;
 }
