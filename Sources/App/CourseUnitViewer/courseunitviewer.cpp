@@ -68,6 +68,8 @@ void CourseUnitViewer::on_pushButton_2_clicked() {
 			ui->graphicsView->rect().center());
 	nd->setPos(pt);
 	scene->addItem(nd);
+
+	emit nodeAdded(nd);
 }
 
 bool CourseUnitViewer::deleteModeIsOn() {

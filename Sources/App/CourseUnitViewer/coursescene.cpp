@@ -53,21 +53,33 @@ void CourseScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 		Node * nd = dynamic_cast<Node*>(it);
 		Edge * ed = dynamic_cast<Edge*>(it);\
 
+		if (nd == nullptr) {
+			emit this->view->nodeSelected(nullptr);
+		}
+
 		if (nd != nullptr || ed != nullptr) {
 			if (view->deleteModeIsOn()) {
+				if (nd != nullptr) {
+					emit this->view->nodeSelected(nullptr);
+				}
 				delete it;
 				return;
 			} else {
-				if (nd != nullptr && event->button() == Qt::RightButton) {
-					addItem(dragEdge = new Edge(nd));
-					dragEdge->setTarget(event->lastScenePos());
-					return;
+				if (nd != nullptr) {
+					if (event->button() == Qt::RightButton) {
+						addItem(dragEdge = new Edge(nd));
+						dragEdge->setTarget(event->lastScenePos());
+						return;
+					} else {
+						emit this->view->nodeSelected(nd);
+					}
 				}
 			}
 		}
 
+	} else {
+		emit this->view->nodeSelected(nullptr);
 	}
-
 	if (!view->deleteModeIsOn() && event->button() == Qt::LeftButton) {
 		QGraphicsScene::mousePressEvent(event);
 	}
@@ -127,6 +139,8 @@ void CourseScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
 		} else {
 			nd->removeInSkill(name);
 		}
+
+		emit view->nodeSkillsChanged(nd);
 		return;
 	}
 	if (event->mimeData()->text().contains(QString(SKILL_PACK_DELIMITER))) {
@@ -149,6 +163,8 @@ void CourseScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
 			nd->addInSkill(name, lev);
 		}
 
+		emit view->nodeSkillsChanged(nd);
+		return;
 	}
 }
 

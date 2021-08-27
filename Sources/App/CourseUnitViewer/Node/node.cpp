@@ -9,12 +9,6 @@ Node::Node(CourseUnitViewer *graphWidget)
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
-
-    inSkills["Functions"] = 1;
-    inSkills["Algorithms"] = 1;
-
-    outSkills["Functions"] = 2;
-    outSkills["Algorithms"] = 2;
 }
 
 void Node::addEdge(Edge *edge)
@@ -30,6 +24,10 @@ QList<Edge *> Node::edges() const
 
 void Node::calculateForces()
 {
+	if (graph == nullptr) {
+		return;
+	}
+
     if (!scene() || scene()->mouseGrabberItem() == this || !graph->nodesCanMove()) {
     	return;
     }
@@ -98,7 +96,7 @@ QPainterPath Node::shape() const
     return path;
 }
 
-void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
+void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget * w)
 {
 	// Shadow
     painter->setPen(Qt::NoPen);
@@ -124,7 +122,7 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     gradient.setCenter(0, 0);
     gradient.setFocalPoint(0, 0);
 
-    drawSkills(painter, option, graph);
+    drawSkills(painter, option, w);
 }
 
 QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -274,11 +272,11 @@ void Node::drawSkills(QPainter *painter, const QStyleOptionGraphicsItem *option,
 	}
 
 	// center
-	QRadialGradient gr(0, 0, rad);
-	gr.setColorAt(1, QColor(Qt::darkBlue));
-	gr.setColorAt(0, QColor(Qt::blue));
+	QRadialGradient gr(0, 0, rad * 1.5);
+	gr.setColorAt(1, QColor(this->color).darker(200));
+	gr.setColorAt(0, QColor(this->color));
 	painter->setBrush(gr);
-	painter->drawEllipse(QPointF(0, 0), rad, rad);
+	painter->drawEllipse(QPointF(0, 0), rad * 1.5, rad * 1.5);
 }
 
 QString Node::rebuildStr(QString str) {
@@ -287,12 +285,12 @@ QString Node::rebuildStr(QString str) {
 	QStringList res = QStringList(lst.size());
 
 	int added = 0;
-	for (int i = 0; i < MAX_SYMBOLS_PER_LINE && added < str.length(); i++) {
+	for (int i = 0, total = lst.join("").length(); added < MAX_SYMBOLS_PER_LINE && added < total; i++) {
 		int partNumber = i % lst.size();
 		int partSize = lst[partNumber].length();
-		int partIndex = i / lst.size();
+		int partIndex = res[partNumber].size();
 
-		if (partIndex < lst[partNumber].size()) {
+		if (partIndex < partSize) {
 			QChar v = lst[partNumber][partIndex].toUpper();
 			if (partIndex > 0) {
 				v = v.toLower();
@@ -323,5 +321,35 @@ void Node::removeInSkill(QString name) {
 
 void Node::removeOutSkill(QString name) {
 	outSkills.remove(name);
+	update();
+}
+
+const QMap<QString, int>& Node::getInSkills() const {
+	return inSkills;
+}
+
+const QMap<QString, int>& Node::getOutSkills() const {
+	return outSkills;
+}
+
+const QString& Node::getName() const {
+	return name;
+}
+
+void Node::setName(QString name) {
+	this->name = name;
+	update();
+}
+
+QString Node::getFile() const {
+	return file;
+}
+
+void Node::setFile(QString file) {
+	this->file = file;
+}
+
+void Node::setColor(QColor color) {
+	this->color = color;
 	update();
 }

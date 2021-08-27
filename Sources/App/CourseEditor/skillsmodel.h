@@ -11,16 +11,37 @@
 #include <QtWidgets>
 #include <qstringlistmodel.h>
 
+class CourseEditor;
+
 class SkillsModel: public QStandardItemModel {
 
 public:
 
-	SkillsModel(QWidget * p);
+	// Constructor and destructor
+	//----------------------------------------
+	SkillsModel(CourseEditor * p, bool in);
 	~SkillsModel();
+	//----------------------------------------
+
+public:
+
+	// public functions
+	//----------------------------------------
 	bool canDropMimeData(const QMimeData *data, Qt::DropAction action, int row,
 			int column, const QModelIndex &parent) const override;
 	bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row,
 			int column, const QModelIndex &parent) override;
+	void addSkill(QString name, int lev);
+	//----------------------------------------
+
+private:
+
+	// Fields
+	//----------------------------------------
+	CourseEditor * editor;
+	bool in;
+	//----------------------------------------
+
 };
 
 #endif /* APP_COURSEEDITOR_SKILLSMODEL_H_ */

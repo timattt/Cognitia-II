@@ -71,7 +71,11 @@ void SkillPack::save(QFile * file)
     if (file->open(QIODevice::WriteOnly)) {
         QTextStream stream(file);
 
-        stream << objectName() << SKILL_PACK_DELIMITER;
+        if (objectName().length() > 0) {
+        	stream << objectName() << SKILL_PACK_DELIMITER;
+        } else {
+        	stream << "NO_NAME" << SKILL_PACK_DELIMITER;
+        }
 
         for (int i = 0; i < getSkillsCount(); i++) {
             QString skillFileName = skills[i]->objectName() + SKILL_FILE_EXTENSION;

@@ -69,5 +69,14 @@ private slots:
     void on_repFact_editingFinished();
     void on_massFac_editingFinished();
     //----------------------------------
+
+signals:
+
+	// signals
+	//----------------------------------
+	void nodeAdded(Node *nd);
+	void nodeSelected(Node * nd);
+	void nodeSkillsChanged(Node * nd);
+	//----------------------------------
 };
 #endif

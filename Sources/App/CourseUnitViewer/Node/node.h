@@ -49,6 +49,13 @@ public:
     void addOutSkill(QString name, int lev);
     void removeInSkill(QString name);
     void removeOutSkill(QString name);
+	const QMap<QString, int>& getInSkills() const;
+	const QMap<QString, int>& getOutSkills() const;
+	const QString& getName() const;
+	void setName(QString name);
+	QString getFile() const;
+	void setFile(QString file);
+	void setColor(QColor color = Qt::blue);
     //--------------------------------------
 
 protected:
@@ -76,6 +83,9 @@ private:
     CourseUnitViewer *graph;
     QMap<QString, int> inSkills;
     QMap<QString, int> outSkills;
+    QString file;
+    QString name;
+    QColor color = Qt::blue;
     //--------------------------------------
 };
 #endif
