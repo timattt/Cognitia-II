@@ -1,14 +1,7 @@
 #ifndef SKILLPACKEDITOR_H
 #define SKILLPACKEDITOR_H
 
-#include <QMainWindow>
-#include <QFileDialog>
-#include <QFile>
-#include <QStandardItemModel>
-#include <QStringListModel>
-#include <QModelIndex>
-#include <QItemSelectionModel>
-#include <QMessageBox>
+#include <QtWidgets>
 
 #include "../Structures/SkillPack/skillpack.h"
 

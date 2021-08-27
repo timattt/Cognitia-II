@@ -90,3 +90,45 @@ void CourseScene::drawBackground(QPainter *painter, const QRectF &rect) {
     painter->setBrush(Qt::NoBrush);
     painter->drawRect(sceneRect);
 }
+
+void CourseScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
+	event->accept();
+
+	QList<QGraphicsItem*> its = this->items(event->scenePos());
+
+	Node *nd = nullptr;
+
+	for (QGraphicsItem *it : its) {
+		if (it != nullptr && (nd = dynamic_cast<Node*>(it)) != nullptr) {
+			break;
+		}
+	}
+
+	QStringList divs = event->mimeData()->text().split("|");
+
+	bool ok = 0;
+
+	QString name = divs[0];
+	int lev = divs[1].toInt(&ok);
+
+	if (!ok) {
+		return;
+	}
+
+	if (nd != nullptr) {
+		if (nd->mapFromScene(event->scenePos()).x() > 0) {
+			nd->addOutSkill(name, lev);
+		} else {
+			nd->addInSkill(name, lev);
+		}
+	}
+}
+
+void CourseScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event) {
+}
+
+void CourseScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event) {
+}
+
+void CourseScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event) {
+}

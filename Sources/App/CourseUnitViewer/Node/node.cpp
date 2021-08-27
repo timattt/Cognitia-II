@@ -9,6 +9,12 @@ Node::Node(CourseUnitViewer *graphWidget)
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
+
+    inSkills["Functions"] = 1;
+    inSkills["Algorithms"] = 1;
+
+    outSkills["Functions"] = 2;
+    outSkills["Algorithms"] = 2;
 }
 
 void Node::addEdge(Edge *edge)
@@ -67,13 +73,14 @@ void Node::calculateForces()
         yvel -= graph->getRepFac() * vec.y() / weight;
     }
 
-    if (qAbs(xvel) < 0.1 && qAbs(yvel) < 0.1)
+    if (qAbs(xvel) < EPSILON && qAbs(yvel) < EPSILON) {
         xvel = yvel = 0;
+    }
 
     QRectF sceneRect = scene()->sceneRect();
     newPos = pos() + QPointF(xvel, yvel);
-    newPos.setX(qMin(qMax(newPos.x(), sceneRect.left() + 10), sceneRect.right() - 10));
-    newPos.setY(qMin(qMax(newPos.y(), sceneRect.top() + 10), sceneRect.bottom() - 10));
+    newPos.setX(qMin(qMax(newPos.x(), sceneRect.left() + NODE_RAD), sceneRect.right() - NODE_RAD));
+    newPos.setY(qMin(qMax(newPos.y(), sceneRect.top() + NODE_RAD), sceneRect.bottom() - NODE_RAD));
 
     setPos(newPos);
 }
@@ -81,23 +88,24 @@ void Node::calculateForces()
 QRectF Node::boundingRect() const
 {
     qreal adjust = 2;
-    return QRectF( -10 - adjust, -10 - adjust, 23 + adjust, 23 + adjust);
+    return QRectF( -NODE_RAD - adjust, -NODE_RAD - adjust, 2 * NODE_RAD + NODE_SHADOW_SHIFT + adjust, 2 * NODE_RAD + NODE_SHADOW_SHIFT + adjust);
 }
 
 QPainterPath Node::shape() const
 {
     QPainterPath path;
-    path.addEllipse(-10, -10, 20, 20);
+    path.addEllipse(-NODE_RAD, -NODE_RAD, 2 * NODE_RAD, 2 * NODE_RAD);
     return path;
 }
 
 void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
 {
+	// Shadow
     painter->setPen(Qt::NoPen);
-    painter->setBrush(Qt::darkGray);
-    painter->drawEllipse(-7, -7, 20, 20);
+    painter->setBrush(QBrush(QColor(50, 50, 50, 128)));
+    painter->drawEllipse(-NODE_RAD + NODE_SHADOW_SHIFT, -NODE_RAD + NODE_SHADOW_SHIFT, NODE_RAD * 2, NODE_RAD * 2);
 
-    QRadialGradient gradient(-3, -3, 10);
+    QRadialGradient gradient(-NODE_SHADOW_SHIFT, -NODE_SHADOW_SHIFT, NODE_RAD);
     if (option->state & QStyle::State_Sunken) {
         gradient.setCenter(3, 3);
         gradient.setFocalPoint(3, 3);
@@ -109,8 +117,14 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     }
     painter->setBrush(gradient);
 
-    painter->setPen(QPen(Qt::black, 0));
-    painter->drawEllipse(-10, -10, 20, 20);
+    painter->setPen(QPen(Qt::black, 1));
+
+    painter->drawEllipse(-NODE_RAD, -NODE_RAD, 2 * NODE_RAD, 2 * NODE_RAD);
+
+    gradient.setCenter(0, 0);
+    gradient.setFocalPoint(0, 0);
+
+    drawSkills(painter, option, graph);
 }
 
 QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -163,4 +177,141 @@ bool Node::hasEdgeToNode(Node *nd) {
 	}
 
 	return false;
+}
+
+#define PI 3.1415
+
+void Node::drawSkills(QPainter *painter, const QStyleOptionGraphicsItem *option,
+		QWidget *widget) {
+
+
+	double rad = NODE_RAD / 4;
+
+	QFont f = painter->font();
+	f.setPointSizeF(rad / 2);
+	f.setBold(true);
+	f.setWeight(QFont::ExtraBold);
+	painter->setFont(f);
+
+	painter->setPen(QPen(Qt::black, 0.4));
+
+    double anglePerSkill = 30;
+    double startAngle = 180 -inSkills.size() * anglePerSkill / 2;
+    double endAngle = 180 + inSkills.size() * anglePerSkill / 2;
+
+    if (endAngle > 270) {
+        startAngle = 90;
+        endAngle = 270;
+        anglePerSkill = (endAngle - startAngle) / (double) inSkills.size();
+    }
+
+	int i = -1;
+	for (QString key : inSkills.keys()) {
+		i++;
+		double alpha = endAngle - anglePerSkill * ((double)(i) + 0.5);
+
+		double x = cos(alpha / 180.0 * PI) * NODE_RAD / 5.0 * 4.0;
+		double y = sin(alpha / 180.0 * PI) * NODE_RAD / 5.0 * 4.0;
+
+        painter->setBrush(Qt::black);
+        painter->drawLine(0, 0, x, y);
+
+        painter->translate(x, y);
+        painter->rotate(alpha - 180);
+
+        QRect r = QRect(0 - rad, 0 - rad / 2, 2.0 * rad, rad);
+
+		QRadialGradient gradient(0, 0, rad);
+        gradient.setColorAt(1, QColor(Qt::darkRed));
+        gradient.setColorAt(0, QColor(Qt::red));
+        painter->setBrush(gradient);
+        painter->drawRect(0 - rad, - rad, 2.0 * rad, 2.0 * rad);
+
+        painter->drawText(QRectF(0 - rad, 0 - rad, 2.0 * rad, rad), Qt::AlignCenter, rebuildStr(key));
+        painter->drawText(QRectF(0 - rad, 0, 2.0 * rad, rad), Qt::AlignLeft, rebuildStr(QString::number(inSkills[key])));
+
+        painter->rotate(-alpha +180);
+        painter->translate(-x, -y);
+	}
+
+	anglePerSkill = 30;
+    startAngle = -outSkills.size() * anglePerSkill / 2;
+    endAngle = outSkills.size() * anglePerSkill / 2;
+
+    if (endAngle > 90) {
+        startAngle = -90;
+        endAngle = 90;
+        anglePerSkill = (endAngle - startAngle) / (double) outSkills.size();
+    }
+
+    i = -1;
+	for (QString key : outSkills.keys()) {
+		i++;
+		double alpha = startAngle + anglePerSkill * ((double)(i) + 0.5);
+
+		double x = cos(alpha / 180.0 * PI) * NODE_RAD / 5.0 * 4.0;
+		double y = sin(alpha / 180.0 * PI) * NODE_RAD / 5.0 * 4.0;
+
+        painter->setBrush(Qt::black);
+        painter->drawLine(0, 0, x, y);
+
+        painter->translate(x, y);
+        painter->rotate( alpha);
+
+        QRect r = QRect(0 - rad, 0 - rad / 2, 2.0 * rad, rad);
+
+		QRadialGradient gradient(0, 0, rad);
+        gradient.setColorAt(1, QColor(Qt::darkGreen));
+        gradient.setColorAt(0, QColor(Qt::green));
+        painter->setBrush(gradient);
+        painter->drawRect(0 - rad, - rad, 2.0 * rad, 2.0 * rad);
+
+        painter->drawText(QRectF(0 - rad, 0 - rad, 2.0 * rad, rad), Qt::AlignCenter, rebuildStr(key));
+        painter->drawText(QRectF(0 - rad, 0, 2.0 * rad, rad), Qt::AlignRight, rebuildStr(QString::number(outSkills[key])));
+
+        painter->rotate( -alpha);
+        painter->translate(-x, -y);
+	}
+
+	// center
+	QRadialGradient gr(0, 0, rad);
+	gr.setColorAt(1, QColor(Qt::darkBlue));
+	gr.setColorAt(0, QColor(Qt::blue));
+	painter->setBrush(gr);
+	painter->drawEllipse(QPointF(0, 0), rad, rad);
+}
+
+QString Node::rebuildStr(QString str) {
+	QStringList lst = str.split(" ");
+
+	QStringList res = QStringList(lst.size());
+
+	int added = 0;
+	for (int i = 0; i < MAX_SYMBOLS_PER_LINE && added < str.length(); i++) {
+		int partNumber = i % lst.size();
+		int partSize = lst[partNumber].length();
+		int partIndex = i / lst.size();
+
+		if (partIndex < lst[partNumber].size()) {
+			QChar v = lst[partNumber][partIndex].toUpper();
+			if (partIndex > 0) {
+				v = v.toLower();
+			}
+			res[partNumber] += v;
+			added++;
+		}
+
+	}
+
+	return res.join("");
+}
+
+void Node::addInSkill(QString name, int lev) {
+	inSkills[name] = lev;
+	update();
+}
+
+void Node::addOutSkill(QString name, int lev) {
+	outSkills[name] = lev;
+	update();
 }

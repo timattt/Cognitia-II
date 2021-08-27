@@ -1,20 +1,21 @@
 #include "edge.h"
 #include "node.h"
 
-Edge::Edge(Node *sourceNode, Node *destNode)
-    : source(sourceNode), dest(destNode)
-{
-    setAcceptedMouseButtons(Qt::NoButton);
-    source->addEdge(this);
-    dest->addEdge(this);
+Edge::Edge(Node *sourceNode, Node *destNode) :
+		source(sourceNode), dest(destNode) {
+	setAcceptedMouseButtons(Qt::NoButton);
+	source->addEdge(this);
+	dest->addEdge(this);
+	setZValue(-2);
 }
 
-Edge::Edge(Node *sourceNode) : source(sourceNode), dest(nullptr)
-{
-    setAcceptedMouseButtons(Qt::NoButton);
+Edge::Edge(Node *sourceNode) :
+		source(sourceNode), dest(nullptr) {
+	setAcceptedMouseButtons(Qt::NoButton);
+	setZValue(-2);
 }
 
-Node *Edge::sourceNode() const
+Node* Edge::sourceNode() const
 {
     return source;
 }
@@ -37,9 +38,9 @@ void Edge::adjust()
 
 	prepareGeometryChange();
 
-	if (length > qreal(20.)) {
-		QPointF edgeOffset((line.dx() * 10) / length,
-				(line.dy() * 10) / length);
+	if (length > qreal(2 * NODE_RAD)) {
+		QPointF edgeOffset((line.dx() * NODE_RAD) / length,
+				(line.dy() * NODE_RAD) / length);
 		sourcePoint = line.p1() + edgeOffset;
 		destPoint = line.p2() - edgeOffset;
 	} else {

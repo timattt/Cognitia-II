@@ -17,6 +17,8 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 	ui->repFact->setText(QString::number(DEFAULT_REP_FAC));
 	ui->massFac->setText(QString::number(DEFAULT_MASS_FAC));
 	ui->attFact->setText(QString::number(DEFAULT_ATT_FAC));
+
+	ui->graphicsView->setAcceptDrops(true);
 }
 
 CourseUnitViewer::~CourseUnitViewer() {

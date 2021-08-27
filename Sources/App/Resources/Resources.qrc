@@ -5,4 +5,7 @@
 	<qresource prefix="/help/">
         <file>Help/SkillPackEditorHelp.txt</file>
     </qresource>
+    	<qresource prefix="/icons/">
+        <file>Icons/SkillDrag.png</file>
+    </qresource>
 </RCC>
