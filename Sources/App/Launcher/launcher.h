@@ -17,9 +17,11 @@ public:
 
 private slots:
     void on_runButton_clicked();
+    void on_keepLauncherOpenCheckbox_stateChanged(int v);
 
 private:
     Ui::Launcher *ui;
+    bool mayHideWhenUnused;
 
 signals:
     void startSkillPackEditor();

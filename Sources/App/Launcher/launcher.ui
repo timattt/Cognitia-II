@@ -110,12 +110,22 @@
          </item>
         </widget>
        </item>
-       <item alignment="Qt::AlignLeft">
+       <item>
         <widget class="QPushButton" name="runButton">
          <property name="text">
           <string>Launch</string>
          </property>
          <property name="autoDefault">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item alignment="Qt::AlignLeft">
+        <widget class="QCheckBox" name="keepLauncherOpenCheckbox">
+         <property name="text">
+          <string>keep launcher open</string>
+         </property>
+         <property name="checked">
           <bool>false</bool>
          </property>
         </widget>

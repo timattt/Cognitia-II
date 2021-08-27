@@ -87,7 +87,7 @@ void Node::calculateForces()
 
 QRectF Node::boundingRect() const
 {
-    qreal adjust = 2;
+    qreal adjust = NODE_RAD / 5;
     return QRectF( -NODE_RAD - adjust, -NODE_RAD - adjust, 2 * NODE_RAD + NODE_SHADOW_SHIFT + adjust, 2 * NODE_RAD + NODE_SHADOW_SHIFT + adjust);
 }
 
@@ -313,5 +313,15 @@ void Node::addInSkill(QString name, int lev) {
 
 void Node::addOutSkill(QString name, int lev) {
 	outSkills[name] = lev;
+	update();
+}
+
+void Node::removeInSkill(QString name) {
+	inSkills.remove(name);
+	update();
+}
+
+void Node::removeOutSkill(QString name) {
+	outSkills.remove(name);
 	update();
 }

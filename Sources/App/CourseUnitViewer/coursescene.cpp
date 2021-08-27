@@ -9,9 +9,10 @@
 #include "Node/edge.h"
 #include "Node/node.h"
 #include "courseunitviewer.h"
+#include "../Structures/SkillPack/skillpack.h"
 
 CourseScene::CourseScene(CourseUnitViewer * view) : dragEdge(nullptr), totalNodes(0), totalEdges(0), view(view) {
-	setSceneRect(QRect(0, 0, 100, 100));
+	setSceneRect(QRect(0, 0, 300, 300));
 }
 
 void CourseScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
@@ -104,23 +105,50 @@ void CourseScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
 		}
 	}
 
-	QStringList divs = event->mimeData()->text().split("|");
-
-	bool ok = 0;
-
-	QString name = divs[0];
-	int lev = divs[1].toInt(&ok);
-
-	if (!ok) {
+	if (nd == nullptr) {
 		return;
 	}
 
-	if (nd != nullptr) {
+	if (event->mimeData()->text().contains(QString(SKILL_PACK_DELIMITER) + QString(SKILL_PACK_DELIMITER))) {
+
+		QStringList divs = event->mimeData()->text().split(QString(SKILL_PACK_DELIMITER) + QString(SKILL_PACK_DELIMITER));
+
+		bool ok = 0;
+
+		QString name = divs[0];
+		int lev = divs[1].toInt(&ok);
+
+		if (!ok) {
+			return;
+		}
+
+		if (nd->mapFromScene(event->scenePos()).x() > 0) {
+			nd->removeOutSkill(name);
+		} else {
+			nd->removeInSkill(name);
+		}
+		return;
+	}
+	if (event->mimeData()->text().contains(QString(SKILL_PACK_DELIMITER))) {
+
+		QStringList divs = event->mimeData()->text().split(
+				QString(SKILL_PACK_DELIMITER));
+
+		bool ok = 0;
+
+		QString name = divs[0];
+		int lev = divs[1].toInt(&ok);
+
+		if (!ok) {
+			return;
+		}
+
 		if (nd->mapFromScene(event->scenePos()).x() > 0) {
 			nd->addOutSkill(name, lev);
 		} else {
 			nd->addInSkill(name, lev);
 		}
+
 	}
 }
 

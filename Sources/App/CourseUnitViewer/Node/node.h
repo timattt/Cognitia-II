@@ -6,11 +6,11 @@
 class Edge;
 class CourseUnitViewer;
 
-#define DEFAULT_ATT_FAC 50
-#define DEFAULT_REP_FAC 1
-#define DEFAULT_MASS_FAC 100
-#define NODE_RAD 20
-#define NODE_SHADOW_SHIFT 3
+#define DEFAULT_ATT_FAC 300
+#define DEFAULT_REP_FAC 0.1
+#define DEFAULT_MASS_FAC 10
+#define NODE_RAD 50
+#define NODE_SHADOW_SHIFT (NODE_RAD / 20 * 3)
 #define EPSILON 0.1
 #define MAX_SYMBOLS_PER_LINE 4
 
@@ -47,6 +47,8 @@ public:
     bool hasEdgeToNode(Node * nd);
     void addInSkill(QString name, int lev);
     void addOutSkill(QString name, int lev);
+    void removeInSkill(QString name);
+    void removeOutSkill(QString name);
     //--------------------------------------
 
 protected:

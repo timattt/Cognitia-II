@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QMap>
 
+class SkillsModel;
+
 namespace Ui {
 class CourseEditor;
 }
@@ -26,6 +28,8 @@ private:
     //--------------------------------------
     Ui::CourseEditor *ui;
     QMap<QString, int> skillsLib;
+    SkillsModel * inMd;
+    SkillsModel * outMd;
     //--------------------------------------
 
 private slots:
@@ -33,7 +37,8 @@ private slots:
     // Slots
     //--------------------------------------
     void addSkill(QString name, int totalLevels);
-    void on_pushButton_pressed();
+    void on_addSkill_pressed();
+    void on_removeSkill_pressed();
     void on_skillsSelector_currentTextChanged(const QString &arg1);
     void on_levelsSelector_currentTextChanged(const QString &arg1);
     //--------------------------------------

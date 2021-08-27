@@ -50,7 +50,7 @@ void Edge::adjust()
 
 QRectF Edge::boundingRect() const
 {
-    qreal penWidth = 1;
+    qreal penWidth = NODE_RAD / 10;
 
     qreal extra = (penWidth + getArrowSize()) / 2.0;
 
@@ -76,7 +76,7 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     }
 
     // Draw the line itself
-    painter->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter->setPen(QPen(Qt::black, NODE_RAD / 10, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter->drawLine(line);
 
     qreal arrowSize = getArrowSize();
@@ -122,5 +122,5 @@ void Edge::connectToNode(Node * dest) {
 
 double Edge::getArrowSize() const {
 	QLineF line(sourcePoint, destPoint);
-	return qMin(line.length(), 4.0);
+	return qMin(line.length(), NODE_RAD / 5.0);
 }

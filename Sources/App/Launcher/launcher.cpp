@@ -3,7 +3,8 @@
 
 Launcher::Launcher() :
     QWidget(nullptr),
-    ui(new Ui::Launcher)
+    ui(new Ui::Launcher),
+	mayHideWhenUnused(true)
 {
     ui->setupUi(this);
 
@@ -19,8 +20,24 @@ void Launcher::on_runButton_clicked()
 {
      if (ui->modesChooser->currentText() == "Skill pack editor") {
         emit startSkillPackEditor();
+        if (mayHideWhenUnused) {
+        	hide();
+        }
      }
      if (ui->modesChooser->currentText() == "Course editor") {
         emit startCourseEditor();
+        if (mayHideWhenUnused) {
+        	hide();
+        }
      }
+}
+
+void Launcher::on_keepLauncherOpenCheckbox_stateChanged(int v) {
+	if (v == 0) {
+		// unchecked
+		mayHideWhenUnused = true;
+	} else {
+		// checked
+		mayHideWhenUnused = false;
+	}
 }

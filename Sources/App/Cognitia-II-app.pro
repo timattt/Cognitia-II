@@ -15,7 +15,6 @@ CONFIG += console
 
 SOURCES += \
     CourseEditor/courseeditor.cpp \
-    CourseEditor/skillselector.cpp \
     CourseUnitViewer/courseunitviewer.cpp \
     Launcher/launcher.cpp \
     Core/main.cpp \
@@ -25,12 +24,12 @@ SOURCES += \
     Structures/SkillPack/skillpack.cpp \
     CourseUnitViewer/Node/node.cpp \
     CourseUnitViewer/Node/edge.cpp \
-    CourseUnitViewer/coursescene.cpp
+    CourseUnitViewer/coursescene.cpp \
+    CourseEditor/skillsmodel.cpp
 
 
 HEADERS += \
     CourseEditor/courseeditor.h \
-    CourseEditor/skillselector.h \
     CourseUnitViewer/courseunitviewer.h \
     Launcher/launcher.h \
     SkillPackEditor/skillpackeditor.h \
@@ -39,11 +38,11 @@ HEADERS += \
     Structures/SkillPack/skillpack.h \
     CourseUnitViewer/Node/node.h \
     CourseUnitViewer/Node/edge.h \
-    CourseUnitViewer/coursescene.h
+    CourseUnitViewer/coursescene.h \
+    CourseEditor/skillsmodel.h
 
 FORMS += \
     CourseEditor/courseeditor.ui \
-    CourseEditor/skillselector.ui \
     CourseUnitViewer/courseunitviewer.ui \
     Launcher/launcher.ui \
     SkillPackEditor/skillpackeditor.ui
