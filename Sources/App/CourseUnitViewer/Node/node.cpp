@@ -353,3 +353,8 @@ void Node::setColor(QColor color) {
 	this->color = color;
 	update();
 }
+
+void Node::clearSkills() {
+	inSkills.clear();
+	outSkills.clear();
+}

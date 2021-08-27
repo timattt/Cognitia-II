@@ -1,19 +1,19 @@
 #include <QtTest/QtTest>
 #include "../App/Structures/CourseUnit/courseunit.h"
 
-class Test_courseUnit : public QObject{
+class Test_CourseUnit : public QObject{
     Q_OBJECT
 private slots:
     void saveAndLoad();
 };
 
 
-void Test_courseUnit::saveAndLoad(){
+void Test_CourseUnit::saveAndLoad(){
 
-    QVector<courseUnit*> course;
+    QVector<CourseUnit*> course;
 
     for(int i = 0; i < 8; i++){
-        courseUnit* courseunit = new courseUnit(10,10,20,20);
+    	CourseUnit* courseunit = new CourseUnit(10,10,20,20);
         course.push_back(courseunit);
 
         course[i] -> addIncome(std::make_pair("skill", i));
@@ -39,7 +39,7 @@ void Test_courseUnit::saveAndLoad(){
     course[4] -> addEmbedded(course[5]);
     course[5] -> addEmbedded(course[6]);
 
-    courseUnit courseunit;
+    CourseUnit courseunit;
     courseunit.addEmbedded(course[0]);
     courseunit.addEmbedded(course[4]);
     courseunit.addEmbedded(course[7]);
@@ -48,7 +48,7 @@ void Test_courseUnit::saveAndLoad(){
     QFile filename(name);
     courseunit.saveCourseUnit(&filename);
 
-    courseUnit newcourseunit;
+    CourseUnit newcourseunit;
     newcourseunit.loadCourseUnit(&filename);
     qDebug() << "загрузил";
     QString u = courseunit.print();
@@ -57,5 +57,5 @@ void Test_courseUnit::saveAndLoad(){
     QCOMPARE(u, uu);
 }
 
-QTEST_MAIN(Test_courseUnit)
+QTEST_MAIN(Test_CourseUnit)
 #include "CourseUnitTests.moc"

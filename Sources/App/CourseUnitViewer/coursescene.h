@@ -45,6 +45,7 @@ protected:
 	void dragMoveEvent(QGraphicsSceneDragDropEvent *event) override;
 	void dragLeaveEvent(QGraphicsSceneDragDropEvent *event) override;
 	//-----------------------------------
+
 };
 
 #endif /* APP_COURSEUNITVIEWER_COURSESCENE_H_ */

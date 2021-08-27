@@ -4,6 +4,7 @@
 #include "../CourseUnitViewer/Node/node.h"
 #include "../Structures/SkillPack/skillpack.h"
 #include "../CourseUnitViewer/courseunitviewer.h"
+#include "../Structures/CourseUnit/courseunit.h"
 
 CourseEditor::CourseEditor(QWidget *parent) :
     QMainWindow(parent),
@@ -176,6 +177,19 @@ void CourseEditor::on_fileLineEdit_editingFinished() {
 }
 
 void CourseEditor::on_actionCourseUnitOpen_triggered() {
+	QString path = QFileDialog::getOpenFileName(this, "Select skill pack file");
+	clearCourseUnit();
+
+	QFile f = QFile(path);
+
+	if (!f.exists()) {
+		return;
+	}
+
+	current->setFile(path);
+
+	CourseUnit crs;
+	crs.loadCourseUnit(&f);
 }
 
 void CourseEditor::on_actionCourseUnitSave_triggered() {
@@ -184,8 +198,30 @@ void CourseEditor::on_actionCourseUnitSave_triggered() {
 void CourseEditor::on_actionCourseUnitCreate_triggered() {
 }
 
+void CourseEditor::clearSkillsLib() {
+	skillsLib.clear();
+	ui->skillsSelector->clear();
+	ui->levelsSelector->clear();
+}
+
+void CourseEditor::clearCourseUnit() {
+	head->setName("Parent course unit");
+	head->setFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + "NEW_COURSE_UNIT.cognitiaCourseUnit");
+	head->clearSkills();
+	setNodeToRedactor(head);
+	ui->widget->clearAllScene();
+}
+
+void CourseEditor::fromFileToGui(CourseUnit *crs) {
+}
+
+void CourseEditor::fromGuiToFile(CourseUnit *crs) {
+}
+
 void CourseEditor::on_actionSkillPackOpen_triggered() {
 	skillPackPath = QFileDialog::getOpenFileName(this, "Select skill pack file");
+	clearSkillsLib();
+
 	ui->skillPackFile->setText(skillPackPath);
 	SkillPack skp;
 	QFile f = QFile(skillPackPath);

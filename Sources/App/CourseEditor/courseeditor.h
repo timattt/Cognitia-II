@@ -5,6 +5,7 @@
 
 class SkillsModel;
 class Node;
+class CourseUnit;
 
 namespace Ui {
 class CourseEditor;
@@ -27,6 +28,16 @@ public:
 	// public functions
 	//--------------------------------------
 	Node* getCurrent();
+	//--------------------------------------
+
+private:
+
+	// private functions
+	//--------------------------------------
+	void clearSkillsLib();
+	void clearCourseUnit();
+	void fromFileToGui(CourseUnit * crs);
+	void fromGuiToFile(CourseUnit * crs);
 	//--------------------------------------
 
 private:

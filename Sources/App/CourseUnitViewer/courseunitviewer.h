@@ -51,6 +51,7 @@ public:
 	double getAttFac() const;
 	double getMassFac() const;
 	double getRepFac() const;
+	void clearAllScene();
     //----------------------------------
     
 private slots:

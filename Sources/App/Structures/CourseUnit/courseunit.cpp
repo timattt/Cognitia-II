@@ -1,18 +1,18 @@
-#include "courseunit.h"
+#include "CourseUnit.h"
 
 // Constants
 //-----------------------------------------------
 #define UNITSEPARATOR "|~^|"
 #define FIELDSSEPARATOR "!(!"
 #define VECTORSEPARATOR "?(?"
-#define COURSE_UNIT_FILE_EXTENSION ".courseunit"
+#define COURSE_UNIT_FILE_EXTENSION ".CourseUnit"
 //-----------------------------------------------
 
-courseUnit::courseUnit(QObject* pobj): QObject(pobj), income(), outcome(), embedded_units(), linked_units(){
+CourseUnit::CourseUnit(QObject* pobj): QObject(pobj), income(), outcome(), embedded_units(), linked_units(){
 
 }
 
-courseUnit::courseUnit(size_t width, size_t height, size_t x, size_t y, QObject *pobj): QObject(pobj),
+CourseUnit::CourseUnit(size_t width, size_t height, size_t x, size_t y, QObject *pobj): QObject(pobj),
                                                                                         height(height),
                                                                                         x(x), y(y),
                                                                                         width(width),
@@ -24,8 +24,8 @@ courseUnit::courseUnit(size_t width, size_t height, size_t x, size_t y, QObject 
 
 }
 
-void courseUnit::saveCourseUnit(QFile *dest){
-     qDebug() << "Saving courseUnit" << objectName();
+void CourseUnit::saveCourseUnit(QFile *dest){
+     qDebug() << "Saving CourseUnit" << objectName();
 
      QFileInfo in = QFileInfo(*dest);
      QDir dr = in.dir();
@@ -62,17 +62,17 @@ void courseUnit::saveCourseUnit(QFile *dest){
          stream << UNITSEPARATOR;
 
          for (int i = 0; i < embedded_units.size(); ++i) {
-             QString courseUnitFileName = embedded_units[i]->objectName() + COURSE_UNIT_FILE_EXTENSION;
+             QString CourseUnitFileName = embedded_units[i]->objectName() + COURSE_UNIT_FILE_EXTENSION;
 
-             QFile courseUnitFile = QFile(dr.filePath(courseUnitFileName));
+             QFile CourseUnitFile = QFile(dr.filePath(CourseUnitFileName));
 
              try {
-                 embedded_units[i]->saveCourseUnit(&courseUnitFile);
+                 embedded_units[i]->saveCourseUnit(&CourseUnitFile);
              } catch (QString err) {
                  throw QString("Saving [" + embedded_units[i] -> objectName() + "] with error: " + err);
              }
 
-             stream << courseUnitFileName << UNITSEPARATOR;
+             stream << CourseUnitFileName << UNITSEPARATOR;
          }
 
          dest->close();
@@ -83,14 +83,14 @@ void courseUnit::saveCourseUnit(QFile *dest){
 }
 
 
-void courseUnit::loadCourseUnit(QFile *res){
+void CourseUnit::loadCourseUnit(QFile *res){
     if (!res->exists()) {
-        throw QString("courseUnit file [" + res->fileName() + "] not exists");
+        throw QString("CourseUnit file [" + res->fileName() + "] not exists");
     }
 
     QFileInfo info = QFileInfo(*res);
 
-    qDebug() <<  "Loading courseUnit from" << info.fileName();
+    qDebug() <<  "Loading CourseUnit from" << info.fileName();
 
     QString data = nullptr;
 
@@ -100,14 +100,14 @@ void courseUnit::loadCourseUnit(QFile *res){
         data = stream.readAll();
         res->close();
     } else {
-        throw QString("Can't open courseUnit file [" + res->fileName() + "]");
+        throw QString("Can't open CourseUnit file [" + res->fileName() + "]");
     }
 
     QStringList unit_data = data.split(UNITSEPARATOR, Qt::SkipEmptyParts);
 
 
     if (unit_data.empty()) {
-        throw QString("Empty courseUnit [" + res->fileName() + "]");
+        throw QString("Empty CourseUnit [" + res->fileName() + "]");
     }
 
     QStringList fields_data = unit_data[0].split(FIELDSSEPARATOR);
@@ -143,13 +143,13 @@ void courseUnit::loadCourseUnit(QFile *res){
     QDir dr = info.dir();
 
     for (int i = 1; i < unit_data.size(); i++) {
-        QString courseUnitFileName = unit_data[i];
-        QFile courseUnitFile = dr.filePath(courseUnitFileName);
-        courseUnit *unit = new courseUnit(this);
+        QString CourseUnitFileName = unit_data[i];
+        QFile CourseUnitFile = dr.filePath(CourseUnitFileName);
+        CourseUnit *unit = new CourseUnit(this);
         try {
-            unit->loadCourseUnit(&courseUnitFile);
+            unit->loadCourseUnit(&CourseUnitFile);
         } catch (QString err) {
-            throw QString("Error while loading courseUnit [" + courseUnitFileName + "] with error: " + err);
+            throw QString("Error while loading CourseUnit [" + CourseUnitFileName + "] with error: " + err);
         }
 
         embedded_units.push_back(unit);
@@ -157,73 +157,73 @@ void courseUnit::loadCourseUnit(QFile *res){
 }
 
 
-void courseUnit::setSize(size_t new_width, size_t new_height){
+void CourseUnit::setSize(size_t new_width, size_t new_height){
     width = new_width;
     height = new_height;
 }
 
-std::pair<size_t, size_t> courseUnit::getSize() const{
+std::pair<size_t, size_t> CourseUnit::getSize() const{
     return std::make_pair(width, height);
 }
 
-void courseUnit::setCoords(size_t new_x, size_t new_y){
+void CourseUnit::setCoords(size_t new_x, size_t new_y){
     x = new_x;
     y = new_y;
 }
 
-std::pair<size_t, size_t> courseUnit::getCoords() const{
+std::pair<size_t, size_t> CourseUnit::getCoords() const{
     return std::make_pair(x, y);
 }
 
 
-void courseUnit::addIncome(const std::pair<QString, size_t>& skill){
+void CourseUnit::addIncome(const std::pair<QString, size_t>& skill){
     income.push_back(skill);
 }
 
-void courseUnit::addOutcome(const std::pair<QString, size_t>& skill){
+void CourseUnit::addOutcome(const std::pair<QString, size_t>& skill){
     outcome.push_back(skill);
 }
 
-const QVector<std::pair<QString, size_t>>& courseUnit::getIncome() const{
+const QVector<std::pair<QString, size_t>>& CourseUnit::getIncome() const{
     return income;
 }
 
-const QVector<std::pair<QString, size_t>>& courseUnit::getOutcome() const{
+const QVector<std::pair<QString, size_t>>& CourseUnit::getOutcome() const{
     return outcome;
 }
 
-void courseUnit::setDescription(const QString& desc){
+void CourseUnit::setDescription(const QString& desc){
     description = desc;
 }
 
-const QString& courseUnit::getDescription() const{
+const QString& CourseUnit::getDescription() const{
     return description;
 }
 
-const QVector<QString>& courseUnit::getConnections() const{
+const QVector<QString>& CourseUnit::getConnections() const{
     return linked_units;
 }
 
-const QVector<courseUnit*>& courseUnit::getEmbedded() const{
+const QVector<CourseUnit*>& CourseUnit::getEmbedded() const{
     return embedded_units;
 }
 
 
-void courseUnit::addConnection(courseUnit* unit){
+void CourseUnit::addConnection(CourseUnit* unit){
     linked_units.push_back(unit -> objectName());
 }
 
-void courseUnit::addConnection(const QString& objname){
+void CourseUnit::addConnection(const QString& objname){
     linked_units.push_back(objname);
 }
 
 
-void courseUnit::addEmbedded(courseUnit* unit){
+void CourseUnit::addEmbedded(CourseUnit* unit){
     embedded_units.push_back(unit);
 }
 
 
-QString courseUnit::print(){
+QString CourseUnit::print(){
     QString buff;
     buff += objectName();
     buff += "width = " + QString::number(width);

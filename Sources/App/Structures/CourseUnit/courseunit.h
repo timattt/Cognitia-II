@@ -1,5 +1,5 @@
-#ifndef COURSEUNIT_H
-#define COURSEUNIT_H
+#ifndef CourseUnit_H
+#define CourseUnit_H
 
 #include <QObject>
 #include <QVector>
@@ -8,7 +8,7 @@
 #include <QDir>
 #include <QFileInfo>
 
-class courseUnit : public QObject
+class CourseUnit : public QObject
 {
     Q_OBJECT
 
@@ -24,18 +24,18 @@ private:
     QVector<std::pair<QString, size_t>> outcome;
     QString description = "";
     QVector<QString> linked_units;
-    QVector<courseUnit*> embedded_units;
+    QVector<CourseUnit*> embedded_units;
     //------------------------------------------
 
 public:
     // Constructor
     //------------------------------------
-    courseUnit(QObject* pobj = nullptr);
-    courseUnit(size_t width, size_t height, size_t x, size_t y, QObject* pobj = nullptr);
+    CourseUnit(QObject* pobj = nullptr);
+    CourseUnit(size_t width, size_t height, size_t x, size_t y, QObject* pobj = nullptr);
     //------------------------------------------------------------------------------------
-    courseUnit(const courseUnit&) = default;
-    courseUnit( courseUnit&&) = default;
-   // ~courseUnit();
+    CourseUnit(const CourseUnit&) = default;
+    CourseUnit( CourseUnit&&) = default;
+   // ~CourseUnit();
 
 
     // Methods
@@ -58,16 +58,16 @@ public:
     void setDescription(const QString&);
     const QString& getDescription() const;
 
-    void addConnection(courseUnit*);
+    void addConnection(CourseUnit*);
     void addConnection(const QString& name);
     const QVector<QString>& getConnections() const;
 
-    void addEmbedded(courseUnit*);
-    const QVector<courseUnit*>& getEmbedded() const;
+    void addEmbedded(CourseUnit*);
+    const QVector<CourseUnit*>& getEmbedded() const;
 
     QString print();
     //----------------------------------------------------------------------------
 
 };
 
-#endif // COURSEUNIT_H
+#endif // CourseUnit_H

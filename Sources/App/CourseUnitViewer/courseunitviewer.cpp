@@ -159,3 +159,15 @@ void CourseUnitViewer::on_massFac_editingFinished() {
 	}
 }
 
+void CourseUnitViewer::clearAllScene() {
+	QList<QGraphicsItem*> its;
+	for (QGraphicsItem * it : scene->items()) {
+		its.push_back(it);
+	}
+	while (!its.empty()) {
+		QGraphicsItem * it = its.first();
+		its.removeFirst();
+		scene->removeItem(it);
+		delete it;
+	}
+}

@@ -56,6 +56,7 @@ public:
 	QString getFile() const;
 	void setFile(QString file);
 	void setColor(QColor color = Qt::blue);
+	void clearSkills();
     //--------------------------------------
 
 protected:
