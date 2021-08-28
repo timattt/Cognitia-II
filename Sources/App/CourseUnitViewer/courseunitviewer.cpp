@@ -67,9 +67,7 @@ void CourseUnitViewer::on_pushButton_2_clicked() {
 	QPointF pt = ui->graphicsView->mapToScene(
 			ui->graphicsView->rect().center());
 	nd->setPos(pt);
-	scene->addItem(nd);
-
-	emit nodeAdded(nd);
+	addNode(nd);
 }
 
 bool CourseUnitViewer::deleteModeIsOn() {
@@ -160,14 +158,32 @@ void CourseUnitViewer::on_massFac_editingFinished() {
 }
 
 void CourseUnitViewer::clearAllScene() {
-	QList<QGraphicsItem*> its;
+	scene->stopDrag();
+
+	QList<Node*> nds;
 	for (QGraphicsItem * it : scene->items()) {
-		its.push_back(it);
+		Node * nd = dynamic_cast<Node*>(it);
+		if (nd != nullptr) {
+			nds.push_back(nd);
+		}
 	}
-	while (!its.empty()) {
-		QGraphicsItem * it = its.first();
-		its.removeFirst();
-		scene->removeItem(it);
-		delete it;
+	while (!nds.empty()) {
+		Node * nd = nds.first();
+		nds.removeFirst();
+		scene->removeItem(nd);
+		delete nd;
 	}
+}
+
+void CourseUnitViewer::addNode(Node *nd) {
+	scene->addItem(nd);
+	emit nodeAdded(nd);
+}
+
+void CourseUnitViewer::addEdge(Edge *e) {
+	scene->addItem(e);
+}
+
+QList<QGraphicsItem*> CourseUnitViewer::getAllItems() {
+	return scene->items();
 }

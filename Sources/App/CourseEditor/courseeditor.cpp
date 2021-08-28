@@ -5,14 +5,22 @@
 #include "../Structures/SkillPack/skillpack.h"
 #include "../CourseUnitViewer/courseunitviewer.h"
 #include "../Structures/CourseUnit/courseunit.h"
+#include "../CourseUnitViewer/Node/edge.h"
 
 CourseEditor::CourseEditor(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::CourseEditor),
 	current(nullptr),
-	head(nullptr)
+	head(nullptr),
+	helpMessage(""),
+	lastSkillPackModified(0)
 {
     ui->setupUi(this);
+
+    QFile helpm = QFile(":/help/Help/CourseEditorHelp.txt");
+    helpm.open(QIODevice::ReadOnly);
+    helpMessage = helpm.readAll();
+    helpm.close();
 
     inMd = new SkillsModel(this, 1);
     outMd = new SkillsModel(this, 0);
@@ -35,11 +43,17 @@ CourseEditor::CourseEditor(QWidget *parent) :
 
     connect(ui->widget, SIGNAL(nodeSelected(Node*)), this, SLOT(nodeSelected(Node*)));
     connect(ui->widget, SIGNAL(nodeSkillsChanged(Node*)), this, SLOT(nodeSkillsChanged(Node*)));
+
+    clearSkillsLib();
+    clearCourseUnit();
+
+    timerId = startTimer(1000);
 }
 
 CourseEditor::~CourseEditor()
 {
     delete ui;
+    killTimer(timerId);
 }
 
 void CourseEditor::addSkillToLib(QString name, int totalLevels) {
@@ -160,24 +174,19 @@ void CourseEditor::on_removeOut_clicked() {
 	outMd->removeRow(row);
 }
 
-void CourseEditor::on_nameLineEdit_editingFinished() {
+void CourseEditor::on_nameLineEdit_textChanged() {
 	current->setName(ui->nameLineEdit->text());
 }
 
 void CourseEditor::nodeSelected(Node *nd) {
 	setNodeToRedactor(nd);
 }
-
 void CourseEditor::nodeSkillsChanged(Node *nd) {
 	setNodeToRedactor(nd);
 }
 
-void CourseEditor::on_fileLineEdit_editingFinished() {
-	current->setFile(ui->fileLineEdit->text());
-}
-
 void CourseEditor::on_actionCourseUnitOpen_triggered() {
-	QString path = QFileDialog::getOpenFileName(this, "Select skill pack file");
+	QString path = QFileDialog::getOpenFileName(this, "Select course unit file");
 	clearCourseUnit();
 
 	QFile f = QFile(path);
@@ -186,50 +195,231 @@ void CourseEditor::on_actionCourseUnitOpen_triggered() {
 		return;
 	}
 
-	current->setFile(path);
+	clearCourseUnit();
+
+	head->setFile(path);
 
 	CourseUnit crs;
-	crs.loadCourseUnit(&f);
+	try {
+		crs.loadCourseUnit(&f);
+		fromFileToGui(&crs);
+
+		mes("Opened course unit file " + path);
+	} catch (QString ex) {
+		mes("Error while opening: " + ex);
+	}
+
+
 }
 
 void CourseEditor::on_actionCourseUnitSave_triggered() {
+	QFile f = QFile(head->getFile());
+
+	CourseUnit crs;
+	fromGuiToFile(&crs);
+
+	try {
+		crs.saveCourseUnit(&f);
+		mes("Saved course unit file " + head->getFile());
+	} catch (QString ex) {
+		mes("Error while saving: " + ex);
+	}
 }
 
 void CourseEditor::on_actionCourseUnitCreate_triggered() {
+	QString path = QFileDialog::getSaveFileName(this, "Create course unit file");
+
+	QFile f = QFile(path);
+	QFileInfo in = QFileInfo(f);
+
+	clearCourseUnit();
+
+	head->setName(in.fileName());
+	head->setFile(path);
+
+	CourseUnit crs;
+	fromGuiToFile(&crs);
+
+	try {
+		crs.saveCourseUnit(&f);
+		mes("Created course unit file " + path);
+	} catch (QString err) {
+		mes("Error wjile creating: " + err);
+	}
+
+	fromFileToGui(&crs);
 }
 
 void CourseEditor::clearSkillsLib() {
 	skillsLib.clear();
 	ui->skillsSelector->clear();
 	ui->levelsSelector->clear();
+	ui->skillPackFile->clear();
+	skillPackPath.clear();
 }
 
 void CourseEditor::clearCourseUnit() {
 	head->setName("Parent course unit");
-	head->setFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + "NEW_COURSE_UNIT.cognitiaCourseUnit");
+	head->setFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + "/NEW_COURSE_UNIT.cognitiaCourseUnit");
 	head->clearSkills();
 	setNodeToRedactor(head);
 	ui->widget->clearAllScene();
 }
 
 void CourseEditor::fromFileToGui(CourseUnit *crs) {
+	fromCourseUnitToNode(crs, head);
+
+	QMap<QString, Node*> nodes;
+
+	for (CourseUnit * u : crs->getEmbedded()) {
+		Node * nd = new Node(ui->widget);
+		fromCourseUnitToNode(u, nd);
+		nodes[nd->getName()] = nd;
+		ui->widget->addNode(nd);
+	}
+
+	for (CourseUnit * u : crs->getEmbedded()) {
+		for (QString v : u->getConnections()) {
+			ui->widget->addEdge(new Edge(nodes[u->objectName()], nodes[v]));
+		}
+	}
+
+	setNodeToRedactor(head);
 }
 
 void CourseEditor::fromGuiToFile(CourseUnit *crs) {
+	fromNodeToCourseUnit(head, crs);
+
+	QMap<QString, CourseUnit*> units;
+
+	for (QGraphicsItem * it : ui->widget->getAllItems()) {
+		if (!it) {
+			continue;
+		}
+
+		Node * nd = dynamic_cast<Node*>(it);
+
+		if (nd != nullptr) {
+			CourseUnit * un = new CourseUnit(crs);
+			crs->addEmbedded(un);
+			fromNodeToCourseUnit(nd, un);
+			units[un->objectName()] = un;
+		}
+	}
+
+	for (QGraphicsItem * it : ui->widget->getAllItems()) {
+		if (!it) {
+			continue;
+		}
+
+		Edge * ed = dynamic_cast<Edge*>(it);
+		if (ed != nullptr) {
+			units[ed->sourceNode()->getName()]->addConnection(ed->destNode()->getName());
+			units[ed->destNode()->getName()]->addConnection(ed->sourceNode()->getName());
+		}
+	}
+}
+
+void CourseEditor::fromNodeToCourseUnit(Node *nd, CourseUnit *cu) {
+	cu->setObjectName(nd->getName());
+
+	for (QString sk : nd->getInSkills().keys()) {
+		int lev = nd->getInSkills()[sk];
+
+		cu->addIncome({sk, lev});
+	}
+
+	for (QString sk : nd->getOutSkills().keys()) {
+		int lev = nd->getOutSkills()[sk];
+
+		cu->addOutcome({sk, lev});
+	}
+
+	cu->setCoords((long long)nd->pos().x(), (long long)nd->pos().y());
+}
+
+void CourseEditor::fromCourseUnitToNode(CourseUnit *cu, Node *nd) {
+	nd->setName(cu->objectName());
+	nd->setFile(cu->getLastFilePath());
+
+	for (std::pair<QString, size_t> in : cu->getIncome()) {
+		nd->addInSkill(in.first, in.second);
+	}
+
+	for (std::pair<QString, size_t> out : cu->getOutcome()) {
+		nd->addOutSkill(out.first, out.second);
+	}
+
+	nd->setPos(cu->getCoords().first, cu->getCoords().second);
 }
 
 void CourseEditor::on_actionSkillPackOpen_triggered() {
-	skillPackPath = QFileDialog::getOpenFileName(this, "Select skill pack file");
 	clearSkillsLib();
+	QString path = QFileDialog::getOpenFileName(this, "Select skill pack file");
 
-	ui->skillPackFile->setText(skillPackPath);
+	setSkillPack(path);
+}
+
+void CourseEditor::on_actionReturn_to_launcher_triggered() {
+	clearCourseUnit();
+	clearSkillsLib();
+	emit onClose();
+}
+
+void CourseEditor::on_actionHelp_me_triggered() {
+	QMessageBox::about(this, "Help", helpMessage);
+}
+
+void CourseEditor::on_actionClose_skillPack_triggered() {
+	clearSkillsLib();
+}
+
+void CourseEditor::mes(QString mes) {
+	ui->statusbar->showMessage(mes);
+}
+
+void CourseEditor::on_actionClose_courseUnit_triggered() {
+	clearCourseUnit();
+}
+
+void CourseEditor::setSkillPack(QString path) {
+	int i1 = ui->skillsSelector->currentIndex();
+	int i2 = ui->levelsSelector->currentIndex();
+
+	ui->skillPackFile->setText(path);
 	SkillPack skp;
-	QFile f = QFile(skillPackPath);
+	QFile f = QFile(path);
+
 	if (!f.exists()) {
+		mes("SkillPack file " + skillPackPath + " does not exists!");
 		return;
 	}
+
+	clearSkillsLib();
+
 	skp.load(&f);
 	for (int i = 0; i < skp.getSkillsCount(); i++) {
 		addSkillToLib(skp.getSkill(i)->objectName(), skp.getSkill(i)->getLevelsCount());
+	}
+
+	mes("SkillPack file " + path + " is loaded!");
+	skillPackPath = path;
+
+	ui->skillsSelector->setCurrentIndex(i1);
+	ui->levelsSelector->setCurrentIndex(i2);
+}
+
+void CourseEditor::timerEvent(QTimerEvent *event) {
+	QFile f = QFile(this->skillPackPath);
+	if (!f.exists()) {
+		return;
+	}
+	QFileInfo in = QFileInfo(f);
+
+	long long t = in.lastModified().toMSecsSinceEpoch();
+
+	if (lastSkillPackModified < t) {
+		lastSkillPackModified = t;
+		setSkillPack(skillPackPath);
 	}
 }

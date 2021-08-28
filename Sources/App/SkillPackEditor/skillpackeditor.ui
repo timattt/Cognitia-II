@@ -137,6 +137,13 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
         </widget>
        </item>
        <item>
+        <widget class="QCheckBox" name="autoSave">
+         <property name="text">
+          <string>Autosave</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -160,7 +167,7 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

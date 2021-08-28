@@ -21,6 +21,8 @@ SkillPackEditor::SkillPackEditor() :
 
     ui->tree->setModel(model);
     ui->tree->setEditTriggers(QAbstractItemView::DoubleClicked);
+
+    timerId = startTimer(1000);
 }
 
 SkillPackEditor::~SkillPackEditor()
@@ -32,6 +34,7 @@ SkillPackEditor::~SkillPackEditor()
     delete skillsSelection;
     delete levelsSelection;
     delete ui;
+    killTimer(timerId);
 }
 
 void SkillPackEditor::on_AddSkill_clicked()
@@ -313,4 +316,13 @@ void SkillPackEditor::on_actionSet_style_triggered()
     } else {
         ui->statusbar->showMessage("CSS file can not be opened!");
     }
+}
+
+void SkillPackEditor::on_autoSave_stateChanged(int v) {
+}
+
+void SkillPackEditor::timerEvent(QTimerEvent *event) {
+	if (ui->autoSave->isChecked()) {
+		fromGui();
+	}
 }

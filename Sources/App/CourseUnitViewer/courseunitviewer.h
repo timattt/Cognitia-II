@@ -52,6 +52,9 @@ public:
 	double getMassFac() const;
 	double getRepFac() const;
 	void clearAllScene();
+	void addNode(Node * nd);
+	void addEdge(Edge * e);
+	QList<QGraphicsItem*> getAllItems();
     //----------------------------------
     
 private slots:

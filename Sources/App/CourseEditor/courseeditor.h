@@ -38,6 +38,10 @@ private:
 	void clearCourseUnit();
 	void fromFileToGui(CourseUnit * crs);
 	void fromGuiToFile(CourseUnit * crs);
+	void fromCourseUnitToNode(CourseUnit * cu, Node * nd);
+	void fromNodeToCourseUnit(Node * nd, CourseUnit * cu);
+	void mes(QString mes);
+	void setSkillPack(QString path);
 	//--------------------------------------
 
 private:
@@ -51,6 +55,9 @@ private:
     Node * head;
     Node * current;
     QString skillPackPath;
+    QString helpMessage;
+    int timerId;
+    long long lastSkillPackModified;
     //--------------------------------------
 
 public slots:
@@ -74,14 +81,29 @@ private slots:
     void on_showParent_clicked();
     void on_removeIn_clicked();
     void on_removeOut_clicked();
-    void on_nameLineEdit_editingFinished();
-    void on_fileLineEdit_editingFinished();
+    void on_nameLineEdit_textChanged();
     void on_actionCourseUnitOpen_triggered();
     void on_actionCourseUnitSave_triggered();
     void on_actionCourseUnitCreate_triggered();
     void on_actionSkillPackOpen_triggered();
+    void on_actionReturn_to_launcher_triggered();
+    void on_actionHelp_me_triggered();
+    void on_actionClose_skillPack_triggered();
+    void on_actionClose_courseUnit_triggered();
     //--------------------------------------
 
+signals:
+	// signals
+	//--------------------------------------
+	void onClose();
+	//--------------------------------------
+
+protected:
+
+	// protected functions
+	//--------------------------------------
+	void timerEvent(QTimerEvent *event) override;
+	//--------------------------------------
 };
 
 #endif // COURSEEDITOR_H

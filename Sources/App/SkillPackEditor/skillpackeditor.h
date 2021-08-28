@@ -35,6 +35,7 @@ private slots:
     void on_actionHelp_me_triggered();
     void on_actionReturn_to_launcher_triggered();
     void on_actionSet_style_triggered();
+    void on_autoSave_stateChanged(int v);
     //--------------------------------
 
 signals:
@@ -54,6 +55,7 @@ private:
     QItemSelectionModel * skillsSelection;
     QItemSelectionModel * levelsSelection;
     QString helpMessage;
+    int timerId;
     //--------------------------------
 
 private:
@@ -69,6 +71,14 @@ private:
     bool ensureFileIsValid();
     void ensureFileIsNull();
     //--------------------------------
+
+protected:
+
+    // protected functions
+    //--------------------------------
+    void timerEvent(QTimerEvent *event) override;
+    //--------------------------------
+
 };
 
 #endif // SKILLPACKEDITOR_H

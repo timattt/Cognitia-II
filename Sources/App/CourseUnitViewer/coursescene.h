@@ -32,6 +32,13 @@ private:
     int totalEdges;
     //-----------------------------------
 
+public:
+
+    // public functions
+    //-----------------------------------
+    void stopDrag();
+    //-----------------------------------
+
 protected:
 
     // protected functions

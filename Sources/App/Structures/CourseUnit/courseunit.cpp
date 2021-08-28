@@ -24,7 +24,7 @@ CourseUnit::CourseUnit(size_t width, size_t height, size_t x, size_t y, QObject 
 
 }
 
-void CourseUnit::saveCourseUnit(QFile *dest){
+void CourseUnit::saveCourseUnit(QFile *dest) {
      qDebug() << "Saving CourseUnit" << objectName();
 
      QFileInfo in = QFileInfo(*dest);
@@ -33,6 +33,8 @@ void CourseUnit::saveCourseUnit(QFile *dest){
      if (!dr.exists()) {
          dr.mkpath(dr.absolutePath());
      }
+
+     lastFilePath = in.absoluteFilePath();
 
      if (dest->open(QIODevice::WriteOnly)) {
          QTextStream stream(dest);
@@ -90,10 +92,11 @@ void CourseUnit::loadCourseUnit(QFile *res){
 
     QFileInfo info = QFileInfo(*res);
 
-    qDebug() <<  "Loading CourseUnit from" << info.fileName();
+    qDebug() <<  "Loading CourseUnit from" << info.absoluteFilePath();
 
     QString data = nullptr;
 
+    lastFilePath = info.absoluteFilePath();
 
     if (res->open(QIODevice::ReadOnly)) {
         QTextStream stream(res);
@@ -255,11 +258,10 @@ QString CourseUnit::print(){
     return buff;
 }
 
+QString CourseUnit::getLastFilePath() const {
+	return lastFilePath;
+}
 
-
-
-
-
-
-
-
+void CourseUnit::setLastFilePath(QString lastFilePath) {
+	this->lastFilePath = lastFilePath;
+}

@@ -25,6 +25,7 @@ private:
     QString description = "";
     QVector<QString> linked_units;
     QVector<CourseUnit*> embedded_units;
+    QString lastFilePath;
     //------------------------------------------
 
 public:
@@ -67,7 +68,8 @@ public:
 
     QString print();
     //----------------------------------------------------------------------------
-
+	QString getLastFilePath() const;
+	void setLastFilePath(QString lastFilePath);
 };
 
 #endif // CourseUnit_H

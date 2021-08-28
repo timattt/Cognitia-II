@@ -4,6 +4,7 @@
     </qresource>
 	<qresource prefix="/help/">
         <file>Help/SkillPackEditorHelp.txt</file>
+        <file>Help/CourseEditorHelp.txt</file>
     </qresource>
     	<qresource prefix="/icons/">
         <file>Icons/SkillDrag.png</file>
