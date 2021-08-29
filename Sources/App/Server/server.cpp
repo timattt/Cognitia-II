@@ -18,15 +18,25 @@ Server::~Server()
 
 void Server::on_StopServ_clicked()
 {
-    if(mtcpServ -> isListening())
+    if(mtcpServ -> isListening()){
         mtcpServ -> close();
+        ui->Log->append("Server closed!\n");
+    }
+    else{
+        QMessageBox::critical(0, "Server Error", "Start server first");
+    }
 }
 
 
 void Server::on_StartServ_clicked()
 {
     connect(mtcpServ, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
-    if(!mtcpServ->listen(QHostAddress::Any, nPort)){
+    if (mtcpServ -> isListening())
+    {
+        ui->Log->append("Server has already been started!\n");
+        return;
+    }
+    if( !mtcpServ->listen(QHostAddress::Any, nPort) ){
         QMessageBox::critical(0, "Server Error", "Unable to start server:" + mtcpServ->errorString());
         mtcpServ -> close();
         return;
