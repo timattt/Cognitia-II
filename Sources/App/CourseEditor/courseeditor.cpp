@@ -8,8 +8,8 @@
 #include "../CourseUnitViewer/Node/edge.h"
 #include "../Help/smarthelper.h"
 
-CourseEditor::CourseEditor(QWidget *parent) :
-    QMainWindow(parent),
+CourseEditor::CourseEditor() :
+    QMainWindow(nullptr),
     ui(new Ui::CourseEditor),
 	current(nullptr),
 	head(nullptr),
@@ -47,6 +47,8 @@ CourseEditor::CourseEditor(QWidget *parent) :
 
 CourseEditor::~CourseEditor()
 {
+	clearCourseUnit();
+	clearSkillsLib();
     delete ui;
     killTimer(timerId);
 }
@@ -139,6 +141,7 @@ void CourseEditor::setNodeToRedactor(Node *nd) {
 
 	ui->nameLineEdit->setText(nd->getName());
 	ui->fileLineEdit->setText(nd->getFile());
+	ui->descrPanel->setText(nd->getDescription());
 
 	nd->setColor(Qt::cyan);
 }
@@ -261,25 +264,13 @@ void CourseEditor::clearCourseUnit() {
 	head->clearSkills();
 	setNodeToRedactor(head);
 	ui->widget->clearAllScene();
+	ui->descrPanel->clear();
 }
 
 void CourseEditor::fromFileToGui(CourseUnit *crs) {
 	fromCourseUnitToNode(crs, head);
 
-	QMap<QString, Node*> nodes;
-
-	for (CourseUnit * u : crs->getEmbedded()) {
-		Node * nd = new Node(ui->widget);
-		fromCourseUnitToNode(u, nd);
-		nodes[nd->getName()] = nd;
-		ui->widget->addNode(nd);
-	}
-
-	for (CourseUnit * u : crs->getEmbedded()) {
-		for (QString v : u->getConnections()) {
-			ui->widget->addEdge(new Edge(nodes[u->objectName()], nodes[v]));
-		}
-	}
+	ui->widget->unpack(crs);
 
 	setNodeToRedactor(head);
 }
@@ -287,67 +278,7 @@ void CourseEditor::fromFileToGui(CourseUnit *crs) {
 void CourseEditor::fromGuiToFile(CourseUnit *crs) {
 	fromNodeToCourseUnit(head, crs);
 
-	QMap<QString, CourseUnit*> units;
-
-	for (QGraphicsItem * it : ui->widget->getAllItems()) {
-		if (!it) {
-			continue;
-		}
-
-		Node * nd = dynamic_cast<Node*>(it);
-
-		if (nd != nullptr) {
-			CourseUnit * un = new CourseUnit(crs);
-			crs->addEmbedded(un);
-			fromNodeToCourseUnit(nd, un);
-			units[un->objectName()] = un;
-		}
-	}
-
-	for (QGraphicsItem * it : ui->widget->getAllItems()) {
-		if (!it) {
-			continue;
-		}
-
-		Edge * ed = dynamic_cast<Edge*>(it);
-		if (ed != nullptr) {
-			units[ed->sourceNode()->getName()]->addConnection(ed->destNode()->getName());
-			units[ed->destNode()->getName()]->addConnection(ed->sourceNode()->getName());
-		}
-	}
-}
-
-void CourseEditor::fromNodeToCourseUnit(Node *nd, CourseUnit *cu) {
-	cu->setObjectName(nd->getName());
-
-	for (QString sk : nd->getInSkills().keys()) {
-		int lev = nd->getInSkills()[sk];
-
-		cu->addIncome({sk, lev});
-	}
-
-	for (QString sk : nd->getOutSkills().keys()) {
-		int lev = nd->getOutSkills()[sk];
-
-		cu->addOutcome({sk, lev});
-	}
-
-	cu->setCoords((long long)nd->pos().x(), (long long)nd->pos().y());
-}
-
-void CourseEditor::fromCourseUnitToNode(CourseUnit *cu, Node *nd) {
-	nd->setName(cu->objectName());
-	nd->setFile(cu->getLastFilePath());
-
-	for (std::pair<QString, size_t> in : cu->getIncome()) {
-		nd->addInSkill(in.first, in.second);
-	}
-
-	for (std::pair<QString, size_t> out : cu->getOutcome()) {
-		nd->addOutSkill(out.first, out.second);
-	}
-
-	nd->setPos(cu->getCoords().first, cu->getCoords().second);
+	ui->widget->pack(crs);
 }
 
 void CourseEditor::on_actionSkillPackOpen_triggered() {
@@ -405,6 +336,10 @@ void CourseEditor::setSkillPack(QString path) {
 
 	ui->skillsSelector->setCurrentIndex(i1);
 	ui->levelsSelector->setCurrentIndex(i2);
+}
+
+void CourseEditor::on_descrPanel_textChanged() {
+	current->setDescription(ui->descrPanel->toPlainText());
 }
 
 void CourseEditor::timerEvent(QTimerEvent *event) {

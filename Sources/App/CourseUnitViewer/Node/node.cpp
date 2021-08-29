@@ -1,5 +1,6 @@
 #include "node.h"
 #include "edge.h"
+#include "../../Structures/CourseUnit/courseunit.h"
 #include "../courseunitviewer.h"
 
 Node::Node(CourseUnitViewer *graphWidget)
@@ -357,4 +358,47 @@ void Node::setColor(QColor color) {
 void Node::clearSkills() {
 	inSkills.clear();
 	outSkills.clear();
+}
+
+QString Node::getDescription() {
+	return description;
+}
+
+void Node::setDescription(QString str) {
+	description = str;
+}
+
+void fromNodeToCourseUnit(Node *nd, CourseUnit *cu) {
+	cu->setObjectName(nd->getName());
+	cu->setDescription(nd->getDescription());
+
+	for (QString sk : nd->getInSkills().keys()) {
+		int lev = nd->getInSkills()[sk];
+
+		cu->addIncome({sk, lev});
+	}
+
+	for (QString sk : nd->getOutSkills().keys()) {
+		int lev = nd->getOutSkills()[sk];
+
+		cu->addOutcome({sk, lev});
+	}
+
+	cu->setCoords((long long)nd->pos().x(), (long long)nd->pos().y());
+}
+
+void fromCourseUnitToNode(CourseUnit *cu, Node *nd) {
+	nd->setName(cu->objectName());
+	nd->setFile(cu->getLastFilePath());
+	nd->setDescription(cu->getDescription());
+
+	for (std::pair<QString, size_t> in : cu->getIncome()) {
+		nd->addInSkill(in.first, in.second);
+	}
+
+	for (std::pair<QString, size_t> out : cu->getOutcome()) {
+		nd->addOutSkill(out.first, out.second);
+	}
+
+	nd->setPos(cu->getCoords().first, cu->getCoords().second);
 }

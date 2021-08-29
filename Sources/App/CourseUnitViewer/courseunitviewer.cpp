@@ -2,6 +2,7 @@
 #include "Node/edge.h"
 #include "Node/node.h"
 #include "coursescene.h"
+#include "../Structures/CourseUnit/courseunit.h"
 #include "ui_courseunitviewer.h"
 
 #define SCALE_PER_PUSH 1.3
@@ -151,6 +152,10 @@ void CourseUnitViewer::on_repFact_editingFinished() {
 	}
 }
 
+void CourseUnitViewer::abortDrag() {
+	scene->stopDrag();
+}
+
 void CourseUnitViewer::on_massFac_editingFinished() {
 	bool ok = 0;
 	double v = ui->massFac->text().toDouble(&ok);
@@ -162,7 +167,7 @@ void CourseUnitViewer::on_massFac_editingFinished() {
 }
 
 void CourseUnitViewer::clearAllScene() {
-	scene->stopDrag();
+	abortDrag();
 
 	QList<Node*> nds;
 	for (QGraphicsItem * it : scene->items()) {
@@ -188,6 +193,54 @@ void CourseUnitViewer::addEdge(Edge *e) {
 	scene->addItem(e);
 }
 
-QList<QGraphicsItem*> CourseUnitViewer::getAllItems() {
-	return scene->items();
+//QList<QGraphicsItem*> CourseUnitViewer::getAllItems() {
+//	return scene->items();
+//}
+
+void CourseUnitViewer::unpack(CourseUnit *head) {
+	QMap<QString, Node*> nodes;
+
+	for (CourseUnit * u : head->getEmbedded()) {
+		Node * nd = new Node(this);
+		fromCourseUnitToNode(u, nd);
+		nodes[nd->getName()] = nd;
+		addNode(nd);
+	}
+
+	for (CourseUnit * u : head->getEmbedded()) {
+		for (QString v : u->getConnections()) {
+			addEdge(new Edge(nodes[u->objectName()], nodes[v]));
+		}
+	}
+}
+
+void CourseUnitViewer::pack(CourseUnit *head) {
+	QMap<QString, CourseUnit*> units;
+
+	for (QGraphicsItem * it : scene->items()) {
+		if (!it) {
+			continue;
+		}
+
+		Node * nd = dynamic_cast<Node*>(it);
+
+		if (nd != nullptr) {
+			CourseUnit * un = new CourseUnit(head);
+			head->addEmbedded(un);
+			fromNodeToCourseUnit(nd, un);
+			units[un->objectName()] = un;
+		}
+	}
+
+	for (QGraphicsItem * it : scene->items()) {
+		if (!it) {
+			continue;
+		}
+
+		Edge * ed = dynamic_cast<Edge*>(it);
+		if (ed != nullptr) {
+			units[ed->sourceNode()->getName()]->addConnection(ed->destNode()->getName());
+			units[ed->destNode()->getName()]->addConnection(ed->sourceNode()->getName());
+		}
+	}
 }

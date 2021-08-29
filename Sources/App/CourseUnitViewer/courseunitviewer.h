@@ -6,6 +6,7 @@
 class Edge;
 class Node;
 class CourseScene;
+class CourseUnit;
 
 namespace Ui {
 class CourseUnitViewer;
@@ -51,10 +52,18 @@ public:
 	double getAttFac() const;
 	double getMassFac() const;
 	double getRepFac() const;
+	//! Deletes everything from this scene
 	void clearAllScene();
+	//! Adds node to this scene. Emit signal
 	void addNode(Node * nd);
+	//! Adds edge to this scene.
 	void addEdge(Edge * e);
-	QList<QGraphicsItem*> getAllItems();
+	//! Trasfers data from CourseUnit to this scene. From the second level of hierarchy of this course unit.
+	void unpack(CourseUnit * head);
+	//! Trasfers data to CourseUnit from this scene. From the second level of hierarchy of this course unit.
+	void pack(CourseUnit * head);
+	//! If drag is currently happining then it will be stoppped
+	void abortDrag();
     //----------------------------------
     
 private slots:
@@ -80,6 +89,8 @@ signals:
 	//----------------------------------
 	void nodeAdded(Node *nd);
 	void nodeSelected(Node * nd);
+	void nodeDeleted(Node * nd);
+	void edgeDeleted(Edge * ed);
 	void nodeSkillsChanged(Node * nd);
 	//----------------------------------
 };
