@@ -24,10 +24,18 @@ void Launcher::on_runButton_clicked()
         	hide();
         }
      }
-     if (ui->modesChooser->currentText() == "Course editor") {
+
+     else if (ui->modesChooser->currentText() == "Course editor") {
         emit startCourseEditor();
         if (mayHideWhenUnused) {
         	hide();
+        }
+     }
+
+     else if (ui->modesChooser->currentText() == "Cognitia repository") {
+        emit startServer();
+        if (mayHideWhenUnused) {
+            hide();
         }
      }
 }

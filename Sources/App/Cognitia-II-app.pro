@@ -1,6 +1,7 @@
 TARGET = Cognitia-II
 
 QT       += core gui
+QT += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,6 +15,7 @@ CONFIG += console
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ChooseServ/chooseserv.cpp \
     CourseEditor/courseeditor.cpp \
     CourseUnitViewer/courseunitviewer.cpp \
     Help/smarthelper.cpp \
@@ -27,10 +29,13 @@ SOURCES += \
     CourseUnitViewer/Node/edge.cpp \
     Structures/StudentProgress/StudentProgress.cpp \
     CourseUnitViewer/coursescene.cpp \
-    CourseEditor/skillsmodel.cpp
+    CourseEditor/skillsmodel.cpp \
+    Server/server.cpp \
+    StudentClient/studentclient.cpp
 
 
 HEADERS += \
+    ChooseServ/chooseserv.h \
     CourseEditor/courseeditor.h \
     CourseUnitViewer/courseunitviewer.h \
     Help/smarthelper.h \
@@ -43,14 +48,19 @@ HEADERS += \
     CourseUnitViewer/Node/edge.h \
     CourseUnitViewer/coursescene.h \
     Structures/StudentProgress/StudentProgress.h \
-    CourseEditor/skillsmodel.h
+    CourseEditor/skillsmodel.h\
+    Server/server.h \
+    StudentClient/studentclient.h
 
 FORMS += \
+    ChooseServ/chooseserv.ui \
     CourseEditor/courseeditor.ui \
     CourseUnitViewer/courseunitviewer.ui \
     Help/smarthelper.ui \
     Launcher/launcher.ui \
-    SkillPackEditor/skillpackeditor.ui
+    SkillPackEditor/skillpackeditor.ui\
+    Server/server.ui \
+    StudentClient/studentclient.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
