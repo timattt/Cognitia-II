@@ -4,10 +4,15 @@
 #include "../Structures/CourseUnit/courseunit.h"
 #include "../SkillPackEditor/skillpackeditor.h"
 #include "../CourseEditor/courseeditor.h"
+#include "../StudentClient/studentclient.h"
+#include "../Server/server.h"
 
 #include <QApplication>
 #include <QObject>
 
+#define RETURNFROM(x) \
+    QObject::connect(&x, SIGNAL(onClose()), &x, SLOT(hide())); \
+    QObject::connect(&x, SIGNAL(onClose()), &launcher, SLOT(show()));
 
 int main(int argc, char *argv[])
 {
@@ -16,18 +21,20 @@ int main(int argc, char *argv[])
     Launcher launcher;
     SkillPackEditor skillPackEditor;
     CourseEditor courseEditor;
+    StudentClient studentClient;
+    Server server;
 
     // Start other widgets
     QObject::connect(&launcher, SIGNAL(startSkillPackEditor()), &skillPackEditor, SLOT(show()));
     QObject::connect(&launcher, SIGNAL(startCourseEditor()), &courseEditor, SLOT(show()));
+    QObject::connect(&launcher, SIGNAL(startStudentClient()), &studentClient, SLOT(show()));
+    QObject::connect(&launcher, SIGNAL(startServer()), &server, SLOT(show()));
 
-    // Return from skillPackEditor to launcher
-    QObject::connect(&skillPackEditor, SIGNAL(onClose()), &skillPackEditor, SLOT(hide()));
-    QObject::connect(&skillPackEditor, SIGNAL(onClose()), &launcher, SLOT(show()));
 
-    // Return from courseEditor to launcher
-    QObject::connect(&courseEditor, SIGNAL(onClose()), &courseEditor, SLOT(hide()));
-    QObject::connect(&courseEditor, SIGNAL(onClose()), &launcher, SLOT(show()));
+    RETURNFROM(skillPackEditor)
+    RETURNFROM(courseEditor)
+    RETURNFROM(server)
+
 
     return a.exec();
 }
