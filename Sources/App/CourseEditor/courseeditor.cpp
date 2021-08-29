@@ -220,6 +220,8 @@ void CourseEditor::on_actionCourseUnitSave_triggered() {
 
 	try {
 		crs.saveCourseUnit(&f);
+		clearCourseUnit();//
+		fromFileToGui(&crs);// to insure that it will write file names into panels
 		mes("Saved course unit file " + head->getFile());
 	} catch (QString ex) {
 		mes("Error while saving: " + ex);
@@ -386,7 +388,6 @@ void CourseEditor::setSkillPack(QString path) {
 	int i1 = ui->skillsSelector->currentIndex();
 	int i2 = ui->levelsSelector->currentIndex();
 
-	ui->skillPackFile->setText(path);
 	SkillPack skp;
 	QFile f = QFile(path);
 
@@ -396,6 +397,7 @@ void CourseEditor::setSkillPack(QString path) {
 	}
 
 	clearSkillsLib();
+	ui->skillPackFile->setText(path);
 
 	skp.load(&f);
 	for (int i = 0; i < skp.getSkillsCount(); i++) {

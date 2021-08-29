@@ -24,41 +24,93 @@ bool SkillsModel::canDropMimeData(const QMimeData *data, Qt::DropAction action,
 bool SkillsModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 		int row, int column, const QModelIndex &parent) {
 
-	QStringList divs = data->text().split(SKILL_PACK_DELIMITER);
+	if (data->text().contains(QString(SKILL_PACK_DELIMITER) + QString(SKILL_PACK_DELIMITER))) {
+		QStringList divs = data->text().split(QString(SKILL_PACK_DELIMITER) + QString(SKILL_PACK_DELIMITER));
 
-	bool ok = 0;
+		bool ok = 0;
 
-	QString name = divs[0];
-	int lev = divs[1].toInt(&ok);
+		QString name = divs[0];
+		int lev = divs[1].toInt(&ok);
 
-	if (!ok) {
-		return false;
+		if (!ok) {
+			return false;
+		}
+
+		Node * n = editor->getCurrent();
+
+		if (in) {
+			if (n->getInSkills().contains(name)) {
+				n->removeInSkill(name);
+			} else {
+				return true;
+			}
+		} else {
+			if (n->getOutSkills().contains(name)) {
+				n->removeOutSkill(name);
+			} else {
+				return true;
+			}
+		}
+
+		removeSkill(name, lev);
+		return true;
 	}
 
-	Node * n = editor->getCurrent();
+	if (data->text().contains(QString(SKILL_PACK_DELIMITER))) {
+		QStringList divs = data->text().split(SKILL_PACK_DELIMITER);
 
-	if (in) {
-		if (!n->getInSkills().contains(name)) {
+		bool ok = 0;
+
+		QString name = divs[0];
+		int lev = divs[1].toInt(&ok);
+
+		if (!ok) {
+			return false;
+		}
+
+		Node *n = editor->getCurrent();
+
+		if (in) {
 			n->addInSkill(name, lev);
 		} else {
-			return true;
-		}
-	} else {
-		if (!n->getOutSkills().contains(name)) {
 			n->addOutSkill(name, lev);
-		} else {
-			return true;
 		}
+
+		addSkill(name, lev);
+		return true;
+
 	}
 
-	addSkill(name, lev);
-	return true;
+	return false;
 }
 
 void SkillsModel::addSkill(QString name, int lev) {
-	int r = this->rowCount();
-	this->insertRow(r);
+	int was = -1;
+
+	for (int i = 0; i < this->rowCount(); i++) {
+		if (this->data(this->index(i, 0)) == name) {
+			was = i;
+		}
+	}
+
+	int r = 0;
+
+	if (was == -1) {
+		r = this->rowCount();
+		this->insertRow(r);
+	} else {
+		r = was;
+	}
 
 	this->setData(this->index(r, 0), name);
 	this->setData(this->index(r, 1), QString::number(lev));
+}
+
+void SkillsModel::removeSkill(QString name, int lev) {
+	for (int i = 0; i < this->rowCount(); i++) {
+		if (this->data(this->index(i, 0)) == name) {
+			this->removeRow(i);
+			return;
+		}
+	}
 }

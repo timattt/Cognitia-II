@@ -55,6 +55,10 @@ void SkillPackEditor::on_AddSkill_clicked()
 
     ui->statusbar->showMessage("New skill added!");
     ui->totalSkills->setText(QString::number(model->rowCount()));
+
+    ui->tree->setCurrentIndex(model->index(row, 0));
+
+    on_AddLevel_clicked();
 }
 
 void SkillPackEditor::on_AddLevel_clicked()
@@ -64,6 +68,11 @@ void SkillPackEditor::on_AddLevel_clicked()
     }
 
     QModelIndex ind = ui->tree->currentIndex();
+
+    if (getTreeItemLevel(ind) == 2) {
+    	ind = ind.parent();
+    }
+
     if (ind.isValid() && getTreeItemLevel(ind) == 1) {
         // Add new list
         QStandardItem * skill = model->item(ind.row(), 0);
@@ -82,6 +91,8 @@ void SkillPackEditor::on_AddLevel_clicked()
         level->insertRows(0, 1);
         QStandardItem * desc = model->itemFromIndex(model->index(0, 0, level->index()));
         desc->setData("Empty description", Qt::EditRole);
+
+        ui->tree->expand(ind);
 
         ui->statusbar->showMessage("New level added!");
     }
@@ -269,6 +280,11 @@ void SkillPackEditor::on_remove_clicked()
     qDebug() << getTreeItemLevel(ind) << ind.row();
 
     QString dat = model->data(ind).toString();
+
+    if (level == 2 && model->itemFromIndex(ind)->parent()->rowCount() < 2) {
+    	ui->statusbar->showMessage("Nothing to remove!");
+    	return;
+    }
 
     if (level == 1 || level == 2) {
         model->removeRow(ind.row(), ind.parent());

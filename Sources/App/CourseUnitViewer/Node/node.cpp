@@ -85,7 +85,7 @@ void Node::calculateForces()
 
 QRectF Node::boundingRect() const
 {
-    qreal adjust = NODE_RAD / 5;
+    qreal adjust = NODE_RAD / 4;
     return QRectF( -NODE_RAD - adjust, -NODE_RAD - adjust, 2 * NODE_RAD + NODE_SHADOW_SHIFT + adjust, 2 * NODE_RAD + NODE_SHADOW_SHIFT + adjust);
 }
 

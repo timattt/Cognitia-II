@@ -32,6 +32,7 @@ public:
 	bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row,
 			int column, const QModelIndex &parent) override;
 	void addSkill(QString name, int lev);
+	void removeSkill(QString name, int lev);
 	//----------------------------------------
 
 private:
