@@ -25,6 +25,7 @@ SOURCES += \
     Structures/SkillPack/skillpack.cpp \
     CourseUnitViewer/Node/node.cpp \
     CourseUnitViewer/Node/edge.cpp \
+    Structures/StudentProgress/StudentProgress.cpp \
     CourseUnitViewer/coursescene.cpp \
     CourseEditor/skillsmodel.cpp
 
@@ -41,6 +42,7 @@ HEADERS += \
     CourseUnitViewer/Node/node.h \
     CourseUnitViewer/Node/edge.h \
     CourseUnitViewer/coursescene.h \
+    Structures/StudentProgress/StudentProgress.h \
     CourseEditor/skillsmodel.h
 
 FORMS += \
