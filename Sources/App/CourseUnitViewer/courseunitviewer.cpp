@@ -19,6 +19,10 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 	ui->attFact->setText(QString::number(DEFAULT_ATT_FAC));
 
 	ui->graphicsView->setAcceptDrops(true);
+
+	ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+
+	ui->graphicsView->setCacheMode(QGraphicsView::CacheNone);
 }
 
 CourseUnitViewer::~CourseUnitViewer() {
