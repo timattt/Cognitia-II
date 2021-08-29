@@ -55,7 +55,6 @@ private:
     Node * head;
     Node * current;
     QString skillPackPath;
-    QString helpMessage;
     int timerId;
     long long lastSkillPackModified;
     //--------------------------------------

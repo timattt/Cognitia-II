@@ -1,4 +1,5 @@
 #include "skillpackeditor.h"
+#include "../Help/smarthelper.h"
 #include "ui_skillpackeditor.h"
 
 SkillPackEditor::SkillPackEditor() :
@@ -7,14 +8,8 @@ SkillPackEditor::SkillPackEditor() :
     skillPackFile(nullptr),
     model(new QStandardItemModel(0, 1, this)),
     skillsSelection(new QItemSelectionModel(model, this)),
-    levelsSelection(new QItemSelectionModel(model, this)),
-    helpMessage("")
+    levelsSelection(new QItemSelectionModel(model, this))
 {
-    QFile helpm = QFile(":/help/Help/SkillPackEditorHelp.txt");
-    helpm.open(QIODevice::ReadOnly);
-    helpMessage = helpm.readAll();
-    helpm.close();
-
     ui->setupUi(this);
 
     model->setHeaderData(0, Qt::Horizontal, QObject::tr("Skills, levels, descriptions"));
@@ -307,7 +302,8 @@ void SkillPackEditor::on_actionClose_triggered()
 
 void SkillPackEditor::on_actionHelp_me_triggered()
 {
-    QMessageBox::about(this, "Help", helpMessage);
+	SmartHelper help(":/help/Help/SkillPackEditorHelp.txt", this);
+	help.exec();
 }
 
 

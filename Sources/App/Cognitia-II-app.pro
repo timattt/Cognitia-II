@@ -16,6 +16,7 @@ CONFIG += console
 SOURCES += \
     CourseEditor/courseeditor.cpp \
     CourseUnitViewer/courseunitviewer.cpp \
+    Help/smarthelper.cpp \
     Launcher/launcher.cpp \
     Core/main.cpp \
     SkillPackEditor/skillpackeditor.cpp \
@@ -31,6 +32,7 @@ SOURCES += \
 HEADERS += \
     CourseEditor/courseeditor.h \
     CourseUnitViewer/courseunitviewer.h \
+    Help/smarthelper.h \
     Launcher/launcher.h \
     SkillPackEditor/skillpackeditor.h \
     Structures/CourseUnit/courseunit.h \
@@ -44,6 +46,7 @@ HEADERS += \
 FORMS += \
     CourseEditor/courseeditor.ui \
     CourseUnitViewer/courseunitviewer.ui \
+    Help/smarthelper.ui \
     Launcher/launcher.ui \
     SkillPackEditor/skillpackeditor.ui
 

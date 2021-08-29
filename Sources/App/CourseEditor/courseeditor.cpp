@@ -6,21 +6,16 @@
 #include "../CourseUnitViewer/courseunitviewer.h"
 #include "../Structures/CourseUnit/courseunit.h"
 #include "../CourseUnitViewer/Node/edge.h"
+#include "../Help/smarthelper.h"
 
 CourseEditor::CourseEditor(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::CourseEditor),
 	current(nullptr),
 	head(nullptr),
-	helpMessage(""),
 	lastSkillPackModified(0)
 {
     ui->setupUi(this);
-
-    QFile helpm = QFile(":/help/Help/CourseEditorHelp.txt");
-    helpm.open(QIODevice::ReadOnly);
-    helpMessage = helpm.readAll();
-    helpm.close();
 
     inMd = new SkillsModel(this, 1);
     outMd = new SkillsModel(this, 0);
@@ -369,7 +364,8 @@ void CourseEditor::on_actionReturn_to_launcher_triggered() {
 }
 
 void CourseEditor::on_actionHelp_me_triggered() {
-	QMessageBox::about(this, "Help", helpMessage);
+	SmartHelper helper(":/help/Help/CourseEditorHelp.txt", this);
+	helper.exec();
 }
 
 void CourseEditor::on_actionClose_skillPack_triggered() {
