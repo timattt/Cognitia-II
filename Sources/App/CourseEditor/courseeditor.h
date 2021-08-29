@@ -19,7 +19,7 @@ public:
 
 	// Constructor and destructor
 	//--------------------------------------
-    explicit CourseEditor(QWidget *parent = nullptr);
+    CourseEditor();
     ~CourseEditor();
     //--------------------------------------
 
@@ -27,6 +27,7 @@ public:
 
 	// public functions
 	//--------------------------------------
+    //! Gives node that is editing currently
 	Node* getCurrent();
 	//--------------------------------------
 
@@ -34,14 +35,20 @@ private:
 
 	// private functions
 	//--------------------------------------
+	//! Fully clears skills lib that was loaded
 	void clearSkillsLib();
+	//! Fully clears everything except skillLib
 	void clearCourseUnit();
+	// Transfers everything from this gui (except skillLib) to CourseUnit object
 	void fromFileToGui(CourseUnit * crs);
+	//! Transfers everything from this courseUnit to this gui
 	void fromGuiToFile(CourseUnit * crs);
-	void fromCourseUnitToNode(CourseUnit * cu, Node * nd);
-	void fromNodeToCourseUnit(Node * nd, CourseUnit * cu);
+	//! Shows message in status bar
 	void mes(QString mes);
+	//! Loads skill pack and sets it into skillLib
 	void setSkillPack(QString path);
+	//! Adds skill to lib
+	void addSkillToLib(QString name, int totalLevels);
 	//--------------------------------------
 
 private:
@@ -55,7 +62,6 @@ private:
     Node * head;
     Node * current;
     QString skillPackPath;
-    QString helpMessage;
     int timerId;
     long long lastSkillPackModified;
     //--------------------------------------
@@ -72,7 +78,7 @@ private slots:
 
     // private slots
     //--------------------------------------
-    void addSkillToLib(QString name, int totalLevels);
+	void on_descrPanel_textChanged();
     void on_addSkill_pressed();
     void on_removeSkill_pressed();
     void setNodeToRedactor(Node * nd);

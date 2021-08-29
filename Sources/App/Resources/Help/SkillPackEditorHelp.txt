@@ -1,1 +1,6 @@
-Here you can create and edit skill sets. You can make a skill multilevel, so in order to have a certain level you need to develop the corresponding skill. A description can be added to each level so that the user can understand which level corresponds to his knowledge.
+# SkillPack editor
+
+Here you can create and edit skill sets.
+Skill - it is special ability that student can achieve while passing your course.
+You can make a skill multilevel, so in order to have a certain level you need to develop the corresponding skill.
+A description can be added to each level so that the user can understand which level corresponds to his knowledge.

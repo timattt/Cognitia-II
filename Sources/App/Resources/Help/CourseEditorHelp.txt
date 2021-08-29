@@ -1,1 +1,20 @@
-Some help...
+# Course editor
+
+## General
+
+Here you can create a course.
+The structure is as follows: there is a tree of course units-inside the individual course units there is a graph of new course units and so on.
+For example: a bachelor's degree is a unit course. each semester is a unit course embedded in the bachelor's degree.
+Moreover, the semesters form a graph in the form of a line. In turn, each semester has its own nested course units - tasks, lectures or something else.
+Each unit has input and output skills - that is, what you need to know to start performing and what you will know after performing.
+
+## Interface
+On the left is the editing panel for the current course of the unit.
+There you can change the name, see in which file it is saved. On the bottom left there is a library with skins.
+To make the library work, connect some skill pack. To add a skill to a unit, select a skill in the library, click the add button and drag it either to the table or directly to the vertex.
+To delete the desired skill, you need to first select it, and then drag the delete button. Well, or just select a skill in the table and click the delete button.
+
+## Graph
+You can drag the vertices with the left mouse button.
+To add an edge, right-click on the vertex and drag the new edge to the vertex you need.
+The freezing mode allows you to disable physics. To delete edges and vertices, turn on the delete mode and left-click on the objects that you want to delete.

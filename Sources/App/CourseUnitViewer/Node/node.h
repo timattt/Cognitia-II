@@ -5,6 +5,7 @@
 
 class Edge;
 class CourseUnitViewer;
+class CourseUnit;
 
 #define DEFAULT_ATT_FAC 300
 #define DEFAULT_REP_FAC 0.1
@@ -57,6 +58,8 @@ public:
 	void setFile(QString file);
 	void setColor(QColor color = Qt::blue);
 	void clearSkills();
+	QString getDescription();
+	void setDescription(QString str);
     //--------------------------------------
 
 protected:
@@ -86,7 +89,15 @@ private:
     QMap<QString, int> outSkills;
     QString file;
     QString name;
+    QString description;
     QColor color = Qt::blue;
     //--------------------------------------
 };
+
+// global functions
+//--------------------------------------
+void fromCourseUnitToNode(CourseUnit * cu, Node * nd);
+void fromNodeToCourseUnit(Node * nd, CourseUnit * cu);
+//--------------------------------------
+
 #endif

@@ -62,6 +62,12 @@ void CourseScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 				if (nd != nullptr) {
 					emit this->view->nodeSelected(nullptr);
 				}
+				if (nd != nullptr) {
+					emit view->nodeDeleted(nd);
+				}
+				if (ed != nullptr) {
+					emit view->edgeDeleted(ed);
+				}
 				delete it;
 				return;
 			} else {
