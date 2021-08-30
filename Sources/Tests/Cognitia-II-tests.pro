@@ -1,6 +1,8 @@
 TARGET = Cognitia-II-tests
-SOURCES += CourseUnitTests.cpp \
-           ../App/Structures/CourseUnit/courseunit.cpp
-HEADERS = ../App/Structures/CourseUnit/courseunit.h
+SOURCES += StructuresTests.cpp \
+           ../App/Structures/CourseUnit/courseunit.cpp \
+           ../App/Structures/StudentProgress/StudentProgress.cpp
+HEADERS = ../App/Structures/CourseUnit/courseunit.h \
+			../App/Structures/StudentProgress/StudentProgress.h
 QT += testlib
 

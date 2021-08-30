@@ -1,14 +1,16 @@
 #include <QtTest/QtTest>
 #include "../App/Structures/CourseUnit/courseunit.h"
+#include "../App/Structures/StudentProgress/StudentProgress.h"
 
-class Test_CourseUnit : public QObject{
+class Test_Structures : public QObject{
     Q_OBJECT
 private slots:
-    void saveAndLoad();
+    void saveAndLoadCourseUnit();
+    void saveAndLoadStudentProgress();
 };
 
 
-void Test_CourseUnit::saveAndLoad(){
+void Test_Structures::saveAndLoadCourseUnit(){
 
     QVector<CourseUnit*> course;
 
@@ -57,5 +59,27 @@ void Test_CourseUnit::saveAndLoad(){
     QCOMPARE(u, uu);
 }
 
-QTEST_MAIN(Test_CourseUnit)
-#include "CourseUnitTests.moc"
+void Test_Structures::saveAndLoadStudentProgress() {
+	StudentProgress sp;
+
+	sp.setObjectName("test");
+
+	sp.addProgress("CourseUnit1", "Skill1", 0.4);
+	sp.addProgress("CourseUnit2", "Skill2", 1.4);
+	sp.addProgress("CourseUnit3", "Skill3", 2.4);
+	sp.addProgress("CourseUnit4", "Skill4", 3.4);
+	sp.addProgress("CourseUnit5", "Skill5", 4.4);
+
+	QFile fl = QFile("test.cognitiaStudentProgress");
+
+	sp.save(&fl);
+
+	StudentProgress sp1;
+
+	sp1.load(&fl);
+
+    QCOMPARE(sp.toString(), sp1.toString());
+}
+
+QTEST_MAIN(Test_Structures)
+#include "StructuresTests.moc"
