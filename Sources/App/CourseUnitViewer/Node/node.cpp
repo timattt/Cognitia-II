@@ -10,6 +10,8 @@ Node::Node(CourseUnitViewer *graphWidget)
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
+
+    setName("New node");
 }
 
 void Node::addEdge(Edge *edge)
@@ -116,7 +118,7 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     }
     painter->setBrush(gradient);
 
-    painter->setPen(QPen(Qt::black, 1));
+    painter->setPen(QPen(Qt::black, NODE_RAD / 25.0));
 
     painter->drawEllipse(-NODE_RAD, -NODE_RAD, 2 * NODE_RAD, 2 * NODE_RAD);
 
@@ -178,12 +180,10 @@ bool Node::hasEdgeToNode(Node *nd) {
 	return false;
 }
 
-#define PI 3.1415
+#define PI 3.14159265359
 
 void Node::drawSkills(QPainter *painter, const QStyleOptionGraphicsItem *option,
 		QWidget *widget) {
-
-
 	double rad = NODE_RAD / 4;
 
 	QFont f = painter->font();
@@ -192,7 +192,7 @@ void Node::drawSkills(QPainter *painter, const QStyleOptionGraphicsItem *option,
 	f.setWeight(QFont::ExtraBold);
 	painter->setFont(f);
 
-	painter->setPen(QPen(Qt::black, 0.4));
+	painter->setPen(QPen(Qt::black, NODE_RAD / 25.0));
 
     double anglePerSkill = 30;
     double startAngle = 180 -inSkills.size() * anglePerSkill / 2;
@@ -278,6 +278,69 @@ void Node::drawSkills(QPainter *painter, const QStyleOptionGraphicsItem *option,
 	gr.setColorAt(0, QColor(this->color));
 	painter->setBrush(gr);
 	painter->drawEllipse(QPointF(0, 0), rad * 1.5, rad * 1.5);
+
+	// Name bACKGROUND
+	startAngle = -180;
+	endAngle = 0;
+	double anglePerSymbol = (endAngle - startAngle) / name.length();
+
+	double dist = 1.5 * rad;
+
+	QRadialGradient gradient(0, 0, (dist + rad));
+    gradient.setColorAt(1, QColor(Qt::darkMagenta));
+    gradient.setColorAt(0, QColor(Qt::magenta));
+    painter->setBrush(gradient);
+    QPainterPath p = QPainterPath();
+
+	for (int i = 0; i < name.length() + 1; i++) {
+		double alpha = (startAngle + (i) * anglePerSymbol);
+		double x = cos(alpha / 180.0 * PI) * (dist + rad);
+		double y = sin(alpha / 180.0 * PI) * (dist + rad);
+
+		if (i == 0) {
+			p.moveTo(x, y);
+		} else {
+			p.lineTo(x, y);
+		}
+	}
+
+	for (int i = name.length(); i != -1; i--) {
+		double alpha = (startAngle + (i) * anglePerSymbol);
+		double x = cos(alpha / 180.0 * PI) * dist * 0.9;
+		double y = sin(alpha / 180.0 * PI) * dist * 0.9;
+
+		p.lineTo(x, y);
+	}
+
+	// Name
+	p.closeSubpath();
+	painter->drawPath(p);
+	startAngle = -170;
+	endAngle = -10;
+	anglePerSymbol = (endAngle - startAngle) / name.length();
+
+	painter->setPen(QPen(Qt::black, NODE_RAD / 25.0));
+	for (int i = 0; i < name.length(); i++) {
+		QChar c = name[i];
+
+		double alpha = (startAngle + (i + 0.5) * anglePerSymbol);
+
+		double x = cos(alpha / 180.0 * PI) * dist ;
+		double y = sin(alpha / 180.0 * PI) * dist ;
+
+
+		painter->translate(x, y);
+		painter->rotate(alpha - 180);
+		painter->rotate(-90);
+
+		painter->drawText(QRect(-rad / 2, -rad, rad, rad), Qt::AlignCenter, QString(c));
+
+		painter->rotate(90);
+		painter->rotate(-alpha + 180);
+		painter->translate(-x, -y);
+
+	}
+
 }
 
 QString Node::rebuildStr(QString str) {
