@@ -96,6 +96,7 @@ private slots:
     void on_actionHelp_me_triggered();
     void on_actionClose_skillPack_triggered();
     void on_actionClose_courseUnit_triggered();
+    void on_markDownShow_stateChanged(int v);
     //--------------------------------------
 
 signals:

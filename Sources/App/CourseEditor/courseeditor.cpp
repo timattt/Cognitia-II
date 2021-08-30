@@ -340,6 +340,7 @@ void CourseEditor::setSkillPack(QString path) {
 
 void CourseEditor::on_descrPanel_textChanged() {
 	current->setDescription(ui->descrPanel->toPlainText());
+	ui->markDownPreview->setMarkdown(ui->descrPanel->toPlainText());
 }
 
 void CourseEditor::timerEvent(QTimerEvent *event) {
@@ -354,5 +355,15 @@ void CourseEditor::timerEvent(QTimerEvent *event) {
 	if (lastSkillPackModified < t) {
 		lastSkillPackModified = t;
 		setSkillPack(skillPackPath);
+	}
+}
+
+void CourseEditor::on_markDownShow_stateChanged(int v) {
+	if (v == 0) {
+		ui->markDownPreview->hide();
+		ui->markdownPreviewLabel->hide();
+	} else {
+		ui->markDownPreview->show();
+		ui->markdownPreviewLabel->show();
 	}
 }
