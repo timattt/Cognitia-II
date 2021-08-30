@@ -27,6 +27,7 @@ signals:
     void startSkillPackEditor();
     void startCourseEditor();
     void startServer();
+    void startStudentClient();
 };
 
 #endif // LAUNCHER_H

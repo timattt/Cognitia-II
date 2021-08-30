@@ -13,6 +13,7 @@ Server::Server(QWidget *parent) :
 
 Server::~Server()
 {
+    delete mtcpServ;
     delete ui;
 }
 
@@ -69,10 +70,11 @@ void Server::slotReadClient(){
 
         QString str;
         in >> str;
-
+        nextblocksize = 0;
 
         ui->Log-> append(str);
         ui->ActiveUsers->append(str);
+
     }
 }
 

@@ -38,6 +38,14 @@ void Launcher::on_runButton_clicked()
             hide();
         }
      }
+
+     else if (ui->modesChooser->currentText() == "Student client") {
+        emit startStudentClient();
+        if (mayHideWhenUnused) {
+            hide();
+        }
+     }
+
 }
 
 void Launcher::on_keepLauncherOpenCheckbox_stateChanged(int v) {

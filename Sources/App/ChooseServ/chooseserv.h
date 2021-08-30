@@ -13,11 +13,16 @@ class ChooseServ : public QMainWindow
 {
     Q_OBJECT
 
+private:
+      void setServ(const QString&);
+
 public:
     explicit ChooseServ(QWidget *parent = nullptr);
     ~ChooseServ();
 
-    void setServ(const QString&);
+    QString getIP();
+    QString getPort();
+
 
 private slots:
 
@@ -26,6 +31,9 @@ private slots:
     void on_actionChoose_server_triggered();
 
     void on_actionSave_Server_triggered();
+
+signals:
+    void onServConnectclicked();
 
 private:
     Ui::ChooseServ *ui;

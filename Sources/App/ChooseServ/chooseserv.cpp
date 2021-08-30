@@ -19,20 +19,51 @@ ChooseServ::~ChooseServ()
 
 void ChooseServ::on_ConnectButton_clicked()
 {
+    emit onServConnectclicked();
+}
 
+QString ChooseServ::getIP(){
+    return ui -> IPaddress -> text();
+}
+
+QString ChooseServ::getPort(){
+    return ui -> PortNum -> text();
 }
 
 
 void ChooseServ::on_actionChoose_server_triggered()
 {
-    QString path = QFileDialog::getOpenFileName(this, "Select server file");
+    QString filter = QString("(*") + QString(SERVEREXTENTION) + QString(")");
+    QString path = QFileDialog::getOpenFileName(this, "Select server file", QString(), filter);
 
     setServ(path);
 }
 
 
 void ChooseServ::setServ(const QString& path){
+        QFile serv = QFile(path);
 
+        if (!serv.exists()) {
+            QMessageBox::critical(0, "Failing to load", "Please choose server file");
+            return;
+        }
+
+        QString data = nullptr;
+
+        if (serv.open(QIODevice::ReadOnly)) {
+            QTextStream stream(&serv);
+            data = stream.readAll();
+            serv.close();
+        } else {
+            QMessageBox::critical(0, "Failing to load", "Please try one more time");
+            return;
+        }
+
+        QStringList unit_data = data.split(ServDelim, Qt::SkipEmptyParts);
+
+        ui -> ServName -> textChanged(unit_data[0]);
+        ui -> IPaddress -> textChanged(unit_data[1]);
+        ui -> PortNum -> textChanged(unit_data[2]);
 }
 
 
