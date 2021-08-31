@@ -89,3 +89,9 @@ void Server::sendToClient(QTcpSocket* Socket, const QString& str) {
     Socket -> write(arrBlock);
 
 }
+
+void Server::on_returnToL_clicked()
+{
+    emit onClose();
+}
+

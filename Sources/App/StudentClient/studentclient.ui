@@ -36,6 +36,7 @@
      <string>Help</string>
     </property>
     <addaction name="actionHelp_me"/>
+    <addaction name="actionReturn_to_Launcher"/>
    </widget>
    <addaction name="menuServer"/>
    <addaction name="menuHelp"/>
@@ -55,6 +56,7 @@
    <addaction name="actionSave_all_and_send"/>
    <addaction name="actionTest_Connection"/>
    <addaction name="actionHelp_me"/>
+   <addaction name="actionReturn_to_Launcher"/>
   </widget>
   <action name="actionChange_Server">
    <property name="text">
@@ -74,6 +76,11 @@
   <action name="actionSave_all_and_send">
    <property name="text">
     <string>Save all and send</string>
+   </property>
+  </action>
+  <action name="actionReturn_to_Launcher">
+   <property name="text">
+    <string>Return to Launcher</string>
    </property>
   </action>
  </widget>

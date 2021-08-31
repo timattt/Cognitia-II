@@ -8,6 +8,7 @@
 #include "../Structures/SkillPack/skillpack.h"
 #include "../Structures/StudentProgress/StudentProgress.h"
 #include "../ChooseServ/chooseserv.h"
+#include "../Structures/ServerCommands/serverCommands.h"
 
 namespace Ui {
 class StudentClient;
@@ -24,6 +25,10 @@ private:
     CourseUnit courseUnit;
     StudentProgress* progress;
     ChooseServ* chooseserv;
+    QString StudentName;
+
+    QString datafromServer;
+    int respCode;
 
 
 public:
@@ -32,7 +37,9 @@ public:
 
 
 private:
-    void sendToServer(const QString&);
+    void sendToServer(int code, const QString& str);
+    void endReception(int datasize);
+
 
 private slots:
     void on_actionChange_Server_triggered();
@@ -41,6 +48,9 @@ private slots:
     void slotConnected();
     void startConnection();
     void on_actionSave_all_and_send_triggered();
+
+
+    void on_actionReturn_to_Launcher_triggered();
 
 public slots:
     void onStart();

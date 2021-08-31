@@ -10,7 +10,7 @@ StudentClient::StudentClient(QWidget *parent) :
     chooseserv = new ChooseServ(this);
     connect(mSocket, SIGNAL(connected()), SLOT(slotConnected()));
     connect(mSocket, SIGNAL(readyRead()), SLOT(slotReadyRead()));
-    connect(mSocket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), this, SLOT(slotError(QAbstractSocket::SocketError)));
+    connect(mSocket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), SLOT(slotError(QAbstractSocket::SocketError)));
     connect(chooseserv, SIGNAL(onServConnectclicked()), SLOT(startConnection()));
 }
 
@@ -45,9 +45,13 @@ void StudentClient::startConnection(){
 
 void StudentClient::slotConnected(){
 
-    this -> sendToServer(chooseserv -> getName());
-    chooseserv -> hide();
+    StudentName = chooseserv -> getName();
+    this -> sendToServer(static_cast<int>(getUserName), "");
 
+    if (mSocket -> waitForReadyRead(10000))
+        chooseserv -> hide();
+    else
+        QMessageBox::critical(this, "Failing", "Timeout");
 }
 
 void StudentClient::slotError(QAbstractSocket::SocketError error){
@@ -60,8 +64,7 @@ void StudentClient::slotError(QAbstractSocket::SocketError error){
                          "The connection was refused" :
                          QString(mSocket -> errorString()));
 
-    (new QErrorMessage(this) )->showMessage(strEr);
-    //QMessageBox::critical(this, "Failing", strEr);
+    QMessageBox::critical(this, "Failing", strEr);
     mSocket -> close();
 }
 
@@ -78,14 +81,22 @@ void StudentClient::slotReadyRead(){
         if(mSocket -> bytesAvailable() < nextBlockSize)
             break;
 
-        QString str;
-        in >> str;
+
+        in >> datafromServer;
+
+        endReception(nextBlockSize);
         nextBlockSize = 0;
     }
 }
 
 
-void StudentClient::sendToServer(const QString& str){
+
+void StudentClient::endReception(int nextBlockSize){
+
+}
+
+
+void StudentClient::sendToServer(int code, const QString& str){
 
     QByteArray arrBlock;
     QDataStream out(&arrBlock, QIODevice::WriteOnly);
@@ -105,4 +116,11 @@ void StudentClient::on_actionSave_all_and_send_triggered()
 }
 
 
+
+
+void StudentClient::on_actionReturn_to_Launcher_triggered()
+{
+    chooseserv -> hide();
+    emit onClose();
+}
 
