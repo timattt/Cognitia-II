@@ -79,13 +79,13 @@ void Server::slotReadClient(){
 }
 
 void Server::sendToClient(QTcpSocket* Socket, const QString& str) {
-    /* QByteArray arrBlock;
+    QByteArray arrBlock;
     QDataStream out(&arrBlock, QIODevice::WriteOnly);
 
-    out << quint16(0) << QTime::currentTime() << str;
+    out << quint16(0) << str;
     out.device()->seek(0);
     out << quint16(arrBlock.size() - sizeof(quint16));
 
     Socket -> write(arrBlock);
-    */
+
 }

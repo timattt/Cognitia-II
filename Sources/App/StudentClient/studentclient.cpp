@@ -24,23 +24,28 @@ StudentClient::~StudentClient()
 void StudentClient::on_actionChange_Server_triggered()
 {
     ui->statusbar->showMessage("Changing server");
-
+    chooseserv -> show();
 }
 
 void StudentClient::onStart(){
     chooseserv -> show();
+    this -> show();
 }
 
 void StudentClient::startConnection(){
     QString IP = chooseserv -> getIP();
     unsigned Port = (chooseserv -> getPort()).toUInt();
 
+    if(mSocket -> state() == QAbstractSocket::ConnectedState){
+        mSocket -> close();
+    }
     mSocket -> connectToHost(IP, Port);
 
 }
 
 void StudentClient::slotConnected(){
-    this -> show();
+
+    this -> sendToServer(chooseserv -> getName());
     chooseserv -> hide();
 
 }
@@ -55,7 +60,8 @@ void StudentClient::slotError(QAbstractSocket::SocketError error){
                          "The connection was refused" :
                          QString(mSocket -> errorString()));
 
-    QMessageBox::critical(0, "Failing", strEr);
+    (new QErrorMessage(this) )->showMessage(strEr);
+    //QMessageBox::critical(this, "Failing", strEr);
     mSocket -> close();
 }
 
@@ -79,7 +85,16 @@ void StudentClient::slotReadyRead(){
 }
 
 
-void StudentClient::slotSendToServer(){
+void StudentClient::sendToServer(const QString& str){
+
+    QByteArray arrBlock;
+    QDataStream out(&arrBlock, QIODevice::WriteOnly);
+
+    out << quint16(0) << str;
+    out.device()->seek(0);
+    out << quint16(arrBlock.size() - sizeof(quint16));
+
+    mSocket -> write(arrBlock);
 
 }
 

@@ -20,12 +20,15 @@ private:
     size_t height = 50;
     size_t x = 0;
     size_t y = 0;
+    int colour;
     QVector<std::pair<QString, size_t>> income;
     QVector<std::pair<QString, size_t>> outcome;
     QString description = "";
     QVector<QString> linked_units;
     QVector<CourseUnit*> embedded_units;
     QString lastFilePath;
+    size_t field_width = 100;
+    size_t field_height = 80;
     //------------------------------------------
 
 public:
@@ -47,8 +50,15 @@ public:
     void setSize(size_t width, size_t height);
     std::pair<size_t, size_t> getSize() const;   //first - width, second - height
 
+    void setFieldSize(size_t width, size_t height);
+    std::pair<size_t, size_t> getFieldSize() const; //first - width, second - height
+
+
     void setCoords(size_t x, size_t y);
     std::pair<size_t, size_t> getCoords() const;
+
+    void setColour(int colour_);
+    int  getColour();
 
     void addIncome(const std::pair<QString, size_t>&);
     void addOutcome(const std::pair<QString, size_t>&);

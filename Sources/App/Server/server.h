@@ -37,6 +37,10 @@ public slots:
     virtual void slotNewConnection();
             void slotReadClient();
 
+
+signals:
+            void onClose();
+
 private:
     Ui::Server *ui;
 };

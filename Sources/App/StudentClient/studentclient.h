@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QTcpSocket>
+#include <QErrorMessage>
 #include "../Structures/CourseUnit/courseunit.h"
 #include "../Structures/SkillPack/skillpack.h"
 #include "../Structures/StudentProgress/StudentProgress.h"
@@ -21,19 +22,23 @@ private:
     quint16 nextBlockSize = 0;
     SkillPack skillpack;
     CourseUnit courseUnit;
-    StudentProgress progress;
+    StudentProgress* progress;
     ChooseServ* chooseserv;
+
 
 public:
     explicit StudentClient(QWidget *parent = nullptr);
     ~StudentClient();
+
+
+private:
+    void sendToServer(const QString&);
 
 private slots:
     void on_actionChange_Server_triggered();
     void slotReadyRead();
     void slotError(QAbstractSocket::SocketError);
     void slotConnected();
-    void slotSendToServer();
     void startConnection();
     void on_actionSave_all_and_send_triggered();
 

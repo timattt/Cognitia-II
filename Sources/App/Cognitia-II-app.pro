@@ -42,6 +42,7 @@ HEADERS += \
     Launcher/launcher.h \
     SkillPackEditor/skillpackeditor.h \
     Structures/CourseUnit/courseunit.h \
+    Structures/ServerCommands/serverCommands.h \
     Structures/SkillPack/skill.h \
     Structures/SkillPack/skillpack.h \
     CourseUnitViewer/Node/node.h \
