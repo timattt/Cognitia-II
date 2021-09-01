@@ -21,9 +21,7 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 
 	ui->graphicsView->setAcceptDrops(true);
 
-	ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
-
-	ui->graphicsView->setCacheMode(QGraphicsView::CacheNone);
+	ui->graphicsView->setCacheMode(QGraphicsView::CacheBackground);
 }
 
 CourseUnitViewer::~CourseUnitViewer() {
@@ -193,10 +191,6 @@ void CourseUnitViewer::addEdge(Edge *e) {
 	scene->addItem(e);
 }
 
-//QList<QGraphicsItem*> CourseUnitViewer::getAllItems() {
-//	return scene->items();
-//}
-
 void CourseUnitViewer::unpack(CourseUnit *head) {
 	QMap<QString, Node*> nodes;
 
@@ -242,5 +236,16 @@ void CourseUnitViewer::pack(CourseUnit *head) {
 			units[ed->sourceNode()->getName()]->addConnection(ed->destNode()->getName());
 			units[ed->destNode()->getName()]->addConnection(ed->sourceNode()->getName());
 		}
+	}
+}
+
+void CourseUnitViewer::setSceneSize(int w, int h) {
+}
+
+void CourseUnitViewer::on_repaintAll_stateChanged(int v) {
+	if (!v) {
+		ui->graphicsView->setViewportUpdateMode(QGraphicsView::MinimalViewportUpdate);
+	} else {
+		ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 	}
 }

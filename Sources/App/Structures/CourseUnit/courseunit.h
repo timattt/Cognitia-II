@@ -8,6 +8,14 @@
 #include <QDir>
 #include <QFileInfo>
 
+// Constants
+//-----------------------------------------------
+#define UNITSEPARATOR "|~^|"
+#define FIELDSSEPARATOR "!(!"
+#define VECTORSEPARATOR "?(?"
+#define COURSE_UNIT_FILE_EXTENSION ".CourseUnit"
+//-----------------------------------------------
+
 class CourseUnit : public QObject
 {
     Q_OBJECT

@@ -1,13 +1,5 @@
 #include "CourseUnit.h"
 
-// Constants
-//-----------------------------------------------
-#define UNITSEPARATOR "|~^|"
-#define FIELDSSEPARATOR "!(!"
-#define VECTORSEPARATOR "?(?"
-#define COURSE_UNIT_FILE_EXTENSION ".CourseUnit"
-//-----------------------------------------------
-
 CourseUnit::CourseUnit(QObject* pobj): QObject(pobj), income(), outcome(), embedded_units(), linked_units(){
 
 }

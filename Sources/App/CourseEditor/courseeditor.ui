@@ -14,6 +14,18 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">
+QPushButton:pressed {color:red}
+
+QWidget { border: 1px solid lightgray}
+
+QLabel {border: 1px solid gray}
+QPushButton {border: 1px solid gray}
+
+QPushButton:hover { border-radius:5px; background:lightgreen}
+QLabel:hover { border-radius:5px; background:lightgreen}</string>
+   </property>
    <layout class="QHBoxLayout" name="horizontalLayout_6">
     <item>
      <widget class="QWidget" name="widget_2" native="true">
@@ -145,6 +157,9 @@
           <widget class="QCheckBox" name="markDownShow">
            <property name="text">
             <string>Show markdown preview</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
            </property>
           </widget>
          </item>

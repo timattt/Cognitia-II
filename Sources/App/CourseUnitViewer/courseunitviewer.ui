@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>864</width>
-    <height>319</height>
+    <width>875</width>
+    <height>562</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -124,6 +124,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="repaintAll">
+       <property name="text">
+        <string>Repaint all</string>
+       </property>
+      </widget>
      </item>
      <item alignment="Qt::AlignRight">
       <widget class="QCheckBox" name="freezeCheckbox">

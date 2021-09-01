@@ -88,8 +88,8 @@ void Node::calculateForces()
 
 QRectF Node::boundingRect() const
 {
-    qreal adjust = NODE_RAD / 4;
-    return QRectF( -NODE_RAD - adjust, -NODE_RAD - adjust, 2 * NODE_RAD + NODE_SHADOW_SHIFT + adjust, 2 * NODE_RAD + NODE_SHADOW_SHIFT + adjust);
+    qreal adjust = NODE_RAD / 2;
+    return QRectF( -NODE_RAD - adjust, -NODE_RAD - adjust, 2 * NODE_RAD + NODE_SHADOW_SHIFT + 2*adjust, 2 * NODE_RAD + NODE_SHADOW_SHIFT + 2*adjust);
 }
 
 QPainterPath Node::shape() const
@@ -282,7 +282,7 @@ void Node::drawSkills(QPainter *painter, const QStyleOptionGraphicsItem *option,
 	// Name bACKGROUND
 	startAngle = -180;
 	endAngle = 0;
-	double anglePerSymbol = (endAngle - startAngle) / name.length();
+	double anglePerSymbol = (endAngle - startAngle) / RECTS_PER_NAME;
 
 	double dist = 1.5 * rad;
 
@@ -292,7 +292,7 @@ void Node::drawSkills(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->setBrush(gradient);
     QPainterPath p = QPainterPath();
 
-	for (int i = 0; i < name.length() + 1; i++) {
+	for (int i = 0; i < RECTS_PER_NAME + 1; i++) {
 		double alpha = (startAngle + (i) * anglePerSymbol);
 		double x = cos(alpha / 180.0 * PI) * (dist + rad);
 		double y = sin(alpha / 180.0 * PI) * (dist + rad);
@@ -304,7 +304,7 @@ void Node::drawSkills(QPainter *painter, const QStyleOptionGraphicsItem *option,
 		}
 	}
 
-	for (int i = name.length(); i != -1; i--) {
+	for (int i = RECTS_PER_NAME; i != -1; i--) {
 		double alpha = (startAngle + (i) * anglePerSymbol);
 		double x = cos(alpha / 180.0 * PI) * dist * 0.9;
 		double y = sin(alpha / 180.0 * PI) * dist * 0.9;
@@ -356,8 +356,8 @@ QString Node::rebuildStr(QString str) {
 
 		if (partIndex < partSize) {
 			QChar v = lst[partNumber][partIndex].toUpper();
-			if (partIndex > 0) {
-				v = v.toLower();
+			if (partIndex == 0) {
+				v = v.toUpper();
 			}
 			res[partNumber] += v;
 			added++;

@@ -64,6 +64,9 @@ void SkillPackEditor::on_AddLevel_clicked()
 
     QModelIndex ind = ui->tree->currentIndex();
 
+    if (getTreeItemLevel(ind) == 3) {
+    	ind = ind.parent();
+    }
     if (getTreeItemLevel(ind) == 2) {
     	ind = ind.parent();
     }
@@ -232,7 +235,7 @@ void SkillPackEditor::ensureFileIsNull()
 
 void SkillPackEditor::on_actionCreate_triggered()
 {
-    QString path = QFileDialog::getSaveFileName(this, "Create skill pack file");
+    QString path = QFileDialog::getSaveFileName(this, "Create skill pack file", QString(), QString("(*") + SKILL_PACK_FILE_EXTENSION + QString(")"));
 
     if (path.size() == 0) {
         return;
@@ -245,7 +248,7 @@ void SkillPackEditor::on_actionCreate_triggered()
 
 void SkillPackEditor::on_actionOpen_triggered()
 {
-    QString path = QFileDialog::getOpenFileName(this, "Select skill pack file");
+    QString path = QFileDialog::getOpenFileName(this, "Select skill pack file", QString(), QString("(*") + SKILL_PACK_FILE_EXTENSION + QString(")"));
 
     if (path.size() == 0) {
         return;
@@ -295,8 +298,9 @@ void SkillPackEditor::on_actionClose_triggered()
     ensureFileIsNull();
     model->clear();
     model->setHeaderData(0, Qt::Horizontal, QObject::tr("Skills, levels, descriptions"));
-    ui->totalSkills->setText("");
-    ui->currentFileName->setText("");
+    ui->totalSkills->clear();
+    ui->currentFileName->clear();
+    ui->skillPackName->clear();
 }
 
 
@@ -316,7 +320,7 @@ void SkillPackEditor::on_actionReturn_to_launcher_triggered()
 
 void SkillPackEditor::on_actionSet_style_triggered()
 {
-    QString path = QFileDialog::getOpenFileName(this, "Select CSS file");
+    QString path = QFileDialog::getOpenFileName(this, "Select CSS file", QString(), QString("(*") + ".css" + QString(")"));
     QFile st = QFile(path);
     if (!st.exists()) {
         ui->statusbar->showMessage("CSS file not exists!");

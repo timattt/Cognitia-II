@@ -64,6 +64,8 @@ public:
 	void pack(CourseUnit * head);
 	//! If drag is currently happining then it will be stoppped
 	void abortDrag();
+	//! Set scene size
+	void setSceneSize(int w, int h);
     //----------------------------------
     
 private slots:
@@ -81,6 +83,7 @@ private slots:
 	void on_attFact_editingFinished();
     void on_repFact_editingFinished();
     void on_massFac_editingFinished();
+    void on_repaintAll_stateChanged(int v);
     //----------------------------------
 
 signals:
