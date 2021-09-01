@@ -33,9 +33,15 @@ private slots:
 
     void on_StartServ_clicked();
 
+    void on_returnToL_clicked();
+
 public slots:
     virtual void slotNewConnection();
             void slotReadClient();
+
+
+signals:
+            void onClose();
 
 private:
     Ui::Server *ui;

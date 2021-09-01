@@ -36,6 +36,7 @@ void CourseUnit::saveCourseUnit(QFile *dest) {
          stream << height << FIELDSSEPARATOR;
          stream << x << FIELDSSEPARATOR;
          stream << y << FIELDSSEPARATOR;
+         stream << colour << FIELDSSEPARATOR;
 
          for(int i = 0; i < income.size(); ++i){
              stream << income[i].first << ":" << income[i].second << VECTORSEPARATOR;
@@ -52,7 +53,9 @@ void CourseUnit::saveCourseUnit(QFile *dest) {
          for(int i = 0; i < linked_units.size(); ++i){
              stream << linked_units[i] << VECTORSEPARATOR;
          }
-
+         stream << FIELDSSEPARATOR;
+         stream << field_height << FIELDSSEPARATOR;
+         stream << field_width;
          stream << UNITSEPARATOR;
 
          for (int i = 0; i < embedded_units.size(); ++i) {
@@ -112,26 +115,29 @@ void CourseUnit::loadCourseUnit(QFile *res){
     height = fields_data[2].toULong();
     x = fields_data[3].toULong();
     y = fields_data[4].toULong();
+    colour = fields_data[5].toInt();
 
-    QStringList vector_data = fields_data[5].split(VECTORSEPARATOR, Qt::SkipEmptyParts);
+    QStringList vector_data = fields_data[6].split(VECTORSEPARATOR, Qt::SkipEmptyParts);
     for(int i = 0; i < vector_data.size(); ++i){
         QStringList pairs = vector_data[i].split(":");
         income.push_back(std::make_pair(pairs[0], pairs[1].toULongLong()));
     }
 
-    vector_data = fields_data[6].split(VECTORSEPARATOR, Qt::SkipEmptyParts);
+    vector_data = fields_data[7].split(VECTORSEPARATOR, Qt::SkipEmptyParts);
     for(int i = 0; i < vector_data.size(); ++i){
         QStringList pairs = vector_data[i].split(":");
         outcome.push_back(std::make_pair(pairs[0], pairs[1].toULongLong()));
     }
 
-    description = fields_data[7];
+    description = fields_data[8];
 
-    vector_data = fields_data[8].split(VECTORSEPARATOR, Qt::SkipEmptyParts);
+    vector_data = fields_data[9].split(VECTORSEPARATOR, Qt::SkipEmptyParts);
     for(int i = 0; i < vector_data.size(); ++i){
         linked_units.push_back(vector_data[i]);
     }
 
+    field_height = fields_data[10].toULong();
+    field_width = fields_data[11].toULong();
 
     embedded_units.reserve(unit_data.size() - 1);
 
@@ -149,6 +155,24 @@ void CourseUnit::loadCourseUnit(QFile *res){
 
         embedded_units.push_back(unit);
     }
+}
+
+void CourseUnit::setColour(int colour_){
+    colour = colour_;
+}
+
+int CourseUnit::getColour(){
+    return colour;
+}
+
+
+void CourseUnit::setFieldSize(size_t nwidth, size_t nheight){
+    field_height = nheight;
+    field_width = nwidth;
+}
+
+std::pair<size_t, size_t> CourseUnit::getFieldSize() const{
+    return std::make_pair(field_width, field_height);
 }
 
 

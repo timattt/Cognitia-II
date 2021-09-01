@@ -22,6 +22,7 @@ public:
 
     QString getIP();
     QString getPort();
+    QString getName();
 
 
 private slots:

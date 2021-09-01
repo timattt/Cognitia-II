@@ -30,6 +30,10 @@ QString ChooseServ::getPort(){
     return ui -> PortNum -> text();
 }
 
+QString ChooseServ::getName(){
+    return ui -> ServName -> text();
+}
+
 
 void ChooseServ::on_actionChoose_server_triggered()
 {
@@ -71,14 +75,7 @@ void ChooseServ::on_actionSave_Server_triggered()
 {
     qDebug() << "Saving server" << objectName();
 
-
-    QString name = ui->ServName->text();
-    if(!name.size()){
-        QMessageBox::critical(0, "Failing to save", "Please input server name");
-        return;
-    }
-
-    QString path = QFileDialog::getSaveFileName(this, "Save file", ":/"+ name) + SERVEREXTENTION;
+    QString path = QFileDialog::getSaveFileName(this, "Save file") + SERVEREXTENTION;
 
     QFile file = QFile(path);
     QFileInfo in = QFileInfo(file);
@@ -91,7 +88,7 @@ void ChooseServ::on_actionSave_Server_triggered()
     if (file.open(QIODevice::WriteOnly)) {
         QTextStream stream(&file);
 
-        stream << name << ServDelim;
+        stream << ui -> ServName -> text() << ServDelim;
         stream << ui -> IPaddress -> text() << ServDelim;
         stream << ui -> PortNum -> text();
 

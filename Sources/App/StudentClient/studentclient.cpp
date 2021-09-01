@@ -10,7 +10,7 @@ StudentClient::StudentClient(QWidget *parent) :
     chooseserv = new ChooseServ(this);
     connect(mSocket, SIGNAL(connected()), SLOT(slotConnected()));
     connect(mSocket, SIGNAL(readyRead()), SLOT(slotReadyRead()));
-    connect(mSocket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), this, SLOT(slotError(QAbstractSocket::SocketError)));
+    connect(mSocket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), SLOT(slotError(QAbstractSocket::SocketError)));
     connect(chooseserv, SIGNAL(onServConnectclicked()), SLOT(startConnection()));
 }
 
@@ -24,25 +24,34 @@ StudentClient::~StudentClient()
 void StudentClient::on_actionChange_Server_triggered()
 {
     ui->statusbar->showMessage("Changing server");
-
+    chooseserv -> show();
 }
 
 void StudentClient::onStart(){
     chooseserv -> show();
+    this -> show();
 }
 
 void StudentClient::startConnection(){
     QString IP = chooseserv -> getIP();
     unsigned Port = (chooseserv -> getPort()).toUInt();
 
+    if(mSocket -> state() == QAbstractSocket::ConnectedState){
+        mSocket -> close();
+    }
     mSocket -> connectToHost(IP, Port);
 
 }
 
 void StudentClient::slotConnected(){
-    this -> show();
-    chooseserv -> hide();
 
+    StudentName = chooseserv -> getName();
+    this -> sendToServer(static_cast<int>(getUserName), "");
+
+    if (mSocket -> waitForReadyRead(10000))
+        chooseserv -> hide();
+    else
+        QMessageBox::critical(this, "Failing", "Timeout");
 }
 
 void StudentClient::slotError(QAbstractSocket::SocketError error){
@@ -55,7 +64,7 @@ void StudentClient::slotError(QAbstractSocket::SocketError error){
                          "The connection was refused" :
                          QString(mSocket -> errorString()));
 
-    QMessageBox::critical(0, "Failing", strEr);
+    QMessageBox::critical(this, "Failing", strEr);
     mSocket -> close();
 }
 
@@ -72,14 +81,31 @@ void StudentClient::slotReadyRead(){
         if(mSocket -> bytesAvailable() < nextBlockSize)
             break;
 
-        QString str;
-        in >> str;
+
+        in >> datafromServer;
+
+        endReception(nextBlockSize);
         nextBlockSize = 0;
     }
 }
 
 
-void StudentClient::slotSendToServer(){
+
+void StudentClient::endReception(int nextBlockSize){
+
+}
+
+
+void StudentClient::sendToServer(int code, const QString& str){
+
+    QByteArray arrBlock;
+    QDataStream out(&arrBlock, QIODevice::WriteOnly);
+
+    out << quint16(0) << str;
+    out.device()->seek(0);
+    out << quint16(arrBlock.size() - sizeof(quint16));
+
+    mSocket -> write(arrBlock);
 
 }
 
@@ -90,4 +116,11 @@ void StudentClient::on_actionSave_all_and_send_triggered()
 }
 
 
+
+
+void StudentClient::on_actionReturn_to_Launcher_triggered()
+{
+    chooseserv -> hide();
+    emit onClose();
+}
 
