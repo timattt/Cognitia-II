@@ -84,17 +84,17 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     // Draw the arrows
     double angle = std::atan2(-line.dy(), line.dx());
 
-    QPointF sourceArrowP1 = sourcePoint + QPointF(sin(angle + M_PI / 3) * arrowSize,
-                                                  cos(angle + M_PI / 3) * arrowSize);
-    QPointF sourceArrowP2 = sourcePoint + QPointF(sin(angle + M_PI - M_PI / 3) * arrowSize,
-                                                  cos(angle + M_PI - M_PI / 3) * arrowSize);
+    //QPointF sourceArrowP1 = sourcePoint + QPointF(sin(angle + M_PI / 3) * arrowSize,
+    //                                              cos(angle + M_PI / 3) * arrowSize);
+    //QPointF sourceArrowP2 = sourcePoint + QPointF(sin(angle + M_PI - M_PI / 3) * arrowSize,
+    //                                              cos(angle + M_PI - M_PI / 3) * arrowSize);
     QPointF destArrowP1 = destPoint + QPointF(sin(angle - M_PI / 3) * arrowSize,
                                               cos(angle - M_PI / 3) * arrowSize);
     QPointF destArrowP2 = destPoint + QPointF(sin(angle - M_PI + M_PI / 3) * arrowSize,
                                               cos(angle - M_PI + M_PI / 3) * arrowSize);
 
     painter->setBrush(Qt::black);
-    painter->drawPolygon(QPolygonF() << line.p1() << sourceArrowP1 << sourceArrowP2);
+    //painter->drawPolygon(QPolygonF() << line.p1() << sourceArrowP1 << sourceArrowP2);
     painter->drawPolygon(QPolygonF() << line.p2() << destArrowP1 << destArrowP2);
 }
 

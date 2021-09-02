@@ -99,6 +99,7 @@ void CourseUnitViewer::on_areaDec_clicked() {
 	n.setWidth(n.width() / 2);
 	n.setHeight(n.height() / 2);
 	scene->setSceneRect(n);
+	emit sceneSizeChanged(n.width(), n.height());
 }
 
 void CourseUnitViewer::on_areaIn_clicked() {
@@ -107,6 +108,7 @@ void CourseUnitViewer::on_areaIn_clicked() {
 	n.setWidth(n.width() * 2);
 	n.setHeight(n.height() * 2);
 	scene->setSceneRect(n);
+	emit sceneSizeChanged(n.width(), n.height());
 }
 
 double CourseUnitViewer::getAttFac() const {
@@ -195,6 +197,10 @@ void CourseUnitViewer::unpack(CourseUnit *head) {
 	QMap<QString, Node*> nodes;
 
 	for (CourseUnit * u : head->getEmbedded()) {
+		if (nodes.contains(u->objectName())) {
+			throw QString("Some course units have same name!");
+		}
+
 		Node * nd = new Node(this);
 		fromCourseUnitToNode(u, nd);
 		nodes[nd->getName()] = nd;
@@ -219,6 +225,9 @@ void CourseUnitViewer::pack(CourseUnit *head) {
 		Node * nd = dynamic_cast<Node*>(it);
 
 		if (nd != nullptr) {
+			if (units.contains(nd->getName())) {
+				throw QString("Some nodes have same name!");
+			}
 			CourseUnit * un = new CourseUnit(head);
 			head->addEmbedded(un);
 			fromNodeToCourseUnit(nd, un);
@@ -234,12 +243,17 @@ void CourseUnitViewer::pack(CourseUnit *head) {
 		Edge * ed = dynamic_cast<Edge*>(it);
 		if (ed != nullptr) {
 			units[ed->sourceNode()->getName()]->addConnection(ed->destNode()->getName());
-			units[ed->destNode()->getName()]->addConnection(ed->sourceNode()->getName());
 		}
 	}
 }
 
 void CourseUnitViewer::setSceneSize(int w, int h) {
+	QRectF r = scene->sceneRect();
+	scene->setSceneRect((double) r.x(), (double) r.y(), (double) w, (double) h);
+}
+
+QPointF CourseUnitViewer::getSceneSize() {
+	return QPointF(scene->width(), scene->height());
 }
 
 void CourseUnitViewer::on_repaintAll_stateChanged(int v) {

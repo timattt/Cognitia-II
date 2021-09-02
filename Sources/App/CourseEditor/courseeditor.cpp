@@ -214,9 +214,9 @@ void CourseEditor::on_actionCourseUnitSave_triggered() {
 	QFile f = QFile(head->getFile());
 
 	CourseUnit crs;
-	fromGuiToFile(&crs);
 
 	try {
+		fromGuiToFile(&crs);
 		crs.saveCourseUnit(&f);
 		clearCourseUnit();//
 		fromFileToGui(&crs);// to insure that it will write file names into panels
@@ -238,16 +238,16 @@ void CourseEditor::on_actionCourseUnitCreate_triggered() {
 	head->setFile(path);
 
 	CourseUnit crs;
-	fromGuiToFile(&crs);
 
 	try {
+		fromGuiToFile(&crs);
 		crs.saveCourseUnit(&f);
 		mes("Created course unit file " + path);
+		fromFileToGui(&crs);
 	} catch (QString err) {
 		mes("Error wjile creating: " + err);
 	}
 
-	fromFileToGui(&crs);
 }
 
 void CourseEditor::clearSkillsLib() {
@@ -270,6 +270,8 @@ void CourseEditor::clearCourseUnit() {
 void CourseEditor::fromFileToGui(CourseUnit *crs) {
 	fromCourseUnitToNode(crs, head);
 
+	ui->widget->setSceneSize(crs->getFieldSize().first, crs->getFieldSize().second);
+
 	ui->widget->unpack(crs);
 
 	setNodeToRedactor(head);
@@ -277,6 +279,8 @@ void CourseEditor::fromFileToGui(CourseUnit *crs) {
 
 void CourseEditor::fromGuiToFile(CourseUnit *crs) {
 	fromNodeToCourseUnit(head, crs);
+
+	crs->setFieldSize(ui->widget->getSceneSize().x(), ui->widget->getSceneSize().y());
 
 	ui->widget->pack(crs);
 }

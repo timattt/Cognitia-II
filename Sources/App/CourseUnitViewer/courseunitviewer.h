@@ -66,6 +66,8 @@ public:
 	void abortDrag();
 	//! Set scene size
 	void setSceneSize(int w, int h);
+	//! Return scene size
+	QPointF getSceneSize();
     //----------------------------------
     
 private slots:
@@ -95,6 +97,7 @@ signals:
 	void nodeDeleted(Node * nd);
 	void edgeDeleted(Edge * ed);
 	void nodeSkillsChanged(Node * nd);
+	void sceneSizeChanged(int w, int h);
 	//----------------------------------
 };
 #endif

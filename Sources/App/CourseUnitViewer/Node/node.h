@@ -59,6 +59,7 @@ public:
 	void setFile(QString file);
 	void setColor(QColor color = Qt::blue);
 	void clearSkills();
+	QColor getColor();
 	QString getDescription();
 	void setDescription(QString str);
     //--------------------------------------

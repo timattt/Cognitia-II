@@ -343,6 +343,10 @@ void Node::drawSkills(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
 }
 
+QColor Node::getColor() {
+	return color;
+}
+
 QString Node::rebuildStr(QString str) {
 	QStringList lst = str.split(" ");
 
@@ -434,6 +438,7 @@ void Node::setDescription(QString str) {
 void fromNodeToCourseUnit(Node *nd, CourseUnit *cu) {
 	cu->setObjectName(nd->getName());
 	cu->setDescription(nd->getDescription());
+	cu->setColour(nd->getColor().rgb());
 
 	for (QString sk : nd->getInSkills().keys()) {
 		int lev = nd->getInSkills()[sk];
@@ -454,6 +459,7 @@ void fromCourseUnitToNode(CourseUnit *cu, Node *nd) {
 	nd->setName(cu->objectName());
 	nd->setFile(cu->getLastFilePath());
 	nd->setDescription(cu->getDescription());
+	nd->setColor(QColor(cu->getColour()));
 
 	for (std::pair<QString, size_t> in : cu->getIncome()) {
 		nd->addInSkill(in.first, in.second);
