@@ -1,5 +1,6 @@
 #include "edge.h"
 #include "node.h"
+#include "Design/nodedesigns.h"
 
 Edge::Edge(Node *sourceNode, Node *destNode) :
 		source(sourceNode), dest(destNode) {

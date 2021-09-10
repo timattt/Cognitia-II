@@ -22,6 +22,12 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 	ui->graphicsView->setAcceptDrops(true);
 
 	ui->graphicsView->setCacheMode(QGraphicsView::CacheBackground);
+
+	nodesDesigns["Olive"] = designOlive;
+	nodesDesigns["Formal"] = designFormal;
+
+	ui->designBox->addItems(nodesDesigns.keys());
+	ui->designBox->setCurrentIndex(0);
 }
 
 CourseUnitViewer::~CourseUnitViewer() {
@@ -261,5 +267,18 @@ void CourseUnitViewer::on_repaintAll_stateChanged(int v) {
 		ui->graphicsView->setViewportUpdateMode(QGraphicsView::MinimalViewportUpdate);
 	} else {
 		ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+	}
+}
+
+nodeDesign CourseUnitViewer::getCurrentDesign() {
+	return this->nodesDesigns[ui->designBox->currentText()];
+}
+
+void CourseUnitViewer::on_designBox_currentTextChanged(QString v) {
+	const QList<QGraphicsItem*> items = scene->items();
+	for (QGraphicsItem *item : items) {
+		if (Node *node = qgraphicsitem_cast<Node*>(item)) {
+			node->update();
+		}
 	}
 }
