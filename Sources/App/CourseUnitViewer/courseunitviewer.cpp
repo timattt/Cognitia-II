@@ -6,6 +6,7 @@
 #include "ui_courseunitviewer.h"
 #include "Node/Design/nodedesignformal.h"
 #include "Node/Design/nodedesignolive.h"
+#include "Node/Design/nodedesignold.h"
 
 #define SCALE_PER_PUSH 1.3
 
@@ -27,6 +28,7 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 
 	nodesDesigns["Olive"] = new NodeDesignOlive(this);
 	nodesDesigns["Formal"] = new NodeDesignFormal(this);
+	nodesDesigns["Old"] = new NodeDesignOld(this);
 
 	ui->designBox->addItems(nodesDesigns.keys());
 	ui->designBox->setCurrentIndex(0);

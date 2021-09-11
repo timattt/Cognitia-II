@@ -33,7 +33,7 @@ QString NodeDesign::rebuildStr(QString str, int max) {
 		int partIndex = res[partNumber].size();
 
 		if (partIndex < partSize) {
-			QChar v = lst[partNumber][partIndex].toUpper();
+			QChar v = lst[partNumber][partIndex];
 			if (partIndex == 0) {
 				v = v.toUpper();
 			}
@@ -44,4 +44,8 @@ QString NodeDesign::rebuildStr(QString str, int max) {
 	}
 
 	return res.join("");
+}
+
+double NodeDesign::getEdgeThickness() {
+	return 0.05;
 }

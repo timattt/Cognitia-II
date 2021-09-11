@@ -48,44 +48,52 @@ void CourseScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void CourseScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-	QGraphicsItem *it = this->itemAt(event->lastScenePos(), QTransform());
-	if (it != nullptr) {
-		Node * nd = dynamic_cast<Node*>(it);
-		Edge * ed = dynamic_cast<Edge*>(it);\
+	QList<QGraphicsItem*> its = this->items(event->lastScenePos());
 
+	Node * nd = nullptr;
+	Edge * ed = nullptr;
+
+	for (QGraphicsItem * it : its) {
 		if (nd == nullptr) {
-			emit this->view->nodeSelected(nullptr);
+			nd = dynamic_cast<Node*>(it);
 		}
+		if (ed == nullptr) {
+			ed = dynamic_cast<Edge*>(it);
+		}
+	}
 
-		if (nd != nullptr || ed != nullptr) {
-			if (view->deleteModeIsOn()) {
-				if (nd != nullptr) {
-					emit view->nodeSelected(nd);
-				}
-				if (nd != nullptr) {
-					emit view->nodeDeleted(nd);
-				}
-				if (ed != nullptr) {
-					emit view->edgeDeleted(ed);
-				}
-				delete it;
+	if (nd == nullptr) {
+		emit this->view->nodeSelected(nullptr);
+	}
+
+	if (nd != nullptr || ed != nullptr) {
+		if (view->deleteModeIsOn()) {
+			if (nd != nullptr) {
+				emit view->nodeSelected(nd);
+			}
+			if (nd != nullptr) {
+				emit view->nodeDeleted(nd);
+				delete nd;
 				return;
-			} else {
-				if (nd != nullptr) {
-					if (event->button() == Qt::RightButton) {
-						addItem(dragEdge = new Edge(nd));
-						dragEdge->setTarget(event->lastScenePos());
-						return;
-					} else {
-						emit this->view->nodeSelected(nd);
-					}
+			}
+			if (ed != nullptr) {
+				emit view->edgeDeleted(ed);
+				delete ed;
+				return;
+			}
+		} else {
+			if (nd != nullptr) {
+				if (event->button() == Qt::RightButton) {
+					addItem(dragEdge = new Edge(nd));
+					dragEdge->setTarget(event->lastScenePos());
+					return;
+				} else {
+					emit this->view->nodeSelected(nd);
 				}
 			}
 		}
-
-	} else {
-		emit view->nodeSelected(nullptr);
 	}
+
 	if (!view->deleteModeIsOn() && event->button() == Qt::LeftButton) {
 		QGraphicsScene::mousePressEvent(event);
 	}

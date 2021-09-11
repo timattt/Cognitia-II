@@ -34,6 +34,7 @@ SOURCES += \
     StudentClient/studentclient.cpp \
     CourseUnitViewer/Node/Design/nodedesign.cpp \
     CourseUnitViewer/Node/Design/nodedesignformal.cpp \
+    CourseUnitViewer/Node/Design/nodedesignold.cpp \
 	CourseUnitViewer/Node/Design/nodedesignolive.cpp
 
 HEADERS += \
@@ -56,6 +57,7 @@ HEADERS += \
     StudentClient/studentclient.h \
     CourseUnitViewer/Node/Design/nodedesign.h \
     CourseUnitViewer/Node/Design/nodedesignolive.h \
+    CourseUnitViewer/Node/Design/nodedesignold.h \
     CourseUnitViewer/Node/Design/nodedesigformal.h
 
 FORMS += \

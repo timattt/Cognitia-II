@@ -225,6 +225,7 @@ QString Node::getDescription() {
 
 void Node::setDescription(QString str) {
 	description = str;
+	update();
 }
 
 void fromNodeToCourseUnit(Node *nd, CourseUnit *cu) {
@@ -262,4 +263,8 @@ void fromCourseUnitToNode(CourseUnit *cu, Node *nd) {
 	}
 
 	nd->setPos(cu->getCoords().first, cu->getCoords().second);
+}
+
+CourseUnitViewer* Node::getViewer() {
+	return graph;
 }
