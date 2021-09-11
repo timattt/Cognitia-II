@@ -104,7 +104,7 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 	if (graph->getCurrentDesign() == nullptr) {
 		throw QString("No current node design!");
 	}
-	graph->getCurrentDesign()(this, painter, option, w);
+	graph->getCurrentDesign()->draw(this, painter, option, w);
 }
 
 QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -192,7 +192,7 @@ const QMap<QString, int>& Node::getOutSkills() const {
 	return outSkills;
 }
 
-const QString& Node::getName() const {
+QString Node::getName() {
 	return name;
 }
 

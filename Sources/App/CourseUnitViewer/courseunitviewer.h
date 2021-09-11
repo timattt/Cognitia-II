@@ -2,7 +2,7 @@
 #define COURSEUNITVIEWER_H
 
 #include <QtWidgets>
-#include "Node/Design/nodedesigns.h"
+#include "Node/Design/nodedesign.h"
 
 class Edge;
 class Node;
@@ -35,7 +35,7 @@ private:
     double attFac;
     double repFac;
     double massFac;
-    QMap<QString, nodeDesign> nodesDesigns;
+    QMap<QString, NodeDesign*> nodesDesigns;
     //----------------------------------
 
 private:
@@ -71,7 +71,7 @@ public:
 	//! Return scene size
 	QPointF getSceneSize();
 	//! Current design
-	nodeDesign getCurrentDesign();
+	NodeDesign* getCurrentDesign();
     //----------------------------------
     
 private slots:

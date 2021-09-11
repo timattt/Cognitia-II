@@ -1,35 +1,10 @@
-#include "nodedesigns.h"
+#include "nodedesignolive.h"
 #include "../node.h"
 #include <QtWidgets>
 
 #define PI 3.14159265359
 
-QString rebuildStr(QString str) {
-	QStringList lst = str.split(" ");
-
-	QStringList res = QStringList(lst.size());
-
-	int added = 0;
-	for (int i = 0, total = lst.join("").length(); added < MAX_SYMBOLS_PER_LINE && added < total; i++) {
-		int partNumber = i % lst.size();
-		int partSize = lst[partNumber].length();
-		int partIndex = res[partNumber].size();
-
-		if (partIndex < partSize) {
-			QChar v = lst[partNumber][partIndex].toUpper();
-			if (partIndex == 0) {
-				v = v.toUpper();
-			}
-			res[partNumber] += v;
-			added++;
-		}
-
-	}
-
-	return res.join("");
-}
-
-void drawSkills(Node * nd, QPainter *painter, const QStyleOptionGraphicsItem *option,
+void NodeDesignOlive::drawSkills(Node * nd, QPainter *painter, const QStyleOptionGraphicsItem *option,
 		QWidget *widget) {
 	double rad = NODE_RAD / 4;
 
@@ -190,7 +165,7 @@ void drawSkills(Node * nd, QPainter *painter, const QStyleOptionGraphicsItem *op
 
 }
 
-void designOlive(Node * nd, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
+void NodeDesignOlive::draw(Node * nd, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 
 	// Shadow
     painter->setPen(Qt::NoPen);
@@ -218,4 +193,15 @@ void designOlive(Node * nd, QPainter *painter, const QStyleOptionGraphicsItem *o
 
     drawSkills(nd, painter, option, widget);
 
+}
+
+bool NodeDesignOlive::verticalSkillsLayout() {
+	return false;
+}
+
+bool NodeDesignOlive::edgeToCenter() {
+	return false;
+}
+
+NodeDesignOlive::NodeDesignOlive(QObject *parent) : NodeDesign(parent) {
 }

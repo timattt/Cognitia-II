@@ -4,6 +4,8 @@
 #include "coursescene.h"
 #include "../Structures/CourseUnit/courseunit.h"
 #include "ui_courseunitviewer.h"
+#include "Node/Design/nodedesignformal.h"
+#include "Node/Design/nodedesignolive.h"
 
 #define SCALE_PER_PUSH 1.3
 
@@ -23,8 +25,8 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 
 	ui->graphicsView->setCacheMode(QGraphicsView::CacheBackground);
 
-	nodesDesigns["Olive"] = designOlive;
-	nodesDesigns["Formal"] = designFormal;
+	nodesDesigns["Olive"] = new NodeDesignOlive(this);
+	nodesDesigns["Formal"] = new NodeDesignFormal(this);
 
 	ui->designBox->addItems(nodesDesigns.keys());
 	ui->designBox->setCurrentIndex(0);
@@ -270,7 +272,7 @@ void CourseUnitViewer::on_repaintAll_stateChanged(int v) {
 	}
 }
 
-nodeDesign CourseUnitViewer::getCurrentDesign() {
+NodeDesign* CourseUnitViewer::getCurrentDesign() {
 	return this->nodesDesigns[ui->designBox->currentText()];
 }
 

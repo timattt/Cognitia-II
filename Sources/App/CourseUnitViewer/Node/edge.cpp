@@ -1,6 +1,6 @@
 #include "edge.h"
 #include "node.h"
-#include "Design/nodedesigns.h"
+#include "Design/nodedesign.h"
 
 Edge::Edge(Node *sourceNode, Node *destNode) :
 		source(sourceNode), dest(destNode) {
@@ -40,8 +40,8 @@ void Edge::adjust()
 	prepareGeometryChange();
 
 	if (length > qreal(2 * NODE_RAD)) {
-		QPointF edgeOffset((line.dx() * NODE_RAD) / length,
-				(line.dy() * NODE_RAD) / length);
+		QPointF edgeOffset((line.dx() * NODE_RAD * 1.08) / length,
+				(line.dy() * NODE_RAD * 1.08) / length);
 		sourcePoint = line.p1() + edgeOffset;
 		destPoint = line.p2() - edgeOffset;
 	} else {
@@ -71,6 +71,9 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 	if (source == nullptr) {
 		return;
 	}
+
+
+
 	QLineF line(sourcePoint, destPoint);
     if (line.length() < 0.5) {
         return;

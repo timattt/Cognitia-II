@@ -32,6 +32,7 @@ SOURCES += \
     CourseEditor/skillsmodel.cpp \
     Server/server.cpp \
     StudentClient/studentclient.cpp \
+    CourseUnitViewer/Node/Design/nodedesign.cpp \
     CourseUnitViewer/Node/Design/nodedesignformal.cpp \
 	CourseUnitViewer/Node/Design/nodedesignolive.cpp
 
@@ -53,7 +54,9 @@ HEADERS += \
     CourseEditor/skillsmodel.h\
     Server/server.h \
     StudentClient/studentclient.h \
-    CourseUnitViewer/Node/Design/nodesdesigns.h
+    CourseUnitViewer/Node/Design/nodedesign.h \
+    CourseUnitViewer/Node/Design/nodedesignolive.h \
+    CourseUnitViewer/Node/Design/nodedesigformal.h
 
 FORMS += \
     ChooseServ/chooseserv.ui \

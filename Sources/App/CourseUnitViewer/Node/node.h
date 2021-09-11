@@ -49,7 +49,7 @@ public:
     void removeOutSkill(QString name);
 	const QMap<QString, int>& getInSkills() const;
 	const QMap<QString, int>& getOutSkills() const;
-	const QString& getName() const;
+	QString getName();
 	void setName(QString name);
 	QString getFile() const;
 	void setFile(QString file);
@@ -88,7 +88,7 @@ private:
     QString file;
     QString name;
     QString description;
-    QColor color = Qt::blue;
+    QColor color = Qt::lightGray;
     //--------------------------------------
 };
 
