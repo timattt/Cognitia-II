@@ -8,5 +8,17 @@
     </qresource>
     	<qresource prefix="/icons/">
         <file>Icons/SkillDrag.png</file>
+		<file>Icons/ChooseServer.png</file>
+		<file>Icons/Help.png</file>
+		<file>Icons/SetStyle.png</file>
+		<file>Icons/ReturnToLauncher.png</file>
+		<file>Icons/OpenCourseUnitFile.png</file>
+		<file>Icons/CloseCourseUnitFile.png</file>
+		<file>Icons/CreateCourseUnitFile.png</file>
+		<file>Icons/SaveCourseUnitFile.png</file>
+		<file>Icons/OpenSkillPackFile.png</file>
+		<file>Icons/CloseSkillPackFile.png</file>
+		<file>Icons/CreateSkillPackFile.png</file>
+		<file>Icons/SaveSkillPackFile.png</file>
     </qresource>
 </RCC>

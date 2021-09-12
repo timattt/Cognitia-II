@@ -54,7 +54,6 @@ CourseEditor::~CourseEditor()
 }
 
 void CourseEditor::addSkillToLib(QString name, int totalLevels) {
-	qInfo() << "put" << name << totalLevels;
 	skillsLib[name] = totalLevels;
 	ui->skillsSelector->addItem(name);
 }
@@ -117,7 +116,7 @@ void CourseEditor::on_removeSkill_pressed() {
 
 void CourseEditor::setNodeToRedactor(Node *nd) {
 	if (current != nullptr && current != head) {
-		current->setColor(Qt::blue);
+		current->setColor(Qt::lightGray);
 	}
 	if (nd == nullptr) {
 		nd = head;
@@ -143,7 +142,7 @@ void CourseEditor::setNodeToRedactor(Node *nd) {
 	ui->fileLineEdit->setText(nd->getFile());
 	ui->descrPanel->setText(nd->getDescription());
 
-	nd->setColor(Qt::cyan);
+	nd->setColor(Qt::green);
 }
 
 void CourseEditor::on_levelsSelector_currentTextChanged(const QString &arg1)

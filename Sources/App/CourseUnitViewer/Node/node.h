@@ -7,14 +7,10 @@ class Edge;
 class CourseUnitViewer;
 class CourseUnit;
 
-#define DEFAULT_ATT_FAC 300
+#define DEFAULT_ATT_FAC 3000
 #define DEFAULT_REP_FAC 0.1
 #define DEFAULT_MASS_FAC 10
-#define NODE_RAD 50
-#define NODE_SHADOW_SHIFT (NODE_RAD / 20 * 3)
 #define EPSILON 0.2
-#define MAX_SYMBOLS_PER_LINE 4
-#define RECTS_PER_NAME 5
 
 class Node : public QGraphicsItem
 {
@@ -53,7 +49,7 @@ public:
     void removeOutSkill(QString name);
 	const QMap<QString, int>& getInSkills() const;
 	const QMap<QString, int>& getOutSkills() const;
-	const QString& getName() const;
+	QString getName();
 	void setName(QString name);
 	QString getFile() const;
 	void setFile(QString file);
@@ -62,6 +58,7 @@ public:
 	QColor getColor();
 	QString getDescription();
 	void setDescription(QString str);
+	CourseUnitViewer * getViewer();
     //--------------------------------------
 
 protected:
@@ -92,7 +89,7 @@ private:
     QString file;
     QString name;
     QString description;
-    QColor color = Qt::blue;
+    QColor color = Qt::lightGray;
     //--------------------------------------
 };
 

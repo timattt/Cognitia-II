@@ -4,6 +4,9 @@
 #include "coursescene.h"
 #include "../Structures/CourseUnit/courseunit.h"
 #include "ui_courseunitviewer.h"
+#include "Node/Design/nodedesignformal.h"
+#include "Node/Design/nodedesignolive.h"
+#include "Node/Design/nodedesignold.h"
 
 #define SCALE_PER_PUSH 1.3
 
@@ -22,6 +25,13 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 	ui->graphicsView->setAcceptDrops(true);
 
 	ui->graphicsView->setCacheMode(QGraphicsView::CacheBackground);
+
+	nodesDesigns["Olive"] = new NodeDesignOlive(this);
+	nodesDesigns["Formal"] = new NodeDesignFormal(this);
+	nodesDesigns["Old"] = new NodeDesignOld(this);
+
+	ui->designBox->addItems(nodesDesigns.keys());
+	ui->designBox->setCurrentIndex(0);
 }
 
 CourseUnitViewer::~CourseUnitViewer() {
@@ -261,5 +271,18 @@ void CourseUnitViewer::on_repaintAll_stateChanged(int v) {
 		ui->graphicsView->setViewportUpdateMode(QGraphicsView::MinimalViewportUpdate);
 	} else {
 		ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+	}
+}
+
+NodeDesign* CourseUnitViewer::getCurrentDesign() {
+	return this->nodesDesigns[ui->designBox->currentText()];
+}
+
+void CourseUnitViewer::on_designBox_currentTextChanged(QString v) {
+	const QList<QGraphicsItem*> items = scene->items();
+	for (QGraphicsItem *item : items) {
+		if (Node *node = qgraphicsitem_cast<Node*>(item)) {
+			node->update();
+		}
 	}
 }

@@ -167,7 +167,7 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -224,41 +224,71 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
    <addaction name="actionSet_style"/>
   </widget>
   <action name="actionCreate">
+   <property name="icon">
+    <iconset resource="../Resources/Resources.qrc">
+     <normaloff>:/icons/Icons/CreateSkillPackFile.png</normaloff>:/icons/Icons/CreateSkillPackFile.png</iconset>
+   </property>
    <property name="text">
     <string>Create skillpack file</string>
    </property>
   </action>
   <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="../Resources/Resources.qrc">
+     <normaloff>:/icons/Icons/OpenSkillPackFile.png</normaloff>:/icons/Icons/OpenSkillPackFile.png</iconset>
+   </property>
    <property name="text">
     <string>Open skillpack file</string>
    </property>
   </action>
   <action name="actionSave">
+   <property name="icon">
+    <iconset resource="../Resources/Resources.qrc">
+     <normaloff>:/icons/Icons/SaveSkillPackFile.png</normaloff>:/icons/Icons/SaveSkillPackFile.png</iconset>
+   </property>
    <property name="text">
     <string>Save skillpack file</string>
    </property>
   </action>
   <action name="actionClose">
+   <property name="icon">
+    <iconset resource="../Resources/Resources.qrc">
+     <normaloff>:/icons/Icons/CloseSkillPackFile.png</normaloff>:/icons/Icons/CloseSkillPackFile.png</iconset>
+   </property>
    <property name="text">
     <string>Close skilpack file</string>
    </property>
   </action>
   <action name="actionHelp_me">
+   <property name="icon">
+    <iconset resource="../Resources/Resources.qrc">
+     <normaloff>:/icons/Icons/Help.png</normaloff>:/icons/Icons/Help.png</iconset>
+   </property>
    <property name="text">
     <string>Help me!</string>
    </property>
   </action>
   <action name="actionReturn_to_launcher">
+   <property name="icon">
+    <iconset resource="../Resources/Resources.qrc">
+     <normaloff>:/icons/Icons/ReturnToLauncher.png</normaloff>:/icons/Icons/ReturnToLauncher.png</iconset>
+   </property>
    <property name="text">
     <string>Return to launcher</string>
    </property>
   </action>
   <action name="actionSet_style">
+   <property name="icon">
+    <iconset resource="../Resources/Resources.qrc">
+     <normaloff>:/icons/Icons/SetStyle.png</normaloff>:/icons/Icons/SetStyle.png</iconset>
+   </property>
    <property name="text">
     <string>Set style (Developers only)</string>
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../Resources/Resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

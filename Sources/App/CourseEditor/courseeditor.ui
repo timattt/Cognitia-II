@@ -368,6 +368,10 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
    <addaction name="actionReturn_to_launcher"/>
   </widget>
   <action name="actionCourseUnitOpen">
+   <property name="icon">
+    <iconset resource="../Resources/Resources.qrc">
+     <normaloff>:/icons/Icons/OpenCourseUnitFile.png</normaloff>:/icons/Icons/OpenCourseUnitFile.png</iconset>
+   </property>
    <property name="text">
     <string>Open courseUnit</string>
    </property>
@@ -376,6 +380,10 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
    </property>
   </action>
   <action name="actionCourseUnitSave">
+   <property name="icon">
+    <iconset resource="../Resources/Resources.qrc">
+     <normaloff>:/icons/Icons/SaveCourseUnitFile.png</normaloff>:/icons/Icons/SaveCourseUnitFile.png</iconset>
+   </property>
    <property name="text">
     <string>Save courseUnit</string>
    </property>
@@ -384,6 +392,10 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
    </property>
   </action>
   <action name="actionCourseUnitCreate">
+   <property name="icon">
+    <iconset resource="../Resources/Resources.qrc">
+     <normaloff>:/icons/Icons/CreateCourseUnitFile.png</normaloff>:/icons/Icons/CreateCourseUnitFile.png</iconset>
+   </property>
    <property name="text">
     <string>Create courseUnit</string>
    </property>
@@ -392,6 +404,10 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
    </property>
   </action>
   <action name="actionSkillPackOpen">
+   <property name="icon">
+    <iconset resource="../Resources/Resources.qrc">
+     <normaloff>:/icons/Icons/OpenSkillPackFile.png</normaloff>:/icons/Icons/OpenSkillPackFile.png</iconset>
+   </property>
    <property name="text">
     <string>Open skillPack</string>
    </property>
@@ -400,21 +416,37 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
    </property>
   </action>
   <action name="actionHelp_me">
+   <property name="icon">
+    <iconset resource="../Resources/Resources.qrc">
+     <normaloff>:/icons/Icons/Help.png</normaloff>:/icons/Icons/Help.png</iconset>
+   </property>
    <property name="text">
     <string>Help me!</string>
    </property>
   </action>
   <action name="actionReturn_to_launcher">
+   <property name="icon">
+    <iconset resource="../Resources/Resources.qrc">
+     <normaloff>:/icons/Icons/ReturnToLauncher.png</normaloff>:/icons/Icons/ReturnToLauncher.png</iconset>
+   </property>
    <property name="text">
     <string>Return to launcher</string>
    </property>
   </action>
   <action name="actionClose_courseUnit">
+   <property name="icon">
+    <iconset resource="../Resources/Resources.qrc">
+     <normaloff>:/icons/Icons/CloseCourseUnitFile.png</normaloff>:/icons/Icons/CloseCourseUnitFile.png</iconset>
+   </property>
    <property name="text">
     <string>Close courseUnit</string>
    </property>
   </action>
   <action name="actionClose_skillPack">
+   <property name="icon">
+    <iconset resource="../Resources/Resources.qrc">
+     <normaloff>:/icons/Icons/CloseSkillPackFile.png</normaloff>:/icons/Icons/CloseSkillPackFile.png</iconset>
+   </property>
    <property name="text">
     <string>Close skillPack</string>
    </property>
@@ -428,6 +460,8 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../Resources/Resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
