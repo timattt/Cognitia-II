@@ -20,16 +20,17 @@ class StudentClient : public QMainWindow
 
 private:
     QTcpSocket* mSocket;
-    quint16 nextBlockSize = 0;
-    SkillPack skillpack;
-    CourseUnit courseUnit;
+    quint32 nextBlockSize = 0;
+    SkillPack* skillpack;
+    CourseUnit* courseUnit;
     StudentProgress* progress;
     ChooseServ* chooseserv;
     QString StudentName;
 
-    QString datafromServer;
-    int respCode;
+    QByteArray datafromServer;
+    quint16 respCode;
 
+    bool inworkingrepository = false;
 
 public:
     explicit StudentClient(QWidget *parent = nullptr);
@@ -37,8 +38,11 @@ public:
 
 
 private:
-    void sendToServer(int code, const QString& str);
-    void endReception(int datasize);
+    void sendToServer(quint16 code, const QString& str);
+    void endReception();
+    void confirmConnection();
+    void OpenCourse();
+    void handleincFile(QDataStream&);
 
 
 private slots:
@@ -48,7 +52,6 @@ private slots:
     void slotConnected();
     void startConnection();
     void on_actionSave_all_and_send_triggered();
-
 
     void on_actionReturn_to_Launcher_triggered();
 

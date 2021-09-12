@@ -18,7 +18,9 @@ enum ServerReplies{
     retrieveCourseUnit,
     retrieveStudentProgress,
     retrieveSuccess,
-    retrieveFail
+    retrieveFailAutorisation,
+    retrieveFail,
+    firstConnectionSuccess
 };
 
 #endif // SERVERCOMMANDS_H

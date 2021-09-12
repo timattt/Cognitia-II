@@ -57,6 +57,7 @@ void ChooseServ::setServ(const QString& path){
         if (serv.open(QIODevice::ReadOnly)) {
             QTextStream stream(&serv);
             data = stream.readAll();
+            //qDebug() << "read server file " << data;
             serv.close();
         } else {
             QMessageBox::critical(0, "Failing to load", "Please try one more time");
@@ -65,9 +66,9 @@ void ChooseServ::setServ(const QString& path){
 
         QStringList unit_data = data.split(ServDelim, Qt::SkipEmptyParts);
 
-        ui -> ServName -> textChanged(unit_data[0]);
-        ui -> IPaddress -> textChanged(unit_data[1]);
-        ui -> PortNum -> textChanged(unit_data[2]);
+        ui -> ServName -> setText(unit_data[0]);
+        ui -> IPaddress -> setText(unit_data[1]);
+        ui -> PortNum -> setText(unit_data[2]);
 }
 
 

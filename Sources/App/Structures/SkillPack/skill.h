@@ -7,6 +7,9 @@
 #include <QFile>
 #include <QFileInfo>
 
+
+
+
 class Skill : public QObject {
     Q_OBJECT
 

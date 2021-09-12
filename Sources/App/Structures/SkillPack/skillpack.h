@@ -13,6 +13,7 @@
 //------------------------------------
 
 
+
 extern const char * SKILL_PACK_FILE_EXTENSION;
 extern const char * SKILL_FILE_EXTENSION;
 extern const char * SKILL_PACK_DELIMITER;

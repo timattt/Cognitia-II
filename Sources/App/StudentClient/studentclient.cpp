@@ -8,6 +8,8 @@ StudentClient::StudentClient(QWidget *parent) :
     ui->setupUi(this);
     mSocket = new QTcpSocket(this);
     chooseserv = new ChooseServ(this);
+    skillpack = new SkillPack(this);
+    courseUnit = new CourseUnit(this);
     connect(mSocket, SIGNAL(connected()), SLOT(slotConnected()));
     connect(mSocket, SIGNAL(readyRead()), SLOT(slotReadyRead()));
     connect(mSocket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), SLOT(slotError(QAbstractSocket::SocketError)));
@@ -18,12 +20,16 @@ StudentClient::~StudentClient()
 {
     delete mSocket;
     delete chooseserv;
+    delete skillpack;
+    delete courseUnit;
     delete ui;
 }
 
 void StudentClient::on_actionChange_Server_triggered()
 {
     ui->statusbar->showMessage("Changing server");
+    if (inworkingrepository)
+        QDir::setCurrent("../");
     chooseserv -> show();
 }
 
@@ -45,13 +51,20 @@ void StudentClient::startConnection(){
 
 void StudentClient::slotConnected(){
 
+    qDebug() << "connected to serv";
     StudentName = chooseserv -> getName();
-    this -> sendToServer(static_cast<int>(getUserName), "");
 
-    if (mSocket -> waitForReadyRead(10000))
-        chooseserv -> hide();
-    else
-        QMessageBox::critical(this, "Failing", "Timeout");
+    QDir dir = QDir();
+    if (!inworkingrepository)
+    {
+        dir.mkdir(StudentName + chooseserv -> getIP());
+        //QDir::setCurrent(StudentName + chooseserv -> getIP());
+        //inworkingrepository = true;
+        this -> sendToServer(static_cast<quint16>(getUserName), "");
+    }
+
+
+
 }
 
 void StudentClient::slotError(QAbstractSocket::SocketError error){
@@ -73,7 +86,7 @@ void StudentClient::slotReadyRead(){
 
     for(;;){
         if(!nextBlockSize){
-            if(mSocket -> bytesAvailable() < sizeof(quint16))
+            if(mSocket -> bytesAvailable() < sizeof(quint32))
                 break;
             in >> nextBlockSize;
         }
@@ -81,32 +94,121 @@ void StudentClient::slotReadyRead(){
         if(mSocket -> bytesAvailable() < nextBlockSize)
             break;
 
-
-        in >> datafromServer;
-
-        endReception(nextBlockSize);
+        qDebug() << "nextblock size " << nextBlockSize;
+        qDebug() << "bytes available " << mSocket -> bytesAvailable();
+        datafromServer = mSocket -> read(nextBlockSize);
+        qDebug() << "receiving " << datafromServer;
+        endReception();
         nextBlockSize = 0;
     }
 }
 
 
 
-void StudentClient::endReception(int nextBlockSize){
+void StudentClient::handleincFile(QDataStream& in){
+
+     QString filename;
+     in >> filename;
+     qDebug() << "handling file" << filename ;
+     QFile file(StudentName + chooseserv -> getIP() + QString("/") + filename);
+
+     if (file.open(QIODevice::WriteOnly)){
+         file.write(in.device()->readAll());
+     }
+     else
+     {
+         qDebug() << "Cant handle inc file " << filename ;
+     }
 
 }
 
 
-void StudentClient::sendToServer(int code, const QString& str){
+
+void StudentClient::endReception(){
+
+    QDataStream in(datafromServer);
+    in >> respCode;
+
+    switch (respCode) {
+    case retrieveCourseUnit:
+    case retrieveSkillpack:
+    case retrieveStudentProgress:
+        handleincFile(in);
+        break;
+    case retrieveFailAutorisation:
+    case firstConnectionSuccess:
+        qDebug() << "confirm connection";
+        confirmConnection();
+        break;
+    case retrieveFail:
+        QMessageBox::critical(this, "Failing", "Last operation wasnt complited");
+        break;
+    default:
+        qDebug() << "cant understand the code";
+        break;
+    }
+
+}
+
+
+void StudentClient::confirmConnection(){
+    if (respCode == retrieveFailAutorisation){
+        QMessageBox::critical(this, "Failing", "Wrong Name");
+        return;
+    } else {
+        chooseserv -> hide();
+    }
+
+    OpenCourse();
+}
+
+
+
+
+
+
+void StudentClient::OpenCourse(){
+    QDir curdir = QDir(StudentName + chooseserv -> getIP());
+    QStringList filters;
+    filters << "*.mainCourseUnit";
+    curdir.setNameFilters(filters);
+    QStringList courseFiles = curdir.entryList();
+
+    QFile fileMain(courseFiles[0]);
+
+    if (fileMain.open(QIODevice::ReadOnly)){
+        QDataStream in(&fileMain);
+        QString filename;
+        in >> filename;
+
+        QFile course(filename);
+        courseUnit -> loadCourseUnit(&course);
+
+        QFile pack(curdir.entryList(QStringList() << "*.cognitiaSkillPack")[0]);
+        skillpack -> load(&pack);
+
+        //QFile prog(curdir.entryList("*.StudentProgress")[0]);
+        //progress -> load(&prog);
+
+    }
+    else {
+        qDebug() << "cant open course main file";
+    }
+
+}
+
+
+void StudentClient::sendToServer(quint16 code, const QString& str){
 
     QByteArray arrBlock;
     QDataStream out(&arrBlock, QIODevice::WriteOnly);
 
-    out << quint16(0) << str;
+    out << quint32(0) << StudentName << code << str;
     out.device()->seek(0);
-    out << quint16(arrBlock.size() - sizeof(quint16));
+    out << quint32(arrBlock.size() - sizeof(quint32));
 
     mSocket -> write(arrBlock);
-
+    qDebug() << "sendind to server " << arrBlock;
 }
 
 

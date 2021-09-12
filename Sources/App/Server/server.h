@@ -4,7 +4,14 @@
 #include <QWidget>
 #include <QTcpServer>
 #include <QTcpSocket>
+#include <QDir>
 #include <QMessageBox>
+
+#include <QFileDialog>
+
+#include "../Structures/ServerCommands/serverCommands.h"
+
+
 namespace Ui {
 class Server;
 }
@@ -16,7 +23,7 @@ class Server : public QWidget
 private:
     QTcpServer* mtcpServ;
     unsigned nPort = 1917;
-    quint16 nextblocksize;
+    quint32 nextblocksize;
 
 
 public:
@@ -26,7 +33,13 @@ public:
     void setPort(unsigned);
 
 private:
-    void sendToClient(QTcpSocket*, const QString&);
+    void sendToClient(QTcpSocket*, quint16, const QString&);
+    void handleReq(QTcpSocket* client, quint32 block, const QByteArray& data);
+    bool SendCoursetoClient(QTcpSocket* client, const QString& name);
+    bool SendSkillpacktoClient(QTcpSocket* client, const QString& name);
+    bool SendStudentProgresstoClient(QTcpSocket* client, const QString& name);
+    bool SendFile(const QString&, QTcpSocket* client, quint16 code);
+    bool CheckClient(const QString&);
 
 private slots:
     void on_StopServ_clicked();
@@ -34,6 +47,9 @@ private slots:
     void on_StartServ_clicked();
 
     void on_returnToL_clicked();
+    void deleteFromLog();
+
+    void on_addStudent_clicked();
 
 public slots:
     virtual void slotNewConnection();
