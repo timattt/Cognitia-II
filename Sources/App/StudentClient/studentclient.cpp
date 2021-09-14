@@ -28,14 +28,19 @@ StudentClient::~StudentClient()
 void StudentClient::on_actionChange_Server_triggered()
 {
     ui->statusbar->showMessage("Changing server");
-    if (inworkingrepository)
+    if (inworkingrepository){
         QDir::setCurrent("../");
+        inworkingrepository = false;
+    }
+    this -> setEnabled(false);
     chooseserv -> show();
 }
 
 void StudentClient::onStart(){
+    this -> setEnabled(false);
     chooseserv -> show();
     this -> show();
+    ui->statusbar->showMessage("Server isnt connected");
 }
 
 void StudentClient::startConnection(){
@@ -58,8 +63,8 @@ void StudentClient::slotConnected(){
     if (!inworkingrepository)
     {
         dir.mkdir(StudentName + chooseserv -> getIP());
-        //QDir::setCurrent(StudentName + chooseserv -> getIP());
-        //inworkingrepository = true;
+        QDir::setCurrent(StudentName + chooseserv -> getIP());
+        inworkingrepository = true;
         this -> sendToServer(static_cast<quint16>(getUserName), "");
     }
 
@@ -110,7 +115,7 @@ void StudentClient::handleincFile(QDataStream& in){
      QString filename;
      in >> filename;
      qDebug() << "handling file" << filename ;
-     QFile file(StudentName + chooseserv -> getIP() + QString("/") + filename);
+     QFile file(filename);
 
      if (file.open(QIODevice::WriteOnly)){
          file.write(in.device()->readAll());
@@ -157,6 +162,7 @@ void StudentClient::confirmConnection(){
         return;
     } else {
         chooseserv -> hide();
+        this -> setEnabled(true);
     }
 
     OpenCourse();
@@ -168,7 +174,7 @@ void StudentClient::confirmConnection(){
 
 
 void StudentClient::OpenCourse(){
-    QDir curdir = QDir(StudentName + chooseserv -> getIP());
+    QDir curdir = QDir();
     QStringList filters;
     filters << "*.mainCourseUnit";
     curdir.setNameFilters(filters);
@@ -190,10 +196,29 @@ void StudentClient::OpenCourse(){
         //QFile prog(curdir.entryList("*.StudentProgress")[0]);
         //progress -> load(&prog);
 
+
+        setCourse();
+        setSkillpack();
+
     }
     else {
         qDebug() << "cant open course main file";
     }
+
+}
+
+
+
+void StudentClient::setCourse(){
+
+
+}
+
+
+
+void StudentClient::setSkillpack(){
+
+
 
 }
 
@@ -214,6 +239,11 @@ void StudentClient::sendToServer(quint16 code, const QString& str){
 
 void StudentClient::on_actionSave_all_and_send_triggered()
 {
+     if(!inworkingrepository){
+         ui->statusbar->showMessage("Please, connect to server");
+         return;
+     }
+
      ui->statusbar->showMessage("Save");
 }
 
