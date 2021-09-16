@@ -11,6 +11,7 @@ class CourseUnit;
 #define DEFAULT_REP_FAC 0.1
 #define DEFAULT_MASS_FAC 10
 #define EPSILON 0.2
+#define SELECT_COLOR Qt::green
 
 class Node : public QGraphicsItem
 {
@@ -59,6 +60,8 @@ public:
 	QString getDescription();
 	void setDescription(QString str);
 	CourseUnitViewer * getViewer();
+	void setSelected(bool v);
+	bool isSelected();
     //--------------------------------------
 
 protected:
@@ -68,14 +71,6 @@ protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-    //--------------------------------------
-
-private:
-
-    // private functions
-    //--------------------------------------
-    void drawSkills(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    QString rebuildStr(QString str);
     //--------------------------------------
 
 private:
@@ -90,6 +85,7 @@ private:
     QString name;
     QString description;
     QColor color = Qt::lightGray;
+    bool selected = 0;
     //--------------------------------------
 };
 

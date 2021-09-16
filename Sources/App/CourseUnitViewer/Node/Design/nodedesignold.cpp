@@ -32,7 +32,11 @@ void NodeDesignOld::draw(Node *nd, QPainter *painter,
 	f.setWeight(QFont::ExtraBold);
 	painter->setFont(f);
     painter->setPen(QPen(Qt::black, NODE_RAD / 100.0));
-    painter->setBrush(nd->getColor());
+	if (nd->isSelected()) {
+		painter->setBrush(SELECT_COLOR);
+	} else {
+		painter->setBrush(nd->getColor());
+	}
     //========================================
 
     // main rectangle
@@ -81,7 +85,11 @@ void NodeDesignOld::draw(Node *nd, QPainter *painter,
 		QRect r = QRect(-w / 2, -h / 2, w, h);
 
 		if (i == 0) {
-			painter->setBrush(nd->getColor());
+			if (nd->isSelected()) {
+				painter->setBrush(SELECT_COLOR);
+			} else {
+				painter->setBrush(nd->getColor());
+			}
 			painter->drawRect(r);
 			painter->drawText(r, Qt::AlignCenter, "IN:");
 			i++;
@@ -117,7 +125,11 @@ void NodeDesignOld::draw(Node *nd, QPainter *painter,
 		QRect r = QRect(-w / 2, -h / 2, w, h);
 
 		if (i == 0) {
-			painter->setBrush(nd->getColor());
+			if (nd->isSelected()) {
+				painter->setBrush(SELECT_COLOR);
+			} else {
+				painter->setBrush(nd->getColor());
+			}
 			painter->drawRect(r);
 			painter->drawText(r, Qt::AlignCenter, "OUT:");
 			i++;

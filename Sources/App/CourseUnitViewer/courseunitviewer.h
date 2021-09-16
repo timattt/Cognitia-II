@@ -66,6 +66,8 @@ public:
 	void pack(CourseUnit * head);
 	//! If drag is currently happining then it will be stoppped
 	void abortDrag();
+	//! Deselects everyhting
+	void deselectAll();
 	//! Set scene size
 	void setSceneSize(int w, int h);
 	//! Return scene size

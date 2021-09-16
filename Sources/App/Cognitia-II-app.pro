@@ -22,6 +22,7 @@ SOURCES += \
     Launcher/launcher.cpp \
     Core/main.cpp \
     SkillPackEditor/skillpackeditor.cpp \
+    SkillsFlower/skillsflower.cpp \
     Structures/CourseUnit/courseunit.cpp \
     Structures/SkillPack/skill.cpp \
     Structures/SkillPack/skillpack.cpp \
@@ -35,6 +36,8 @@ SOURCES += \
     CourseUnitViewer/Node/Design/nodedesign.cpp \
     CourseUnitViewer/Node/Design/nodedesignformal.cpp \
     CourseUnitViewer/Node/Design/nodedesignold.cpp \
+    SkillsFlower/flowerscene.cpp \
+    SkillsFlower/leaf.cpp \
 	CourseUnitViewer/Node/Design/nodedesignolive.cpp
 
 HEADERS += \
@@ -44,6 +47,7 @@ HEADERS += \
     Help/smarthelper.h \
     Launcher/launcher.h \
     SkillPackEditor/skillpackeditor.h \
+    SkillsFlower/skillsflower.h \
     Structures/CourseUnit/courseunit.h \
     Structures/ServerCommands/serverCommands.h \
     Structures/SkillPack/skill.h \
@@ -58,7 +62,9 @@ HEADERS += \
     CourseUnitViewer/Node/Design/nodedesign.h \
     CourseUnitViewer/Node/Design/nodedesignolive.h \
     CourseUnitViewer/Node/Design/nodedesignold.h \
-    CourseUnitViewer/Node/Design/nodedesigformal.h
+    SkillsFlower/flowerscene.h \
+    SkillsFlower/leaf.h \
+    CourseUnitViewer/Node/Design/nodedesignformal.h
 
 FORMS += \
     ChooseServ/chooseserv.ui \
@@ -68,6 +74,7 @@ FORMS += \
     Launcher/launcher.ui \
     SkillPackEditor/skillpackeditor.ui\
     Server/server.ui \
+    SkillsFlower/skillsflower.ui \
     StudentClient/studentclient.ui
 
 # Default rules for deployment.

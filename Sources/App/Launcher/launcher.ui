@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>CognitiaLauncher</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -85,6 +88,11 @@
          </property>
          <item>
           <property name="text">
+           <string>Student client</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
            <string>Course editor</string>
           </property>
          </item>
@@ -96,11 +104,6 @@
          <item>
           <property name="text">
            <string>Cognitia repository</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Student client</string>
           </property>
          </item>
          <item>

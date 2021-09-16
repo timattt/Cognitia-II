@@ -43,6 +43,8 @@ public:
 	void load(QFile * fl);
 	void save(QFile * fl);
 	void addProgress(QString courseUnit, QString skill, double level);
+	double getLevel(QString courseUnit, QString skill);
+	bool containsLevel(QString courseUnit, QString skill);
 	QString toString();
 	//----------------------------------
 };

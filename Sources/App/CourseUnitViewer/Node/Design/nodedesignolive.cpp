@@ -96,8 +96,13 @@ void NodeDesignOlive::drawSkills(Node * nd, QPainter *painter, const QStyleOptio
 
 	// center
 	QRadialGradient gr(0, 0, rad * 1.5);
-	gr.setColorAt(1, QColor(nd->getColor()).darker(200));
-	gr.setColorAt(0, QColor(nd->getColor()));
+	if (nd->isSelected()) {
+		gr.setColorAt(1, SELECT_COLOR);
+		gr.setColorAt(0, SELECT_COLOR);
+	} else {
+		gr.setColorAt(1, QColor(nd->getColor()).darker(200));
+		gr.setColorAt(0, QColor(nd->getColor()));
+	}
 	painter->setBrush(gr);
 	painter->drawEllipse(QPointF(0, 0), rad * 1.5, rad * 1.5);
 

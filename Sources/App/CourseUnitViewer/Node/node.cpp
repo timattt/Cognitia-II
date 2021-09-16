@@ -197,8 +197,10 @@ QString Node::getName() {
 }
 
 void Node::setName(QString name) {
+	if (this->name != name) {
+		update();
+	}
 	this->name = name;
-	update();
 }
 
 QString Node::getFile() const {
@@ -210,8 +212,10 @@ void Node::setFile(QString file) {
 }
 
 void Node::setColor(QColor color) {
+	if (this->color != color) {
+		update();
+	}
 	this->color = color;
-	update();
 }
 
 void Node::clearSkills() {
@@ -224,8 +228,10 @@ QString Node::getDescription() {
 }
 
 void Node::setDescription(QString str) {
+	if (str != description) {
+		update();
+	}
 	description = str;
-	update();
 }
 
 void fromNodeToCourseUnit(Node *nd, CourseUnit *cu) {
@@ -267,4 +273,15 @@ void fromCourseUnitToNode(CourseUnit *cu, Node *nd) {
 
 CourseUnitViewer* Node::getViewer() {
 	return graph;
+}
+
+void Node::setSelected(bool v) {
+	if (selected != v) {
+		update();
+	}
+	selected = v;
+}
+
+bool Node::isSelected() {
+	return selected;
 }

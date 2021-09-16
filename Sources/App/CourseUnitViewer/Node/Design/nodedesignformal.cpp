@@ -20,7 +20,11 @@ void NodeDesignFormal::draw(Node * nd, QPainter *painter, const QStyleOptionGrap
     //========================================
 
     QPen p = painter->pen();
-    p.setColor(nd->getColor());
+	if (nd->isSelected()) {
+		p.setColor(SELECT_COLOR);
+	} else {
+		p.setColor(nd->getColor());
+	}
     p.setStyle(Qt::DashLine);
     painter->setPen(p);
     painter->setBrush(Qt::NoBrush);

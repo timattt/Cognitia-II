@@ -37,7 +37,7 @@ void StudentClient::on_actionChange_Server_triggered()
 }
 
 void StudentClient::onStart(){
-    this -> setEnabled(false);
+  //  this -> setEnabled(false);
     chooseserv -> show();
     this -> show();
     ui->statusbar->showMessage("Server isnt connected");

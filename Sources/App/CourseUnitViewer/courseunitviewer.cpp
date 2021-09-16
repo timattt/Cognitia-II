@@ -278,6 +278,15 @@ NodeDesign* CourseUnitViewer::getCurrentDesign() {
 	return this->nodesDesigns[ui->designBox->currentText()];
 }
 
+void CourseUnitViewer::deselectAll() {
+	const QList<QGraphicsItem*> items = scene->items();
+	for (QGraphicsItem *item : items) {
+		if (Node *node = qgraphicsitem_cast<Node*>(item)) {
+			node->setSelected(false);
+		}
+	}
+}
+
 void CourseUnitViewer::on_designBox_currentTextChanged(QString v) {
 	const QList<QGraphicsItem*> items = scene->items();
 	for (QGraphicsItem *item : items) {

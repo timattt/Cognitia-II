@@ -115,9 +115,6 @@ void CourseEditor::on_removeSkill_pressed() {
 }
 
 void CourseEditor::setNodeToRedactor(Node *nd) {
-	if (current != nullptr && current != head) {
-		current->setColor(Qt::lightGray);
-	}
 	if (nd == nullptr) {
 		nd = head;
 	}
@@ -141,8 +138,6 @@ void CourseEditor::setNodeToRedactor(Node *nd) {
 	ui->nameLineEdit->setText(nd->getName());
 	ui->fileLineEdit->setText(nd->getFile());
 	ui->descrPanel->setText(nd->getDescription());
-
-	nd->setColor(Qt::green);
 }
 
 void CourseEditor::on_levelsSelector_currentTextChanged(const QString &arg1)

@@ -109,3 +109,11 @@ QString StudentProgress::toString() {
 
 	return r;
 }
+
+double StudentProgress::getLevel(QString courseUnit, QString skill) {
+	return progress[courseUnit][skill];
+}
+
+bool StudentProgress::containsLevel(QString courseUnit, QString skill) {
+	return progress.contains(courseUnit) && progress[courseUnit].contains(skill);
+}

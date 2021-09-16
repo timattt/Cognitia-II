@@ -63,12 +63,15 @@ void CourseScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 	}
 
 	if (nd == nullptr) {
+		view->deselectAll();
 		emit this->view->nodeSelected(nullptr);
 	}
 
 	if (nd != nullptr || ed != nullptr) {
 		if (view->deleteModeIsOn()) {
 			if (nd != nullptr) {
+				view->deselectAll();
+				nd->setSelected(true);
 				emit view->nodeSelected(nd);
 			}
 			if (nd != nullptr) {
@@ -88,6 +91,8 @@ void CourseScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 					dragEdge->setTarget(event->lastScenePos());
 					return;
 				} else {
+					view->deselectAll();
+					nd->setSelected(true);
 					emit this->view->nodeSelected(nd);
 				}
 			}

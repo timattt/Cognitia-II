@@ -11,7 +11,6 @@
 
 #include "../Structures/ServerCommands/serverCommands.h"
 
-
 namespace Ui {
 class Server;
 }
