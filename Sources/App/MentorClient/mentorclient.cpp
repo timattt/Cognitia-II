@@ -75,6 +75,8 @@ void MentorClient::on_studentChooser_currentTextChanged(const QString &name) {
 	ui->courseUnitViewer->unpack(students[name]);
 
 	currentStudent = name;
+
+	ui->courseUnitViewer->setSelectedNode(ui->courseUnitViewer->getSelectedNode());
 }
 
 void MentorClient::pack() {
