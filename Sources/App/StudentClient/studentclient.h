@@ -43,6 +43,7 @@ private:
     void confirmConnection();
     void OpenCourse();
     void handleincFile(QDataStream&);
+
     void display();
 
 
@@ -53,7 +54,7 @@ private slots:
     void slotConnected();
     void startConnection();
     void on_actionSave_all_and_send_triggered();
-
+    void onChooseServClosed();
     void on_actionReturn_to_Launcher_triggered();
 
 public slots:

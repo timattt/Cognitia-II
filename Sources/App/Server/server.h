@@ -6,6 +6,7 @@
 #include <QTcpSocket>
 #include <QDir>
 #include <QMessageBox>
+#include    <QMap>
 
 #include <QFileDialog>
 
@@ -23,7 +24,7 @@ private:
     QTcpServer* mtcpServ;
     unsigned nPort = 1917;
     quint32 nextblocksize;
-
+    QMap<QTcpSocket*, QString> Users;
 
 public:
     explicit Server(QWidget *parent = nullptr);
@@ -39,6 +40,7 @@ private:
     bool SendStudentProgresstoClient(QTcpSocket* client, const QString& name);
     bool SendFile(const QString&, QTcpSocket* client, quint16 code);
     bool CheckClient(const QString&);
+    QTcpSocket* Find_Dead();
 
 private slots:
     void on_StopServ_clicked();

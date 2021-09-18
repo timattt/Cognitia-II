@@ -22,6 +22,12 @@ void ChooseServ::on_ConnectButton_clicked()
     emit onServConnectclicked();
 }
 
+void ChooseServ::closeEvent(QCloseEvent *event)
+ {
+     emit chooseServClosed();
+     event->accept();
+ }
+
 QString ChooseServ::getIP(){
     return ui -> IPaddress -> text();
 }

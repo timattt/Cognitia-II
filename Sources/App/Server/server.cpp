@@ -8,7 +8,9 @@ Server::Server(QWidget *parent) :
 {
     ui->setupUi(this);
     mtcpServ = new QTcpServer(this);
+
     ui -> Log -> setReadOnly(true);
+    ui -> ActiveUsers -> setReadOnly(true);
 }
 
 Server::~Server()
@@ -50,7 +52,7 @@ void Server::on_StartServ_clicked()
 void Server::slotNewConnection(){
     QTcpSocket* ClientSocket = mtcpServ -> nextPendingConnection();
     connect(ClientSocket, SIGNAL(disconnected()), ClientSocket, SLOT(deleteLater()));
-    //connect(ClientSocket, SIGNAL(disconnected()), ClientSocket, SLOT(deleteFromLog()));
+    connect(ClientSocket, SIGNAL(disconnected()), SLOT(deleteFromLog()));
     connect(ClientSocket, SIGNAL(readyRead()), this, SLOT(slotReadClient()));
     qDebug() << "new connection";
 }
@@ -80,8 +82,32 @@ void Server::slotReadClient(){
 }
 
 
-void Server::deleteFromLog(){
+QTcpSocket* Server::Find_Dead(){
 
+
+    for(QTcpSocket* client : Users.keys())
+    {
+        if(client -> state() != QAbstractSocket::ConnectedState){
+            return client;
+        }
+    }
+    return nullptr;
+}
+
+
+
+void Server::deleteFromLog(){
+    QTcpSocket* client;
+    if(! (client = Find_Dead())){
+        return;
+    }
+    QString name = Users[client];
+    Users.remove(client);
+    QString log = ui -> ActiveUsers -> toPlainText();
+    log.replace(name, "");
+    ui -> ActiveUsers -> setText(log);
+
+    ui -> Log -> append(name + QString(" disconnected"));
 }
 
 
@@ -103,7 +129,7 @@ void Server::handleReq(QTcpSocket* client, quint32 block, const QByteArray &data
 
     switch (incCode) {
     case getUserName:
-
+        Users[client] = name;
         ui->Log-> append(name + QString(" connected!"));
         ui->ActiveUsers->append(name);
         if (!SendCoursetoClient(client, name) ||
@@ -160,10 +186,12 @@ bool Server::SendFile(const QString& filename, QTcpSocket *client, quint16 code)
             QByteArray arrBlock;
             QDataStream out(&arrBlock, QIODevice::WriteOnly);
            // filename = filename.section("/", -1);
+            qDebug() << quint32(0) << code << filename << file.readAll();
+            file.seek(0);
             out << quint32(0) << code << filename << file.readAll();
             out.device()->seek(0);
             out << quint32(arrBlock.size() - sizeof(quint32));
-
+            qDebug() << arrBlock;
             client -> write(arrBlock);
 
 
@@ -241,6 +269,7 @@ bool Server::SendStudentProgresstoClient(QTcpSocket *client, const QString &name
 
 
 bool Server::CheckClient(const QString & name){
+    qDebug() << QDir::currentPath();
     return QDir(name).exists();
 }
 

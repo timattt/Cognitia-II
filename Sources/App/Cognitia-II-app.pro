@@ -41,7 +41,7 @@ SOURCES += \
     CourseUnitViewer/Node/Design/nodedesignold.cpp \
     SkillsFlower/flowerscene.cpp \
     SkillsFlower/leaf.cpp \
-	CourseUnitViewer/Node/Design/nodedesignolive.cpp
+        CourseUnitViewer/Node/Design/nodedesignolive.cpp
 
 HEADERS += \
     ChooseServ/chooseserv.h \

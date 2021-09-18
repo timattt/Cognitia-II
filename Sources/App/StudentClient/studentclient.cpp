@@ -14,7 +14,7 @@ StudentClient::StudentClient(QWidget *parent) :
     connect(mSocket, SIGNAL(readyRead()), SLOT(slotReadyRead()));
     connect(mSocket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), SLOT(slotError(QAbstractSocket::SocketError)));
     connect(chooseserv, SIGNAL(onServConnectclicked()), SLOT(startConnection()));
-
+    connect(chooseserv, SIGNAL(chooseServClosed()), SLOT(onChooseServClosed()));
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->flower, SLOT(unpack(Node*)));
     connect(ui->flower, SIGNAL(skillLevelChanged(QString, double)), ui->courseUnitViewer, SLOT(makeProgressToSelected(QString, double)));
 
@@ -38,11 +38,21 @@ void StudentClient::on_actionChange_Server_triggered()
         inworkingrepository = false;
     }
     this -> setEnabled(false);
+    chooseserv -> setEnabled(true);
     chooseserv -> show();
 }
 
+
+void StudentClient::onChooseServClosed(){
+    this -> setEnabled(true);
+    ui->statusbar->showMessage("Server isnt connected, Please connect to the server");
+}
+
+
+
 void StudentClient::onStart(){
-  //  this -> setEnabled(false);
+    this -> setEnabled(false);
+    chooseserv -> setEnabled(true);
     chooseserv -> show();
     this -> show();
     ui->statusbar->showMessage("Server isnt connected");
@@ -123,6 +133,11 @@ void StudentClient::handleincFile(QDataStream& in){
      QFile file(filename);
 
      if (file.open(QIODevice::WriteOnly)){
+         QTextStream out(&file);
+         QByteArray filecont;
+         in >> filecont;
+         qDebug() << filecont;
+         out << filecont;
          file.write(in.device()->readAll());
      }
      else
@@ -164,11 +179,17 @@ void StudentClient::endReception(){
 void StudentClient::confirmConnection(){
     if (respCode == retrieveFailAutorisation){
         QMessageBox::critical(this, "Failing", "Wrong Name");
+        mSocket -> close();
+        QDir::setCurrent("../");
+        QDir dir = QDir();
+        dir.rmdir(StudentName + chooseserv -> getIP());
+        inworkingrepository = false;
         return;
-    } else {
-        chooseserv -> hide();
-        this -> setEnabled(true);
     }
+
+    chooseserv -> hide();
+    this -> setEnabled(true);
+    ui -> StudentName -> setText(chooseserv -> getName());
 
     OpenCourse();
 }
@@ -185,21 +206,33 @@ void StudentClient::OpenCourse(){
     curdir.setNameFilters(filters);
     QStringList courseFiles = curdir.entryList();
 
+    //qDebug() << courseFiles[0];
     QFile fileMain(courseFiles[0]);
 
     if (fileMain.open(QIODevice::ReadOnly)){
-        QDataStream in(&fileMain);
-        QString filename;
-        in >> filename;
+
+        QString filename(fileMain.readAll());
+        qDebug() << filename;
 
         QFile course(filename);
-        courseUnit -> loadCourseUnit(&course);
+        try {
+            courseUnit -> loadCourseUnit(&course);
+        }
+        catch (QString message){
+            qDebug() << message;
+        }
 
         QFile pack(curdir.entryList(QStringList() << "*.cognitiaSkillPack")[0]);
-        skillpack -> load(&pack);
+        try {
+            skillpack -> load(&pack);
+        }
+        catch(QString message){
+            qDebug() << message;
+        }
 
         //QFile prog(curdir.entryList("*.StudentProgress")[0]);
         //progress -> load(&prog);
+
 
 
         display();
@@ -210,6 +243,7 @@ void StudentClient::OpenCourse(){
     }
 
 }
+
 
 void StudentClient::display(){
 	ui->courseUnitViewer->clearAllScene();
@@ -222,7 +256,7 @@ void StudentClient::display(){
 		qInfo() << "Student progress is null!";
 	} else {
 		ui->courseUnitViewer->unpack(progress);
-	}
+    }
 }
 
 void StudentClient::sendToServer(quint16 code, const QString& str){
