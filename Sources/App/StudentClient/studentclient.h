@@ -43,8 +43,8 @@ private:
     void confirmConnection();
     void OpenCourse();
     void handleincFile(QDataStream&);
-    void displayCourse();
-    void displaySkillpack();
+
+    void display();
 
 
 private slots:

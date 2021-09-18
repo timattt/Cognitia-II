@@ -27,8 +27,8 @@ public:
 
 	// public functions
 	//--------------------------------------
-    //! Gives node that is editing currently
-	Node* getCurrent();
+	//! returns current node that app is maniplating with. it can be head node or node from courseviewer
+	Node* getCurrentNode();
 	//--------------------------------------
 
 private:
@@ -60,7 +60,6 @@ private:
     SkillsModel * inMd;
     SkillsModel * outMd;
     Node * head;
-    Node * current;
     QString skillPackPath;
     int timerId;
     long long lastSkillPackModified;

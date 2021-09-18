@@ -16,11 +16,9 @@ StudentClient::StudentClient(QWidget *parent) :
     connect(chooseserv, SIGNAL(onServConnectclicked()), SLOT(startConnection()));
     connect(chooseserv, SIGNAL(chooseServClosed()), SLOT(onChooseServClosed()));
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->flower, SLOT(unpack(Node*)));
+    connect(ui->flower, SIGNAL(skillLevelChanged(QString, double)), ui->courseUnitViewer, SLOT(makeProgressToSelected(QString, double)));
 
-//    QFile test = QFile("C:/Users/timat/Desktop/dedCourse/sem1.CourseUnit");
- //   CourseUnit cu;
- //   cu.loadCourseUnit(&test);
-  //  ui->courseUnitViewer->unpack(&cu);
+    ui->flower->setEditable(false);
 }
 
 StudentClient::~StudentClient()
@@ -220,8 +218,8 @@ void StudentClient::OpenCourse(){
         //progress -> load(&prog);
 
 
-        displayCourse();
-        displaySkillpack();
+
+        display();
 
     }
     else {
@@ -231,20 +229,19 @@ void StudentClient::OpenCourse(){
 }
 
 
-
-void StudentClient::displayCourse(){
-
-
+void StudentClient::display(){
+	ui->courseUnitViewer->clearAllScene();
+	if (!courseUnit) {
+		qInfo() << "Course unit is null!";
+	} else {
+		ui->courseUnitViewer->unpack(courseUnit);
+	}
+	if (!progress) {
+		qInfo() << "Student progress is null!";
+	} else {
+		ui->courseUnitViewer->unpack(progress);
+    }
 }
-
-
-
-void StudentClient::displaySkillpack(){
-
-
-
-}
-
 
 void StudentClient::sendToServer(quint16 code, const QString& str){
 

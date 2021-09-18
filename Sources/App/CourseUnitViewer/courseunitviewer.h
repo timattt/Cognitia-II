@@ -8,6 +8,7 @@ class Edge;
 class Node;
 class CourseScene;
 class CourseUnit;
+class StudentProgress;
 
 namespace Ui {
 class CourseUnitViewer;
@@ -36,6 +37,7 @@ private:
     double repFac;
     double massFac;
     QMap<QString, NodeDesign*> nodesDesigns;
+    Node * selectedNode;
     //----------------------------------
 
 private:
@@ -60,6 +62,10 @@ public:
 	QPointF getSceneSize();
 	//! Current design
 	NodeDesign* getCurrentDesign();
+	//! sets current node
+	void setSelectedNode(Node * nd);
+	//! returns current node
+	Node* getSelectedNode();
     //----------------------------------
 
 public slots:
@@ -74,14 +80,18 @@ public slots:
 	void addEdge(Edge *e);
 	//! Trasfers data from CourseUnit to this scene. From the second level of hierarchy of this course unit.
 	void unpack(CourseUnit *head);
+	//! Transfers data from this stp to this widget.
+	void unpack(StudentProgress * prg);
 	//! Trasfers data to CourseUnit from this scene. From the second level of hierarchy of this course unit.
 	void pack(CourseUnit *head);
+	//! pack widget to stp
+	void pack(StudentProgress * prg);
 	//! If drag is currently happining then it will be stoppped
 	void abortDrag();
-	//! Deselects everyhting
-	void deselectAll();
-	//! adds progress to current
-	void makeProgressToCurrent(QString skill, double lev);
+	//! sets progress to selected node
+	void makeProgressToSelected(QString skill, double val);
+	//! refit
+	void refit();
 	//----------------------------------
     
 private slots:

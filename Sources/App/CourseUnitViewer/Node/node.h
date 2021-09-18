@@ -60,11 +60,11 @@ public:
 	QString getDescription();
 	void setDescription(QString str);
 	CourseUnitViewer * getViewer();
-	void setSelected(bool v);
-	bool isSelected();
 	double getProgress(QString skill);
+	double getProgressScalar(QString skill);
 	bool containsProgress(QString skill);
 	void setProgress(QString skill, double val);
+	bool isSelected();
     //--------------------------------------
 
 protected:
@@ -89,7 +89,6 @@ private:
     QString name;
     QString description;
     QColor color = Qt::lightGray;
-    bool selected = 0;
     //--------------------------------------
 };
 

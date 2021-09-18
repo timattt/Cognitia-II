@@ -13,6 +13,8 @@ SkillsFlower::SkillsFlower(QWidget *parent) :
     ui->setupUi(this);
 
     ui->view->setScene(scene = new FlowerScene(this));
+
+    ui->view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
 }
 
 SkillsFlower::~SkillsFlower()
@@ -35,6 +37,10 @@ void SkillsFlower::unpack(CourseUnit *cu, StudentProgress * prg) {
 		QString name = cu->getIncome()[i].first;
 		double val = cu->getIncome()[i].second;
 
+		if (!cu->containsOutSkill(name)) {
+			continue;
+		}
+
 		if (!min.contains(name)) {
 			min[name] = val;
  		} else {
@@ -46,6 +52,7 @@ void SkillsFlower::unpack(CourseUnit *cu, StudentProgress * prg) {
  			max[name] = qMax(max[name], val + 1);
  		}
 	}
+
 	for (int i = 0; i < cu->getOutcome().size(); i++) {
 		QString name = cu->getOutcome()[i].first;
 		double val = cu->getOutcome()[i].second;
@@ -102,6 +109,7 @@ void SkillsFlower::pack(CourseUnit *cu, StudentProgress * prg) {
 }
 
 void SkillsFlower::clearAll() {
+	ui->view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
 	scene->clear();
 	scene->update();
 }
@@ -120,6 +128,10 @@ void SkillsFlower::unpack(Node *nd) {
 	for (QString name : nd->getInSkills().keys()) {
 		double val = nd->getInSkills()[name];
 
+		if (!nd->getOutSkills().contains(name)) {
+			continue;
+		}
+
 		if (!min.contains(name)) {
 			min[name] = val;
  		} else {
@@ -131,6 +143,7 @@ void SkillsFlower::unpack(Node *nd) {
  			max[name] = qMax(max[name], val + 1);
  		}
 	}
+
 	for (QString name : nd->getOutSkills().keys()) {
 		double val = nd->getOutSkills()[name];
 
@@ -167,4 +180,12 @@ void SkillsFlower::unpack(Node *nd) {
 	}
 
 	scene->update();
+}
+
+bool SkillsFlower::isEditable() const {
+	return editable;
+}
+
+void SkillsFlower::setEditable(bool v) {
+	editable = v;
 }

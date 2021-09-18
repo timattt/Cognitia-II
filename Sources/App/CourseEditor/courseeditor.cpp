@@ -11,7 +11,6 @@
 CourseEditor::CourseEditor() :
     QMainWindow(nullptr),
     ui(new Ui::CourseEditor),
-	current(nullptr),
 	head(nullptr),
 	lastSkillPackModified(0)
 {
@@ -119,7 +118,6 @@ void CourseEditor::setNodeToRedactor(Node *nd) {
 		nd = head;
 	}
 
-	current = nd;
 	inMd->clear();
 	outMd->clear();
 
@@ -144,30 +142,27 @@ void CourseEditor::on_levelsSelector_currentTextChanged(const QString &arg1)
 {
 }
 
-Node* CourseEditor::getCurrent() {
-	return current;
-}
-
 void CourseEditor::on_showParent_clicked() {
+	ui->widget->setSelectedNode(nullptr);
 	setNodeToRedactor(head);
 }
 
 void CourseEditor::on_removeIn_clicked() {
 	int row = ui->inList->currentIndex().row();
 	QString name = inMd->data(inMd->index(row, 0)).toString();
-	current->removeInSkill(name);
+	getCurrentNode()->removeInSkill(name);
 	inMd->removeRow(row);
 }
 
 void CourseEditor::on_removeOut_clicked() {
 	int row = ui->outList->currentIndex().row();
 	QString name = outMd->data(outMd->index(row, 0)).toString();
-	current->removeOutSkill(name);
+	getCurrentNode()->removeOutSkill(name);
 	outMd->removeRow(row);
 }
 
 void CourseEditor::on_nameLineEdit_textChanged() {
-	current->setName(ui->nameLineEdit->text());
+	getCurrentNode()->setName(ui->nameLineEdit->text());
 }
 
 void CourseEditor::nodeSelected(Node *nd) {
@@ -264,8 +259,6 @@ void CourseEditor::clearCourseUnit() {
 void CourseEditor::fromFileToGui(CourseUnit *crs) {
 	fromCourseUnitToNode(crs, head);
 
-	ui->widget->setSceneSize(crs->getFieldSize().first, crs->getFieldSize().second);
-
 	ui->widget->unpack(crs);
 
 	setNodeToRedactor(head);
@@ -337,8 +330,12 @@ void CourseEditor::setSkillPack(QString path) {
 }
 
 void CourseEditor::on_descrPanel_textChanged() {
-	current->setDescription(ui->descrPanel->toPlainText());
+	getCurrentNode()->setDescription(ui->descrPanel->toPlainText());
 	ui->markDownPreview->setMarkdown(ui->descrPanel->toPlainText());
+}
+
+Node* CourseEditor::getCurrentNode() {
+	return (ui->widget->getSelectedNode() == nullptr ? head : ui->widget->getSelectedNode());
 }
 
 void CourseEditor::timerEvent(QTimerEvent *event) {

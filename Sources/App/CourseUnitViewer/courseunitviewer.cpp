@@ -31,7 +31,7 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 	nodesDesigns["Old"] = new NodeDesignOld(this);
 
 	ui->designBox->addItems(nodesDesigns.keys());
-	ui->designBox->setCurrentIndex(0);
+	ui->designBox->setCurrentText("Old");
 }
 
 CourseUnitViewer::~CourseUnitViewer() {
@@ -110,6 +110,7 @@ void CourseUnitViewer::on_areaDec_clicked() {
 	n.setHeight(n.height() / 2);
 	scene->setSceneRect(n);
 	emit sceneSizeChanged(n.width(), n.height());
+	refit();
 }
 
 void CourseUnitViewer::on_areaIn_clicked() {
@@ -119,6 +120,7 @@ void CourseUnitViewer::on_areaIn_clicked() {
 	n.setHeight(n.height() * 2);
 	scene->setSceneRect(n);
 	emit sceneSizeChanged(n.width(), n.height());
+	refit();
 }
 
 double CourseUnitViewer::getAttFac() const {
@@ -179,6 +181,8 @@ void CourseUnitViewer::on_massFac_editingFinished() {
 void CourseUnitViewer::clearAllScene() {
 	abortDrag();
 
+	setSelectedNode(nullptr);
+
 	QList<Node*> nds;
 	for (QGraphicsItem * it : scene->items()) {
 		Node * nd = dynamic_cast<Node*>(it);
@@ -204,6 +208,8 @@ void CourseUnitViewer::addEdge(Edge *e) {
 }
 
 void CourseUnitViewer::unpack(CourseUnit *head) {
+	setSceneSize(head->getFieldSize().first, head->getFieldSize().second);
+	refit();
 	QMap<QString, Node*> nodes;
 
 	for (CourseUnit * u : head->getEmbedded()) {
@@ -259,7 +265,7 @@ void CourseUnitViewer::pack(CourseUnit *head) {
 
 void CourseUnitViewer::setSceneSize(int w, int h) {
 	QRectF r = scene->sceneRect();
-	scene->setSceneRect((double) r.x(), (double) r.y(), (double) w, (double) h);
+	scene->setSceneRect((double) r.x() - w/ 2, (double) r.y() - h/2, (double) w, (double) h);
 }
 
 QPointF CourseUnitViewer::getSceneSize() {
@@ -278,17 +284,41 @@ NodeDesign* CourseUnitViewer::getCurrentDesign() {
 	return this->nodesDesigns[ui->designBox->currentText()];
 }
 
-void CourseUnitViewer::deselectAll() {
-	const QList<QGraphicsItem*> items = scene->items();
-	for (QGraphicsItem *item : items) {
-		if (Node *node = qgraphicsitem_cast<Node*>(item)) {
-			node->setSelected(false);
-		}
+void CourseUnitViewer::setSelectedNode(Node *nd) {
+	Node * tmp = selectedNode;
+	selectedNode = nd;
+	emit nodeSelected(selectedNode);
+	if (nd != nullptr) {
+		nd->update();
+	}
+	if (tmp != nullptr) {
+		tmp->update();
 	}
 }
 
-void CourseUnitViewer::makeProgressToCurrent(QString skill, double lev) {
+Node* CourseUnitViewer::getSelectedNode() {
+	return selectedNode;
+}
 
+void CourseUnitViewer::makeProgressToSelected(QString skill, double val) {
+	if (selectedNode != nullptr) {
+		selectedNode->setProgress(skill, val);
+		selectedNode->update();
+	}
+}
+
+void CourseUnitViewer::unpack(StudentProgress *prg) {
+	refit();
+}
+
+void CourseUnitViewer::pack(StudentProgress *prg) {
+}
+
+void CourseUnitViewer::refit() {
+	ui->graphicsView->scale(1, 1);
+	ui->graphicsView->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+	ui->zoomPercentage->setText(QString::number(100) + "%");
+	scene->update();
 }
 
 void CourseUnitViewer::on_designBox_currentTextChanged(QString v) {
