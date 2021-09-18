@@ -62,6 +62,9 @@ public:
 	CourseUnitViewer * getViewer();
 	void setSelected(bool v);
 	bool isSelected();
+	double getProgress(QString skill);
+	bool containsProgress(QString skill);
+	void setProgress(QString skill, double val);
     //--------------------------------------
 
 protected:
@@ -81,6 +84,7 @@ private:
     CourseUnitViewer *graph;
     QMap<QString, int> inSkills;
     QMap<QString, int> outSkills;
+    QMap<QString, double> progress;
     QString file;
     QString name;
     QString description;

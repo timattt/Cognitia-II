@@ -10,6 +10,7 @@ class SkillsFlower;
 class CourseUnit;
 class FlowerScene;
 class StudentProgress;
+class Node;
 
 class SkillsFlower : public QWidget
 {
@@ -31,12 +32,13 @@ private:
     FlowerScene * scene;
     //====================================================
 
-public:
+public slots:
 
-    // public functions
+    // public slots
     //====================================================
     //! from CU to this gui
     void unpack(CourseUnit * cu, StudentProgress * prg);
+    void unpack(Node * nd);
     //! from gui to CU
     void pack(CourseUnit * cu, StudentProgress * prg);
     //! Clears everything

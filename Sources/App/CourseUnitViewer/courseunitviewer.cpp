@@ -287,6 +287,10 @@ void CourseUnitViewer::deselectAll() {
 	}
 }
 
+void CourseUnitViewer::makeProgressToCurrent(QString skill, double lev) {
+
+}
+
 void CourseUnitViewer::on_designBox_currentTextChanged(QString v) {
 	const QList<QGraphicsItem*> items = scene->items();
 	for (QGraphicsItem *item : items) {

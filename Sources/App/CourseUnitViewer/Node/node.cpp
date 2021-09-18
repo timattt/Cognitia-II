@@ -285,3 +285,15 @@ void Node::setSelected(bool v) {
 bool Node::isSelected() {
 	return selected;
 }
+
+double Node::getProgress(QString skill) {
+	return progress[skill];
+}
+
+bool Node::containsProgress(QString skill) {
+	return progress.contains(skill);
+}
+
+void Node::setProgress(QString skill, double val) {
+	progress[skill] = val;
+}

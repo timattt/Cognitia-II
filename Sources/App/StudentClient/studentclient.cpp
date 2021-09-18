@@ -14,6 +14,13 @@ StudentClient::StudentClient(QWidget *parent) :
     connect(mSocket, SIGNAL(readyRead()), SLOT(slotReadyRead()));
     connect(mSocket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), SLOT(slotError(QAbstractSocket::SocketError)));
     connect(chooseserv, SIGNAL(onServConnectclicked()), SLOT(startConnection()));
+
+    connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->flower, SLOT(unpack(Node*)));
+
+//    QFile test = QFile("C:/Users/timat/Desktop/dedCourse/sem1.CourseUnit");
+ //   CourseUnit cu;
+ //   cu.loadCourseUnit(&test);
+  //  ui->courseUnitViewer->unpack(&cu);
 }
 
 StudentClient::~StudentClient()

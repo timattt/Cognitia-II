@@ -4,6 +4,7 @@
 #include "../Structures/CourseUnit/courseunit.h"
 #include "../Structures/StudentProgress/StudentProgress.h"
 #include "leaf.h"
+#include "../CourseUnitViewer/Node/node.h"
 
 SkillsFlower::SkillsFlower(QWidget *parent) :
     QWidget(parent),
@@ -12,12 +13,6 @@ SkillsFlower::SkillsFlower(QWidget *parent) :
     ui->setupUi(this);
 
     ui->view->setScene(scene = new FlowerScene(this));
-
-    QFile test = QFile("C:/Users/timat/Desktop/dedCourse/Akinator.CourseUnit");
-    CourseUnit cu;
-    cu.loadCourseUnit(&test);
-    StudentProgress prg;
-    unpack(&cu, &prg);
 }
 
 SkillsFlower::~SkillsFlower()
@@ -27,6 +22,10 @@ SkillsFlower::~SkillsFlower()
 
 void SkillsFlower::unpack(CourseUnit *cu, StudentProgress * prg) {
 	clearAll();
+
+	if (!cu || !prg) {
+		return;
+	}
 
 	QMap<QString, double> min;
 	QMap<QString, double> max;
@@ -104,4 +103,68 @@ void SkillsFlower::pack(CourseUnit *cu, StudentProgress * prg) {
 
 void SkillsFlower::clearAll() {
 	scene->clear();
+	scene->update();
+}
+
+void SkillsFlower::unpack(Node *nd) {
+	clearAll();
+
+	if (!nd) {
+		return;
+	}
+
+	QMap<QString, double> min;
+	QMap<QString, double> max;
+	QMap<QString, double> value;
+
+	for (QString name : nd->getInSkills().keys()) {
+		double val = nd->getInSkills()[name];
+
+		if (!min.contains(name)) {
+			min[name] = val;
+ 		} else {
+ 			min[name] = qMin(min[name], val);
+ 		}
+		if (!max.contains(name)) {
+			max[name] = val + 1;
+ 		} else {
+ 			max[name] = qMax(max[name], val + 1);
+ 		}
+	}
+	for (QString name : nd->getOutSkills().keys()) {
+		double val = nd->getOutSkills()[name];
+
+		if (!min.contains(name)) {
+			min[name] = val - 1;
+ 		} else {
+ 			min[name] = qMin(min[name], val - 1);
+ 		}
+		if (!max.contains(name)) {
+			max[name] = val;
+ 		} else {
+ 			max[name] = qMax(max[name], val);
+ 		}
+	}
+	for (QString name : min.keys()) {
+		if (nd->containsProgress(name)) {
+			value[name] = nd->getProgress(name);
+		} else {
+			value[name] = min[name];
+		}
+	}
+
+	double anglePerSkill = 360.0 / (double)( min.keys().size());
+
+	int i = 0;
+	for (QString name : min.keys()) {
+		double from = min[name];
+		double to = max[name];
+		double val = value[name];
+		Leaf * le = nullptr;
+		scene->addItem(le = new Leaf(from, to, val, name, i * anglePerSkill, this));
+		le->refreshPos();
+		i++;
+	}
+
+	scene->update();
 }
