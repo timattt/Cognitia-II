@@ -89,7 +89,7 @@ void CourseUnit::loadCourseUnit(QFile *res){
 
     qDebug() <<  "Loading CourseUnit from" << info.absoluteFilePath();
 
-    QString data = nullptr;
+    QString data;
 
     lastFilePath = info.absoluteFilePath();
 

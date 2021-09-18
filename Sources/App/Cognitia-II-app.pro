@@ -38,8 +38,7 @@ SOURCES += \
     CourseUnitViewer/Node/Design/nodedesignold.cpp \
     SkillsFlower/flowerscene.cpp \
     SkillsFlower/leaf.cpp \
-	CourseUnitViewer/Node/Design/nodedesignolive.cpp \
-    mtcpsocket.cpp
+        CourseUnitViewer/Node/Design/nodedesignolive.cpp
 
 HEADERS += \
     ChooseServ/chooseserv.h \
@@ -65,8 +64,7 @@ HEADERS += \
     CourseUnitViewer/Node/Design/nodedesignold.h \
     SkillsFlower/flowerscene.h \
     SkillsFlower/leaf.h \
-    CourseUnitViewer/Node/Design/nodedesignformal.h \
-    mtcpsocket.h
+    CourseUnitViewer/Node/Design/nodedesignformal.h
 
 FORMS += \
     ChooseServ/chooseserv.ui \
