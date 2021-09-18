@@ -48,16 +48,15 @@ void Server::on_StartServ_clicked()
 }
 
 void Server::slotNewConnection(){
-    QTcpSocket* ClientSocket = mtcpServ -> nextPendingConnection();
-    connect(ClientSocket, SIGNAL(disconnected()), ClientSocket, SLOT(deleteLater()));
-    //connect(ClientSocket, SIGNAL(disconnected()), ClientSocket, SLOT(deleteFromLog()));
+    mTcpSocket* ClientSocket = mtcpServ -> nextPendingConnection();
+    connect(ClientSocket, SIGNAL(client_disconnected(mTcpSocket*)), SLOT(deleteFromLog(mTcpSocket*)));
     connect(ClientSocket, SIGNAL(readyRead()), this, SLOT(slotReadClient()));
     qDebug() << "new connection";
 }
 
 void Server::slotReadClient(){
 
-    QTcpSocket* ClientSocket = static_cast<QTcpSocket*>(sender());
+    mTcpSocket* ClientSocket = static_cast<mTcpSocket*>(sender());
     QDataStream in(ClientSocket);
 
     for(;;){
@@ -80,13 +79,20 @@ void Server::slotReadClient(){
 }
 
 
-void Server::deleteFromLog(){
-
+void Server::deleteFromLog(mTcpSocket* client){
+    if(!Users.contains(client)){
+        return;
+    }
+    QString name = Users[client];
+    Users.remove(client);
+    QString log = ui -> ActiveUsers -> toPlainText();
+    log.replace(name, "");
+    ui -> ActiveUsers -> setText(log);
 }
 
 
 
-void Server::handleReq(QTcpSocket* client, quint32 block, const QByteArray &data){
+void Server::handleReq(mTcpSocket* client, quint32 block, const QByteArray &data){
     QDataStream in(data);
 
     QString name;
@@ -103,7 +109,7 @@ void Server::handleReq(QTcpSocket* client, quint32 block, const QByteArray &data
 
     switch (incCode) {
     case getUserName:
-
+        Users[client] = name;
         ui->Log-> append(name + QString(" connected!"));
         ui->ActiveUsers->append(name);
         if (!SendCoursetoClient(client, name) ||
@@ -151,7 +157,7 @@ void Server::handleReq(QTcpSocket* client, quint32 block, const QByteArray &data
 }
 
 
-bool Server::SendFile(const QString& filename, QTcpSocket *client, quint16 code){
+bool Server::SendFile(const QString& filename, mTcpSocket *client, quint16 code){
 
     QFile file(filename);
     qDebug() << filename;
@@ -174,7 +180,7 @@ bool Server::SendFile(const QString& filename, QTcpSocket *client, quint16 code)
 }
 
 
-bool Server::SendCoursetoClient(QTcpSocket *client, const QString &name){
+bool Server::SendCoursetoClient(mTcpSocket *client, const QString &name){
 
      ui->Log-> append(QString("Sendind course to ") + name);
 
@@ -196,7 +202,7 @@ bool Server::SendCoursetoClient(QTcpSocket *client, const QString &name){
 
 
 
-bool Server::SendSkillpacktoClient(QTcpSocket *client, const QString &name){
+bool Server::SendSkillpacktoClient(mTcpSocket *client, const QString &name){
 
      ui->Log-> append(QString("Sendind skillpack to ") + name);
      QDataStream out(client);
@@ -221,7 +227,7 @@ bool Server::SendSkillpacktoClient(QTcpSocket *client, const QString &name){
 
 
 
-bool Server::SendStudentProgresstoClient(QTcpSocket *client, const QString &name){
+bool Server::SendStudentProgresstoClient(mTcpSocket *client, const QString &name){
 
      ui->Log-> append(QString("Sendind Student Progress to ") + name);
      QDataStream out(client);
@@ -241,12 +247,13 @@ bool Server::SendStudentProgresstoClient(QTcpSocket *client, const QString &name
 
 
 bool Server::CheckClient(const QString & name){
+    qDebug() << QDir::currentPath();
     return QDir(name).exists();
 }
 
 
 
-void Server::sendToClient(QTcpSocket* Socket, quint16 code,  const QString& str) {
+void Server::sendToClient(mTcpSocket* Socket, quint16 code,  const QString& str) {
     QByteArray arrBlock;
     QDataStream out(&arrBlock, QIODevice::WriteOnly);
 

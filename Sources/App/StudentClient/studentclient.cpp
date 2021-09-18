@@ -14,7 +14,7 @@ StudentClient::StudentClient(QWidget *parent) :
     connect(mSocket, SIGNAL(readyRead()), SLOT(slotReadyRead()));
     connect(mSocket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), SLOT(slotError(QAbstractSocket::SocketError)));
     connect(chooseserv, SIGNAL(onServConnectclicked()), SLOT(startConnection()));
-
+    connect(chooseserv, SIGNAL(chooseServClosed()), SLOT(onChooseServClosed()));
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->flower, SLOT(unpack(Node*)));
 
 //    QFile test = QFile("C:/Users/timat/Desktop/dedCourse/sem1.CourseUnit");
@@ -40,11 +40,21 @@ void StudentClient::on_actionChange_Server_triggered()
         inworkingrepository = false;
     }
     this -> setEnabled(false);
+    chooseserv -> setEnabled(true);
     chooseserv -> show();
 }
 
+
+void StudentClient::onChooseServClosed(){
+    this -> setEnabled(true);
+    ui->statusbar->showMessage("Server isnt connected, Please connect to the server");
+}
+
+
+
 void StudentClient::onStart(){
-  //  this -> setEnabled(false);
+    this -> setEnabled(false);
+    chooseserv -> setEnabled(true);
     chooseserv -> show();
     this -> show();
     ui->statusbar->showMessage("Server isnt connected");
@@ -166,6 +176,7 @@ void StudentClient::endReception(){
 void StudentClient::confirmConnection(){
     if (respCode == retrieveFailAutorisation){
         QMessageBox::critical(this, "Failing", "Wrong Name");
+        mSocket -> close();
         return;
     } else {
         chooseserv -> hide();
@@ -195,7 +206,12 @@ void StudentClient::OpenCourse(){
         in >> filename;
 
         QFile course(filename);
-        courseUnit -> loadCourseUnit(&course);
+        try {
+            courseUnit -> loadCourseUnit(&course);
+        }
+        catch (QString message){
+            qDebug() << message;
+        }
 
         QFile pack(curdir.entryList(QStringList() << "*.cognitiaSkillPack")[0]);
         skillpack -> load(&pack);
@@ -204,8 +220,8 @@ void StudentClient::OpenCourse(){
         //progress -> load(&prog);
 
 
-        setCourse();
-        setSkillpack();
+        displayCourse();
+        displaySkillpack();
 
     }
     else {
@@ -216,14 +232,14 @@ void StudentClient::OpenCourse(){
 
 
 
-void StudentClient::setCourse(){
+void StudentClient::displayCourse(){
 
 
 }
 
 
 
-void StudentClient::setSkillpack(){
+void StudentClient::displaySkillpack(){
 
 
 

@@ -1,9 +1,7 @@
 #ifndef CHOOSESERV_H
 #define CHOOSESERV_H
 
-#include <QMainWindow>
-#include <QFileDialog>
-#include <QMessageBox>
+#include <QtWidgets>
 
 namespace Ui {
 class ChooseServ;
@@ -23,6 +21,7 @@ public:
     QString getIP();
     QString getPort();
     QString getName();
+    void closeEvent(QCloseEvent *event) override;
 
 
 private slots:
@@ -35,6 +34,7 @@ private slots:
 
 signals:
     void onServConnectclicked();
+    void chooseServClosed();
 
 private:
     Ui::ChooseServ *ui;

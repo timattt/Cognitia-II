@@ -3,9 +3,10 @@
 
 #include <QWidget>
 #include <QTcpServer>
-#include <QTcpSocket>
+#include <mtcpsocket.h>
 #include <QDir>
 #include <QMessageBox>
+#include    <QMap>
 
 #include <QFileDialog>
 
@@ -23,7 +24,7 @@ private:
     QTcpServer* mtcpServ;
     unsigned nPort = 1917;
     quint32 nextblocksize;
-
+    QMap<mTcpSocket*, QString> Users;
 
 public:
     explicit Server(QWidget *parent = nullptr);
@@ -32,12 +33,12 @@ public:
     void setPort(unsigned);
 
 private:
-    void sendToClient(QTcpSocket*, quint16, const QString&);
-    void handleReq(QTcpSocket* client, quint32 block, const QByteArray& data);
-    bool SendCoursetoClient(QTcpSocket* client, const QString& name);
-    bool SendSkillpacktoClient(QTcpSocket* client, const QString& name);
-    bool SendStudentProgresstoClient(QTcpSocket* client, const QString& name);
-    bool SendFile(const QString&, QTcpSocket* client, quint16 code);
+    void sendToClient(mTcpSocket*, quint16, const QString&);
+    void handleReq(mTcpSocket* client, quint32 block, const QByteArray& data);
+    bool SendCoursetoClient(mTcpSocket* client, const QString& name);
+    bool SendSkillpacktoClient(mTcpSocket* client, const QString& name);
+    bool SendStudentProgresstoClient(mTcpSocket* client, const QString& name);
+    bool SendFile(const QString&, mTcpSocket* client, quint16 code);
     bool CheckClient(const QString&);
 
 private slots:
@@ -46,7 +47,7 @@ private slots:
     void on_StartServ_clicked();
 
     void on_returnToL_clicked();
-    void deleteFromLog();
+    void deleteFromLog(mTcpSocket*);
 
     void on_addStudent_clicked();
 
