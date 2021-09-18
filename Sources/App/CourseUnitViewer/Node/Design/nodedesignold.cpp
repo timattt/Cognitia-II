@@ -102,6 +102,26 @@ void NodeDesignOld::draw(Node *nd, QPainter *painter,
 		painter->drawRect(r);
 		painter->drawText(r, Qt::AlignCenter, rebuildStr(key + " " + QString::number(nd->getInSkills()[key]), 8));
 
+		/*
+		if (nd->containsProgress(key) && nd->getProgressScalar(key) > 0) {
+			r = QRect(0.4*w, -h / 2, 0.1*w, h);
+			painter->drawRect(r);
+
+			r = QRect(0.4*w, -h / 2 + h * (1 - nd->getProgressScalar(key)), 0.1*w, (double)h * nd->getProgressScalar(key));
+			QPen p = painter->pen();
+			painter->setPen(Qt::NoPen);
+			painter->setBrush(Qt::blue);
+			painter->drawRect(r);
+			painter->setPen(p);
+			painter->setBrush(Qt::white);
+
+			painter->setBrush(Qt::NoBrush);
+			r = QRect(0.4*w, -h / 2, 0.1*w, h);
+			painter->drawRect(r);
+			painter->setBrush(Qt::white);
+		}
+		*/
+
 		painter->translate(-x,- y);
 
 		i++;
@@ -141,6 +161,24 @@ void NodeDesignOld::draw(Node *nd, QPainter *painter,
 
 		painter->drawRect(r);
 		painter->drawText(r, Qt::AlignCenter, rebuildStr(key + " " + QString::number(nd->getOutSkills()[key]), 8));
+
+		if (nd->containsProgress(key) && nd->getProgressScalar(key) > 0) {
+			r = QRect(0.4*w, -h / 2, 0.1*w, h);
+			painter->drawRect(r);
+
+			r = QRect(0.4*w, -h / 2 + h * (1 - nd->getProgressScalar(key)), 0.1*w, (double)h * nd->getProgressScalar(key));
+			QPen p = painter->pen();
+			painter->setPen(Qt::NoPen);
+			painter->setBrush(Qt::blue);
+			painter->drawRect(r);
+			painter->setPen(p);
+			painter->setBrush(Qt::white);
+
+			painter->setBrush(Qt::NoBrush);
+			r = QRect(0.4*w, -h / 2, 0.1*w, h);
+			painter->drawRect(r);
+			painter->setBrush(Qt::white);
+		}
 
 		painter->translate(-x,- y );
 

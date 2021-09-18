@@ -87,7 +87,7 @@ void Leaf::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void Leaf::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
-	if (pressed) {
+	if (pressed && parent->isEditable()) {
 		double dx = event->scenePos().x() - scene()->width() / 2.0;
 		double dy = event->scenePos().y() - scene()->height() / 2.0;
 		double len = sqrt(dx * dx + dy * dy);
@@ -109,7 +109,7 @@ void Leaf::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 	}
 }
 
-Leaf::Leaf(double from, double to, double val, QString text, double angle, SkillsFlower * parent) : from(from), to(to), value(val), text(text), angle(angle), parent(parent) {
+Leaf::Leaf(double f, double t, double val, QString te, double angle, SkillsFlower * p) : from(f), to(t), value(val), text(te), angle(angle), parent(p) {
 }
 
 double Leaf::getLen() const {

@@ -281,3 +281,21 @@ QString CourseUnit::getLastFilePath() const {
 void CourseUnit::setLastFilePath(QString lastFilePath) {
 	this->lastFilePath = lastFilePath;
 }
+
+bool CourseUnit::containsInSkill(QString name) {
+	for (int i = 0; i < income.size(); i++) {
+		if (name == income[i].first) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
+bool CourseUnit::containsOutSkill(QString name) {
+	for (int i = 0; i < outcome.size(); i++) {
+		if (name == income[i].first) {
+			return 1;
+		}
+	}
+	return 0;
+}

@@ -36,7 +36,7 @@ bool SkillsModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 			return false;
 		}
 
-		Node * n = editor->getCurrent();
+		Node * n = editor->getCurrentNode();
 
 		if (in) {
 			if (n->getInSkills().contains(name)) {
@@ -68,7 +68,7 @@ bool SkillsModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 			return false;
 		}
 
-		Node *n = editor->getCurrent();
+		Node *n = editor->getCurrentNode();
 
 		if (in) {
 			n->addInSkill(name, lev);

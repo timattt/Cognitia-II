@@ -275,17 +275,6 @@ CourseUnitViewer* Node::getViewer() {
 	return graph;
 }
 
-void Node::setSelected(bool v) {
-	if (selected != v) {
-		update();
-	}
-	selected = v;
-}
-
-bool Node::isSelected() {
-	return selected;
-}
-
 double Node::getProgress(QString skill) {
 	return progress[skill];
 }
@@ -296,4 +285,27 @@ bool Node::containsProgress(QString skill) {
 
 void Node::setProgress(QString skill, double val) {
 	progress[skill] = val;
+}
+
+bool Node::isSelected() {
+	return graph->getSelectedNode() == this;
+}
+
+double Node::getProgressScalar(QString skill) {
+	double from = -1;
+	double to = -1;
+	if (inSkills.contains(skill)) {
+		from = inSkills[skill];
+	}
+	if (outSkills.contains(skill)) {
+		to = outSkills[skill];
+	}
+	if (from < 0) {
+		from = to - 1;
+	}
+	if (to < 0) {
+		to = from + 1;
+	}
+
+	return (from - progress[skill]) / (from - to);
 }

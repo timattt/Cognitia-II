@@ -30,6 +30,7 @@ private:
     //====================================================
     Ui::SkillsFlower *ui;
     FlowerScene * scene;
+    bool editable;
     //====================================================
 
 public slots:
@@ -43,6 +44,10 @@ public slots:
     void pack(CourseUnit * cu, StudentProgress * prg);
     //! Clears everything
     void clearAll();
+    //! Sets editable
+    void setEditable(bool v);
+    //! 1 if editable
+    bool isEditable() const;
     //====================================================
 
 signals:
