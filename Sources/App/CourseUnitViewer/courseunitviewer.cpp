@@ -7,6 +7,7 @@
 #include "Node/Design/nodedesignformal.h"
 #include "Node/Design/nodedesignolive.h"
 #include "Node/Design/nodedesignold.h"
+#include "../Structures/StudentProgress/StudentProgress.h"
 
 #define SCALE_PER_PUSH 1.3
 
@@ -309,9 +310,36 @@ void CourseUnitViewer::makeProgressToSelected(QString skill, double val) {
 
 void CourseUnitViewer::unpack(StudentProgress *prg) {
 	refit();
+
+	const QList<QGraphicsItem*> items = scene->items();
+	for (QGraphicsItem *item : items) {
+		if (Node *node = qgraphicsitem_cast<Node*>(item)) {
+			QString nodeName = node->getName();
+			for (QString skillName : node->getInSkills().keys()) {
+				if (prg->containsLevel(nodeName, skillName)) {
+					node->setProgress(skillName, prg->getLevel(nodeName, skillName));
+				}
+			}
+			for (QString skillName : node->getOutSkills().keys()) {
+				if (prg->containsLevel(nodeName, skillName)) {
+					node->setProgress(skillName, prg->getLevel(nodeName, skillName));
+				}
+			}
+		}
+	}
 }
 
 void CourseUnitViewer::pack(StudentProgress *prg) {
+	const QList<QGraphicsItem*> items = scene->items();
+	for (QGraphicsItem *item : items) {
+		if (Node *node = qgraphicsitem_cast<Node*>(item)) {
+			QString nodeName = node->getName();
+			for (QString skillName : node->getProgress().keys()) {
+				double val = node->getSkillProgress(skillName);
+				prg->addProgress(nodeName, skillName, val);
+			}
+		}
+	}
 }
 
 void CourseUnitViewer::refit() {
@@ -319,6 +347,16 @@ void CourseUnitViewer::refit() {
 	ui->graphicsView->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
 	ui->zoomPercentage->setText(QString::number(100) + "%");
 	scene->update();
+}
+
+void CourseUnitViewer::clearStudentProgress() {
+	const QList<QGraphicsItem*> items = scene->items();
+	for (QGraphicsItem *item : items) {
+		if (Node *node = qgraphicsitem_cast<Node*>(item)) {
+			node->clearStudentProgress();
+			node->update();
+		}
+	}
 }
 
 void CourseUnitViewer::on_designBox_currentTextChanged(QString v) {

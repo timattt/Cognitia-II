@@ -74,6 +74,8 @@ public slots:
 	//----------------------------------
 	//! Deletes everything from this scene
 	void clearAllScene();
+	//! Clears everything about student progress
+	void clearStudentProgress();
 	//! Adds node to this scene. Emit signal
 	void addNode(Node *nd);
 	//! Adds edge to this scene.
@@ -123,6 +125,7 @@ signals:
 	void edgeDeleted(Edge * ed);
 	void nodeSkillsChanged(Node * nd);
 	void sceneSizeChanged(int w, int h);
+	void progressMade(QString skill, double lev);
 	//----------------------------------
 };
 #endif

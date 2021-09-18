@@ -141,3 +141,9 @@ QString Leaf::getText() {
 double Leaf::getValue() {
 	return value;
 }
+
+void Leaf::setValue(double v) {
+	value = v;
+	refreshPos();
+	scene()->update();
+}

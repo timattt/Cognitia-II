@@ -5,6 +5,7 @@
 #include "../Structures/StudentProgress/StudentProgress.h"
 #include "leaf.h"
 #include "../CourseUnitViewer/Node/node.h"
+#include <QtWidgets>
 
 SkillsFlower::SkillsFlower(QWidget *parent) :
     QWidget(parent),
@@ -78,6 +79,8 @@ void SkillsFlower::unpack(CourseUnit *cu, StudentProgress * prg) {
 
 	double anglePerSkill = 360.0 / (double)( min.keys().size());
 
+	leafs.clear();
+
 	int i = 0;
 	for (QString name : min.keys()) {
 		double from = min[name];
@@ -86,10 +89,12 @@ void SkillsFlower::unpack(CourseUnit *cu, StudentProgress * prg) {
 		Leaf * le = nullptr;
 		scene->addItem(le = new Leaf(from, to, val, name, i * anglePerSkill, this));
 		le->refreshPos();
+		leafs[name] = le;
 		i++;
 	}
 
 	scene->update();
+	ui->view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
 }
 
 void SkillsFlower::pack(CourseUnit *cu, StudentProgress * prg) {
@@ -160,13 +165,15 @@ void SkillsFlower::unpack(Node *nd) {
 	}
 	for (QString name : min.keys()) {
 		if (nd->containsProgress(name)) {
-			value[name] = nd->getProgress(name);
+			value[name] = nd->getSkillProgress(name);
 		} else {
 			value[name] = min[name];
 		}
 	}
 
 	double anglePerSkill = 360.0 / (double)( min.keys().size());
+
+	leafs.clear();
 
 	int i = 0;
 	for (QString name : min.keys()) {
@@ -176,10 +183,12 @@ void SkillsFlower::unpack(Node *nd) {
 		Leaf * le = nullptr;
 		scene->addItem(le = new Leaf(from, to, val, name, i * anglePerSkill, this));
 		le->refreshPos();
+		leafs[name] = le;
 		i++;
 	}
 
 	scene->update();
+	ui->view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
 }
 
 bool SkillsFlower::isEditable() const {
@@ -188,4 +197,10 @@ bool SkillsFlower::isEditable() const {
 
 void SkillsFlower::setEditable(bool v) {
 	editable = v;
+}
+
+void SkillsFlower::progressMade(QString name, double v) {
+	if (leafs.contains(name)) {
+		leafs[name]->setValue(v);
+	}
 }

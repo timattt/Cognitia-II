@@ -46,6 +46,12 @@ void Launcher::on_runButton_clicked()
         }
      }
 
+     else if (ui->modesChooser->currentText() == "Mentor client") {
+        emit startMentorClient();
+        if (mayHideWhenUnused) {
+            hide();
+        }
+     }
 }
 
 void Launcher::on_keepLauncherOpenCheckbox_stateChanged(int v) {

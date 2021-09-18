@@ -21,8 +21,11 @@ SOURCES += \
     Help/smarthelper.cpp \
     Launcher/launcher.cpp \
     Core/main.cpp \
+    MentorClient/mentorclient.cpp \
     SkillPackEditor/skillpackeditor.cpp \
     SkillsFlower/skillsflower.cpp \
+    SkillsMixer/skillsmixer.cpp \
+    SkillsMixer/skillsmixerholder.cpp \
     Structures/CourseUnit/courseunit.cpp \
     Structures/SkillPack/skill.cpp \
     Structures/SkillPack/skillpack.cpp \
@@ -46,8 +49,11 @@ HEADERS += \
     CourseUnitViewer/courseunitviewer.h \
     Help/smarthelper.h \
     Launcher/launcher.h \
+    MentorClient/mentorclient.h \
     SkillPackEditor/skillpackeditor.h \
     SkillsFlower/skillsflower.h \
+    SkillsMixer/skillsmixer.h \
+    SkillsMixer/skillsmixerholder.h \
     Structures/CourseUnit/courseunit.h \
     Structures/ServerCommands/serverCommands.h \
     Structures/SkillPack/skill.h \
@@ -72,9 +78,12 @@ FORMS += \
     CourseUnitViewer/courseunitviewer.ui \
     Help/smarthelper.ui \
     Launcher/launcher.ui \
+    MentorClient/mentorclient.ui \
     SkillPackEditor/skillpackeditor.ui\
     Server/server.ui \
     SkillsFlower/skillsflower.ui \
+    SkillsMixer/skillsmixer.ui \
+    SkillsMixer/skillsmixerholder.ui \
     StudentClient/studentclient.ui
 
 # Default rules for deployment.

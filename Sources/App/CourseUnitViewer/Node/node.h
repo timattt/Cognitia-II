@@ -60,11 +60,13 @@ public:
 	QString getDescription();
 	void setDescription(QString str);
 	CourseUnitViewer * getViewer();
-	double getProgress(QString skill);
+	double getSkillProgress(QString skill);
+	const QMap<QString, double>& getProgress() const;
 	double getProgressScalar(QString skill);
 	bool containsProgress(QString skill);
 	void setProgress(QString skill, double val);
 	bool isSelected();
+	void clearStudentProgress();
     //--------------------------------------
 
 protected:

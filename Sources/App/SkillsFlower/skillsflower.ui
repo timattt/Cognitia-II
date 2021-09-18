@@ -14,6 +14,20 @@
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item alignment="Qt::AlignHCenter">
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Skills progress</string>
+     </property>
+    </widget>
+   </item>
    <item>
     <widget class="QGraphicsView" name="view"/>
    </item>

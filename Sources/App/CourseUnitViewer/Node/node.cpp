@@ -128,6 +128,10 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsItem::mousePressEvent(event);
 }
 
+const QMap<QString, double>& Node::getProgress() const {
+	return progress;
+}
+
 void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     update();
@@ -275,7 +279,7 @@ CourseUnitViewer* Node::getViewer() {
 	return graph;
 }
 
-double Node::getProgress(QString skill) {
+double Node::getSkillProgress(QString skill) {
 	return progress[skill];
 }
 
@@ -285,6 +289,8 @@ bool Node::containsProgress(QString skill) {
 
 void Node::setProgress(QString skill, double val) {
 	progress[skill] = val;
+	emit graph->progressMade(skill, val);
+	update();
 }
 
 bool Node::isSelected() {
@@ -308,4 +314,8 @@ double Node::getProgressScalar(QString skill) {
 	}
 
 	return (from - progress[skill]) / (from - to);
+}
+
+void Node::clearStudentProgress() {
+	progress.clear();
 }

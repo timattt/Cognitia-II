@@ -2,6 +2,7 @@
 #define SKILLSFLOWER_H
 
 #include <QWidget>
+#include <QMap>
 
 namespace Ui {
 class SkillsFlower;
@@ -11,6 +12,7 @@ class CourseUnit;
 class FlowerScene;
 class StudentProgress;
 class Node;
+class Leaf;
 
 class SkillsFlower : public QWidget
 {
@@ -31,6 +33,7 @@ private:
     Ui::SkillsFlower *ui;
     FlowerScene * scene;
     bool editable;
+    QMap<QString, Leaf*> leafs;
     //====================================================
 
 public slots:
@@ -48,6 +51,8 @@ public slots:
     void setEditable(bool v);
     //! 1 if editable
     bool isEditable() const;
+    //! Call this it progress current node is changed
+    void progressMade(QString name, double v);
     //====================================================
 
 signals:

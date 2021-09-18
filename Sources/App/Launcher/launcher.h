@@ -28,6 +28,7 @@ signals:
     void startCourseEditor();
     void startServer();
     void startStudentClient();
+    void startMentorClient();
 };
 
 #endif // LAUNCHER_H
