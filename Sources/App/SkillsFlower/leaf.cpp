@@ -94,9 +94,8 @@ void Leaf::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 		double dy = event->scenePos().y() - scene()->height() / 2.0;
 		double len = sqrt(dx * dx + dy * dy);
 
-		if (len < CENTER_RAD + HANDLER_RAD || len > EXTRA_LEN) {
-			return;
-		}
+		len = qMax(CENTER_RAD + HANDLER_RAD, len);
+		len = qMin(EXTRA_LEN, len);
 
 		setLen(len);
 
