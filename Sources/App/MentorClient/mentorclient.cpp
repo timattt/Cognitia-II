@@ -9,11 +9,17 @@
 
 MentorClient::MentorClient(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MentorClient)
+    ui(new Ui::MentorClient),
+	mSocket(nullptr),
+	chooseserv(nullptr)
 {
 	qInfo() << "Init mentor client";
 
     ui->setupUi(this);
+
+    mSocket = new QTcpSocket(this);
+    chooseserv = new ChooseServ(this);
+
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->skillFlower, SLOT(unpack(Node*)));
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->skillsMixerHolder, SLOT(nodeSelected(Node*)));
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), this, SLOT(nodeSelected(Node*)));
