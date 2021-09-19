@@ -6,7 +6,7 @@ Server::Server(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Server),
 	mtcpServ(nullptr),
-	nPort(0),
+    nPort(1917),
     nextblocksize(0),
 	Users(),
 	Mentors()

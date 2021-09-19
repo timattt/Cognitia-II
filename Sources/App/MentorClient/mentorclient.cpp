@@ -45,7 +45,7 @@ MentorClient::MentorClient(QWidget *parent) :
 
 
     // TEST
-    //------------------------------
+    /*/------------------------------
 
     headCourseUnit = new CourseUnit;
 
@@ -62,7 +62,7 @@ MentorClient::MentorClient(QWidget *parent) :
     andrew->addProgress("Onegin", "IO", 1.5);
 
     display();
-
+    */
     //------------------------------
 
     qInfo() << "Mentor client init finished";
