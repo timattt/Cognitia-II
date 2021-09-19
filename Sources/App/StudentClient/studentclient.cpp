@@ -23,10 +23,6 @@ StudentClient::StudentClient(QWidget *parent) :
 
 StudentClient::~StudentClient()
 {
-    delete mSocket;
-    delete chooseserv;
-    delete skillpack;
-    delete courseUnit;
     delete ui;
 }
 
@@ -196,23 +192,18 @@ void StudentClient::confirmConnection(){
 
 
 
-
-
-
-void StudentClient::OpenCourse(){
+void StudentClient::LoadCourse(){
     QDir curdir = QDir();
     QStringList filters;
     filters << "*.mainCourseUnit";
     curdir.setNameFilters(filters);
-    QStringList courseFiles = curdir.entryList();
 
-    //qDebug() << courseFiles[0];
-    QFile fileMain(courseFiles[0]);
+    QFile fileMain( curdir.entryList()[0]);
+
 
     if (fileMain.open(QIODevice::ReadOnly)){
 
         QString filename(fileMain.readAll());
-        qDebug() << filename;
 
         QFile course(filename);
         try {
@@ -221,26 +212,45 @@ void StudentClient::OpenCourse(){
         catch (QString message){
             qDebug() << message;
         }
-
-        QFile pack(curdir.entryList(QStringList() << "*.cognitiaSkillPack")[0]);
-        try {
-            skillpack -> load(&pack);
-        }
-        catch(QString message){
-            qDebug() << message;
-        }
-
-        //QFile prog(curdir.entryList("*.StudentProgress")[0]);
-        //progress -> load(&prog);
-
-
-
-        display();
-
-    }
-    else {
+    } else {
         qDebug() << "cant open course main file";
     }
+
+}
+
+
+void StudentClient::LoadSkillpack(){
+    QDir curdir = QDir();
+    QFile pack(curdir.entryList(QStringList() << "*.cognitiaSkillPack")[0]);
+    try {
+        skillpack -> load(&pack);
+    }
+    catch(QString message){
+        qDebug() << message;
+    }
+}
+
+
+void StudentClient::LoadStudentsProgresses(){
+    QDir curdir = QDir();
+
+    QFile prog(curdir.entryList(QStringList() << "*.StudentProgress")[0]);
+    try {
+        progress -> load(&prog);
+    }
+    catch(QString message){
+        qDebug() << message;
+    }
+}
+
+
+void StudentClient::OpenCourse(){
+
+    LoadCourse();
+    LoadSkillpack();
+    LoadStudentsProgresses();
+
+    display();
 
 }
 
@@ -288,7 +298,6 @@ void StudentClient::on_actionSave_all_and_send_triggered()
 
 void StudentClient::on_actionReturn_to_Launcher_triggered()
 {
-    chooseserv -> hide();
     emit onClose();
 }
 

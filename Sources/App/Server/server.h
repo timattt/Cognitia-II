@@ -25,6 +25,7 @@ private:
     unsigned nPort = 1917;
     quint32 nextblocksize;
     QMap<QTcpSocket*, QString> Users;
+    QMap<QTcpSocket*, QString> Mentors;
 
 public:
     explicit Server(QWidget *parent = nullptr);
@@ -39,8 +40,8 @@ private:
     bool SendSkillpacktoClient(QTcpSocket* client, const QString& name);
     bool SendStudentProgresstoClient(QTcpSocket* client, const QString& name);
     bool SendFile(const QString&, QTcpSocket* client, quint16 code);
-    bool CheckClient(const QString&);
-    QTcpSocket* Find_Dead();
+    bool CheckClient(const QString&, quint16 code);
+    QTcpSocket* Find_Dead(const QMap<QTcpSocket*, QString>&);
 
 private slots:
     void on_StopServ_clicked();

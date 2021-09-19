@@ -44,6 +44,9 @@ private:
     void OpenCourse();
     void handleincFile(QDataStream&);
 
+    void LoadCourse();
+    void LoadSkillpack();
+    void LoadStudentsProgresses();
     void display();
 
 

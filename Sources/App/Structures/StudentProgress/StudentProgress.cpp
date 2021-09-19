@@ -7,7 +7,8 @@
 
 #include "StudentProgress.h"
 
-StudentProgress::StudentProgress() {
+StudentProgress::StudentProgress(QObject *parent) : QObject(parent)
+{
 }
 
 StudentProgress::~StudentProgress() {

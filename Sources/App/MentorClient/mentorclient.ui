@@ -171,11 +171,62 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
      <x>0</x>
      <y>0</y>
      <width>849</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuServer">
+    <property name="title">
+     <string>Server</string>
+    </property>
+    <addaction name="actionChoose_Server"/>
+    <addaction name="actionSave_all_and_send"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help!</string>
+    </property>
+    <addaction name="actionReturn_to_Launcher"/>
+    <addaction name="actionHelp"/>
+   </widget>
+   <addaction name="menuServer"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionChoose_Server"/>
+   <addaction name="actionSave_all_and_send"/>
+   <addaction name="actionHelp"/>
+   <addaction name="actionReturn_to_Launcher"/>
+  </widget>
+  <action name="actionChoose_Server">
+   <property name="text">
+    <string>Choose Server</string>
+   </property>
+  </action>
+  <action name="actionReturn_to_Launcher">
+   <property name="text">
+    <string>Return to Launcher</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="text">
+    <string>Help!</string>
+   </property>
+  </action>
+  <action name="actionSave_all_and_send">
+   <property name="text">
+    <string>Save all and send</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

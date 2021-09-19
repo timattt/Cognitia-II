@@ -1,5 +1,6 @@
 #include "server.h"
 #include "ui_server.h"
+#include "Structures/StudentProgress/StudentProgress.h"
 
 Server::Server(QWidget *parent) :
     QWidget(parent),
@@ -82,10 +83,10 @@ void Server::slotReadClient(){
 }
 
 
-QTcpSocket* Server::Find_Dead(){
+QTcpSocket* Server::Find_Dead(const QMap<QTcpSocket*, QString>& clients){
 
 
-    for(QTcpSocket* client : Users.keys())
+    for(QTcpSocket* client : clients.keys())
     {
         if(client -> state() != QAbstractSocket::ConnectedState){
             return client;
@@ -98,16 +99,25 @@ QTcpSocket* Server::Find_Dead(){
 
 void Server::deleteFromLog(){
     QTcpSocket* client;
-    if(! (client = Find_Dead())){
-        return;
-    }
-    QString name = Users[client];
-    Users.remove(client);
-    QString log = ui -> ActiveUsers -> toPlainText();
-    log.replace(name, "");
-    ui -> ActiveUsers -> setText(log);
+    if(client = Find_Dead(Users)){
 
-    ui -> Log -> append(name + QString(" disconnected"));
+        QString name = Users[client];
+        Users.remove(client);
+        QString log = ui -> ActiveUsers -> toPlainText();
+        log.replace(name, "");
+        ui -> ActiveUsers -> setText(log);
+
+        ui -> Log -> append(name + QString(" disconnected\n"));
+    }
+    else if (client = Find_Dead(Mentors)){
+        QString name = Mentors[client];
+        Mentors.remove(client);
+        QString log = ui -> ActiveMentors -> toPlainText();
+        log.replace(name, "");
+        ui -> ActiveMentors -> setText(log);
+
+        ui -> Log -> append(name + QString(" (mentor) disconnected\n"));
+    }
 }
 
 
@@ -117,28 +127,55 @@ void Server::handleReq(QTcpSocket* client, quint32 block, const QByteArray &data
 
     QString name;
     in >> name;
+    quint16 incCode;
+    in >> incCode;
     qDebug() << "accept name" << name;
-    if (!CheckClient(name)){
+    if (!CheckClient(name, incCode)){
         sendToClient(client, static_cast<quint16>(retrieveFailAutorisation), "");
         return;
     }
 
-    quint16 incCode;
-    in >> incCode;
 
+    QDir dir = QDir();
+    QStringList students = dir.entryList(QDir::Dirs);
 
     switch (incCode) {
     case getUserName:
         Users[client] = name;
-        ui->Log-> append(name + QString(" connected!"));
+        ui->Log-> append(name + QString(" connected!\n"));
         ui->ActiveUsers->append(name);
         if (!SendCoursetoClient(client, name) ||
             !SendSkillpacktoClient(client, name) ||
             !SendStudentProgresstoClient(client, name))
         {
             sendToClient(client, static_cast<quint16>(retrieveFail), "");
-            ui->Log-> append(QString("Fail!"));
+            ui->Log-> append(QString("Fail! to send CU + SkP to ") + name);
             break;
+        }
+
+        sendToClient(client, static_cast<quint16>(firstConnectionSuccess), "");
+
+        break;
+
+    case getMentorName:
+        Mentors[client] = name;
+        ui->Log-> append(name + QString(" (mentor) connected!\n"));
+        ui->ActiveMentors->append(name);
+        if (!SendCoursetoClient(client, name) ||
+            !SendSkillpacktoClient(client, name))
+        {
+            sendToClient(client, static_cast<quint16>(retrieveFail), "");
+            ui->Log-> append(QString("Fail! to send CU + SkP to ") + name);
+            break;
+        }
+
+        for (int i = 0; i < students.size(); ++i){
+            if(!SendStudentProgresstoClient(client, students[i])){
+                sendToClient(client, static_cast<quint16>(retrieveFail), "");
+                ui->Log-> append(QString("Fail! to send SP ") + students[i]
+                                 + QString(" to ") + name);
+                return;
+            }
         }
 
         sendToClient(client, static_cast<quint16>(firstConnectionSuccess), "");
@@ -268,9 +305,9 @@ bool Server::SendStudentProgresstoClient(QTcpSocket *client, const QString &name
 
 
 
-bool Server::CheckClient(const QString & name){
-    qDebug() << QDir::currentPath();
-    return QDir(name).exists();
+bool Server::CheckClient(const QString & name, quint16 code){
+    //qDebug() << QDir::currentPath();
+    return code == getMentorName ? true : QDir(name).exists();
 }
 
 
@@ -299,5 +336,11 @@ void Server::on_addStudent_clicked()
 
     QDir dir = QDir();
     dir.mkdir(name);
+
+    StudentProgress student = StudentProgress();
+    QFile file(name + QString("/") + name + QString(".StudentProgress"));
+    if (!file.exists())
+        student.save(&file);
+
 }
 
