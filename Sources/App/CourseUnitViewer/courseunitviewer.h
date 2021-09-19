@@ -38,6 +38,7 @@ private:
     double massFac;
     QMap<QString, NodeDesign*> nodesDesigns;
     Node * selectedNode;
+    bool editable = 1;
     //----------------------------------
 
 private:
@@ -56,6 +57,8 @@ public:
 	double getAttFac() const;
 	double getMassFac() const;
 	double getRepFac() const;
+	bool isEditable();
+	void setEditable(bool v);
 	//! Set scene size
 	void setSceneSize(int w, int h);
 	//! Return scene size

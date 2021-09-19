@@ -367,3 +367,16 @@ void CourseUnitViewer::on_designBox_currentTextChanged(QString v) {
 		}
 	}
 }
+
+bool CourseUnitViewer::isEditable() {
+	return editable;
+}
+
+void CourseUnitViewer::setEditable(bool v) {
+	editable = v;
+	ui->pushButton_2->setVisible(v);
+	ui->deleteModeCheckbox->setVisible(v);
+	ui->areaDec->setVisible(v);
+	ui->areaIn->setVisible(v);
+	ui->label_4->setVisible(v);
+}
