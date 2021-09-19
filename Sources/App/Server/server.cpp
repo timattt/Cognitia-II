@@ -5,7 +5,8 @@
 Server::Server(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Server),
-    nextblocksize(0)
+    nextblocksize(0),
+	mtcpServ(nullptr)
 {
 	qInfo() << "Server init started";
 

@@ -11,7 +11,10 @@ MentorClient::MentorClient(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MentorClient),
 	mSocket(nullptr),
-	chooseserv(nullptr)
+	chooseserv(nullptr),
+	respCode(0),
+	skillPack(nullptr),
+	headCourseUnit(nullptr)
 {
 	qInfo() << "Init mentor client";
 

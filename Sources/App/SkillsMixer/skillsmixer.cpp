@@ -4,8 +4,8 @@
 
 SkillsMixer::SkillsMixer(QWidget *parent, double from, double to, double val, QString name, Node *nd) :
     QWidget(parent),
-    ui(new Ui::SkillsMixer),
-	node(nd)
+	node(nd),
+    ui(new Ui::SkillsMixer)
 {
 	qInfo() << "Init skills mixer";
 

@@ -11,7 +11,7 @@
 #include "courseunitviewer.h"
 #include "../Structures/SkillPack/skillpack.h"
 
-CourseScene::CourseScene(CourseUnitViewer * view) : dragEdge(nullptr), totalNodes(0), totalEdges(0), view(view) {
+CourseScene::CourseScene(CourseUnitViewer * v) : dragEdge(nullptr), totalNodes(0), totalEdges(0), view(v) {
 	setSceneRect(QRect(0, 0, 300, 300));
 }
 

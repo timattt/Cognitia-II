@@ -9,7 +9,8 @@
 
 SkillsFlower::SkillsFlower(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::SkillsFlower)
+    ui(new Ui::SkillsFlower),
+	editable(0)
 {
 	qInfo() << "SkillFlower init started";
     ui->setupUi(this);

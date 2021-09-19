@@ -10,7 +10,7 @@
 #include "../CourseUnitViewer/Node/node.h"
 #include "courseeditor.h"
 
-SkillsModel::SkillsModel(CourseEditor * p, bool in) : QStandardItemModel(0, 2, p), editor(p), in(in) {
+SkillsModel::SkillsModel(CourseEditor * p, bool in_) : QStandardItemModel(0, 2, p), editor(p), in(in_) {
 }
 
 SkillsModel::~SkillsModel() {

@@ -109,7 +109,7 @@ void Leaf::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 	}
 }
 
-Leaf::Leaf(double f, double t, double val, QString te, double angle, SkillsFlower * p) : from(f), to(t), value(val), text(te), angle(angle), parent(p) {
+Leaf::Leaf(double f, double t, double val, QString te, double a, SkillsFlower * p) : from(f), to(t), value(val), text(te), angle(a), parent(p) {
 }
 
 double Leaf::getLen() const {
