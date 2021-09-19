@@ -30,7 +30,7 @@ void StudentProgress::load(QFile *file) {
         dat = stream.readAll();
         file->close();
     } else {
-        throw QString("Can not open skill pack file [" + file->fileName() + "]");
+        throw QString("Can not open student progress file [" + file->fileName() + "]");
     }
 
     setObjectName(info.baseName());
@@ -38,7 +38,7 @@ void StudentProgress::load(QFile *file) {
     QStringList divs = dat.split(STUDENT_PROGRESS_DELIMITER, Qt::SkipEmptyParts);
 
     if (divs.empty()) {
-        throw QString("Empty skill pack file [" + file->fileName() + "]");
+        throw QString("Empty student progress file [" + file->fileName() + "]");
     }
 
     for (QString raw : divs) {

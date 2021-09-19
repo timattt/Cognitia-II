@@ -142,7 +142,7 @@ void Server::handleReq(QTcpSocket* client, quint32 block, const QByteArray &data
 
 
     QDir dir = QDir();
-    QStringList students = dir.entryList(QDir::Dirs);
+    QStringList students = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 
     switch (incCode) {
     case getUserName:
@@ -227,10 +227,9 @@ bool Server::SendFile(const QString& filename, QTcpSocket *client, quint16 code)
        {
             QByteArray arrBlock;
             QDataStream out(&arrBlock, QIODevice::WriteOnly);
-           // filename = filename.section("/", -1);
-            qDebug() << quint32(0) << code << filename << file.readAll();
+            qDebug() << quint32(0) << code << filename.section("/", -1) << file.readAll();
             file.seek(0);
-            out << quint32(0) << code << filename << file.readAll();
+            out << quint32(0) << code << filename.section("/", -1) << file.readAll();
             out.device()->seek(0);
             out << quint32(arrBlock.size() - sizeof(quint32));
             qDebug() << arrBlock;
@@ -293,7 +292,7 @@ bool Server::SendSkillpacktoClient(QTcpSocket *client, const QString &name){
 
 bool Server::SendStudentProgresstoClient(QTcpSocket *client, const QString &name){
 
-     ui->Log-> append(QString("Sendind Student Progress to ") + name);
+     ui->Log-> append(QString("Sendind Student Progress of ") + name);
      QDataStream out(client);
      QDir curdir = QDir(name);
 
@@ -338,14 +337,29 @@ void Server::on_returnToL_clicked()
 void Server::on_addStudent_clicked()
 {
     QString name = QFileDialog::getSaveFileName(this, "Create student Directory");
+    if (name.length() == 0){
+        return;
+    }
 
     QDir dir = QDir();
-    dir.mkdir(name);
-
+    if(!dir.mkdir(name)){
+        qDebug() << "cannot make new dir " << name ;
+        return;
+    }
     StudentProgress student = StudentProgress();
+
+    name = name.section("/", -1);
+
     QFile file(name + QString("/") + name + QString(".StudentProgress"));
     if (!file.exists())
-        student.save(&file);
+        try {
+            student.save(&file);
+        }
+        catch(QString message){
+            qDebug() << message;
+        }
+
+
 
 }
 

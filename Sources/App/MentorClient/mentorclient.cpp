@@ -22,6 +22,8 @@ MentorClient::MentorClient(QWidget *parent) :
 
     mSocket = new QTcpSocket(this);
     chooseserv = new ChooseServ(this);
+    skillPack = new SkillPack(this);
+    headCourseUnit = new CourseUnit(this);
 
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->skillFlower, SLOT(unpack(Node*)));
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->skillsMixerHolder, SLOT(nodeSelected(Node*)));
@@ -40,6 +42,7 @@ MentorClient::MentorClient(QWidget *parent) :
     connect(mSocket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), SLOT(slotError(QAbstractSocket::SocketError)));
     connect(chooseserv, SIGNAL(onServConnectclicked()), SLOT(startConnection()));
     connect(chooseserv, SIGNAL(chooseServClosed()), SLOT(onChooseServClosed()));
+
 
     // TEST
     //------------------------------
@@ -159,6 +162,7 @@ void MentorClient::handleincFile(QDataStream& in){
      QString filename;
      in >> filename;
      qDebug() << "handling file" << filename ;
+     //filename = filename.section("/", -1);
      QFile file(filename);
 
      if (file.open(QIODevice::WriteOnly)){
