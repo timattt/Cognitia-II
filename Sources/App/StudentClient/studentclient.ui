@@ -14,29 +14,97 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QHBoxLayout" name="horizontalLayout_4">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QFormLayout" name="formLayout">
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="studentNameField"/>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="studentNameLabel">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_5">
           <property name="text">
            <string>Student name:</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="StudentName">
-          <property name="text">
-           <string/>
+        <item>
+         <widget class="QLineEdit" name="StudentName">
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
        </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="font">
+           <font>
+            <pointsize>8</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Parent courseUnit name:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="parentCu">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Description:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTextEdit" name="parentDescr">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Child courseUnit name:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="childCu">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Descripion:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTextEdit" name="childDescr">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
       </item>
       <item>
        <spacer name="verticalSpacer">
@@ -51,8 +119,15 @@
         </property>
        </spacer>
       </item>
-      <item>
-       <widget class="SkillsFlower" name="flower" native="true"/>
+      <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+       <widget class="SkillsFlower" name="flower" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>500</width>
+          <height>500</height>
+         </size>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
@@ -67,7 +142,7 @@
      <x>0</x>
      <y>0</y>
      <width>845</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuServer">
@@ -133,15 +208,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>CourseUnitViewer</class>
-   <extends>QWidget</extends>
-   <header>CourseUnitViewer/courseunitviewer.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>SkillsFlower</class>
    <extends>QWidget</extends>
    <header>SkillsFlower/skillsflower.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CourseUnitViewer</class>
+   <extends>QWidget</extends>
+   <header>CourseUnitViewer/courseunitviewer.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

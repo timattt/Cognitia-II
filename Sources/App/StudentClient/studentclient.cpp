@@ -1,5 +1,6 @@
 #include "studentclient.h"
 #include "ui_studentclient.h"
+#include "../CourseUnitViewer/Node/node.h"
 
 StudentClient::StudentClient(QWidget *parent) :
     QMainWindow(parent),
@@ -11,6 +12,7 @@ StudentClient::StudentClient(QWidget *parent) :
     chooseserv = new ChooseServ(this);
     skillpack = new SkillPack(this);
     courseUnit = new CourseUnit(this);
+    progress = new StudentProgress(this);
     connect(mSocket, SIGNAL(connected()), SLOT(slotConnected()));
     connect(mSocket, SIGNAL(readyRead()), SLOT(slotReadyRead()));
     connect(mSocket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), SLOT(slotError(QAbstractSocket::SocketError)));
@@ -18,9 +20,24 @@ StudentClient::StudentClient(QWidget *parent) :
     connect(chooseserv, SIGNAL(chooseServClosed()), SLOT(onChooseServClosed()));
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->flower, SLOT(unpack(Node*)));
     connect(ui->flower, SIGNAL(skillLevelChanged(QString, double)), ui->courseUnitViewer, SLOT(makeProgressToSelected(QString, double)));
+    connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), this, SLOT(nodeSelected(Node*)));
 
     ui->flower->setEditable(false);
     ui->courseUnitViewer->setEditable(false);
+
+    // TEST
+    /*
+    //------------------------------
+    QFile f = QFile("C:/Users/timat/Desktop/dedCourse/sem1.CourseUnit");
+    courseUnit->loadCourseUnit(&f);
+
+    progress->addProgress("Akinator", "Graph", 0.5);
+    progress->addProgress("Onegin", "IO", 1.5);
+
+    display();
+*/
+    //------------------------------
+
     qInfo() << "StudentClient init finished";
 }
 
@@ -193,7 +210,15 @@ void StudentClient::confirmConnection(){
     OpenCourse();
 }
 
-
+void StudentClient::nodeSelected(Node *nd) {
+	if (nd == nullptr) {
+		ui->childDescr->clear();
+		ui->childCu->clear();
+	} else {
+		ui->childDescr->setMarkdown(nd->getDescription());
+		ui->childCu->setText(nd->getName());
+	}
+}
 
 void StudentClient::LoadCourse(){
     QDir curdir = QDir();
@@ -260,10 +285,19 @@ void StudentClient::OpenCourse(){
 
 void StudentClient::display(){
 	ui->courseUnitViewer->clearAllScene();
+
+	ui->childDescr->clear();
+	ui->parentDescr->clear();
+
+	ui->childCu->clear();
+	ui->parentCu->clear();
+
 	if (!courseUnit) {
 		qInfo() << "Course unit is null!";
 	} else {
+		ui->parentDescr->setMarkdown(courseUnit->getDescription());
 		ui->courseUnitViewer->unpack(courseUnit);
+		ui->parentCu->setText(courseUnit->objectName());
 	}
 	if (!progress) {
 		qInfo() << "Student progress is null!";

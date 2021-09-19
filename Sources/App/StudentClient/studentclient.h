@@ -14,6 +14,8 @@ namespace Ui {
 class StudentClient;
 }
 
+class Node;
+
 class StudentClient : public QMainWindow
 {
     Q_OBJECT
@@ -61,7 +63,12 @@ private slots:
     void on_actionReturn_to_Launcher_triggered();
 
 public slots:
-    void onStart();
+    public slots:
+
+    	// public slots
+    	//===================================================
+    	void nodeSelected(Node* nd);
+    	void onStart();
 
 signals:
     void onClose();

@@ -208,6 +208,8 @@ void CourseScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event) {
 }
 
 void CourseScene::stopDrag() {
-	delete dragEdge;
-	dragEdge = nullptr;
+	if (dragEdge != nullptr) {
+		delete dragEdge;
+		dragEdge = nullptr;
+	}
 }

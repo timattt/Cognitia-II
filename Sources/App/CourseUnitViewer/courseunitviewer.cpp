@@ -14,7 +14,7 @@
 CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 		QWidget(parent), ui(new Ui::CourseUnitViewer), scene(
 				new CourseScene(this)), attFac(DEFAULT_ATT_FAC), repFac(
-				DEFAULT_REP_FAC), massFac(DEFAULT_MASS_FAC) {
+				DEFAULT_REP_FAC), massFac(DEFAULT_MASS_FAC), selectedNode(nullptr) {
 	qInfo() << "CourseUnitViewer init started";
 	ui->setupUi(this);
 	ui->graphicsView->setScene(scene);
@@ -194,6 +194,7 @@ void CourseUnitViewer::clearAllScene() {
 			nds.push_back(nd);
 		}
 	}
+
 	while (!nds.empty()) {
 		Node * nd = nds.first();
 		nds.removeFirst();

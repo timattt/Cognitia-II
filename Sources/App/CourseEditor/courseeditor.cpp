@@ -136,9 +136,13 @@ void CourseEditor::setNodeToRedactor(Node *nd) {
 		outMd->addSkill(out, lev);
 	}
 
-	ui->nameLineEdit->setText(nd->getName());
-	ui->fileLineEdit->setText(nd->getFile());
-	ui->descrPanel->setText(nd->getDescription());
+	QString name = nd->getName();
+	QString file = nd->getFile();
+	QString descr = nd->getDescription();
+
+	ui->nameLineEdit->setText(name);
+	ui->fileLineEdit->setText(file);
+	ui->descrPanel->setText(descr);
 }
 
 void CourseEditor::on_levelsSelector_currentTextChanged(const QString &arg1)
