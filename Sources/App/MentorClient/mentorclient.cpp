@@ -10,6 +10,8 @@ MentorClient::MentorClient(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MentorClient)
 {
+	qInfo() << "Init mentor client";
+
     ui->setupUi(this);
 
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->skillFlower, SLOT(unpack(Node*)));
@@ -42,6 +44,8 @@ MentorClient::MentorClient(QWidget *parent) :
 
     display();
     //------------------------------
+
+    qInfo() << "Mentor client init finished";
 }
 
 MentorClient::~MentorClient()

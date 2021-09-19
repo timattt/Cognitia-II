@@ -6,11 +6,15 @@ Server::Server(QWidget *parent) :
     ui(new Ui::Server),
     nextblocksize(0)
 {
+	qInfo() << "Server init started";
+
     ui->setupUi(this);
     mtcpServ = new QTcpServer(this);
 
     ui -> Log -> setReadOnly(true);
     ui -> ActiveUsers -> setReadOnly(true);
+
+    qInfo() << "Server init finished";
 }
 
 Server::~Server()

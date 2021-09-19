@@ -6,9 +6,11 @@ Launcher::Launcher() :
     ui(new Ui::Launcher),
 	mayHideWhenUnused(true)
 {
+	qInfo() << "Launcher init started";
     ui->setupUi(this);
 
     this->show();
+    qInfo() << "Launcher init finised";
 }
 
 Launcher::~Launcher()

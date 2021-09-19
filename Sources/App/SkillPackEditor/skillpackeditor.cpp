@@ -10,6 +10,8 @@ SkillPackEditor::SkillPackEditor() :
     skillsSelection(new QItemSelectionModel(model, this)),
     levelsSelection(new QItemSelectionModel(model, this))
 {
+	qInfo() << "SkillpackEditor init started";
+
     ui->setupUi(this);
 
     model->setHeaderData(0, Qt::Horizontal, QObject::tr("Skills, levels, descriptions"));
@@ -18,6 +20,8 @@ SkillPackEditor::SkillPackEditor() :
     ui->tree->setEditTriggers(QAbstractItemView::DoubleClicked);
 
     timerId = startTimer(1000);
+
+    qInfo() << "SkillpackEditor init finished";
 }
 
 SkillPackEditor::~SkillPackEditor()

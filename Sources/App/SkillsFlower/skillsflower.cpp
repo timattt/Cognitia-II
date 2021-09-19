@@ -11,11 +11,13 @@ SkillsFlower::SkillsFlower(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SkillsFlower)
 {
+	qInfo() << "SkillFlower init started";
     ui->setupUi(this);
 
     ui->view->setScene(scene = new FlowerScene(this));
 
     ui->view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+    qInfo() << "SkillFlower init finished";
 }
 
 SkillsFlower::~SkillsFlower()

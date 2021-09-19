@@ -8,7 +8,9 @@ ChooseServ::ChooseServ(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ChooseServ)
 {
+	qInfo() << "ChooseServ init started";
     ui->setupUi(this);
+    qInfo() << "ChoseServ init finished";
 }
 
 ChooseServ::~ChooseServ()

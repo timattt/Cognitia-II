@@ -5,6 +5,7 @@ StudentClient::StudentClient(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::StudentClient)
 {
+	qInfo() << "StudentClient init started";
     ui->setupUi(this);
     mSocket = new QTcpSocket(this);
     chooseserv = new ChooseServ(this);
@@ -20,6 +21,7 @@ StudentClient::StudentClient(QWidget *parent) :
 
     ui->flower->setEditable(false);
     ui->courseUnitViewer->setEditable(false);
+    qInfo() << "StudentClient init finished";
 }
 
 StudentClient::~StudentClient()

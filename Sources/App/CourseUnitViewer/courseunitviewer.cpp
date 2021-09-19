@@ -15,6 +15,7 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 		QWidget(parent), ui(new Ui::CourseUnitViewer), scene(
 				new CourseScene(this)), attFac(DEFAULT_ATT_FAC), repFac(
 				DEFAULT_REP_FAC), massFac(DEFAULT_MASS_FAC) {
+	qInfo() << "CourseUnitViewer init started";
 	ui->setupUi(this);
 	ui->graphicsView->setScene(scene);
 	timerId = startTimer(1);
@@ -33,6 +34,8 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 
 	ui->designBox->addItems(nodesDesigns.keys());
 	ui->designBox->setCurrentText("Old");
+
+	qInfo() << "CourseUnitViewer init finished";
 }
 
 CourseUnitViewer::~CourseUnitViewer() {

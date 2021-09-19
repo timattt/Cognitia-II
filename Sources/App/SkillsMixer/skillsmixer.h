@@ -23,7 +23,7 @@ private:
     Ui::SkillsMixer *ui;
 
 private slots:
-	void on_horizontalSlider_sliderMoved(int a);
+	void on_horizontalSlider_valueChanged(int a);
 
 public:
 	void setValue(double v);

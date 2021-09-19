@@ -7,6 +7,8 @@ SkillsMixer::SkillsMixer(QWidget *parent, double from, double to, double val, QS
     ui(new Ui::SkillsMixer),
 	node(nd)
 {
+	qInfo() << "Init skills mixer";
+
     ui->setupUi(this);
 
     ui->skillName->setText(name);
@@ -18,6 +20,8 @@ SkillsMixer::SkillsMixer(QWidget *parent, double from, double to, double val, QS
     ui->horizontalSlider->setSingleStep(1);
     ui->horizontalSlider->setPageStep(2);
     ui->horizontalSlider->setValue(val * 10);
+
+    qInfo() << "Skills mixer init done";
 }
 
 SkillsMixer::~SkillsMixer()
@@ -25,7 +29,7 @@ SkillsMixer::~SkillsMixer()
     delete ui;
 }
 
-void SkillsMixer::on_horizontalSlider_sliderMoved(int a) {
+void SkillsMixer::on_horizontalSlider_valueChanged(int a) {
 	double v = (double)a / 10.0;
 	ui->val->setText(QString::number(v));
 	node->setProgress(ui->skillName->text(), v);

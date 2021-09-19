@@ -14,6 +14,7 @@ CourseEditor::CourseEditor() :
 	head(nullptr),
 	lastSkillPackModified(0)
 {
+	qInfo() << "CourseEditor init started";
     ui->setupUi(this);
 
     inMd = new SkillsModel(this, 1);
@@ -42,6 +43,8 @@ CourseEditor::CourseEditor() :
     clearCourseUnit();
 
     timerId = startTimer(1000);
+
+    qInfo() << "CourseEditor init finished!";
 }
 
 CourseEditor::~CourseEditor()

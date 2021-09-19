@@ -6,8 +6,9 @@
 
 SkillsMixerHolder::SkillsMixerHolder(QWidget *parent) :
 		QWidget(parent), ui(new Ui::SkillsMixerHolder) {
+	qInfo() << "SkillMixerHolder init started";
 	ui->setupUi(this);
-
+	qInfo() << "SkillMixerHolder init finished";
 }
 
 SkillsMixerHolder::~SkillsMixerHolder() {

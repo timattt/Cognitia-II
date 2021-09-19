@@ -148,10 +148,10 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
-        <item>
+        <item alignment="Qt::AlignHCenter">
          <widget class="SkillsFlower" name="skillFlower" native="true"/>
         </item>
-        <item alignment="Qt::AlignRight">
+        <item alignment="Qt::AlignHCenter">
          <widget class="SkillsMixerHolder" name="skillsMixerHolder" native="true">
           <layout class="QVBoxLayout" name="verticalLayout"/>
          </widget>
