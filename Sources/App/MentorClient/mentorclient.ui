@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>849</width>
-    <height>880</height>
+    <width>893</width>
+    <height>813</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -152,8 +152,8 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
          <widget class="SkillsFlower" name="skillFlower" native="true">
           <property name="minimumSize">
            <size>
-            <width>500</width>
-            <height>500</height>
+            <width>400</width>
+            <height>400</height>
            </size>
           </property>
          </widget>
@@ -175,7 +175,7 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>849</width>
+     <width>893</width>
      <height>21</height>
     </rect>
    </property>
