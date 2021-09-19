@@ -6,6 +6,9 @@
 
 void NodeDesignOlive::drawSkills(Node * nd, QPainter *painter, const QStyleOptionGraphicsItem *option,
 		QWidget *widget) {
+	Q_UNUSED(option);
+	Q_UNUSED(widget);
+
 	double rad = NODE_RAD / 4;
 
 	QFont f = painter->font();
@@ -26,6 +29,8 @@ void NodeDesignOlive::drawSkills(Node * nd, QPainter *painter, const QStyleOptio
         anglePerSkill = (endAngle - startAngle) / (double) nd->getInSkills().size();
     }
 
+    QRadialGradient gradient(0, 0, rad);
+
 	int i = -1;
 	for (QString key : nd->getInSkills().keys()) {
 		i++;
@@ -40,9 +45,7 @@ void NodeDesignOlive::drawSkills(Node * nd, QPainter *painter, const QStyleOptio
         painter->translate(x, y);
         painter->rotate(alpha - 180);
 
-        QRect r = QRect(0 - rad, 0 - rad / 2, 2.0 * rad, rad);
-
-		QRadialGradient gradient(0, 0, rad);
+		gradient = QRadialGradient(0, 0, rad);
         gradient.setColorAt(1, QColor(Qt::darkRed));
         gradient.setColorAt(0, QColor(Qt::red));
         painter->setBrush(gradient);
@@ -79,9 +82,7 @@ void NodeDesignOlive::drawSkills(Node * nd, QPainter *painter, const QStyleOptio
         painter->translate(x, y);
         painter->rotate( alpha);
 
-        QRect r = QRect(0 - rad, 0 - rad / 2, 2.0 * rad, rad);
-
-		QRadialGradient gradient(0, 0, rad);
+        gradient = QRadialGradient(0, 0, rad);
         gradient.setColorAt(1, QColor(Qt::darkGreen));
         gradient.setColorAt(0, QColor(Qt::green));
         painter->setBrush(gradient);
@@ -113,13 +114,13 @@ void NodeDesignOlive::drawSkills(Node * nd, QPainter *painter, const QStyleOptio
 
 	double dist = 1.5 * rad;
 
-	QRadialGradient gradient(0, 0, (dist + rad));
+	gradient = QRadialGradient(0, 0, (dist + rad));
     gradient.setColorAt(1, QColor(Qt::darkMagenta));
     gradient.setColorAt(0, QColor(Qt::magenta));
     painter->setBrush(gradient);
     QPainterPath p = QPainterPath();
 
-	for (int i = 0; i < RECTS_PER_NAME + 1; i++) {
+	for (i = 0; i < RECTS_PER_NAME + 1; i++) {
 		double alpha = (startAngle + (i) * anglePerSymbol);
 		double x = cos(alpha / 180.0 * PI) * (dist + rad);
 		double y = sin(alpha / 180.0 * PI) * (dist + rad);
@@ -131,7 +132,7 @@ void NodeDesignOlive::drawSkills(Node * nd, QPainter *painter, const QStyleOptio
 		}
 	}
 
-	for (int i = RECTS_PER_NAME; i != -1; i--) {
+	for (i = RECTS_PER_NAME; i != -1; i--) {
 		double alpha = (startAngle + (i) * anglePerSymbol);
 		double x = cos(alpha / 180.0 * PI) * dist * 0.9;
 		double y = sin(alpha / 180.0 * PI) * dist * 0.9;
@@ -147,7 +148,7 @@ void NodeDesignOlive::drawSkills(Node * nd, QPainter *painter, const QStyleOptio
 	anglePerSymbol = (endAngle - startAngle) / nd->getName().length();
 
 	painter->setPen(QPen(Qt::black, NODE_RAD / 25.0));
-	for (int i = 0; i < nd->getName().length(); i++) {
+	for (i = 0; i < nd->getName().length(); i++) {
 		QChar c = nd->getName()[i];
 
 		double alpha = (startAngle + (i + 0.5) * anglePerSymbol);

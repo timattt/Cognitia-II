@@ -24,19 +24,19 @@ private:
 
     // Fields
     //------------------------------------------
-    size_t width = 50;
-    size_t height = 50;
-    size_t x = 0;
-    size_t y = 0;
+    size_t width;
+    size_t height;
+    size_t x;
+    size_t y;
     int colour;
     QVector<std::pair<QString, size_t>> income;
     QVector<std::pair<QString, size_t>> outcome;
-    QString description = "";
+    QString description;
     QVector<QString> linked_units;
     QVector<CourseUnit*> embedded_units;
     QString lastFilePath;
-    size_t field_width = 100;
-    size_t field_height = 80;
+    size_t field_width;
+    size_t field_height;
     //------------------------------------------
 
 public:

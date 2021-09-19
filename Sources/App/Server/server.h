@@ -21,6 +21,7 @@ class Server : public QWidget
     Q_OBJECT
 
 private:
+    Ui::Server *ui;
     QTcpServer* mtcpServ;
     unsigned nPort = 1917;
     quint32 nextblocksize;
@@ -61,8 +62,6 @@ public slots:
 signals:
             void onClose();
 
-private:
-    Ui::Server *ui;
 };
 
 #endif // SERVER_H

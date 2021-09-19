@@ -10,11 +10,11 @@
 MentorClient::MentorClient(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MentorClient),
+	headCourseUnit(nullptr),
+	skillPack(nullptr),
 	mSocket(nullptr),
 	chooseserv(nullptr),
-	respCode(0),
-	skillPack(nullptr),
-	headCourseUnit(nullptr)
+	respCode(0)
 {
 	qInfo() << "Init mentor client";
 
@@ -135,7 +135,7 @@ void MentorClient::slotReadyRead(){
 
     for(;;){
         if(!nextBlockSize){
-            if(mSocket -> bytesAvailable() < sizeof(quint32))
+            if(mSocket -> bytesAvailable() < (qint64) sizeof(quint32))
                 break;
             in >> nextBlockSize;
         }

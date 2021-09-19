@@ -108,9 +108,6 @@ private slots:
 	void on_zoomIn_clicked();
 	void on_areaDec_clicked();
 	void on_areaIn_clicked();
-	void on_attFact_textChanged(const QString &arg1);
-	void on_repFact_textChanged(const QString &arg1);
-	void on_massFac_textChanged(const QString &arg1);
 	void on_attFact_editingFinished();
     void on_repFact_editingFinished();
     void on_massFac_editingFinished();

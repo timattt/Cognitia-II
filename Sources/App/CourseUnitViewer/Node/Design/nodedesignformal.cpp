@@ -3,6 +3,9 @@
 #include "../node.h"
 
 void NodeDesignFormal::draw(Node * nd, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+	Q_UNUSED(option);
+	Q_UNUSED(widget);
+
 	QString name = nd->getName();
 
 	double height = NODE_RAD / 3;

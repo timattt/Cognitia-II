@@ -139,15 +139,6 @@ double CourseUnitViewer::getRepFac() const {
 	return repFac;
 }
 
-void CourseUnitViewer::on_attFact_textChanged(const QString &arg1) {
-}
-
-void CourseUnitViewer::on_repFact_textChanged(const QString &arg1) {
-}
-
-void CourseUnitViewer::on_massFac_textChanged(const QString &arg1) {
-}
-
 void CourseUnitViewer::on_attFact_editingFinished() {
 	bool ok = 0;
 	double v = ui->attFact->text().toDouble(&ok);
@@ -364,6 +355,8 @@ void CourseUnitViewer::clearStudentProgress() {
 }
 
 void CourseUnitViewer::on_designBox_currentTextChanged(QString v) {
+	Q_UNUSED(v);
+
 	const QList<QGraphicsItem*> items = scene->items();
 	for (QGraphicsItem *item : items) {
 		if (Node *node = qgraphicsitem_cast<Node*>(item)) {

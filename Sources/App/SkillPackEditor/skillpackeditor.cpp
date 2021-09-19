@@ -339,9 +339,16 @@ void SkillPackEditor::on_actionSet_style_triggered()
 }
 
 void SkillPackEditor::on_autoSave_stateChanged(int v) {
+	Q_UNUSED(v);
+	if (!v) {
+		ui->statusbar->showMessage("Autosave is off");
+	} else {
+		ui->statusbar->showMessage("Autosave is on");
+	}
 }
 
 void SkillPackEditor::timerEvent(QTimerEvent *event) {
+	Q_UNUSED(event);
 	if (ui->autoSave->isChecked()) {
 		fromGui();
 	}

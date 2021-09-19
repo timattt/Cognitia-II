@@ -62,15 +62,3 @@ void FlowerScene::drawBackground(QPainter *painter, const QRectF &rect) {
 	painter->drawEllipse(width() / 2 - MAX_LEN, height() / 2 - MAX_LEN, 2*MAX_LEN, 2*MAX_LEN);
 	painter->drawEllipse(width() / 2 - EXTRA_LEN, height() / 2 - EXTRA_LEN, 2*EXTRA_LEN, 2*EXTRA_LEN);
 }
-
-
-void FlowerScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event) {
-}
-
-void FlowerScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event) {
-}
-
-void FlowerScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event) {
-}
-
-

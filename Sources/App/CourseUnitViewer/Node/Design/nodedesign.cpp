@@ -12,9 +12,14 @@ NodeDesign::~NodeDesign() {}
 
 void NodeDesign::draw(Node *nd, QPainter *painter,
 		const QStyleOptionGraphicsItem *option, QWidget *widget) {
+	Q_UNUSED(nd);
+	Q_UNUSED(painter);
+	Q_UNUSED(option);
+	Q_UNUSED(widget);
 }
 
 bool NodeDesign::verticalSkillsLayout() {
+	return false;
 }
 
 bool NodeDesign::edgeToCenter() {

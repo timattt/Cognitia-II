@@ -5,8 +5,11 @@
 Server::Server(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Server),
+	mtcpServ(nullptr),
+	nPort(0),
     nextblocksize(0),
-	mtcpServ(nullptr)
+	Users(),
+	Mentors()
 {
 	qInfo() << "Server init started";
 
@@ -70,7 +73,7 @@ void Server::slotReadClient(){
 
     for(;;){
         if(!nextblocksize){
-            if(ClientSocket -> bytesAvailable() < sizeof(quint32))
+            if(ClientSocket -> bytesAvailable() < (qint64) sizeof(quint32))
                 break;
             in >> nextblocksize;
         }
@@ -104,7 +107,7 @@ QTcpSocket* Server::Find_Dead(const QMap<QTcpSocket*, QString>& clients){
 
 void Server::deleteFromLog(){
     QTcpSocket* client;
-    if(client = Find_Dead(Users)){
+    if ((client = Find_Dead(Users))){
 
         QString name = Users[client];
         Users.remove(client);
@@ -114,7 +117,7 @@ void Server::deleteFromLog(){
 
         ui -> Log -> append(name + QString(" disconnected\n"));
     }
-    else if (client = Find_Dead(Mentors)){
+    else if ((client = Find_Dead(Mentors))){
         QString name = Mentors[client];
         Mentors.remove(client);
         QString log = ui -> ActiveMentors -> toPlainText();
@@ -128,6 +131,8 @@ void Server::deleteFromLog(){
 
 
 void Server::handleReq(QTcpSocket* client, quint32 block, const QByteArray &data){
+	Q_UNUSED(block);
+
     QDataStream in(data);
 
     QString name;

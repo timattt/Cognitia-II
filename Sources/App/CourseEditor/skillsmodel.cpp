@@ -18,19 +18,27 @@ SkillsModel::~SkillsModel() {
 
 bool SkillsModel::canDropMimeData(const QMimeData *data, Qt::DropAction action,
 		int row, int column, const QModelIndex &parent) const {
+	Q_UNUSED(data);
+	Q_UNUSED(action);
+	Q_UNUSED(row);
+	Q_UNUSED(column);
+	Q_UNUSED(parent);
 	return true;
 }
 
 bool SkillsModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 		int row, int column, const QModelIndex &parent) {
-
+	Q_UNUSED(action);
+	Q_UNUSED(row);
+	Q_UNUSED(column);
+	Q_UNUSED(parent);
 	if (data->text().contains(QString(SKILL_PACK_DELIMITER) + QString(SKILL_PACK_DELIMITER))) {
 		QStringList divs = data->text().split(QString(SKILL_PACK_DELIMITER) + QString(SKILL_PACK_DELIMITER));
 
 		bool ok = 0;
 
 		QString name = divs[0];
-		int lev = divs[1].toInt(&ok);
+		divs[1].toInt(&ok);
 
 		if (!ok) {
 			return false;
@@ -52,7 +60,7 @@ bool SkillsModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 			}
 		}
 
-		removeSkill(name, lev);
+		removeSkill(name);
 		return true;
 	}
 
@@ -106,7 +114,7 @@ void SkillsModel::addSkill(QString name, int lev) {
 	this->setData(this->index(r, 1), QString::number(lev));
 }
 
-void SkillsModel::removeSkill(QString name, int lev) {
+void SkillsModel::removeSkill(QString name) {
 	for (int i = 0; i < this->rowCount(); i++) {
 		if (this->data(this->index(i, 0)) == name) {
 			this->removeRow(i);
