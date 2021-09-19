@@ -65,7 +65,8 @@ void CourseEditor::on_addSkill_pressed()
 	bool ok = 0;
 
 	QString name = ui->skillsSelector->currentText();
-	int lev = ui->levelsSelector->currentText().toInt(&ok);
+
+	ui->levelsSelector->currentText().toInt(&ok);
 
 	if (!ok || !skillsLib.contains(name)) {
 		return;
@@ -97,7 +98,8 @@ void CourseEditor::on_removeSkill_pressed() {
 	bool ok = 0;
 
 	QString name = ui->skillsSelector->currentText();
-	int lev = ui->levelsSelector->currentText().toInt(&ok);
+
+	ui->levelsSelector->currentText().toInt(&ok);
 
 	if (!ok || !skillsLib.contains(name)) {
 		return;
@@ -147,6 +149,7 @@ void CourseEditor::setNodeToRedactor(Node *nd) {
 
 void CourseEditor::on_levelsSelector_currentTextChanged(const QString &arg1)
 {
+	Q_UNUSED(arg1);
 }
 
 void CourseEditor::on_showParent_clicked() {
@@ -199,7 +202,7 @@ void CourseEditor::on_actionCourseUnitOpen_triggered() {
 		fromFileToGui(&crs);
 
 		mes("Opened course unit file " + path);
-	} catch (QString ex) {
+	} catch (QString & ex) {
 		mes("Error while opening: " + ex);
 	}
 
@@ -346,6 +349,8 @@ Node* CourseEditor::getCurrentNode() {
 }
 
 void CourseEditor::timerEvent(QTimerEvent *event) {
+	Q_UNUSED(event);
+
 	QFile f = QFile(this->skillPackPath);
 	if (!f.exists()) {
 		return;

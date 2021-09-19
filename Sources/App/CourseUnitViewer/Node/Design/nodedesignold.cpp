@@ -16,13 +16,12 @@ NodeDesignOld::~NodeDesignOld() {
 
 void NodeDesignOld::draw(Node *nd, QPainter *painter,
 		const QStyleOptionGraphicsItem *option, QWidget *widget) {
+	Q_UNUSED(option);
+	Q_UNUSED(widget);
+
 	QString name = nd->getName();
 
 	double side = 2*NODE_RAD;
-
-	double height = NODE_RAD / 3;
-	double width = 2*NODE_RAD;
-
 
 	// paint parameters
 	//========================================

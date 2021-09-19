@@ -10,11 +10,11 @@
 MentorClient::MentorClient(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MentorClient),
+	headCourseUnit(nullptr),
+	skillPack(nullptr),
 	mSocket(nullptr),
 	chooseserv(nullptr),
-	respCode(0),
-	skillPack(nullptr),
-	headCourseUnit(nullptr)
+	respCode(0)
 {
 	qInfo() << "Init mentor client";
 
@@ -46,7 +46,7 @@ MentorClient::MentorClient(QWidget *parent) :
 
     // TEST
     //------------------------------
-    /*
+
     headCourseUnit = new CourseUnit;
 
     QFile f = QFile("C:/Users/timat/Desktop/dedCourse/sem1.CourseUnit");
@@ -62,7 +62,7 @@ MentorClient::MentorClient(QWidget *parent) :
     andrew->addProgress("Onegin", "IO", 1.5);
 
     display();
-*/
+
     //------------------------------
 
     qInfo() << "Mentor client init finished";
@@ -138,7 +138,7 @@ void MentorClient::slotReadyRead(){
 
     for(;;){
         if(!nextBlockSize){
-            if(mSocket -> bytesAvailable() < sizeof(quint32))
+            if(mSocket -> bytesAvailable() < (qint64) sizeof(quint32))
                 break;
             in >> nextBlockSize;
         }

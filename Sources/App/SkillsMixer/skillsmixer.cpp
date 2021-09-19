@@ -14,7 +14,7 @@ SkillsMixer::SkillsMixer(QWidget *parent, double from, double to, double val, QS
     ui->skillName->setText(name);
     ui->from->setText(QString::number(from) + " <");
     ui->to->setText("< " + QString::number(to));
-    ui->val->setText(QString::number(val));
+    ui->val->setText(QString::number(val, 'g', (val > 10 ? 3 : 2)));
 
     ui->horizontalSlider->setRange(from * 10, to * 10);
     ui->horizontalSlider->setSingleStep(1);
@@ -37,6 +37,6 @@ void SkillsMixer::on_horizontalSlider_valueChanged(int a) {
 
 void SkillsMixer::setValue(double v) {
 	ui->horizontalSlider->setValue(v * 10);
-	ui->val->setText(QString::number(v));
+	ui->val->setText(QString::number(v, 'g', (v > 10 ? 3 : 2)));
 	update();
 }

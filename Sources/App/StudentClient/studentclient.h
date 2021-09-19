@@ -21,8 +21,9 @@ class StudentClient : public QMainWindow
     Q_OBJECT
 
 private:
+	Ui::StudentClient *ui;
     QTcpSocket* mSocket;
-    quint32 nextBlockSize = 0;
+    quint32 nextBlockSize;
     SkillPack* skillpack;
     CourseUnit* courseUnit;
     StudentProgress* progress;
@@ -32,7 +33,7 @@ private:
     QByteArray datafromServer;
     quint16 respCode;
 
-    bool inworkingrepository = false;
+    bool inworkingrepository;
 
 public:
     explicit StudentClient(QWidget *parent = nullptr);
@@ -72,9 +73,6 @@ public slots:
 
 signals:
     void onClose();
-
-private:
-    Ui::StudentClient *ui;
 };
 
 #endif // STUDENTCLIENT_H

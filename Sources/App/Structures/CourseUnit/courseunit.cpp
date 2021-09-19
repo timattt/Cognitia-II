@@ -1,18 +1,39 @@
 #include "CourseUnit.h"
 
-CourseUnit::CourseUnit(QObject* pobj): QObject(pobj), income(), outcome(), embedded_units(), linked_units(), colour(0){
+CourseUnit::CourseUnit(QObject* pobj):
+	QObject(pobj),
+	width(50),
+	height(50),
+	x(0),
+	y(0),
+	colour(0),
+	income(),
+	outcome(),
+	description(""),
+	linked_units(),
+	embedded_units(),
+	lastFilePath(),
+	field_width(100),
+	field_height(80)
+{
 
 }
 
-CourseUnit::CourseUnit(size_t w, size_t h, size_t x_, size_t y_, QObject *pobj): QObject(pobj),
-                                                                                        height(h),
-                                                                                        x(x_), y(y_),
-                                                                                        width(w),
-                                                                                        income(),
-                                                                                        outcome(),
-                                                                                        embedded_units(),
-                                                                                        linked_units(),
-																						colour(0)
+CourseUnit::CourseUnit(size_t w, size_t h, size_t x_, size_t y_, QObject *pobj):
+	QObject(pobj),
+	width(w),
+	height(h),
+	x(x_),
+	y(y_),
+	colour(0),
+	income(),
+	outcome(),
+	description(""),
+	linked_units(),
+	embedded_units(),
+	lastFilePath(),
+	field_width(100),
+	field_height(80)
 {
 
 }

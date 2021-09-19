@@ -4,7 +4,17 @@
 
 StudentClient::StudentClient(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::StudentClient)
+    ui(new Ui::StudentClient),
+	mSocket(nullptr),
+	nextBlockSize(0),
+	skillpack(nullptr),
+	courseUnit(nullptr),
+	progress(nullptr),
+	chooseserv(nullptr),
+	StudentName(),
+	datafromServer(),
+	respCode(0),
+	inworkingrepository(true)
 {
 	qInfo() << "StudentClient init started";
     ui->setupUi(this);
@@ -122,7 +132,7 @@ void StudentClient::slotReadyRead(){
 
     for(;;){
         if(!nextBlockSize){
-            if(mSocket -> bytesAvailable() < sizeof(quint32))
+            if(mSocket -> bytesAvailable() < (qint64) sizeof(quint32))
                 break;
             in >> nextBlockSize;
         }
@@ -253,7 +263,7 @@ void StudentClient::LoadSkillpack(){
     try {
         skillpack -> load(&pack);
     }
-    catch(QString message){
+    catch(QString & message){
         qDebug() << message;
     }
 }
@@ -266,7 +276,7 @@ void StudentClient::LoadStudentsProgresses(){
     try {
         progress -> load(&prog);
     }
-    catch(QString message){
+    catch(QString & message){
         qDebug() << message;
     }
 }

@@ -14,17 +14,19 @@ Leaf::~Leaf() {
 
 
 QRectF Leaf::boundingRect() const {
-	double len = getLen();
 	return QRect( - HANDLER_RAD,  - HANDLER_RAD, 2*HANDLER_RAD, 2*HANDLER_RAD);
 }
 
 void Leaf::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 		QWidget *widget) {
 	{
-	double len = getLen();
-	double x = scene()->width() / 2 + 0.5*(2*len) * cos(angle / 180.0 * 3.1415);
-	double y = scene()->height() / 2 + 0.5*(2*len) * sin(angle / 180.0 * 3.1415);
-	painter->translate(-x, -y);
+	Q_UNUSED(option);
+	Q_UNUSED(widget);
+
+	double len_ = getLen();
+	double x_ = scene()->width() / 2 + 0.5*(2*len_) * cos(angle / 180.0 * 3.1415);
+	double y_ = scene()->height() / 2 + 0.5*(2*len_) * sin(angle / 180.0 * 3.1415);
+	painter->translate(-x_, -y_);
 	}
 
 	QFont f = painter->font();
@@ -82,7 +84,7 @@ void Leaf::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 }
 
 void Leaf::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-
+	Q_UNUSED(event);
 	pressed = 1;
 }
 
@@ -92,9 +94,8 @@ void Leaf::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 		double dy = event->scenePos().y() - scene()->height() / 2.0;
 		double len = sqrt(dx * dx + dy * dy);
 
-		if (len < CENTER_RAD + HANDLER_RAD || len > EXTRA_LEN) {
-			return;
-		}
+		len = qMax(CENTER_RAD + HANDLER_RAD, len);
+		len = qMin(EXTRA_LEN, len);
 
 		setLen(len);
 
@@ -113,7 +114,7 @@ Leaf::Leaf(double f, double t, double val, QString te, double a, SkillsFlower * 
 }
 
 double Leaf::getLen() const {
-	if (to == from) {
+	if (qAbs(to - from) < 0.0001) {
 		exit(-1);
 	}
 	return (value - from) / (to - from) * (MAX_LEN - MIN_LEN) + MIN_LEN;
@@ -131,6 +132,7 @@ void Leaf::refreshPos() {
 }
 
 void Leaf::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+	Q_UNUSED(event);
 	pressed = 0;
 }
 
