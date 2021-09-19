@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>849</width>
-    <height>608</height>
+    <height>880</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -159,9 +159,7 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
          </widget>
         </item>
         <item alignment="Qt::AlignHCenter">
-         <widget class="SkillsMixerHolder" name="skillsMixerHolder" native="true">
-          <layout class="QVBoxLayout" name="verticalLayout"/>
-         </widget>
+         <widget class="SkillsMixerHolder" name="skillsMixerHolder" native="true"/>
         </item>
        </layout>
       </item>

@@ -43,7 +43,7 @@ MentorClient::MentorClient(QWidget *parent) :
 
     // TEST
     //------------------------------
-    /*
+/*
     headCourseUnit = new CourseUnit;
 
     QFile f = QFile("C:/Users/timat/Desktop/dedCourse/sem1.CourseUnit");
