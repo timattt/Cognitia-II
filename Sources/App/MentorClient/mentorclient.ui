@@ -149,7 +149,14 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item alignment="Qt::AlignHCenter">
-         <widget class="SkillsFlower" name="skillFlower" native="true"/>
+         <widget class="SkillsFlower" name="skillFlower" native="true">
+          <property name="minimumSize">
+           <size>
+            <width>500</width>
+            <height>500</height>
+           </size>
+          </property>
+         </widget>
         </item>
         <item alignment="Qt::AlignHCenter">
          <widget class="SkillsMixerHolder" name="skillsMixerHolder" native="true">
@@ -171,7 +178,7 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
      <x>0</x>
      <y>0</y>
      <width>849</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuServer">
