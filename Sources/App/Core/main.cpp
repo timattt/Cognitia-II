@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     QObject::connect(&launcher, SIGNAL(startCourseEditor()), &courseEditor, SLOT(show()));
     QObject::connect(&launcher, SIGNAL(startStudentClient()), &studentClient, SLOT(onStart()));
     QObject::connect(&launcher, SIGNAL(startServer()), &server, SLOT(show()));
-    QObject::connect(&launcher, SIGNAL(startMentorClient()), &mentorClient, SLOT(show()));
+    QObject::connect(&launcher, SIGNAL(startMentorClient()), &mentorClient, SLOT(onStart()));
 
     RETURNFROM(skillPackEditor)
     RETURNFROM(courseEditor)

@@ -10,7 +10,8 @@ enum CommandsToserv{
     saveCourse,
     saveSkillpack,
 
-    getUserName
+    getUserName,
+    getMentorName
 };
 
 enum ServerReplies{

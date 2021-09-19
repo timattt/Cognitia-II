@@ -25,7 +25,7 @@ public:
 
 	// constructor and destructor
 	//----------------------------------
-	StudentProgress();
+    StudentProgress(QObject* parent = nullptr);
 	~StudentProgress();
 	//----------------------------------
 
