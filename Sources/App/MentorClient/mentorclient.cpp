@@ -14,7 +14,6 @@ MentorClient::MentorClient(QWidget *parent) :
 	qInfo() << "Init mentor client";
 
     ui->setupUi(this);
-
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->skillFlower, SLOT(unpack(Node*)));
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->skillsMixerHolder, SLOT(nodeSelected(Node*)));
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), this, SLOT(nodeSelected(Node*)));
@@ -32,7 +31,6 @@ MentorClient::MentorClient(QWidget *parent) :
     connect(mSocket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), SLOT(slotError(QAbstractSocket::SocketError)));
     connect(chooseserv, SIGNAL(onServConnectclicked()), SLOT(startConnection()));
     connect(chooseserv, SIGNAL(chooseServClosed()), SLOT(onChooseServClosed()));
-
 
     // TEST
     /*/------------------------------
