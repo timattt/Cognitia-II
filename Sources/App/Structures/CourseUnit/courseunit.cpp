@@ -112,8 +112,8 @@ void CourseUnit::loadCourseUnit(QFile *res){
     qDebug() <<  "Loading CourseUnit from" << info.absoluteFilePath();
 
     QString data;
-
-    lastFilePath = info.absoluteFilePath();
+    QString abspath = info.absoluteFilePath();
+    lastFilePath = abspath;
 
     if (res->open(QIODevice::ReadOnly)) {
         QTextStream stream(res);
@@ -122,6 +122,7 @@ void CourseUnit::loadCourseUnit(QFile *res){
     } else {
         throw QString("Can't open CourseUnit file [" + res->fileName() + "]");
     }
+    qDebug() << "содержимое прочитал";
 
     QStringList unit_data = data.split(UNITSEPARATOR, Qt::SkipEmptyParts);
 
@@ -129,6 +130,8 @@ void CourseUnit::loadCourseUnit(QFile *res){
     if (unit_data.empty()) {
         throw QString("Empty CourseUnit [" + res->fileName() + "]");
     }
+
+
 
     QStringList fields_data = unit_data[0].split(FIELDSSEPARATOR);
     this->setObjectName(fields_data[0]);

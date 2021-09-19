@@ -22,6 +22,8 @@ MentorClient::MentorClient(QWidget *parent) :
 
     mSocket = new QTcpSocket(this);
     chooseserv = new ChooseServ(this);
+    skillPack = new SkillPack(this);
+    headCourseUnit = new CourseUnit(this);
 
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->skillFlower, SLOT(unpack(Node*)));
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->skillsMixerHolder, SLOT(nodeSelected(Node*)));
@@ -41,9 +43,9 @@ MentorClient::MentorClient(QWidget *parent) :
     connect(chooseserv, SIGNAL(onServConnectclicked()), SLOT(startConnection()));
     connect(chooseserv, SIGNAL(chooseServClosed()), SLOT(onChooseServClosed()));
 
+
     // TEST
-    //------------------------------
-/*
+    /*
     headCourseUnit = new CourseUnit;
 
     QFile f = QFile("C:/Users/timat/Desktop/dedCourse/sem1.CourseUnit");
@@ -159,6 +161,7 @@ void MentorClient::handleincFile(QDataStream& in){
      QString filename;
      in >> filename;
      qDebug() << "handling file" << filename ;
+     //filename = filename.section("/", -1);
      QFile file(filename);
 
      if (file.open(QIODevice::WriteOnly)){
@@ -256,7 +259,7 @@ void MentorClient::LoadSkillpack(){
     try {
         skillPack -> load (&pack);
     }
-    catch(QString message){
+    catch(QString & message){
         qDebug() << message;
     }
 }
@@ -273,7 +276,7 @@ void MentorClient::LoadStudentsProgresses(){
         try {
             progress -> load(&prog);;
         }
-        catch(QString message){
+        catch(QString & message){
             qDebug() << message;
         }
 
