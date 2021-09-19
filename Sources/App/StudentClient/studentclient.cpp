@@ -19,6 +19,7 @@ StudentClient::StudentClient(QWidget *parent) :
     connect(ui->flower, SIGNAL(skillLevelChanged(QString, double)), ui->courseUnitViewer, SLOT(makeProgressToSelected(QString, double)));
 
     ui->flower->setEditable(false);
+    ui->courseUnitViewer->setEditable(false);
 }
 
 StudentClient::~StudentClient()
