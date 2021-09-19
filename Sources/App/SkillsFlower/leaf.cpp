@@ -8,6 +8,7 @@
 #include "leaf.h"
 #include <math.h>
 #include "skillsflower.h"
+#include "../CourseUnitViewer/Node/Design/nodedesign.h"
 
 Leaf::~Leaf() {
 }
@@ -30,7 +31,7 @@ void Leaf::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 	}
 
 	QFont f = painter->font();
-	f.setPointSizeF(SMALL_LENGTH / 6);
+	f.setPointSizeF(SMALL_LENGTH / 3);
 	f.setBold(true);
 	f.setWeight(QFont::ExtraBold);
 	painter->setFont(f);
@@ -58,8 +59,8 @@ void Leaf::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 	QRect r = QRect(-len/2, -SMALL_LENGTH, len, 2 * SMALL_LENGTH);
 
 	painter->drawEllipse(r);
-	r = QRect(-len/2 + HANDLER_RAD / 2, -SMALL_LENGTH, len - 2*HANDLER_RAD, 2 * SMALL_LENGTH);
-	painter->drawText(r, Qt::AlignVCenter | Qt::AlignRight, text);
+	r = QRect(-len/2 + CENTER_RAD + painter->fontMetrics().averageCharWidth() / 8, -SMALL_LENGTH, len - HANDLER_RAD - CENTER_RAD - 2 * painter->fontMetrics().averageCharWidth() / 8, 2 * SMALL_LENGTH);
+	painter->drawText(r, Qt::AlignVCenter | Qt::AlignRight, rebuildStr(text, 8));
 
 	painter->rotate(-angle);
 	painter->translate(-x, -y);

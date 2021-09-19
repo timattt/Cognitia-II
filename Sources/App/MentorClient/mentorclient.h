@@ -104,7 +104,6 @@ public slots:
 
     void onStart();
 	//===================================================
-
 };
 
 #endif // MENTORCLIENT_H

@@ -26,7 +26,7 @@ bool NodeDesign::edgeToCenter() {
 	return false;
 }
 
-QString NodeDesign::rebuildStr(QString str, int max) {
+QString rebuildStr(QString str, int max) {
 	QStringList lst = str.split(" ");
 
 	QStringList res = QStringList(lst.size());

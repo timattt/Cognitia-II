@@ -23,6 +23,8 @@ class QWidget;
 #define RECTS_PER_NAME 5
 //==================================================
 
+QString rebuildStr(QString str, int max = MAX_SYMBOLS_PER_LINE);
+
 class NodeDesign : public QObject {
 	Q_OBJECT
 public:
@@ -34,8 +36,6 @@ public:
 	virtual bool verticalSkillsLayout();
 	virtual bool edgeToCenter();
 	virtual double getEdgeThickness();
-
-	QString rebuildStr(QString str, int max = MAX_SYMBOLS_PER_LINE);
 };
 
 #endif /* APP_COURSEUNITVIEWER_NODE_DESIGN_NODEDESIGN_H_ */

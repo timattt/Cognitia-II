@@ -14,12 +14,12 @@
 #define SMALL_LENGTH 60.0
 
 //
-#define MIN_LEN 150.0
-#define MAX_LEN 250.0
+#define MIN_LEN 180.0
+#define MAX_LEN 260.0
 #define EXTRA_LEN MAX_LEN
 
-#define HANDLER_RAD MIN_LEN / 10
-#define CENTER_RAD MAX_LEN / 4
+#define HANDLER_RAD MIN_LEN / 5
+#define CENTER_RAD MAX_LEN / 8
 
 class SkillsFlower;
 

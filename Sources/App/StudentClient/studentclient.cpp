@@ -36,7 +36,7 @@ StudentClient::StudentClient(QWidget *parent) :
     ui->courseUnitViewer->setEditable(false);
 
     // TEST
-    /*
+/*
     //------------------------------
     QFile f = QFile("C:/Users/timat/Desktop/dedCourse/sem1.CourseUnit");
     courseUnit->loadCourseUnit(&f);

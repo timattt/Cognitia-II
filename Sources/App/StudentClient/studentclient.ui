@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>845</width>
-    <height>563</height>
+    <height>880</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -106,25 +106,12 @@
         </property>
        </widget>
       </item>
-      <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+      <item alignment="Qt::AlignHCenter">
        <widget class="SkillsFlower" name="flower" native="true">
         <property name="minimumSize">
          <size>
-          <width>500</width>
-          <height>500</height>
+          <width>0</width>
+          <height>0</height>
          </size>
         </property>
        </widget>

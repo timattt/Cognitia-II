@@ -207,3 +207,8 @@ void SkillsFlower::progressMade(QString name, double v) {
 		leafs[name]->setValue(v);
 	}
 }
+
+void SkillsFlower::resizeEvent(QResizeEvent *event) {
+	QWidget::resizeEvent(event);
+	ui->view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+}

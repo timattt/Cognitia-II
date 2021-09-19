@@ -62,6 +62,9 @@ signals:
 	void skillLevelChanged(QString skillName, double val);
 	//====================================================
 
+protected:
+
+	void resizeEvent(QResizeEvent *event) override;
 };
 
 #endif // SKILLSFLOWER_H

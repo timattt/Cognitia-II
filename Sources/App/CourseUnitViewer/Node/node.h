@@ -7,7 +7,7 @@ class Edge;
 class CourseUnitViewer;
 class CourseUnit;
 
-#define DEFAULT_ATT_FAC 3000
+#define DEFAULT_ATT_FAC 300
 #define DEFAULT_REP_FAC 0.1
 #define DEFAULT_MASS_FAC 10
 #define EPSILON 0.2
