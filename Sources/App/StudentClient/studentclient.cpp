@@ -14,7 +14,7 @@ StudentClient::StudentClient(QWidget *parent) :
 	StudentName(),
 	datafromServer(),
 	respCode(0),
-	inworkingrepository(true)
+	inworkingrepository(false)
 {
 	qInfo() << "StudentClient init started";
     ui->setupUi(this);
