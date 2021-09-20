@@ -317,9 +317,27 @@ bool CourseUnit::containsInSkill(QString name) {
 
 bool CourseUnit::containsOutSkill(QString name) {
 	for (int i = 0; i < outcome.size(); i++) {
-		if (name == income[i].first) {
+		if (name == outcome[i].first) {
 			return 1;
 		}
 	}
 	return 0;
+}
+
+double CourseUnit::getInSkillLevel(QString sk) {
+	for (int i = 0; i <income.size(); i++) {
+		if (sk == income[i].first) {
+			return income[i].second;
+		}
+	}
+	return -1;
+}
+
+double CourseUnit::getOutSkillLevel(QString sk) {
+	for (int i = 0; i <outcome.size(); i++) {
+		if (sk == outcome[i].first) {
+			return outcome[i].second;
+		}
+	}
+	return -1;
 }

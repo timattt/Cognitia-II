@@ -26,69 +26,43 @@ SkillsFlower::~SkillsFlower()
     delete ui;
 }
 
-void SkillsFlower::unpack(CourseUnit *cu, StudentProgress * prg) {
+void SkillsFlower::unpackEmbed(CourseUnit *cu, StudentProgress * prg) {
 	clearAll();
 
 	if (!cu || !prg) {
 		return;
 	}
 
-	QMap<QString, double> min;
-	QMap<QString, double> max;
-	QMap<QString, double> value;
+	QVector<CourseUnit*> units;
 
-	for (int i = 0; i < cu->getIncome().size(); i++) {
-		QString name = cu->getIncome()[i].first;
-		double val = cu->getIncome()[i].second;
+	units.push_back(cu);
 
-		if (!cu->containsOutSkill(name)) {
-			continue;
+	QMap<QString, double> skills;
+
+	while (!units.isEmpty()) {
+		CourseUnit * cur = units.first();
+		units.pop_front();
+		for (CourseUnit * c : cur->getEmbedded()) {
+			units.push_back(c);
 		}
 
-		if (!min.contains(name)) {
-			min[name] = val;
- 		} else {
- 			min[name] = qMin(min[name], val);
- 		}
-		if (!max.contains(name)) {
-			max[name] = val + 1;
- 		} else {
- 			max[name] = qMax(max[name], val + 1);
- 		}
+		QString name = cur->objectName();
+
+		prg->collectAbsolute(cur, skills);
 	}
 
-	for (int i = 0; i < cu->getOutcome().size(); i++) {
-		QString name = cu->getOutcome()[i].first;
-		double val = cu->getOutcome()[i].second;
+	double anglePerSkill = 360.0 / (double)( skills.keys().size());
 
-		if (!min.contains(name)) {
-			min[name] = val - 1;
- 		} else {
- 			min[name] = qMin(min[name], val - 1);
- 		}
-		if (!max.contains(name)) {
-			max[name] = val;
- 		} else {
- 			max[name] = qMax(max[name], val);
- 		}
+	double max = 0;
+	for (QString name : skills.keys()) {
+		max = qMax(max, skills[name]);
 	}
-	for (QString name : min.keys()) {
-		if (prg->containsLevel(cu->objectName(), name)) {
-			value[name] = prg->getLevel(cu->objectName(), name);
-		} else {
-			value[name] = min[name];
-		}
-	}
-
-	double anglePerSkill = 360.0 / (double)( min.keys().size());
-
-	leafs.clear();
 
 	int i = 0;
-	for (QString name : min.keys()) {
-		double from = min[name];
-		double to = max[name];
-		double val = value[name];
+	for (QString name : skills.keys()) {
+		double from = 0;
+		double to = max;
+		double val = skills[name];
 		Leaf * le = nullptr;
 		scene->addItem(le = new Leaf(from, to, val, name, i * anglePerSkill, this));
 		le->refreshPos();
@@ -100,10 +74,17 @@ void SkillsFlower::unpack(CourseUnit *cu, StudentProgress * prg) {
 	ui->view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
 }
 
-void SkillsFlower::pack(CourseUnit *cu, StudentProgress * prg) {
+void SkillsFlower::clearAll() {
+	ui->view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+	scene->clear();
+	scene->update();
+	leafs.clear();
+}
+
+void SkillsFlower::pack(CourseUnit *cu, StudentProgress *prg) {
 	QString courseUnitName = cu->objectName();
-	for (QGraphicsItem * it : scene->items()) {
-		Leaf * lf = (Leaf*)dynamic_cast<Leaf*>(it);
+	for (QGraphicsItem *it : scene->items()) {
+		Leaf *lf = (Leaf*) dynamic_cast<Leaf*>(it);
 
 		if (lf == nullptr) {
 			continue;
@@ -113,12 +94,6 @@ void SkillsFlower::pack(CourseUnit *cu, StudentProgress * prg) {
 		double val = lf->getValue();
 		prg->addProgress(courseUnitName, skill, val);
 	}
-}
-
-void SkillsFlower::clearAll() {
-	ui->view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
-	scene->clear();
-	scene->update();
 }
 
 void SkillsFlower::unpack(Node *nd) {
@@ -175,8 +150,6 @@ void SkillsFlower::unpack(Node *nd) {
 
 	double anglePerSkill = 360.0 / (double)( min.keys().size());
 
-	leafs.clear();
-
 	int i = 0;
 	for (QString name : min.keys()) {
 		double from = min[name];
@@ -209,35 +182,5 @@ void SkillsFlower::progressMade(QString name, double v) {
 
 void SkillsFlower::resizeEvent(QResizeEvent *event) {
 	QWidget::resizeEvent(event);
-	ui->view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
-}
-
-void SkillsFlower::unpack(StudentProgress *prg) {
-	clearAll();
-	QMap<QString, double> skills;
-	prg->collectAbsolute(skills);
-
-	double anglePerSkill = 360.0 / (double)( skills.keys().size());
-
-	leafs.clear();
-
-	double max = 0;
-	for (QString name : skills.keys()) {
-		max = qMax(max, skills[name]);
-	}
-
-	int i = 0;
-	for (QString name : skills.keys()) {
-		double from = 0;
-		double to = max;
-		double val = skills[name];
-		Leaf * le = nullptr;
-		scene->addItem(le = new Leaf(from, to, val, name, i * anglePerSkill, this));
-		le->refreshPos();
-		leafs[name] = le;
-		i++;
-	}
-
-	scene->update();
 	ui->view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
 }

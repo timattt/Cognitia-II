@@ -74,6 +74,9 @@ public:
     const QVector<std::pair<QString, size_t>>& getIncome() const;
     const QVector<std::pair<QString, size_t>>& getOutcome() const;
 
+    double getInSkillLevel(QString sk);
+    double getOutSkillLevel(QString sk);
+
     bool containsInSkill(QString name);
     bool containsOutSkill(QString name);
 

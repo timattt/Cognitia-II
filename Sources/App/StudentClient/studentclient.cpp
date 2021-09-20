@@ -225,7 +225,7 @@ void StudentClient::nodeSelected(Node *nd) {
 		ui->childDescr->clear();
 		ui->childCu->clear();
 
-		ui->flower->unpack(progress);
+		ui->flower->unpackEmbed(courseUnit, progress);
 	} else {
 		ui->childDescr->setMarkdown(nd->getDescription());
 		ui->childCu->setText(nd->getName());

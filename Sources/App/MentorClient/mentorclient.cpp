@@ -360,7 +360,7 @@ void MentorClient::nodeSelected(Node *nd) {
 		ui->childCu->clear();
 
 		if (students.contains(ui->studentChooser->currentText())) {
-			ui->skillFlower->unpack(students[ui->studentChooser->currentText()]);
+			ui->skillFlower->unpackEmbed(headCourseUnit, students[ui->studentChooser->currentText()]);
 		}
 	} else {
 		ui->childDescr->setMarkdown(nd->getDescription());

@@ -41,9 +41,8 @@ public slots:
     // public slots
     //====================================================
     //! from CU to this gui
-    void unpack(CourseUnit * cu, StudentProgress * prg);
+    void unpackEmbed(CourseUnit * cu, StudentProgress * prg);
     void unpack(Node * nd);
-    void unpack(StudentProgress * prg);
     //! from gui to CU
     void pack(CourseUnit * cu, StudentProgress * prg);
     //! Clears everything
