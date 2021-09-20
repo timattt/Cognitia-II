@@ -289,7 +289,9 @@ bool Node::containsProgress(QString skill) {
 
 void Node::setProgress(QString skill, double val) {
 	progress[skill] = val;
-	emit graph->progressMade(skill, val);
+	if (this == graph->getSelectedNode()) {
+		emit graph->progressMadeToSelected(skill, val);
+	}
 	update();
 }
 

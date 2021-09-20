@@ -43,6 +43,7 @@ public slots:
     //! from CU to this gui
     void unpack(CourseUnit * cu, StudentProgress * prg);
     void unpack(Node * nd);
+    void unpack(StudentProgress * prg);
     //! from gui to CU
     void pack(CourseUnit * cu, StudentProgress * prg);
     //! Clears everything
@@ -52,7 +53,7 @@ public slots:
     //! 1 if editable
     bool isEditable() const;
     //! Call this it progress current node is changed
-    void progressMade(QString name, double v);
+    void progressMade(QString skill, double lev);
     //====================================================
 
 signals:

@@ -111,7 +111,6 @@ void SkillsFlower::pack(CourseUnit *cu, StudentProgress * prg) {
 
 		QString skill = lf->getText();
 		double val = lf->getValue();
-
 		prg->addProgress(courseUnitName, skill, val);
 	}
 }
@@ -210,5 +209,35 @@ void SkillsFlower::progressMade(QString name, double v) {
 
 void SkillsFlower::resizeEvent(QResizeEvent *event) {
 	QWidget::resizeEvent(event);
+	ui->view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+}
+
+void SkillsFlower::unpack(StudentProgress *prg) {
+	clearAll();
+	QMap<QString, double> skills;
+	prg->collectAbsolute(skills);
+
+	double anglePerSkill = 360.0 / (double)( skills.keys().size());
+
+	leafs.clear();
+
+	double max = 0;
+	for (QString name : skills.keys()) {
+		max = qMax(max, skills[name]);
+	}
+
+	int i = 0;
+	for (QString name : skills.keys()) {
+		double from = 0;
+		double to = max;
+		double val = skills[name];
+		Leaf * le = nullptr;
+		scene->addItem(le = new Leaf(from, to, val, name, i * anglePerSkill, this));
+		le->refreshPos();
+		leafs[name] = le;
+		i++;
+	}
+
+	scene->update();
 	ui->view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
 }

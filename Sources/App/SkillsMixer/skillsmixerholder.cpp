@@ -29,6 +29,8 @@ void SkillsMixerHolder::nodeSelected(Node *nd) {
 		toDelete.pop_front();
 	}
 
+	mixers.clear();
+
 	if (nd != nullptr) {
 		QMap<QString, double> min;
 		QMap<QString, double> max;
@@ -74,8 +76,6 @@ void SkillsMixerHolder::nodeSelected(Node *nd) {
 				value[name] = min[name];
 			}
 		}
-
-		mixers.clear();
 
 		int i = 0;
 		for (QString name : min.keys()) {

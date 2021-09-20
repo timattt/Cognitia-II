@@ -118,3 +118,14 @@ double StudentProgress::getLevel(QString courseUnit, QString skill) {
 bool StudentProgress::containsLevel(QString courseUnit, QString skill) {
 	return progress.contains(courseUnit) && progress[courseUnit].contains(skill);
 }
+
+void StudentProgress::collectAbsolute(QMap<QString, double> &res) {
+	for (QString cu : progress.keys()) {
+		for (QString sk : progress[cu].keys()) {
+			if (!res.contains(sk)) {
+				res[sk] = 0;
+			}
+			res[sk] = qMax(res[sk], progress[cu][sk]);
+		}
+	}
+}

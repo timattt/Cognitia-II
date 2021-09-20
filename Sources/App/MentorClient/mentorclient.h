@@ -101,7 +101,7 @@ public slots:
 	// public slots
 	//===================================================
 	void nodeSelected(Node* nd);
-
+	void progressMade(QString skill, double val);
     void onStart();
 	//===================================================
 };

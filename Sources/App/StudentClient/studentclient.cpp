@@ -36,7 +36,7 @@ StudentClient::StudentClient(QWidget *parent) :
     ui->courseUnitViewer->setEditable(false);
 
     // TEST
-/*
+
     //------------------------------
     QFile f = QFile("C:/Users/timat/Desktop/dedCourse/sem1.CourseUnit");
     courseUnit->loadCourseUnit(&f);
@@ -45,7 +45,7 @@ StudentClient::StudentClient(QWidget *parent) :
     progress->addProgress("Onegin", "IO", 1.5);
 
     display();
-*/
+
     //------------------------------
 
     qInfo() << "StudentClient init finished";
@@ -224,6 +224,8 @@ void StudentClient::nodeSelected(Node *nd) {
 	if (nd == nullptr) {
 		ui->childDescr->clear();
 		ui->childCu->clear();
+
+		ui->flower->unpack(progress);
 	} else {
 		ui->childDescr->setMarkdown(nd->getDescription());
 		ui->childCu->setText(nd->getName());

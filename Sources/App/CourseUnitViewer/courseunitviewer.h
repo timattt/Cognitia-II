@@ -125,7 +125,7 @@ signals:
 	void edgeDeleted(Edge * ed);
 	void nodeSkillsChanged(Node * nd);
 	void sceneSizeChanged(int w, int h);
-	void progressMade(QString skill, double lev);
+	void progressMadeToSelected(QString skill, double lev);
 	//----------------------------------
 };
 #endif

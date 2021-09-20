@@ -46,6 +46,7 @@ public:
 	double getLevel(QString courseUnit, QString skill);
 	bool containsLevel(QString courseUnit, QString skill);
 	QString toString();
+	void collectAbsolute(QMap<QString, double> & res);
 	//----------------------------------
 };
 
