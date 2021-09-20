@@ -69,7 +69,7 @@ void CourseScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 	if (nd != nullptr || ed != nullptr) {
 		if (view->deleteModeIsOn()) {
 			if (nd != nullptr) {
-				view->setSelectedNode(nd);
+				view->setSelectedNode(nullptr);
 			}
 			if (nd != nullptr) {
 				emit view->nodeDeleted(nd);
