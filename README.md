@@ -26,3 +26,28 @@
 
 Риализован прототип программы.
 Техническое задание и описание можно найти [тут](https://github.com/timattt/Project-Cognitia-II/blob/main/About/PrototypeTechnicalTask/PrototypeTechnicalTask.md)
+
+# Установка
+Исполняемые файлы можно найти [тут](https://github.com/timattt/Project-Cognitia-II/releases).
+
+# Сборка
+## QT Creator
+1. Устанавливаем **git** [отсюда](https://git-scm.com/).
+2. Устанавливаем **Qt** [отсюда](https://www.qt.io/).
+3. Клонируем репозиторий, переходим в папку с ним и далее в папку Sources.
+4. Открываем файл Cognitia-II.pro.
+5. Собрать и запустить теперь можно с помощью **QT Creator**.
+
+## MinGW
+1. Устанавливаем **git** [отсюда](https://git-scm.com/).
+2. Устанавливаем **Qt** [отсюда](https://www.qt.io/).
+3. Теперь идем в папку, куда установился QT, добавляем 3 папки bin в PATH.
+4. Клонируем репозиторий, переходим в папку с ним и далее в папку Sources.
+5. Открываем терминал из этой папки и используем следующие команды:
+ ```
+mkdir build
+cd build
+qmake ..
+mingw32-make.exe all
+```
+6. Теперь в папке build есть исполняемые файлы.
