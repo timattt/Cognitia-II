@@ -197,6 +197,7 @@ void CourseUnitViewer::clearAllScene() {
 void CourseUnitViewer::addNode(Node *nd) {
 	scene->addItem(nd);
 	emit nodeAdded(nd);
+	scene->update();
 }
 
 void CourseUnitViewer::addEdge(Edge *e) {
@@ -260,8 +261,7 @@ void CourseUnitViewer::pack(CourseUnit *head) {
 }
 
 void CourseUnitViewer::setSceneSize(int w, int h) {
-	QRectF r = scene->sceneRect();
-	scene->setSceneRect((double) r.x() - w/ 2, (double) r.y() - h/2, (double) w, (double) h);
+	scene->setSceneRect((double) - w/ 2, (double)- h/2, (double) w, (double) h);
 }
 
 QPointF CourseUnitViewer::getSceneSize() {

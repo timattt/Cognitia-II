@@ -220,7 +220,7 @@ void CourseEditor::on_actionCourseUnitSave_triggered() {
 		clearCourseUnit();//
 		fromFileToGui(&crs);// to insure that it will write file names into panels
 		mes("Saved course unit file " + head->getFile());
-	} catch (QString ex) {
+	} catch (QString & ex) {
 		mes("Error while saving: " + ex);
 	}
 }

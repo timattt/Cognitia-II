@@ -26,8 +26,8 @@ private:
     //------------------------------------------
     size_t width;
     size_t height;
-    size_t x;
-    size_t y;
+    double x;
+    double y;
     int colour;
     QVector<std::pair<QString, size_t>> income;
     QVector<std::pair<QString, size_t>> outcome;
@@ -62,8 +62,8 @@ public:
     std::pair<size_t, size_t> getFieldSize() const; //first - width, second - height
 
 
-    void setCoords(size_t x, size_t y);
-    std::pair<size_t, size_t> getCoords() const;
+    void setCoords(double x, double y);
+    std::pair<double, double> getCoords() const;
 
     void setColour(int colour_);
     int  getColour();

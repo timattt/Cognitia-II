@@ -255,7 +255,7 @@ void fromNodeToCourseUnit(Node *nd, CourseUnit *cu) {
 		cu->addOutcome({sk, lev});
 	}
 
-	cu->setCoords((long long)nd->pos().x(), (long long)nd->pos().y());
+	cu->setCoords(nd->pos().x(), nd->pos().y());
 }
 
 void fromCourseUnitToNode(CourseUnit *cu, Node *nd) {

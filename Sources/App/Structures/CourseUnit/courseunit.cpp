@@ -112,8 +112,7 @@ void CourseUnit::loadCourseUnit(QFile *res){
     qDebug() <<  "Loading CourseUnit from" << info.absoluteFilePath();
 
     QString data;
-    QString abspath = info.absoluteFilePath();
-    lastFilePath = abspath;
+    lastFilePath = info.absoluteFilePath();
 
     if (res->open(QIODevice::ReadOnly)) {
         QTextStream stream(res);
@@ -138,8 +137,8 @@ void CourseUnit::loadCourseUnit(QFile *res){
 
     width = fields_data[1].toULong();
     height = fields_data[2].toULong();
-    x = fields_data[3].toULong();
-    y = fields_data[4].toULong();
+    x = fields_data[3].toDouble();
+    y = fields_data[4].toDouble();
     colour = fields_data[5].toInt();
 
     QStringList vector_data = fields_data[6].split(VECTORSEPARATOR, Qt::SkipEmptyParts);
@@ -210,12 +209,12 @@ std::pair<size_t, size_t> CourseUnit::getSize() const{
     return std::make_pair(width, height);
 }
 
-void CourseUnit::setCoords(size_t new_x, size_t new_y){
+void CourseUnit::setCoords(double new_x, double new_y){
     x = new_x;
     y = new_y;
 }
 
-std::pair<size_t, size_t> CourseUnit::getCoords() const{
+std::pair<double, double> CourseUnit::getCoords() const{
     return std::make_pair(x, y);
 }
 
