@@ -64,6 +64,7 @@ HEADERS += \
     Structures/StudentProgress/StudentProgress.h \
     CourseEditor/skillsmodel.h\
     Server/server.h \
+    Structures/fileExtensions.h \
     StudentClient/studentclient.h \
     CourseUnitViewer/Node/Design/nodedesign.h \
     CourseUnitViewer/Node/Design/nodedesignolive.h \

@@ -13,7 +13,7 @@
 #define UNITSEPARATOR "|~^|"
 #define FIELDSSEPARATOR "!(!"
 #define VECTORSEPARATOR "?(?"
-#define COURSE_UNIT_FILE_EXTENSION ".CourseUnit"
+#include "../fileExtensions.h"
 //-----------------------------------------------
 
 class CourseUnit : public QObject

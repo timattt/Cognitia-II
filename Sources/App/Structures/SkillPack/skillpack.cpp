@@ -1,11 +1,6 @@
 #include "skillpack.h"
 
-// Consts
-//------------------------------------
-const char * SKILL_PACK_FILE_EXTENSION = ".cognitiaSkillPack";
-const char * SKILL_FILE_EXTENSION = ".cognitiaSkill";
-const char * SKILL_PACK_DELIMITER = "|^|";
-//------------------------------------
+
 
 SkillPack::SkillPack(QObject *parent) : QObject(parent)
 {

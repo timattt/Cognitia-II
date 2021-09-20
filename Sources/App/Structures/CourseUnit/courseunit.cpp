@@ -121,7 +121,6 @@ void CourseUnit::loadCourseUnit(QFile *res){
     } else {
         throw QString("Can't open CourseUnit file [" + res->fileName() + "]");
     }
-    qDebug() << "содержимое прочитал";
 
     QStringList unit_data = data.split(UNITSEPARATOR, Qt::SkipEmptyParts);
 

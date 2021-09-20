@@ -14,9 +14,11 @@
 
 
 
-extern const char * SKILL_PACK_FILE_EXTENSION;
-extern const char * SKILL_FILE_EXTENSION;
-extern const char * SKILL_PACK_DELIMITER;
+// Consts
+//------------------------------------
+#include "../fileExtensions.h"
+#define SKILL_PACK_DELIMITER  "|^|"
+//------------------------------------
 
 
 class SkillPack : public QObject

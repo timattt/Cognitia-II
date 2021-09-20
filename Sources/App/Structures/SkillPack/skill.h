@@ -7,7 +7,10 @@
 #include <QFile>
 #include <QFileInfo>
 
-
+// Constants
+//------------------------------------
+#define SKILL_DELIMITER  "|^|"
+//------------------------------------
 
 
 class Skill : public QObject {
