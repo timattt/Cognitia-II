@@ -29,8 +29,9 @@ MentorClient::MentorClient(QWidget *parent) :
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->skillsMixerHolder, SLOT(nodeSelected(Node*)));
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), this, SLOT(nodeSelected(Node*)));
 
-    connect(ui->courseUnitViewer, SIGNAL(progressMade(QString, double)), ui->skillFlower, SLOT(progressMade(QString, double)));
-    connect(ui->courseUnitViewer, SIGNAL(progressMade(QString, double)), ui->skillsMixerHolder, SLOT(progressMade(QString, double)));
+    connect(ui->courseUnitViewer, SIGNAL(progressMadeToSelected(QString, double)), ui->skillFlower, SLOT(progressMade(QString, double)));
+    connect(ui->courseUnitViewer, SIGNAL(progressMadeToSelected(QString, double)), ui->skillsMixerHolder, SLOT(progressMade(QString, double)));
+    connect(ui->courseUnitViewer, SIGNAL(progressMadeToSelected(QString, double)), this, SLOT(progressMade(QString, double)));
 
     connect(ui->skillFlower, SIGNAL(skillLevelChanged(QString, double)), ui->courseUnitViewer, SLOT(makeProgressToSelected(QString, double)));
 
@@ -45,6 +46,7 @@ MentorClient::MentorClient(QWidget *parent) :
 
 
     // TEST
+    //------------------------------
     /*
     headCourseUnit = new CourseUnit;
 
@@ -79,7 +81,11 @@ void MentorClient::onChooseServClosed(){
     ui->statusbar->showMessage("Server isnt connected, Please connect to the server");
 }
 
-
+void MentorClient::progressMade(QString skill, double val) {
+	if (students.contains(ui->studentChooser->currentText())) {
+		students[ui->studentChooser->currentText()]->addProgress(ui->courseUnitViewer->getSelectedNode()->getName(), skill, val);
+	}
+}
 
 void MentorClient::onStart(){
     this -> setEnabled(false);
@@ -310,12 +316,6 @@ void MentorClient::sendToServer(quint16 code, const QString& str){
 }
 
 
-
-
-
-
-
-
 void MentorClient::display() {
 	ui->courseUnitViewer->clearAllScene();
 	ui->courseUnitViewer->unpack(headCourseUnit);
@@ -338,6 +338,7 @@ void MentorClient::on_studentChooser_currentTextChanged(const QString &name) {
 	if (students.contains(currentStudent)) {
 		ui->courseUnitViewer->pack(students[currentStudent]);
 	}
+
 	ui->courseUnitViewer->clearStudentProgress();
 
 	ui->courseUnitViewer->unpack(students[name]);
@@ -357,6 +358,10 @@ void MentorClient::nodeSelected(Node *nd) {
 	if (nd == nullptr) {
 		ui->childDescr->clear();
 		ui->childCu->clear();
+
+		if (students.contains(ui->studentChooser->currentText())) {
+			ui->skillFlower->unpackEmbed(headCourseUnit, students[ui->studentChooser->currentText()]);
+		}
 	} else {
 		ui->childDescr->setMarkdown(nd->getDescription());
 		ui->childCu->setText(nd->getName());

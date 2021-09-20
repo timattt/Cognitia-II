@@ -64,6 +64,7 @@ public:
 	void refreshPos();
 	QString getText();
 	double getValue();
+	double getFrom();
 	void setValue(double v);
 	//=====================================
 

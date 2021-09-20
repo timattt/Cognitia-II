@@ -20,6 +20,8 @@
 #define STUDENT_PROGRESS_COURSEUNIT_DELIMITER "&&&"
 #include "../fileExtensions.h"
 
+class CourseUnit;
+
 class StudentProgress: public QObject {
 public:
 
@@ -46,6 +48,7 @@ public:
 	double getLevel(QString courseUnit, QString skill);
 	bool containsLevel(QString courseUnit, QString skill);
 	QString toString();
+	void collectAbsolute(CourseUnit * cu, QMap<QString, double> & res);
 	//----------------------------------
 };
 

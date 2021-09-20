@@ -310,6 +310,7 @@ void CourseUnitViewer::unpack(StudentProgress *prg) {
 	for (QGraphicsItem *item : items) {
 		if (Node *node = qgraphicsitem_cast<Node*>(item)) {
 			QString nodeName = node->getName();
+
 			for (QString skillName : node->getInSkills().keys()) {
 				if (prg->containsLevel(nodeName, skillName)) {
 					node->setProgress(skillName, prg->getLevel(nodeName, skillName));

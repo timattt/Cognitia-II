@@ -6,6 +6,7 @@
  */
 
 #include "StudentProgress.h"
+#include "../CourseUnit/courseunit.h"
 
 StudentProgress::StudentProgress(QObject *parent) : QObject(parent)
 {
@@ -117,4 +118,29 @@ double StudentProgress::getLevel(QString courseUnit, QString skill) {
 
 bool StudentProgress::containsLevel(QString courseUnit, QString skill) {
 	return progress.contains(courseUnit) && progress[courseUnit].contains(skill);
+}
+
+void StudentProgress::collectAbsolute(CourseUnit *cu, QMap<QString, double> &res) {
+	if (!progress.contains(cu->objectName())) {
+		return;
+	}
+
+	for (QString sk : progress[cu->objectName()].keys()) {
+		double val = progress[cu->objectName()][sk];
+
+		if (cu->containsInSkill(sk)) {
+			if (qAbs(val - cu->getInSkillLevel(sk)) < 0.001) {
+				continue;
+			}
+		} else if (cu->containsOutSkill(sk)) {
+			if (qAbs(val - (cu->getOutSkillLevel(sk) - 1)) < 0.001) {
+				continue;
+			}
+		}
+ 		if (!res.contains(sk)) {
+			res[sk] = 0;
+		}
+		res[sk] = qMax(res[sk], progress[cu->objectName()][sk]);
+	}
+
 }

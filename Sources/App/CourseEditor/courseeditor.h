@@ -6,6 +6,7 @@
 class SkillsModel;
 class Node;
 class CourseUnit;
+class Skill;
 
 namespace Ui {
 class CourseEditor;
@@ -48,7 +49,7 @@ private:
 	//! Loads skill pack and sets it into skillLib
 	void setSkillPack(QString path);
 	//! Adds skill to lib
-	void addSkillToLib(QString name, int totalLevels);
+	void addSkillToLib(QString name, Skill * sk);
 	//--------------------------------------
 
 private:
@@ -56,7 +57,7 @@ private:
     // Fields
     //--------------------------------------
     Ui::CourseEditor *ui;
-    QMap<QString, int> skillsLib;
+    QMap<QString, QMap<int, QString>> skillsLib;
     SkillsModel * inMd;
     SkillsModel * outMd;
     Node * head;

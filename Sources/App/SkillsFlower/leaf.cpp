@@ -132,6 +132,10 @@ void Leaf::refreshPos() {
 	setPos(x, y);
 }
 
+double Leaf::getFrom() {
+	return from;
+}
+
 void Leaf::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 	Q_UNUSED(event);
 	pressed = 0;
