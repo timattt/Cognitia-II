@@ -319,6 +319,8 @@ void StudentClient::OpenCourse(){
 void StudentClient::ClearAll(){
     ui->courseUnitViewer->clearAllScene();
 
+    ui->flower->unpackEmbed(nullptr, nullptr);
+
     ui->childDescr->clear();
     ui->parentDescr->clear();
 
@@ -328,21 +330,14 @@ void StudentClient::ClearAll(){
 
 
 void StudentClient::display(){
-
     ClearAll();
 
-	if (!courseUnit) {
-		qInfo() << "Course unit is null!";
-	} else {
-		ui->parentDescr->setMarkdown(courseUnit->getDescription());
-		ui->courseUnitViewer->unpack(courseUnit);
-		ui->parentCu->setText(courseUnit->objectName());
-	}
-	if (!progress) {
-		qInfo() << "Student progress is null!";
-	} else {
-		ui->courseUnitViewer->unpack(progress);
-    }
+	ui->parentDescr->setMarkdown(courseUnit->getDescription());
+	ui->courseUnitViewer->unpack(courseUnit);
+	ui->parentCu->setText(courseUnit->objectName());
+
+	ui->courseUnitViewer->unpack(progress);
+	ui->flower->unpackEmbed(courseUnit, progress);
 }
 
 void StudentClient::sendToServer(quint16 code, const QString& str){
