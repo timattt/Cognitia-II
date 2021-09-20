@@ -3,6 +3,7 @@
 #include "skillsmodel.h"
 #include "../CourseUnitViewer/Node/node.h"
 #include "../Structures/SkillPack/skillpack.h"
+#include "../Structures/SkillPack/skill.h"
 #include "../CourseUnitViewer/courseunitviewer.h"
 #include "../Structures/CourseUnit/courseunit.h"
 #include "../CourseUnitViewer/Node/edge.h"
@@ -55,8 +56,11 @@ CourseEditor::~CourseEditor()
     killTimer(timerId);
 }
 
-void CourseEditor::addSkillToLib(QString name, int totalLevels) {
-	skillsLib[name] = totalLevels;
+void CourseEditor::addSkillToLib(QString name, Skill * sk) {
+	skillsLib[name] = QMap<int, QString>();
+	for (int i = 0; i < sk->getLevelsCount(); i++) {
+		skillsLib[name][i + 1] = sk->getLevelDescription(i);
+	}
 	ui->skillsSelector->addItem(name);
 }
 
@@ -88,7 +92,7 @@ void CourseEditor::on_skillsSelector_currentTextChanged(const QString &arg1)
 {
 	ui->levelsSelector->clear();
 	if (skillsLib.contains(arg1)) {
-		for (int i = 1; i <= skillsLib[arg1]; i++) {
+		for (int i = 1; i <= skillsLib[arg1].size(); i++) {
 			ui->levelsSelector->addItem(QString::number(i));
 		}
 	}
@@ -150,6 +154,13 @@ void CourseEditor::setNodeToRedactor(Node *nd) {
 void CourseEditor::on_levelsSelector_currentTextChanged(const QString &arg1)
 {
 	Q_UNUSED(arg1);
+
+	if (skillsLib.contains(ui->skillsSelector->currentText()) &&
+			skillsLib[ui->skillsSelector->currentText()].contains(ui->levelsSelector->currentText().toInt())) {
+		ui->levelDescription->setText(skillsLib[ui->skillsSelector->currentText()][ui->levelsSelector->currentText().toInt()]);
+	} else {
+		ui->levelDescription->clear();
+	}
 }
 
 void CourseEditor::on_showParent_clicked() {
@@ -329,7 +340,7 @@ void CourseEditor::setSkillPack(QString path) {
 
 	skp.load(&f);
 	for (int i = 0; i < skp.getSkillsCount(); i++) {
-		addSkillToLib(skp.getSkill(i)->objectName(), skp.getSkill(i)->getLevelsCount());
+		addSkillToLib(skp.getSkill(i)->objectName(), skp.getSkill(i));
 	}
 
 	mes("SkillPack file " + path + " is loaded!");

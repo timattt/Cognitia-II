@@ -277,6 +277,25 @@ QLabel:hover { border-radius:5px; background:lightgreen}</string>
         </layout>
        </item>
        <item>
+        <widget class="QLabel" name="label_12">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Level description:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTextEdit" name="levelDescription">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QLabel" name="label_9">
          <property name="font">
           <font>
