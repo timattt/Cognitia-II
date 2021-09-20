@@ -1,9 +1,6 @@
 #include "skill.h"
 
-// Constants
-//------------------------------------
-const char * SKILL_DELIMITER = "|^|";
-//------------------------------------
+
 
 Skill::Skill(QObject *parent) : QObject(parent), levelsDescriptions() {
 

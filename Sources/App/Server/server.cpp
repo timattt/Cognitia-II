@@ -63,7 +63,7 @@ void Server::slotNewConnection(){
     connect(ClientSocket, SIGNAL(disconnected()), ClientSocket, SLOT(deleteLater()));
     connect(ClientSocket, SIGNAL(disconnected()), SLOT(deleteFromLog()));
     connect(ClientSocket, SIGNAL(readyRead()), this, SLOT(slotReadClient()));
-    qDebug() << "new connection";
+    qDebug() << "new connection " << ClientSocket;
 }
 
 void Server::slotReadClient(){
@@ -83,7 +83,7 @@ void Server::slotReadClient(){
 
         QByteArray str = ClientSocket -> read(nextblocksize);
         qDebug() << "accept sending " << str;
-        handleReq(ClientSocket, nextblocksize, str);
+        handleReq(ClientSocket, str);
 
         nextblocksize = 0;
 
@@ -128,10 +128,34 @@ void Server::deleteFromLog(){
     }
 }
 
+bool Server::handleincStudentProgressFile(QDataStream& in){
 
+     QString filename;
+     in >> filename;
+     ui->Log-> append(QString("saving file ") + filename + QString("\n"));
 
-void Server::handleReq(QTcpSocket* client, quint32 block, const QByteArray &data){
-	Q_UNUSED(block);
+     QString dirname = filename.section(".", 0, 0);
+
+     QFile file(dirname + QString("/") + filename);
+
+     if (file.open(QIODevice::WriteOnly)){
+         QTextStream out(&file);
+         QByteArray filecont;
+         in >> filecont;
+         qDebug() << filecont;
+         out << filecont;
+         //file.write(in.device()->readAll());
+     }
+     else
+     {
+         ui->Log-> append(QString("Cant handle inc file ") + filename + QString("\n")) ;
+         return false;
+     }
+     return true;
+
+}
+
+void Server::handleReq(QTcpSocket* client, const QByteArray &data){
 
     QDataStream in(data);
 
@@ -140,7 +164,7 @@ void Server::handleReq(QTcpSocket* client, quint32 block, const QByteArray &data
     quint16 incCode;
     in >> incCode;
     qDebug() << "accept name" << name;
-    if (!CheckClient(name, incCode)){
+    if (!CheckClient(name, incCode, client)){
         sendToClient(client, static_cast<quint16>(retrieveFailAutorisation), "");
         return;
     }
@@ -152,7 +176,7 @@ void Server::handleReq(QTcpSocket* client, quint32 block, const QByteArray &data
     switch (incCode) {
     case getUserName:
         Users[client] = name;
-        ui->Log-> append(name + QString(" connected!\n"));
+        ui->Log-> append(name + QString(" connected!"));
         ui->ActiveUsers->append(name);
         if (!SendCoursetoClient(client, name) ||
             !SendSkillpacktoClient(client, name) ||
@@ -169,7 +193,7 @@ void Server::handleReq(QTcpSocket* client, quint32 block, const QByteArray &data
 
     case getMentorName:
         Mentors[client] = name;
-        ui->Log-> append(name + QString(" (mentor) connected!\n"));
+        ui->Log-> append(name + QString(" (mentor) connected!"));
         ui->ActiveMentors->append(name);
         if (!SendCoursetoClient(client, name) ||
             !SendSkillpacktoClient(client, name))
@@ -197,6 +221,12 @@ void Server::handleReq(QTcpSocket* client, quint32 block, const QByteArray &data
         break;
 
     case saveStudentProgress:
+        Mentors[client] = name;
+        ui->Log-> append(name + QString(" (mentor) has sent SP"));
+
+        if (!handleincStudentProgressFile(in)){
+            sendToClient(client, static_cast<quint16>(retrieveFail), "");
+        }
 
         break;
     case sendCourse:
@@ -254,7 +284,7 @@ bool Server::SendCoursetoClient(QTcpSocket *client, const QString &name){
 
      QStringList filters;
      QDir curdir = QDir();
-     filters << "*.mainCourseUnit" << "*.CourseUnit";
+     filters << QString("*") + MAIN_COURSEUNIT_FILE_EXTENSION << QString("*") + QString(COURSE_UNIT_FILE_EXTENSION);
      curdir.setNameFilters(filters);
      QStringList courseFiles = curdir.entryList();
 
@@ -277,7 +307,7 @@ bool Server::SendSkillpacktoClient(QTcpSocket *client, const QString &name){
      QDir curdir = QDir();
 
      QStringList filters;
-     filters << "*.cognitiaSkill" << "*.cognitiaSkillPack";
+     filters << QString("*") + QString(SKILL_FILE_EXTENSION) << QString("*") + QString(SKILL_PACK_FILE_EXTENSION);
      curdir.setNameFilters(filters);
 
      QStringList courseFiles = curdir.entryList();
@@ -301,7 +331,7 @@ bool Server::SendStudentProgresstoClient(QTcpSocket *client, const QString &name
      QDataStream out(client);
      QDir curdir = QDir(name);
 
-     QStringList courseFiles = curdir.entryList(QStringList() << "*.StudentProgress");
+     QStringList courseFiles = curdir.entryList(QStringList() << QString("*") + QString(STUDENT_PROGRESS_FILE_EXTENSION));
 
      for (int i = 0; i < courseFiles.size(); ++i){
 
@@ -314,9 +344,11 @@ bool Server::SendStudentProgresstoClient(QTcpSocket *client, const QString &name
 
 
 
-bool Server::CheckClient(const QString & name, quint16 code){
+bool Server::CheckClient(const QString & name, quint16 code, QTcpSocket* client){
     //qDebug() << QDir::currentPath();
-    return code == getMentorName ? true : QDir(name).exists();
+    if (code == getMentorName || Mentors.contains(client))
+        return true;
+    return  QDir(name).exists();
 }
 
 
@@ -355,7 +387,7 @@ void Server::on_addStudent_clicked()
 
     name = name.section("/", -1);
 
-    QFile file(name + QString("/") + name + QString(".StudentProgress"));
+    QFile file(name + QString("/") + name + QString(STUDENT_PROGRESS_FILE_EXTENSION));
     if (!file.exists())
         try {
             student.save(&file);
@@ -363,8 +395,6 @@ void Server::on_addStudent_clicked()
         catch(QString message){
             qDebug() << message;
         }
-
-
 
 }
 

@@ -68,6 +68,8 @@ private:
     void LoadSkillpack();
     void LoadCourse();
     void LoadStudentsProgresses();
+
+    bool SendFile(QFile* file, quint16 code);
     //===================================================
 
 signals:

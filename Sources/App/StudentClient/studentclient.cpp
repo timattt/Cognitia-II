@@ -97,7 +97,7 @@ void StudentClient::startConnection(){
 
 void StudentClient::slotConnected(){
 
-    qDebug() << "connected to serv";
+    qDebug() << "connected to serv " << inworkingrepository;
     StudentName = chooseserv -> getName();
 
     QDir dir = QDir();
@@ -164,7 +164,7 @@ void StudentClient::handleincFile(QDataStream& in){
          in >> filecont;
          qDebug() << filecont;
          out << filecont;
-         file.write(in.device()->readAll());
+         //file.write(in.device()->readAll());
      }
      else
      {
@@ -235,7 +235,7 @@ void StudentClient::nodeSelected(Node *nd) {
 void StudentClient::LoadCourse(){
     QDir curdir = QDir();
     QStringList filters;
-    filters << "*.mainCourseUnit";
+    filters << QString("*") + MAIN_COURSEUNIT_FILE_EXTENSION;
     curdir.setNameFilters(filters);
 
     QFile fileMain( curdir.entryList()[0]);
@@ -261,7 +261,7 @@ void StudentClient::LoadCourse(){
 
 void StudentClient::LoadSkillpack(){
     QDir curdir = QDir();
-    QFile pack(curdir.entryList(QStringList() << "*.cognitiaSkillPack")[0]);
+    QFile pack(curdir.entryList(QStringList() << QString("*") + QString(SKILL_PACK_FILE_EXTENSION))[0]);
     try {
         skillpack -> load(&pack);
     }
@@ -274,7 +274,7 @@ void StudentClient::LoadSkillpack(){
 void StudentClient::LoadStudentsProgresses(){
     QDir curdir = QDir();
 
-    QFile prog(curdir.entryList(QStringList() << "*.StudentProgress")[0]);
+    QFile prog(curdir.entryList(QStringList() << QString("*") + QString(STUDENT_PROGRESS_FILE_EXTENSION))[0]);
     try {
         progress -> load(&prog);
     }

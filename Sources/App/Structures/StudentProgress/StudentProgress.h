@@ -18,7 +18,7 @@
 
 #define STUDENT_PROGRESS_DELIMITER "|%|"
 #define STUDENT_PROGRESS_COURSEUNIT_DELIMITER "&&&"
-#define STUDENT_PROGRESS_FILE_EXTENTION ".StudentProgress"
+#include "../fileExtensions.h"
 
 class CourseUnit;
 

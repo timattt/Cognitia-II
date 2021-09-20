@@ -108,7 +108,7 @@ void MentorClient::startConnection(){
 
 void MentorClient::slotConnected(){
 
-    qDebug() << "connected to serv";
+    qDebug() << "connected to serv " << inworkingrepository;
 
 
     QDir dir = QDir();
@@ -176,7 +176,7 @@ void MentorClient::handleincFile(QDataStream& in){
          in >> filecont;
          qDebug() << filecont;
          out << filecont;
-         file.write(in.device()->readAll());
+         //file.write(in.device()->readAll());
      }
      else
      {
@@ -235,7 +235,7 @@ void MentorClient::confirmConnection(){
 void MentorClient::LoadCourse(){
     QDir curdir = QDir();
     QStringList filters;
-    filters << "*.mainCourseUnit";
+    filters << QString("*") + MAIN_COURSEUNIT_FILE_EXTENSION;
     curdir.setNameFilters(filters);
 
     QFile fileMain( curdir.entryList()[0]);
@@ -261,7 +261,7 @@ void MentorClient::LoadCourse(){
 
 void MentorClient::LoadSkillpack(){
     QDir curdir = QDir();
-    QFile pack(curdir.entryList(QStringList() << "*.cognitiaSkillPack")[0]);
+    QFile pack(curdir.entryList(QStringList() << QString("*") + QString(SKILL_PACK_FILE_EXTENSION))[0]);
     try {
         skillPack -> load (&pack);
     }
@@ -274,7 +274,7 @@ void MentorClient::LoadSkillpack(){
 void MentorClient::LoadStudentsProgresses(){
     QDir curdir = QDir();
 
-    QStringList studentsProg = curdir.entryList(QStringList() << "*.StudentProgress");
+    QStringList studentsProg = curdir.entryList(QStringList() << QString("*") + QString(STUDENT_PROGRESS_FILE_EXTENSION));
     for (int i = 0; i < studentsProg.size(); ++i){
         QFile prog(studentsProg[i]);
         StudentProgress* progress = new StudentProgress(this);
@@ -285,8 +285,7 @@ void MentorClient::LoadStudentsProgresses(){
         catch(QString & message){
             qDebug() << message;
         }
-
-        students[studentsProg[i]] = progress;
+        students[studentsProg[i].section(".", 0, 0)] = progress;
     }
 
 }
@@ -392,7 +391,52 @@ void MentorClient::on_actionReturn_to_Launcher_triggered()
 }
 
 
+
+bool MentorClient::SendFile(QFile* file, quint16 code){
+
+
+    if (file -> open(QIODevice::ReadOnly))
+       {
+            QByteArray arrBlock;
+            QDataStream out(&arrBlock, QIODevice::WriteOnly);
+
+
+            out << quint32(0) << chooseserv -> getName() << code << file -> fileName() << file -> readAll();
+            out.device() -> seek(0);
+            out << quint32(arrBlock.size() - sizeof(quint32));
+            qDebug() << arrBlock;
+            mSocket -> write(arrBlock);
+
+       }
+    else {
+        QMessageBox::critical(0, "Failing to send Student progresses", "Please try one more time");
+        return false;
+    }
+    return true;
+}
+
+
+
+
+
 void MentorClient::on_actionSave_all_and_send_triggered()
 {
+      pack();
 
+      for(QString& studentname: students.keys())
+      {
+          StudentProgress* student = students[studentname];
+          QFile file = QFile(studentname + QString(STUDENT_PROGRESS_FILE_EXTENSION));
+
+          try {
+              student -> save(&file);
+          }
+          catch (const QString mess){
+              qDebug() << mess;
+          }
+
+          if(!SendFile(&file, static_cast<quint16>(saveStudentProgress))){
+            break;
+          }
+      }
 }

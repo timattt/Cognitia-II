@@ -11,6 +11,7 @@
 #include <QFileDialog>
 
 #include "../Structures/ServerCommands/serverCommands.h"
+#include "../Structures/fileExtensions.h"
 
 namespace Ui {
 class Server;
@@ -36,12 +37,14 @@ public:
 
 private:
     void sendToClient(QTcpSocket*, quint16, const QString&);
-    void handleReq(QTcpSocket* client, quint32 block, const QByteArray& data);
+    void handleReq(QTcpSocket* client, const QByteArray& data);
     bool SendCoursetoClient(QTcpSocket* client, const QString& name);
     bool SendSkillpacktoClient(QTcpSocket* client, const QString& name);
     bool SendStudentProgresstoClient(QTcpSocket* client, const QString& name);
     bool SendFile(const QString&, QTcpSocket* client, quint16 code);
-    bool CheckClient(const QString&, quint16 code);
+    bool handleincStudentProgressFile(QDataStream& in);
+
+    bool CheckClient(const QString&, quint16 code, QTcpSocket* client);
     QTcpSocket* Find_Dead(const QMap<QTcpSocket*, QString>&);
 
 private slots:
