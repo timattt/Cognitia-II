@@ -361,9 +361,11 @@ void MentorClient::nodeSelected(Node *nd) {
 		ui->childCu->clear();
 
 		if (students.contains(ui->studentChooser->currentText())) {
+			ui->skillFlower->setEditable(false);
 			ui->skillFlower->unpackEmbed(headCourseUnit, students[ui->studentChooser->currentText()]);
 		}
 	} else {
+		ui->skillFlower->setEditable(true);
 		ui->childDescr->setMarkdown(nd->getDescription());
 		ui->childCu->setText(nd->getName());
 	}
