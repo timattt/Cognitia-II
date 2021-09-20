@@ -55,6 +55,7 @@ private:
     //===================================================
     //! call this when you want to extract data from courseunit and studentprogress structres into the gui.
     void display();
+    void ClearAll();
     //! call this when you want to extract data from gui into studentprogress.
     //! After this function they will be ready to send
     void pack();

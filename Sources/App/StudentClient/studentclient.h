@@ -51,6 +51,7 @@ private:
     void LoadSkillpack();
     void LoadStudentsProgresses();
     void display();
+    void ClearAll();
 
 
 private slots:

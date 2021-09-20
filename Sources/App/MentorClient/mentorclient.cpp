@@ -316,20 +316,26 @@ void MentorClient::sendToServer(quint16 code, const QString& str){
 }
 
 
+void MentorClient::ClearAll(){
+    ui->courseUnitViewer->clearAllScene();
+    ui->studentChooser->clear();
+    ui->childDescr->clear();
+    ui->parentDescr->clear();
+    ui->childCu->clear();
+    ui->parentCu->clear();
+}
+
+
+
 void MentorClient::display() {
-	ui->courseUnitViewer->clearAllScene();
+
+    ClearAll();
+
 	ui->courseUnitViewer->unpack(headCourseUnit);
 
-	ui->studentChooser->clear();
 	ui->studentChooser->addItems(students.keys());
 
-	ui->childDescr->clear();
-	ui->parentDescr->clear();
-
 	ui->parentDescr->setMarkdown(headCourseUnit->getDescription());
-
-	ui->childCu->clear();
-	ui->parentCu->clear();
 
 	ui->parentCu->setText(headCourseUnit->objectName());
 }
@@ -371,6 +377,12 @@ void MentorClient::nodeSelected(Node *nd) {
 void MentorClient::on_actionChoose_Server_triggered()
 {
 
+    ClearAll();
+
+    if(mSocket -> state() == QAbstractSocket::ConnectedState){
+        mSocket -> close();
+    }
+
     ui->statusbar->showMessage("Changing server");
     if (inworkingrepository){
         QDir::setCurrent("../");
@@ -385,6 +397,12 @@ void MentorClient::on_actionChoose_Server_triggered()
 
 void MentorClient::on_actionReturn_to_Launcher_triggered()
 {
+    ClearAll();
+
+    if(mSocket -> state() == QAbstractSocket::ConnectedState){
+        mSocket -> close();
+    }
+
     emit onClose();
 }
 

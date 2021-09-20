@@ -56,9 +56,22 @@ StudentClient::~StudentClient()
     delete ui;
 }
 
+
+
+
+
+
+
 void StudentClient::on_actionChange_Server_triggered()
 {
     ui->statusbar->showMessage("Changing server");
+
+    ClearAll();
+
+    if(mSocket -> state() == QAbstractSocket::ConnectedState){
+        mSocket -> close();
+    }
+
     if (inworkingrepository){
         QDir::setCurrent("../");
         inworkingrepository = false;
@@ -294,15 +307,20 @@ void StudentClient::OpenCourse(){
 
 }
 
+void StudentClient::ClearAll(){
+    ui->courseUnitViewer->clearAllScene();
+
+    ui->childDescr->clear();
+    ui->parentDescr->clear();
+
+    ui->childCu->clear();
+    ui->parentCu->clear();
+}
+
 
 void StudentClient::display(){
-	ui->courseUnitViewer->clearAllScene();
 
-	ui->childDescr->clear();
-	ui->parentDescr->clear();
-
-	ui->childCu->clear();
-	ui->parentCu->clear();
+    ClearAll();
 
 	if (!courseUnit) {
 		qInfo() << "Course unit is null!";
@@ -347,6 +365,11 @@ void StudentClient::on_actionSave_all_and_send_triggered()
 
 void StudentClient::on_actionReturn_to_Launcher_triggered()
 {
+    ClearAll();
+
+    if(mSocket -> state() == QAbstractSocket::ConnectedState){
+        mSocket -> close();
+    }
     emit onClose();
 }
 
