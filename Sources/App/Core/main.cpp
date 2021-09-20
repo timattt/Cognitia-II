@@ -14,6 +14,7 @@
 
 int main(int argc, char *argv[])
 {
+    try{
     QApplication a(argc, argv);
 
     Launcher launcher;
@@ -36,6 +37,11 @@ int main(int argc, char *argv[])
     RETURNFROM(studentClient)
 	RETURNFROM(mentorClient)
 
+             return a.exec();
+    }
+    catch (const QString mess){
+        qDebug() << mess;
+    }
 
-    return a.exec();
+
 }

@@ -68,6 +68,15 @@ void StudentClient::on_actionChange_Server_triggered()
 
     ClearAll();
 
+    delete courseUnit;
+    delete skillpack;
+    courseUnit = new CourseUnit(this);
+    skillpack = new SkillPack(this);
+    delete progress;
+    progress = new StudentProgress(this);
+
+
+
     if(mSocket -> state() == QAbstractSocket::ConnectedState){
         mSocket -> close();
     }
@@ -367,9 +376,22 @@ void StudentClient::on_actionReturn_to_Launcher_triggered()
 {
     ClearAll();
 
+    delete courseUnit;
+    delete skillpack;
+    courseUnit = new CourseUnit(this);
+    skillpack = new SkillPack(this);
+    delete progress;
+    progress = new StudentProgress(this);
+
     if(mSocket -> state() == QAbstractSocket::ConnectedState){
         mSocket -> close();
     }
+
+    if (inworkingrepository){
+        QDir::setCurrent("../");
+        inworkingrepository = false;
+    }
+
     emit onClose();
 }
 

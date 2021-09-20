@@ -381,6 +381,15 @@ void MentorClient::on_actionChoose_Server_triggered()
 
     ClearAll();
 
+    delete headCourseUnit;
+    delete skillPack;
+    headCourseUnit = new CourseUnit(this);
+    skillPack = new SkillPack(this);
+    for (StudentProgress* student : students.values()){
+        delete student;
+    }
+    students.clear();
+
     if(mSocket -> state() == QAbstractSocket::ConnectedState){
         mSocket -> close();
     }
@@ -401,8 +410,23 @@ void MentorClient::on_actionReturn_to_Launcher_triggered()
 {
     ClearAll();
 
+    delete headCourseUnit;
+    delete skillPack;
+    headCourseUnit = new CourseUnit(this);
+    skillPack = new SkillPack(this);
+    for (StudentProgress* student : students.values()){
+        delete student;
+    }
+    students.clear();
+
     if(mSocket -> state() == QAbstractSocket::ConnectedState){
         mSocket -> close();
+    }
+
+
+    if (inworkingrepository){
+        QDir::setCurrent("../");
+        inworkingrepository = false;
     }
 
     emit onClose();
