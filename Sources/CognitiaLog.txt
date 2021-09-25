@@ -1,2 +1,0 @@
-[Sat Sep 25 15:26:07 2021][..\..\App\Core\main.cpp:22] Hey
-[Sat Sep 25 15:26:07 2021][..\..\App\Core\main.cpp:25] Assertion error
