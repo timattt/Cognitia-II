@@ -12,7 +12,7 @@
 #include "../Structures/SkillPack/skillpack.h"
 
 CourseScene::CourseScene(CourseUnitViewer * v) : dragEdge(nullptr), view(v), totalNodes(0), totalEdges(0), currentNodePreviousColor() {
-	setSceneRect(QRect(0, 0, 300, 300));
+	setSceneRect(QRect(0, 0, 600, 600));
 }
 
 void CourseScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
@@ -83,7 +83,7 @@ void CourseScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 			}
 		} else {
 			if (nd != nullptr) {
-				if (event->button() == Qt::RightButton) {
+				if (event->button() == Qt::RightButton && view->isEditable()) {
 					addItem(dragEdge = new Edge(nd));
 					dragEdge->setTarget(event->lastScenePos());
 					return;
@@ -203,4 +203,19 @@ void CourseScene::stopDrag() {
 		delete dragEdge;
 		dragEdge = nullptr;
 	}
+}
+
+void CourseScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event) {
+	// Do not delete this function. It is used in drag and drop skill operation
+	Q_UNUSED(event);
+}
+
+void CourseScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event) {
+	// Do not delete this function. It is used in drag and drop skill operation
+	Q_UNUSED(event);
+}
+
+void CourseScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event) {
+	// Do not delete this function. It is used in drag and drop skill operation
+	Q_UNUSED(event);
 }
