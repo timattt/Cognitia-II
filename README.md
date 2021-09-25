@@ -1,7 +1,9 @@
 
+![](https://github.com/timattt/Project-Cognitia-II/blob/main/About/WorkingImages/Logo.png)
+
+
 # Cognitia II
 
-![](https://github.com/timattt/Project-Cognitia-II/blob/main/About/WorkingImages/Logo.png)
 
 Проект призван упростить жизнь составителям курсов и методистам, предложив им гибкую и удобную систему редактирования материала, планирования времени и контроля знаний учеников.
 
