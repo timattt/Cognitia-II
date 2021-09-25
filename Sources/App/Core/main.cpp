@@ -4,6 +4,7 @@
 #include "../StudentClient/studentclient.h"
 #include "../Server/server.h"
 #include "../MentorClient/mentorclient.h"
+#include "logger.h"
 
 #include <QApplication>
 #include <QObject>
@@ -14,6 +15,8 @@
 
 int main(int argc, char *argv[])
 {
+	log_init();
+
     try{
     QApplication a(argc, argv);
 
@@ -42,6 +45,4 @@ int main(int argc, char *argv[])
     catch (const QString mess){
         qDebug() << mess;
     }
-
-
 }

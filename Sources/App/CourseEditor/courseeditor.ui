@@ -91,6 +91,9 @@ QSplitter::handle:vertical {
            </item>
            <item row="1" column="1">
             <widget class="QLineEdit" name="fileLineEdit">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="readOnly">
               <bool>true</bool>
              </property>
@@ -302,6 +305,9 @@ QSplitter::handle:vertical {
          </item>
          <item>
           <widget class="QTextEdit" name="levelDescription">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -321,6 +327,9 @@ QSplitter::handle:vertical {
          </item>
          <item>
           <widget class="QLineEdit" name="skillPackFile">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
