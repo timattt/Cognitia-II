@@ -49,6 +49,9 @@ protected:
 	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 	void drawBackground(QPainter *painter, const QRectF &rect) override;
 	void dropEvent(QGraphicsSceneDragDropEvent *event) override;
+	void dragEnterEvent(QGraphicsSceneDragDropEvent *event) override;
+	void dragMoveEvent(QGraphicsSceneDragDropEvent *event) override;
+	void dragLeaveEvent(QGraphicsSceneDragDropEvent *event) override;
 	//-----------------------------------
 
 };

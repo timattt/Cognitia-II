@@ -120,6 +120,7 @@ void CourseScene::drawBackground(QPainter *painter, const QRectF &rect) {
 
 void CourseScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
 	event->accept();
+	qInfo() << "do!";
 
 	QList<QGraphicsItem*> its = this->items(event->scenePos());
 
@@ -203,4 +204,19 @@ void CourseScene::stopDrag() {
 		delete dragEdge;
 		dragEdge = nullptr;
 	}
+}
+
+void CourseScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event) {
+	// Do not delete this function. It is used in drag and drop skill operation
+	Q_UNUSED(event);
+}
+
+void CourseScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event) {
+	// Do not delete this function. It is used in drag and drop skill operation
+	Q_UNUSED(event);
+}
+
+void CourseScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event) {
+	// Do not delete this function. It is used in drag and drop skill operation
+	Q_UNUSED(event);
 }
