@@ -18,6 +18,7 @@ Server::Server(QWidget *parent) :
 
     ui -> Log -> setReadOnly(true);
     ui -> ActiveUsers -> setReadOnly(true);
+    ui -> ActiveMentors -> setReadOnly(true);
 
     qInfo() << "Server init finished";
 }
