@@ -78,6 +78,9 @@ QSplitter::handle:vertical {
            </item>
            <item>
             <widget class="QLineEdit" name="parentCu">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="readOnly">
               <bool>true</bool>
              </property>
@@ -111,6 +114,9 @@ QSplitter::handle:vertical {
          </item>
          <item>
           <widget class="QTextEdit" name="parentDescr">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -131,6 +137,9 @@ QSplitter::handle:vertical {
            </item>
            <item>
             <widget class="QLineEdit" name="childCu">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="readOnly">
               <bool>true</bool>
              </property>
@@ -164,6 +173,9 @@ QSplitter::handle:vertical {
          </item>
          <item>
           <widget class="QTextEdit" name="childDescr">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
