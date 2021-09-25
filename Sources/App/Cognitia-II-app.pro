@@ -21,6 +21,7 @@ SOURCES += \
     Help/smarthelper.cpp \
     Launcher/launcher.cpp \
     Core/main.cpp \
+    Core/logger.cpp \
     MentorClient/mentorclient.cpp \
     SkillPackEditor/skillpackeditor.cpp \
     SkillsFlower/skillsflower.cpp \
@@ -49,6 +50,7 @@ HEADERS += \
     CourseUnitViewer/courseunitviewer.h \
     Help/smarthelper.h \
     Launcher/launcher.h \
+    Core/logger.h \
     MentorClient/mentorclient.h \
     SkillPackEditor/skillpackeditor.h \
     SkillsFlower/skillsflower.h \
