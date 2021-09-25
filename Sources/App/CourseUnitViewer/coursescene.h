@@ -28,9 +28,6 @@ private:
 	//-----------------------------------
     Edge* dragEdge;
     CourseUnitViewer * view;
-    int totalNodes;
-    int totalEdges;
-    QColor currentNodePreviousColor;
     //-----------------------------------
 
 public:

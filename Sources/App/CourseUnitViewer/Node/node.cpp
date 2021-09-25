@@ -170,21 +170,25 @@ QColor Node::getColor() {
 
 void Node::addInSkill(QString name, int lev) {
 	inSkills[name] = lev;
+	emit graph->nodeSkillsChanged(this);
 	update();
 }
 
 void Node::addOutSkill(QString name, int lev) {
 	outSkills[name] = lev;
+	emit graph->nodeSkillsChanged(this);
 	update();
 }
 
 void Node::removeInSkill(QString name) {
 	inSkills.remove(name);
+	emit graph->nodeSkillsChanged(this);
 	update();
 }
 
 void Node::removeOutSkill(QString name) {
 	outSkills.remove(name);
+	emit graph->nodeSkillsChanged(this);
 	update();
 }
 
@@ -289,14 +293,14 @@ bool Node::containsProgress(QString skill) {
 
 void Node::setProgress(QString skill, double val) {
 	progress[skill] = val;
-	if (this == graph->getSelectedNode()) {
+	if (graph->isNodeSelected(this)) {
 		emit graph->progressMadeToSelected(skill, val);
 	}
 	update();
 }
 
 bool Node::isSelected() {
-	return graph->getSelectedNode() == this;
+	return graph->isNodeSelected(this);
 }
 
 double Node::getProgressScalar(QString skill) {

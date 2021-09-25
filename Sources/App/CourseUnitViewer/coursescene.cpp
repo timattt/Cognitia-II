@@ -11,7 +11,7 @@
 #include "courseunitviewer.h"
 #include "../Structures/SkillPack/skillpack.h"
 
-CourseScene::CourseScene(CourseUnitViewer * v) : dragEdge(nullptr), view(v), totalNodes(0), totalEdges(0), currentNodePreviousColor() {
+CourseScene::CourseScene(CourseUnitViewer * v) : QGraphicsScene(v), dragEdge(nullptr), view(v) {
 	setSceneRect(QRect(0, 0, 600, 600));
 }
 
@@ -162,7 +162,6 @@ void CourseScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
 			}
 		}
 
-		emit view->nodeSkillsChanged(nd);
 		return;
 	}
 	if (event->mimeData()->text().contains(QString(SKILL_PACK_DELIMITER))) {
@@ -193,7 +192,6 @@ void CourseScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
 			}
 		}
 
-		emit view->nodeSkillsChanged(nd);
 		return;
 	}
 }

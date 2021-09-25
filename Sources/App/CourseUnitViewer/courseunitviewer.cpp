@@ -8,14 +8,21 @@
 #include "Node/Design/nodedesignolive.h"
 #include "Node/Design/nodedesignold.h"
 #include "../Structures/StudentProgress/StudentProgress.h"
-
-#define SCALE_PER_PUSH 1.3
+#include "../Core/logger.h"
 
 CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
-		QWidget(parent), ui(new Ui::CourseUnitViewer), scene(
-				new CourseScene(this)), attFac(DEFAULT_ATT_FAC), repFac(
-				DEFAULT_REP_FAC), massFac(DEFAULT_MASS_FAC), selectedNode(nullptr) {
-	qInfo() << "CourseUnitViewer init started";
+		QWidget(parent),
+		ui(new Ui::CourseUnitViewer),
+		selectedNode(nullptr),
+		scene(new CourseScene(this)),
+		nodesDesigns(),
+		timerId(0),
+		attFac(DEFAULT_ATT_FAC),
+		repFac(DEFAULT_REP_FAC),
+		massFac(DEFAULT_MASS_FAC),
+		editable(true) {
+	SAY("CourseUnitViewer init started");
+
 	ui->setupUi(this);
 	ui->graphicsView->setScene(scene);
 	timerId = startTimer(1);
@@ -28,19 +35,22 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 
 	ui->graphicsView->setCacheMode(QGraphicsView::CacheBackground);
 
+	// designs
+	//-------------------------------------------------
 	nodesDesigns["Olive"] = new NodeDesignOlive(this);
 	nodesDesigns["Formal"] = new NodeDesignFormal(this);
 	nodesDesigns["Old"] = new NodeDesignOld(this);
 
 	ui->designBox->addItems(nodesDesigns.keys());
 	ui->designBox->setCurrentText("Old");
+	//-------------------------------------------------
 
-	qInfo() << "CourseUnitViewer init finished";
+	SAY("CourseUnitViewer init finished");
 }
 
 CourseUnitViewer::~CourseUnitViewer() {
+	clearAllScene();
 	delete ui;
-	delete scene;
 	killTimer(timerId);
 }
 
@@ -81,8 +91,7 @@ bool CourseUnitViewer::nodesCanMove() {
 
 void CourseUnitViewer::on_pushButton_2_clicked() {
 	Node *nd = new Node(this);
-	QPointF pt = ui->graphicsView->mapToScene(
-			ui->graphicsView->rect().center());
+	QPointF pt = ui->graphicsView->mapToScene(ui->graphicsView->rect().center());
 	nd->setPos(pt);
 	addNode(nd);
 }
@@ -93,18 +102,12 @@ bool CourseUnitViewer::deleteModeIsOn() {
 
 void CourseUnitViewer::on_zoomOut_clicked() {
 	ui->graphicsView->scale(1.0 / SCALE_PER_PUSH, 1.0 / SCALE_PER_PUSH);
-	ui->zoomPercentage->setText(
-			QString::number(
-					ui->zoomPercentage->text().split("%")[0].toDouble() / SCALE_PER_PUSH)
-					+ "%");
+	ui->zoomPercentage->setText(QString::number(ui->zoomPercentage->text().split("%")[0].toDouble() / SCALE_PER_PUSH) + "%");
 }
 
 void CourseUnitViewer::on_zoomIn_clicked() {
 	ui->graphicsView->scale(SCALE_PER_PUSH, SCALE_PER_PUSH);
-	ui->zoomPercentage->setText(
-			QString::number(
-					ui->zoomPercentage->text().split("%")[0].toDouble() * SCALE_PER_PUSH)
-					+ "%");
+	ui->zoomPercentage->setText(QString::number(ui->zoomPercentage->text().split("%")[0].toDouble() * SCALE_PER_PUSH) + "%");
 }
 
 void CourseUnitViewer::on_areaDec_clicked() {
@@ -195,16 +198,22 @@ void CourseUnitViewer::clearAllScene() {
 }
 
 void CourseUnitViewer::addNode(Node *nd) {
+	NOT_NULL(nd);
+
 	scene->addItem(nd);
 	emit nodeAdded(nd);
 	scene->update();
 }
 
 void CourseUnitViewer::addEdge(Edge *e) {
+	NOT_NULL(e);
+
 	scene->addItem(e);
 }
 
 void CourseUnitViewer::unpack(CourseUnit *head) {
+	NOT_NULL(head);
+
 	setSceneSize(head->getFieldSize().first, head->getFieldSize().second);
 	refit();
 	QMap<QString, Node*> nodes;
@@ -228,6 +237,8 @@ void CourseUnitViewer::unpack(CourseUnit *head) {
 }
 
 void CourseUnitViewer::pack(CourseUnit *head) {
+	NOT_NULL(head);
+
 	QMap<QString, CourseUnit*> units;
 
 	for (QGraphicsItem * it : scene->items()) {
@@ -277,6 +288,7 @@ void CourseUnitViewer::on_repaintAll_stateChanged(int v) {
 }
 
 NodeDesign* CourseUnitViewer::getCurrentDesign() {
+	ASSERT(this->nodesDesigns.contains(ui->designBox->currentText()));
 	return this->nodesDesigns[ui->designBox->currentText()];
 }
 
@@ -292,18 +304,14 @@ void CourseUnitViewer::setSelectedNode(Node *nd) {
 	}
 }
 
-Node* CourseUnitViewer::getSelectedNode() {
-	return selectedNode;
-}
-
 void CourseUnitViewer::makeProgressToSelected(QString skill, double val) {
 	if (selectedNode != nullptr) {
 		selectedNode->setProgress(skill, val);
-		selectedNode->update();
 	}
 }
 
 void CourseUnitViewer::unpack(StudentProgress *prg) {
+	NOT_NULL(prg);
 	refit();
 
 	const QList<QGraphicsItem*> items = scene->items();
@@ -326,6 +334,7 @@ void CourseUnitViewer::unpack(StudentProgress *prg) {
 }
 
 void CourseUnitViewer::pack(StudentProgress *prg) {
+	NOT_NULL(prg);
 	const QList<QGraphicsItem*> items = scene->items();
 	for (QGraphicsItem *item : items) {
 		if (Node *node = qgraphicsitem_cast<Node*>(item)) {
@@ -353,6 +362,14 @@ void CourseUnitViewer::clearStudentProgress() {
 			node->update();
 		}
 	}
+}
+
+bool CourseUnitViewer::isNodeSelected(Node *nd) {
+	return selectedNode == nd;
+}
+
+Node* CourseUnitViewer::getSelectedNode() {
+	return selectedNode;
 }
 
 void CourseUnitViewer::on_designBox_currentTextChanged(QString v) {

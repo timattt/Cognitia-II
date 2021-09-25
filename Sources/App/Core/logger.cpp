@@ -64,7 +64,7 @@ void log_cleanup() {
 	logFile.close();
 }
 
-void log_notnull(char *ptr, QString errorMessage, const char *file, int line) {
+void log_notnull(void *ptr, QString errorMessage, const char *file, int line) {
 	if (ptr == nullptr) {
 		QString m = (formHeader(file, line)) + (errorMessage);
 

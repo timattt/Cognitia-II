@@ -19,6 +19,6 @@ void log_init();
 void log_cleanup();
 void log_say(QString mes, const char * file, int line);
 void log_assert(bool cond, QString errorMessage, const char * file, int line);
-void log_notnull(char * ptr, QString errorMes, const char * file, int line);
+void log_notnull(void * ptr, QString errorMes, const char * file, int line);
 
 #endif /* APP_CORE_LOGGER_H_ */
