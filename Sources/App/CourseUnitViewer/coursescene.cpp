@@ -12,7 +12,7 @@
 #include "../Structures/SkillPack/skillpack.h"
 
 CourseScene::CourseScene(CourseUnitViewer * v) : dragEdge(nullptr), view(v), totalNodes(0), totalEdges(0), currentNodePreviousColor() {
-	setSceneRect(QRect(0, 0, 300, 300));
+	setSceneRect(QRect(0, 0, 600, 600));
 }
 
 void CourseScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
@@ -83,7 +83,7 @@ void CourseScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 			}
 		} else {
 			if (nd != nullptr) {
-				if (event->button() == Qt::RightButton) {
+				if (event->button() == Qt::RightButton && view->isEditable()) {
 					addItem(dragEdge = new Edge(nd));
 					dragEdge->setTarget(event->lastScenePos());
 					return;
@@ -120,7 +120,6 @@ void CourseScene::drawBackground(QPainter *painter, const QRectF &rect) {
 
 void CourseScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
 	event->accept();
-	qInfo() << "do!";
 
 	QList<QGraphicsItem*> its = this->items(event->scenePos());
 
