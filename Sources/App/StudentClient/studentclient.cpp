@@ -36,18 +36,6 @@ StudentClient::StudentClient(QWidget *parent) :
     ui->flower->setEditable(false);
     ui->courseUnitViewer->setEditable(false);
 
-    // TEST
-    //------------------------------
-    /*
-    QFile f = QFile("C:/Users/timat/Desktop/dedCourse/sem1.CourseUnit");
-    courseUnit->loadCourseUnit(&f);
-
-    progress->addProgress("Akinator", "Graph", 0.5);
-    progress->addProgress("Onegin", "IO", 1.5);
-
-    display();
-*/
-    //------------------------------
 
     qInfo() << "StudentClient init finished";
 }
@@ -59,7 +47,14 @@ StudentClient::~StudentClient()
 
 
 
-
+void StudentClient::ReplaceAll(){
+    delete courseUnit;
+    delete skillpack;
+    courseUnit = new CourseUnit(this);
+    skillpack = new SkillPack(this);
+    delete progress;
+    progress = new StudentProgress(this);
+}
 
 
 
@@ -68,13 +63,8 @@ void StudentClient::on_actionChange_Server_triggered()
     ui->statusbar->showMessage("Changing server");
 
     ClearAll();
+    ReplaceAll();
 
-    delete courseUnit;
-    delete skillpack;
-    courseUnit = new CourseUnit(this);
-    skillpack = new SkillPack(this);
-    delete progress;
-    progress = new StudentProgress(this);
 
 
 
@@ -372,12 +362,7 @@ void StudentClient::on_actionReturn_to_Launcher_triggered()
 {
     ClearAll();
 
-    delete courseUnit;
-    delete skillpack;
-    courseUnit = new CourseUnit(this);
-    skillpack = new SkillPack(this);
-    delete progress;
-    progress = new StudentProgress(this);
+    ReplaceAll();
 
     if(mSocket -> state() == QAbstractSocket::ConnectedState){
         mSocket -> close();

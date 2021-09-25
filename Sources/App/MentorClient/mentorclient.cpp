@@ -45,26 +45,6 @@ MentorClient::MentorClient(QWidget *parent) :
     connect(chooseserv, SIGNAL(chooseServClosed()), SLOT(onChooseServClosed()));
 
 
-    // TEST
-    //------------------------------
-    /*
-    headCourseUnit = new CourseUnit;
-
-    QFile f = QFile("C:/Users/timat/Desktop/dedCourse/sem1.CourseUnit");
-    headCourseUnit->loadCourseUnit(&f);
-
-    StudentProgress * tim = new StudentProgress();
-    StudentProgress * andrew = new StudentProgress();
-
-    students["tim"] = tim;
-    students["andrew"] = andrew;
-
-    tim->addProgress("Akinator", "Graph", 0.5);
-    andrew->addProgress("Onegin", "IO", 1.5);
-
-    display();
-*/
-    //------------------------------
 
     qInfo() << "Mentor client init finished";
 }
@@ -326,6 +306,19 @@ void MentorClient::ClearAll(){
 }
 
 
+void MentorClient::ReplaceAll(){
+
+    delete headCourseUnit;
+    delete skillPack;
+    headCourseUnit = new CourseUnit(this);
+    skillPack = new SkillPack(this);
+    for (StudentProgress* student : students.values()){
+        delete student;
+    }
+    students.clear();
+
+}
+
 
 void MentorClient::display() {
 
@@ -376,19 +369,16 @@ void MentorClient::nodeSelected(Node *nd) {
 	}
 }
 
+
+
+
+
 void MentorClient::on_actionChoose_Server_triggered()
 {
 
     ClearAll();
 
-    delete headCourseUnit;
-    delete skillPack;
-    headCourseUnit = new CourseUnit(this);
-    skillPack = new SkillPack(this);
-    for (StudentProgress* student : students.values()){
-        delete student;
-    }
-    students.clear();
+    ReplaceAll();
 
     if(mSocket -> state() == QAbstractSocket::ConnectedState){
         mSocket -> close();
@@ -410,14 +400,7 @@ void MentorClient::on_actionReturn_to_Launcher_triggered()
 {
     ClearAll();
 
-    delete headCourseUnit;
-    delete skillPack;
-    headCourseUnit = new CourseUnit(this);
-    skillPack = new SkillPack(this);
-    for (StudentProgress* student : students.values()){
-        delete student;
-    }
-    students.clear();
+    ReplaceAll();
 
     if(mSocket -> state() == QAbstractSocket::ConnectedState){
         mSocket -> close();
