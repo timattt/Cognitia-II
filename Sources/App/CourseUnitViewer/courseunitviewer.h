@@ -30,7 +30,7 @@ class CourseUnitViewer;
  * It has many convenient slots and signals for connecting to other parts of the program.
  * In the constructor, you can add new designs for vertices. You can turn the editing mode on and off.
  *
- * @autor timattt
+ * @author timattt
  *
  * "Скажи мне, кто тебя хвалит, и я тебе скажу, в чем ты ошибся" - В.И.Ленин
  */
