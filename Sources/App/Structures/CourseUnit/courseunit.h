@@ -29,8 +29,8 @@ private:
     double x;
     double y;
     int colour;
-    QVector<std::pair<QString, size_t>> income;
-    QVector<std::pair<QString, size_t>> outcome;
+    QMap<QString, size_t> income;
+    QMap<QString, size_t> outcome;
     QString description;
     QVector<QString> linked_units;
     QVector<CourseUnit*> embedded_units;
@@ -68,14 +68,14 @@ public:
     void setColour(int colour_);
     int  getColour();
 
-    void addIncome(const std::pair<QString, size_t>&);
-    void addOutcome(const std::pair<QString, size_t>&);
+    void addIncome(const QString& skill, size_t lvl);
+    void addOutcome(const QString& skill, size_t lvl);
 
-    const QVector<std::pair<QString, size_t>>& getIncome() const;
-    const QVector<std::pair<QString, size_t>>& getOutcome() const;
+    const QMap<QString, size_t>& getIncome() const;
+    const QMap<QString, size_t>& getOutcome() const;
 
-    double getInSkillLevel(QString sk);
-    double getOutSkillLevel(QString sk);
+    size_t getInSkillLevel(QString sk);
+    size_t getOutSkillLevel(QString sk);
 
     bool containsInSkill(QString name);
     bool containsOutSkill(QString name);

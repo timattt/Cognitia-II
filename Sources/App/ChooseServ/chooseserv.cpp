@@ -86,6 +86,10 @@ void ChooseServ::on_actionSave_Server_triggered()
 
     QString path = QFileDialog::getSaveFileName(this, "Save file") + SERVEREXTENTION;
 
+    if (path == SERVEREXTENTION){
+        return;
+    }
+
     QFile file = QFile(path);
     QFileInfo in = QFileInfo(file);
     QDir dr = in.dir();

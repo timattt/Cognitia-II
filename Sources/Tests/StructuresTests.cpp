@@ -18,10 +18,10 @@ void Test_Structures::saveAndLoadCourseUnit(){
     	CourseUnit* courseunit = new CourseUnit(10,10,20,20);
         course.push_back(courseunit);
 
-        course[i] -> addIncome(std::make_pair("skill", i));
-        course[i] -> addIncome(std::make_pair("skill", i+8));
-        course[i] -> addOutcome(std::make_pair("skill", i*2));
-        course[i] -> addOutcome(std::make_pair("skill", i*2+8));
+        course[i] -> addIncome("skill", i);
+        course[i] -> addIncome("skill", i+8);
+        course[i] -> addOutcome("skill", i*2);
+        course[i] -> addOutcome("skill", i*2+8);
 
         course[i] -> setDescription("Description!");
         QString name = "obj";

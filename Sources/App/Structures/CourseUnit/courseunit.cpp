@@ -60,13 +60,13 @@ void CourseUnit::saveCourseUnit(QFile *dest) {
          stream << y << FIELDSSEPARATOR;
          stream << colour << FIELDSSEPARATOR;
 
-         for(int i = 0; i < income.size(); ++i){
-             stream << income[i].first << ":" << income[i].second << VECTORSEPARATOR;
+         for(QString skill : income.keys()){
+             stream << skill << ":" << income[skill] << VECTORSEPARATOR;
          }
          stream << FIELDSSEPARATOR;
 
-         for(int i = 0; i < outcome.size(); ++i){
-             stream << outcome[i].first << ":" << outcome[i].second << VECTORSEPARATOR;
+         for(QString skill : outcome.keys()){
+             stream << skill << ":" << outcome[skill] << VECTORSEPARATOR;
          }
          stream << FIELDSSEPARATOR;
 
@@ -143,13 +143,13 @@ void CourseUnit::loadCourseUnit(QFile *res){
     QStringList vector_data = fields_data[6].split(VECTORSEPARATOR, Qt::SkipEmptyParts);
     for(int i = 0; i < vector_data.size(); ++i){
         QStringList pairs = vector_data[i].split(":");
-        income.push_back(std::make_pair(pairs[0], pairs[1].toULongLong()));
+        income[pairs[0]] = pairs[1].toULongLong();
     }
 
     vector_data = fields_data[7].split(VECTORSEPARATOR, Qt::SkipEmptyParts);
     for(int i = 0; i < vector_data.size(); ++i){
         QStringList pairs = vector_data[i].split(":");
-        outcome.push_back(std::make_pair(pairs[0], pairs[1].toULongLong()));
+        outcome[pairs[0]] = pairs[1].toULongLong();
     }
 
     description = fields_data[8];
@@ -218,19 +218,19 @@ std::pair<double, double> CourseUnit::getCoords() const{
 }
 
 
-void CourseUnit::addIncome(const std::pair<QString, size_t>& skill){
-    income.push_back(skill);
+void CourseUnit::addIncome(const QString& skill, size_t lvl){
+    income[skill] = lvl;
 }
 
-void CourseUnit::addOutcome(const std::pair<QString, size_t>& skill){
-    outcome.push_back(skill);
+void CourseUnit::addOutcome(const QString& skill, size_t lvl){
+    outcome[skill] = lvl;
 }
 
-const QVector<std::pair<QString, size_t>>& CourseUnit::getIncome() const{
+const QMap<QString, size_t>& CourseUnit::getIncome() const{
     return income;
 }
 
-const QVector<std::pair<QString, size_t>>& CourseUnit::getOutcome() const{
+const QMap<QString, size_t>& CourseUnit::getOutcome() const{
     return outcome;
 }
 
@@ -274,12 +274,12 @@ QString CourseUnit::print(){
     buff +=  "y = " + QString::number(y);
     buff +=  "description = " + description;
     buff +=  "income skills: \n";
-    for (int i = 0; i < income.size(); ++i){
-        buff +=  income[i].first + " : " + QString::number(income[i].second);
+    for(QString skill : income.keys()){
+        buff += skill + " : " + QString::number(income[skill]);
     }
     buff +=  "outcome skills: \n";
-    for (int i = 0; i < outcome.size(); ++i){
-        buff +=  outcome[i].first + " : " + QString::number(outcome[i].second);
+    for(QString skill : outcome.keys()){
+        buff += skill + " : " + QString::number(outcome[skill]);
     }
     buff +=  "linked units:";
     for (int i = 0; i < linked_units.size(); ++i){
@@ -306,37 +306,23 @@ void CourseUnit::setLastFilePath(QString lastFilePath) {
 }
 
 bool CourseUnit::containsInSkill(QString name) {
-	for (int i = 0; i < income.size(); i++) {
-		if (name == income[i].first) {
-			return 1;
-		}
-	}
-	return 0;
+
+    return income.contains(name);
 }
 
 bool CourseUnit::containsOutSkill(QString name) {
-	for (int i = 0; i < outcome.size(); i++) {
-		if (name == outcome[i].first) {
-			return 1;
-		}
-	}
-	return 0;
+
+    return outcome.contains(name);
 }
 
-double CourseUnit::getInSkillLevel(QString sk) {
-	for (int i = 0; i <income.size(); i++) {
-		if (sk == income[i].first) {
-			return income[i].second;
-		}
-	}
+size_t CourseUnit::getInSkillLevel(QString sk) {
+    if (income.contains(sk))
+        return income[sk];
 	return -1;
 }
 
-double CourseUnit::getOutSkillLevel(QString sk) {
-	for (int i = 0; i <outcome.size(); i++) {
-		if (sk == outcome[i].first) {
-			return outcome[i].second;
-		}
-	}
+size_t CourseUnit::getOutSkillLevel(QString sk) {
+    if (outcome.contains(sk))
+        return outcome[sk];
 	return -1;
 }
