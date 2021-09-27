@@ -4,11 +4,12 @@
 
 # Содержание
 
-1. [Описание проекта](https://github.com/timattt/Project-Cognitia-II#%D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B0)
-2. [Прототип](https://github.com/timattt/Project-Cognitia-II#%D0%BF%D1%80%D0%BE%D1%82%D0%BE%D1%82%D0%B8%D0%BF)
-3. [Установка](https://github.com/timattt/Project-Cognitia-II#%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0)
-4. [Сборка](https://github.com/timattt/Project-Cognitia-II#%D1%81%D0%B1%D0%BE%D1%80%D0%BA%D0%B0)
-5. [Для участников проекта](https://github.com/timattt/Project-Cognitia-II/blob/main/About/forContributors.md)
+1. [**Описание проекта**](https://github.com/timattt/Project-Cognitia-II#%D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B0)
+2. [**Прототип**](https://github.com/timattt/Project-Cognitia-II#%D0%BF%D1%80%D0%BE%D1%82%D0%BE%D1%82%D0%B8%D0%BF)
+3. [**Установка**](https://github.com/timattt/Project-Cognitia-II#%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0)
+4. [**Сборка**](https://github.com/timattt/Project-Cognitia-II#%D1%81%D0%B1%D0%BE%D1%80%D0%BA%D0%B0)
+5. [**Для участников проекта**](https://github.com/timattt/Project-Cognitia-II/blob/main/About/forContributors.md)
+6. [**Текущие задачи**](https://github.com/timattt/Project-Cognitia-II/projects/1)
 
 # Описание проекта
 
@@ -178,12 +179,12 @@
 Риализован прототип программы.
 Техническое задание и описание можно найти [тут](https://github.com/timattt/Project-Cognitia-II/blob/main/About/PrototypeTechnicalTask/PrototypeTechnicalTask.md)
 
-# Для участников проекта
-
-Если вы участник проекта, вам необходимо прочитать [вот это](https://github.com/timattt/Project-Cognitia-II/blob/main/About/forContributors.md)
-
 # Установка
-Исполняемые файлы можно найти [тут](https://github.com/timattt/Project-Cognitia-II/releases).
+
+Мы тщательно тестируем всю программу, после чего делаем релиз.
+К каэждому релизу прилагается архив с исполняемыми файлами. На данный момент сборка производится только под Windows.
+Если вы хотите работать на desktop дистрибутиве Linux, то рекомендуется собирать проект самостоятельно через [Qt creator](https://github.com/timattt/Project-Cognitia-II#qt-creator-%D0%B4%D0%BB%D1%8F-windows).
+Сами релизы можно найти [тут](https://github.com/timattt/Project-Cognitia-II/releases).
 
 # Сборка
 ## QT Creator для Windows
