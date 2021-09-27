@@ -21,6 +21,7 @@ ChooseServ::~ChooseServ()
 
 void ChooseServ::on_ConnectButton_clicked()
 {
+    ui -> ConnectButton -> setDisabled(true);
     emit onServConnectclicked();
 }
 
@@ -40,6 +41,15 @@ QString ChooseServ::getPort(){
 
 QString ChooseServ::getName(){
     return ui -> ServName -> text();
+}
+
+
+void ChooseServ::setButtonDisabled(){
+    ui -> ConnectButton -> setDisabled(true);
+}
+
+void ChooseServ::setButtonEnabled(){
+    ui -> ConnectButton -> setDisabled(false);
 }
 
 

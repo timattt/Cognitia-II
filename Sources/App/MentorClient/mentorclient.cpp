@@ -58,6 +58,7 @@ MentorClient::~MentorClient()
 
 void MentorClient::onChooseServClosed(){
     this -> setEnabled(true);
+    chooseserv -> setButtonEnabled();
     ui->statusbar->showMessage("Server isnt connected, Please connect to the server");
 }
 
@@ -89,7 +90,7 @@ void MentorClient::startConnection(){
 void MentorClient::slotConnected(){
 
     qDebug() << "connected to serv " << inworkingrepository;
-
+    chooseserv -> setButtonEnabled();
 
     QDir dir = QDir();
     if (!inworkingrepository)
@@ -115,6 +116,7 @@ void MentorClient::slotError(QAbstractSocket::SocketError error){
                          QString(mSocket -> errorString()));
 
     QMessageBox::critical(this, "Failing", strEr);
+    chooseserv -> setButtonEnabled();
     mSocket -> close();
 }
 
@@ -183,6 +185,11 @@ void MentorClient::endReception(){
         qDebug() << "confirm connection";
         confirmConnection();
         break;
+
+    case retrieveSavingFail:
+        QMessageBox::critical(this, "Failing", "Server has a problem with saving your files");
+        ui -> statusbar -> showMessage("Try one more time to send all to server");
+        break;
     case retrieveFail:
         QMessageBox::critical(this, "Failing", "Last operation wasnt complited");
         break;
@@ -207,7 +214,7 @@ void MentorClient::confirmConnection(){
 
     chooseserv -> hide();
     this -> setEnabled(true);
-
+    ui -> statusbar -> showMessage("");
     OpenCourse();
 }
 
@@ -334,13 +341,17 @@ void MentorClient::display() {
 }
 
 void MentorClient::on_studentChooser_currentTextChanged(const QString &name) {
+
+
 	if (students.contains(currentStudent)) {
 		ui->courseUnitViewer->pack(students[currentStudent]);
 	}
 
 	ui->courseUnitViewer->clearStudentProgress();
 
-	ui->courseUnitViewer->unpack(students[name]);
+    if(name.size()){
+        ui->courseUnitViewer->unpack(students[name]);
+    }
 
 	currentStudent = name;
 
@@ -435,18 +446,36 @@ bool MentorClient::SendFile(QFile* file, quint16 code){
        }
     else {
         QMessageBox::critical(0, "Failing to send Student progresses", "Please try one more time");
+        ui -> statusbar -> showMessage("Failing to send Student progresses");
         return false;
     }
     return true;
 }
 
 
+void MentorClient::sendAll(){
 
+    for(QString& studentname: students.keys())
+    {
+        QFile file = QFile(studentname + QString(STUDENT_PROGRESS_FILE_EXTENSION));
+
+        if(!SendFile(&file, static_cast<quint16>(saveStudentProgress))){
+          return;
+        }
+    }
+
+    ui -> statusbar -> showMessage("All files are sent!");
+}
 
 
 void MentorClient::on_actionSave_all_and_send_triggered()
 {
+      ui -> statusbar -> showMessage("Saving student progresses..");
       pack();
+
+      QDir dir = QDir();
+      dir.mkdir("localsave");
+      QDir::setCurrent("localsave");
 
       for(QString& studentname: students.keys())
       {
@@ -458,10 +487,14 @@ void MentorClient::on_actionSave_all_and_send_triggered()
           }
           catch (const QString mess){
               qDebug() << mess;
+              QMessageBox::critical(0, mess, "Please try one more time");
+              ui -> statusbar -> showMessage("");
           }
 
-          if(!SendFile(&file, static_cast<quint16>(saveStudentProgress))){
-            break;
-          }
       }
+
+      ui -> statusbar -> showMessage("All files are saved! Sending..");
+      sendAll();
+
+      QDir::setCurrent("../");
 }

@@ -84,6 +84,7 @@ void StudentClient::on_actionChange_Server_triggered()
 
 void StudentClient::onChooseServClosed(){
     this -> setEnabled(true);
+     chooseserv -> setButtonEnabled();
     ui->statusbar->showMessage("Server isnt connected, Please connect to the server");
 }
 
@@ -112,7 +113,7 @@ void StudentClient::slotConnected(){
 
     qDebug() << "connected to serv " << inworkingrepository;
     StudentName = chooseserv -> getName();
-
+     chooseserv -> setButtonEnabled();
     QDir dir = QDir();
     if (!inworkingrepository)
     {
@@ -137,6 +138,7 @@ void StudentClient::slotError(QAbstractSocket::SocketError error){
                          QString(mSocket -> errorString()));
 
     QMessageBox::critical(this, "Failing", strEr);
+     chooseserv -> setButtonEnabled();
     mSocket -> close();
 }
 
@@ -229,7 +231,7 @@ void StudentClient::confirmConnection(){
     chooseserv -> hide();
     this -> setEnabled(true);
     ui -> StudentName -> setText(chooseserv -> getName());
-
+    ui -> statusbar -> showMessage("");
     OpenCourse();
 }
 
