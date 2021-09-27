@@ -276,13 +276,13 @@ void fromNodeToCourseUnit(Node *nd, CourseUnit *cu) {
 	for (QString sk : nd->getInSkills().keys()) {
 		int lev = nd->getInSkills()[sk];
 
-		cu->addIncome({sk, lev});
+        cu->addIncome(sk, lev);
 	}
 
 	for (QString sk : nd->getOutSkills().keys()) {
 		int lev = nd->getOutSkills()[sk];
 
-		cu->addOutcome({sk, lev});
+        cu->addOutcome(sk, lev);
 	}
 
 	cu->setCoords(nd->pos().x(), nd->pos().y());
@@ -297,12 +297,14 @@ void fromCourseUnitToNode(CourseUnit *cu, Node *nd) {
 	nd->setDescription(cu->getDescription());
 	nd->setColor(QColor(cu->getColour()));
 
-	for (std::pair<QString, size_t> in : cu->getIncome()) {
-		nd->addInSkill(in.first, in.second);
+    const QMap<QString, size_t>& inskills = cu->getIncome();
+    for (QString in : inskills.keys()) {
+        nd->addInSkill(in, inskills[in]);
 	}
 
-	for (std::pair<QString, size_t> out : cu->getOutcome()) {
-		nd->addOutSkill(out.first, out.second);
+    const QMap<QString, size_t>& outskills = cu->getOutcome();
+    for (QString out : outskills.keys()) {
+        nd->addOutSkill(out, outskills[out]);
 	}
 
 	nd->setPos(cu->getCoords().first, cu->getCoords().second);
