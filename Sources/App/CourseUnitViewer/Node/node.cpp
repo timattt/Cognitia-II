@@ -2,6 +2,7 @@
 #include "edge.h"
 #include "../../Structures/CourseUnit/courseunit.h"
 #include "../courseunitviewer.h"
+#include "../../Core/logger.h"
 
 Node::Node(CourseUnitViewer *graphWidget)
     : graph(graphWidget)
@@ -16,6 +17,8 @@ Node::Node(CourseUnitViewer *graphWidget)
 
 void Node::addEdge(Edge *edge)
 {
+	NOT_NULL(edge);
+
     edgeList << edge;
     edge->adjust();
 }
@@ -150,10 +153,13 @@ Node::~Node() {
 }
 
 void Node::removeEdge(Edge *e) {
+	NOT_NULL(e);
 	edgeList.removeAll(e);
 }
 
 bool Node::hasEdgeToNode(Node *nd) {
+	NOT_NULL(nd);
+
 	for (Edge * e : edgeList) {
 		if (e->sourceNode() == nd || e->destNode() == nd) {
 			return true;
@@ -170,26 +176,38 @@ QColor Node::getColor() {
 
 void Node::addInSkill(QString name, int lev) {
 	inSkills[name] = lev;
-	emit graph->nodeSkillsChanged(this);
-	update();
+
+	if (graph != nullptr) {
+		emit graph->nodeSkillsChanged(this);
+		update();
+	}
 }
 
 void Node::addOutSkill(QString name, int lev) {
 	outSkills[name] = lev;
-	emit graph->nodeSkillsChanged(this);
-	update();
+
+	if (graph != nullptr) {
+		emit graph->nodeSkillsChanged(this);
+		update();
+	}
 }
 
 void Node::removeInSkill(QString name) {
 	inSkills.remove(name);
-	emit graph->nodeSkillsChanged(this);
-	update();
+
+	if (graph != nullptr) {
+		emit graph->nodeSkillsChanged(this);
+		update();
+	}
 }
 
 void Node::removeOutSkill(QString name) {
 	outSkills.remove(name);
-	emit graph->nodeSkillsChanged(this);
-	update();
+
+	if (graph != nullptr) {
+		emit graph->nodeSkillsChanged(this);
+		update();
+	}
 }
 
 const QMap<QString, int>& Node::getInSkills() const {
@@ -229,6 +247,11 @@ void Node::setColor(QColor color) {
 void Node::clearSkills() {
 	inSkills.clear();
 	outSkills.clear();
+
+	if (graph != nullptr) {
+		emit graph->nodeSkillsChanged(this);
+		update();
+	}
 }
 
 QString Node::getDescription() {
@@ -243,6 +266,9 @@ void Node::setDescription(QString str) {
 }
 
 void fromNodeToCourseUnit(Node *nd, CourseUnit *cu) {
+	NOT_NULL(nd);
+	NOT_NULL(cu);
+
 	cu->setObjectName(nd->getName());
 	cu->setDescription(nd->getDescription());
 	cu->setColour(nd->getColor().rgb());
@@ -263,6 +289,9 @@ void fromNodeToCourseUnit(Node *nd, CourseUnit *cu) {
 }
 
 void fromCourseUnitToNode(CourseUnit *cu, Node *nd) {
+	NOT_NULL(cu);
+	NOT_NULL(nd);
+
 	nd->setName(cu->objectName());
 	nd->setFile(cu->getLastFilePath());
 	nd->setDescription(cu->getDescription());
@@ -280,6 +309,7 @@ void fromCourseUnitToNode(CourseUnit *cu, Node *nd) {
 }
 
 CourseUnitViewer* Node::getViewer() {
+	NOT_NULL(graph);
 	return graph;
 }
 
@@ -292,6 +322,8 @@ bool Node::containsProgress(QString skill) {
 }
 
 void Node::setProgress(QString skill, double val) {
+	NOT_NULL(graph);
+
 	progress[skill] = val;
 	if (graph->isNodeSelected(this)) {
 		emit graph->progressMadeToSelected(skill, val);
@@ -300,6 +332,7 @@ void Node::setProgress(QString skill, double val) {
 }
 
 bool Node::isSelected() {
+	NOT_NULL(graph);
 	return graph->isNodeSelected(this);
 }
 
