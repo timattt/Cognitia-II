@@ -8,6 +8,7 @@
 #include "../Structures/CourseUnit/courseunit.h"
 #include "../CourseUnitViewer/Node/edge.h"
 #include "../Help/smarthelper.h"
+#include "../Core/logger.h"
 
 CourseEditor::CourseEditor() :
     QMainWindow(nullptr),
@@ -190,7 +191,9 @@ void CourseEditor::nodeSelected(Node *nd) {
 	setNodeToRedactor(nd);
 }
 void CourseEditor::nodeSkillsChanged(Node *nd) {
-	setNodeToRedactor(nd);
+	if (nd == getCurrentNode()) {
+		setNodeToRedactor(nd);
+	}
 }
 
 void CourseEditor::on_actionCourseUnitOpen_triggered() {
@@ -272,6 +275,7 @@ void CourseEditor::clearCourseUnit() {
 	head->setName("Parent course unit");
 	head->setFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + QString("/NEW_COURSE_UNIT") + COURSE_UNIT_FILE_EXTENSION);
 	head->clearSkills();
+	head->setDescription("");
 	setNodeToRedactor(head);
 	ui->widget->clearAllScene();
 	ui->descrPanel->clear();
