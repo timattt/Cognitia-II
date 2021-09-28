@@ -1,6 +1,6 @@
 #
 
-![](https://github.com/timattt/Project-Cognitia-II/blob/main/About/WorkingImages/Logo.png)
+![](https://github.com/timattt/Project-Cognitia-II/blob/main/About/WorkingImages/Logo.jpg)
 
 # Содержание
 
