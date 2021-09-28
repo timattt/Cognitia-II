@@ -89,7 +89,7 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     //QPointF sourceArrowP2 = sourcePoint + QPointF(sin(angle + M_PI - M_PI / 3) * arrowSize,
     //                                              cos(angle + M_PI - M_PI / 3) * arrowSize);
 
-    double f = 0.66;
+    double f = 0.5;
     QPointF pt = QPointF(((destPoint.x() - sourcePoint.x()) * f + sourcePoint.x()), ((destPoint.y()-sourcePoint.y())*f + sourcePoint.y()));
     QPointF destArrowP1 = pt + QPointF(sin(angle - M_PI / 3) * arrowSize,
                                               cos(angle - M_PI / 3) * arrowSize);
