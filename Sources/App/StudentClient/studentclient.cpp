@@ -347,7 +347,7 @@ void StudentClient::sendToServer(quint16 code, const QString& str){
 
 void StudentClient::on_actionSave_all_and_send_triggered()
 {
-     if(!inworkingrepository){
+     if(!inworkingrepository) {
          ui->statusbar->showMessage("Please, connect to server");
          return;
      }

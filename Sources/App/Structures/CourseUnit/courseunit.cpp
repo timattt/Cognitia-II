@@ -316,13 +316,15 @@ bool CourseUnit::containsOutSkill(QString name) {
 }
 
 size_t CourseUnit::getInSkillLevel(QString sk) {
-    if (income.contains(sk))
+    if (income.contains(sk)) {
         return income[sk];
+    }
 	return -1;
 }
 
 size_t CourseUnit::getOutSkillLevel(QString sk) {
-    if (outcome.contains(sk))
+    if (outcome.contains(sk)) {
         return outcome[sk];
+    }
 	return -1;
 }

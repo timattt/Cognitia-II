@@ -255,12 +255,12 @@
      <item alignment="Qt::AlignRight">
       <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>Mass factor</string>
+        <string>Own length</string>
        </property>
       </widget>
      </item>
      <item alignment="Qt::AlignLeft">
-      <widget class="QLineEdit" name="massFac"/>
+      <widget class="QLineEdit" name="ownLength"/>
      </item>
     </layout>
    </item>

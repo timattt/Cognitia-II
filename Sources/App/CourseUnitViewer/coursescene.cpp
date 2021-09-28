@@ -12,7 +12,7 @@
 #include "../Structures/SkillPack/skillpack.h"
 
 CourseScene::CourseScene(CourseUnitViewer * v) : QGraphicsScene(v), dragEdge(nullptr), view(v) {
-	setSceneRect(QRect(0, 0, 600, 600));
+	setSceneRect(QRect(0, 0, 2500, 2500));
 }
 
 void CourseScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {

@@ -19,7 +19,7 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 		timerId(0),
 		attFac(DEFAULT_ATT_FAC),
 		repFac(DEFAULT_REP_FAC),
-		massFac(DEFAULT_MASS_FAC),
+		ownLength(DEFAULT_OWN_LENGTH),
 		editable(true) {
 	SAY("CourseUnitViewer init started");
 
@@ -28,7 +28,7 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 	timerId = startTimer(1);
 
 	ui->repFact->setText(QString::number(DEFAULT_REP_FAC));
-	ui->massFac->setText(QString::number(DEFAULT_MASS_FAC));
+	ui->ownLength->setText(QString::number(DEFAULT_OWN_LENGTH));
 	ui->attFact->setText(QString::number(DEFAULT_ATT_FAC));
 
 	ui->graphicsView->setAcceptDrops(true);
@@ -134,8 +134,8 @@ double CourseUnitViewer::getAttFac() const {
 	return attFac;
 }
 
-double CourseUnitViewer::getMassFac() const {
-	return massFac;
+double CourseUnitViewer::getOwnLength() const {
+	return ownLength;
 }
 
 double CourseUnitViewer::getRepFac() const {
@@ -166,13 +166,13 @@ void CourseUnitViewer::abortDrag() {
 	scene->stopDrag();
 }
 
-void CourseUnitViewer::on_massFac_editingFinished() {
+void CourseUnitViewer::on_ownLength_editingFinished() {
 	bool ok = 0;
-	double v = ui->massFac->text().toDouble(&ok);
+	double v = ui->ownLength->text().toDouble(&ok);
 	if (!ok) {
-		ui->massFac->setText(QString::number(DEFAULT_MASS_FAC));
+		ui->ownLength->setText(QString::number(DEFAULT_OWN_LENGTH));
 	} else {
-		massFac = v;
+		ownLength = v;
 	}
 }
 

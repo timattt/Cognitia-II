@@ -97,10 +97,10 @@ private:
      */
     double repFac;
     /**
-     * Physics parameter for nodes - mass factor.
+     * Physics parameter for nodes - own length factor.
      * @author timattt
      */
-    double massFac;
+    double ownLength;
     /**
      * this widget can be not editable.
      * So all not readonly buttons are not working.
@@ -143,11 +143,11 @@ public:
      */
 	double getAttFac() const;
     /**
-     * Mass factor is used in physics calculation in nodes.
-     * @returns - current mass factor
+     * Own length - length to which edge will try to resize
+     * @returns - current own length
      * @author timattt
      */
-	double getMassFac() const;
+	double getOwnLength() const;
     /**
      * Repulsion factor is used in physics calculation in nodes.
      * @returns - current repulsion factor
@@ -302,7 +302,7 @@ private slots:
 	void on_areaIn_clicked();
 	void on_attFact_editingFinished();
     void on_repFact_editingFinished();
-    void on_massFac_editingFinished();
+    void on_ownLength_editingFinished();
     void on_repaintAll_stateChanged(int v);
     void on_designBox_currentTextChanged(QString v);
     //======================================================

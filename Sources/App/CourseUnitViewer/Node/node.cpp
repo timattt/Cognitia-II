@@ -54,17 +54,16 @@ void Node::calculateForces()
         qreal dx = vec.x();
         qreal dy = vec.y();
         double l = (dx * dx + dy * dy);
-        if (l > 0) {
+        if (l > 0 && (l < 4 * NODE_RAD * NODE_RAD)) {
             xvel += dx / l;
             yvel += dy / l;
         }
     }
 
-    xvel *= graph->getAttFac();
-    yvel *= graph->getAttFac();
+    xvel *= graph->getRepFac();
+    yvel *= graph->getRepFac();
 
     // Now subtract all forces pulling items together
-    double weight = (edgeList.size() + 1) * graph->getMassFac();
     for (const Edge *edge : qAsConst(edgeList)) {
         QPointF vec;
 
@@ -73,8 +72,13 @@ void Node::calculateForces()
         } else {
             vec = mapToItem(edge->sourceNode(), 0, 0);
         }
-        xvel -= graph->getRepFac() * vec.x() / weight;
-        yvel -= graph->getRepFac() * vec.y() / weight;
+
+        double len = qSqrt(vec.x() * vec.x() + vec.y() * vec.y());
+
+        double delta = -graph->getOwnLength() + len;
+
+        xvel -= graph->getAttFac() * vec.x() / len * delta;
+        yvel -= graph->getAttFac() * vec.y() / len * delta;
     }
 
     if (qAbs(xvel) < EPSILON && qAbs(yvel) < EPSILON) {
