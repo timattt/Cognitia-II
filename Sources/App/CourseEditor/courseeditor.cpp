@@ -9,6 +9,7 @@
 #include "../CourseUnitViewer/Node/edge.h"
 #include "../Help/smarthelper.h"
 #include "../Core/logger.h"
+#include <QtWidgets>
 
 CourseEditor::CourseEditor() :
     QMainWindow(nullptr),
@@ -217,6 +218,7 @@ void CourseEditor::on_actionCourseUnitOpen_triggered() {
 
 		mes("Opened course unit file " + path);
 	} catch (QString & ex) {
+		QMessageBox::critical(this, "Error", ex);
 		mes("Error while opening: " + ex);
 	}
 
@@ -235,6 +237,7 @@ void CourseEditor::on_actionCourseUnitSave_triggered() {
 		fromFileToGui(&crs);// to insure that it will write file names into panels
 		mes("Saved course unit file " + head->getFile());
 	} catch (QString & ex) {
+		QMessageBox::critical(this, "Error", ex);
 		mes("Error while saving: " + ex);
 	}
 }
@@ -258,6 +261,7 @@ void CourseEditor::on_actionCourseUnitCreate_triggered() {
 		mes("Created course unit file " + path);
 		fromFileToGui(&crs);
 	} catch (QString err) {
+		QMessageBox::critical(this, "Error", err);
 		mes("Error wjile creating: " + err);
 	}
 
@@ -336,6 +340,7 @@ void CourseEditor::setSkillPack(QString path) {
 
 	if (!f.exists()) {
 		mes("SkillPack file " + skillPackPath + " does not exists!");
+		QMessageBox::critical(this, "Error", "SkillPack file " + skillPackPath + " does not exists!");
 		return;
 	}
 

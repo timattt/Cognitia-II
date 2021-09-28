@@ -85,6 +85,10 @@ void CourseUnit::saveCourseUnit(QFile *dest) {
 
              QFile CourseUnitFile = QFile(dr.filePath(CourseUnitFileName));
 
+             if (dest->fileName() == CourseUnitFile.fileName()) {
+            	 throw QString("Parent courseunit equals to child!");
+             }
+
              try {
                  embedded_units[i]->saveCourseUnit(&CourseUnitFile);
              } catch (QString err) {
