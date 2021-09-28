@@ -76,6 +76,7 @@ private:
     void LoadStudentsProgresses();
 
     bool SendFile(QFile* file, quint16 code);
+    void sendAll();
     //===================================================
 
 signals:

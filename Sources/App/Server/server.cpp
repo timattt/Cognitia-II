@@ -33,7 +33,7 @@ void Server::on_StopServ_clicked()
 {
     if(mtcpServ -> isListening()){
         mtcpServ -> close();
-        ui->Log->append("Server closed!\n");
+        ui->Log->append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + "Server closed!\n");
     }
     else{
         QMessageBox::critical(0, "Server Error", "Start server first");
@@ -46,7 +46,7 @@ void Server::on_StartServ_clicked()
 
     if (mtcpServ -> isListening())
     {
-        ui->Log->append("Server has already been started!\n");
+        ui->Log->append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + "Server has already been started!\n");
         return;
     }
     connect(mtcpServ, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
@@ -55,7 +55,7 @@ void Server::on_StartServ_clicked()
         mtcpServ -> close();
         return;
     }
-    ui->Log->append("Server started!\n");
+    ui->Log->append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + "Server started!\n");
 
 }
 
@@ -116,7 +116,7 @@ void Server::deleteFromLog(){
         log.replace(name, "");
         ui -> ActiveUsers -> setText(log);
 
-        ui -> Log -> append(name + QString(" disconnected\n"));
+        ui -> Log -> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + name + QString(" disconnected\n"));
     }
     else if ((client = Find_Dead(Mentors))){
         QString name = Mentors[client];
@@ -125,7 +125,7 @@ void Server::deleteFromLog(){
         log.replace(name, "");
         ui -> ActiveMentors -> setText(log);
 
-        ui -> Log -> append(name + QString(" (mentor) disconnected\n"));
+        ui -> Log -> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + name + QString(" (mentor) disconnected\n"));
     }
 }
 
@@ -133,7 +133,7 @@ bool Server::handleincStudentProgressFile(QDataStream& in){
 
      QString filename;
      in >> filename;
-     ui->Log-> append(QString("saving file ") + filename + QString("\n"));
+     ui->Log-> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + QString("saving file ") + filename + QString("\n"));
 
      QString dirname = filename.section(".", 0, 0);
 
@@ -149,7 +149,7 @@ bool Server::handleincStudentProgressFile(QDataStream& in){
      }
      else
      {
-         ui->Log-> append(QString("Cant handle inc file ") + filename + QString("\n")) ;
+         ui->Log-> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + QString("Cant handle inc file ") + filename + QString("\n")) ;
          return false;
      }
      return true;
@@ -177,14 +177,17 @@ void Server::handleReq(QTcpSocket* client, const QByteArray &data){
     switch (incCode) {
     case getUserName:
         Users[client] = name;
-        ui->Log-> append(name + QString(" connected!"));
-        ui->ActiveUsers->append(name);
+        ui->Log-> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + name + QString(" connected!"));
+
+        if(!ui -> ActiveUsers -> toPlainText().contains(name))
+            ui->ActiveUsers->append(name);
+
         if (!SendCoursetoClient(client, name) ||
             !SendSkillpacktoClient(client, name) ||
             !SendStudentProgresstoClient(client, name))
         {
             sendToClient(client, static_cast<quint16>(retrieveFail), "");
-            ui->Log-> append(QString("Fail! to send CU + SkP to ") + name);
+            ui->Log-> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + QString("Fail! to send CU + SkP to ") + name);
             break;
         }
 
@@ -194,20 +197,23 @@ void Server::handleReq(QTcpSocket* client, const QByteArray &data){
 
     case getMentorName:
         Mentors[client] = name;
-        ui->Log-> append(name + QString(" (mentor) connected!"));
-        ui->ActiveMentors->append(name);
+        ui->Log-> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + name + QString(" (mentor) connected!"));
+
+        if(!ui -> ActiveMentors -> toPlainText().contains(name))
+            ui->ActiveMentors->append(name);
+
         if (!SendCoursetoClient(client, name) ||
             !SendSkillpacktoClient(client, name))
         {
             sendToClient(client, static_cast<quint16>(retrieveFail), "");
-            ui->Log-> append(QString("Fail! to send CU + SkP to ") + name);
+            ui->Log-> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + QString("Fail! to send CU + SkP to ") + name);
             break;
         }
 
         for (int i = 0; i < students.size(); ++i){
             if(!SendStudentProgresstoClient(client, students[i])){
                 sendToClient(client, static_cast<quint16>(retrieveFail), "");
-                ui->Log-> append(QString("Fail! to send SP ") + students[i]
+                ui->Log-> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + QString("Fail! to send SP ") + students[i]
                                  + QString(" to ") + name);
                 return;
             }
@@ -223,10 +229,10 @@ void Server::handleReq(QTcpSocket* client, const QByteArray &data){
 
     case saveStudentProgress:
         Mentors[client] = name;
-        ui->Log-> append(name + QString(" (mentor) has sent SP"));
+        ui->Log-> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + name + QString(" (mentor) has sent SP"));
 
         if (!handleincStudentProgressFile(in)){
-            sendToClient(client, static_cast<quint16>(retrieveFail), "");
+            sendToClient(client, static_cast<quint16>(retrieveSavingFail), "");
         }
 
         break;
@@ -281,7 +287,7 @@ bool Server::SendFile(const QString& filename, QTcpSocket *client, quint16 code)
 
 bool Server::SendCoursetoClient(QTcpSocket *client, const QString &name){
 
-     ui->Log-> append(QString("Sendind course to ") + name);
+     ui->Log-> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + QString("Sendind course to ") + name);
 
      QStringList filters;
      QDir curdir = QDir();
@@ -303,7 +309,7 @@ bool Server::SendCoursetoClient(QTcpSocket *client, const QString &name){
 
 bool Server::SendSkillpacktoClient(QTcpSocket *client, const QString &name){
 
-     ui->Log-> append(QString("Sendind skillpack to ") + name);
+     ui->Log-> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + QString("Sendind skillpack to ") + name);
      QDataStream out(client);
      QDir curdir = QDir();
 
@@ -328,7 +334,7 @@ bool Server::SendSkillpacktoClient(QTcpSocket *client, const QString &name){
 
 bool Server::SendStudentProgresstoClient(QTcpSocket *client, const QString &name){
 
-     ui->Log-> append(QString("Sendind Student Progress of ") + name);
+     ui->Log-> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + QString("Sendind Student Progress of ") + name);
      QDataStream out(client);
      QDir curdir = QDir(name);
 

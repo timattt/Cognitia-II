@@ -21,6 +21,9 @@ public:
     QString getIP();
     QString getPort();
     QString getName();
+
+    void setButtonDisabled();
+    void setButtonEnabled();
     void closeEvent(QCloseEvent *event) override;
 
 

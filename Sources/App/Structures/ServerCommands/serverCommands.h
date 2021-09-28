@@ -21,7 +21,9 @@ enum ServerReplies{
     retrieveSuccess,
     retrieveFailAutorisation,
     retrieveFail,
-    firstConnectionSuccess
+    firstConnectionSuccess,
+
+    retrieveSavingFail
 };
 
 #endif // SERVERCOMMANDS_H
