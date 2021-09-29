@@ -177,7 +177,8 @@
 # Прототип
 
 Риализован прототип программы.
-Техническое задание и описание можно найти [тут](https://github.com/timattt/Project-Cognitia-II/blob/main/About/PrototypeTechnicalTask/PrototypeTechnicalTask.md)
+Техническое задание и описание можно найти [тут](https://github.com/timattt/Project-Cognitia-II/blob/main/About/PrototypeTechnicalTask/PrototypeTechnicalTask.md).
+Ссылки на исполняемые файлы прототипа [тут](https://github.com/timattt/Project-Cognitia-II/releases/tag/0.4).
 
 # Установка
 
