@@ -57,9 +57,12 @@ private slots:
 
     void on_addStudent_clicked();
 
+    void on_chooseParent_clicked();
+
 public slots:
     virtual void slotNewConnection();
             void slotReadClient();
+            void onStart();
 
 
 signals:

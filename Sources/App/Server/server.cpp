@@ -20,6 +20,8 @@ Server::Server(QWidget *parent) :
     ui -> ActiveUsers -> setReadOnly(true);
     ui -> ActiveMentors -> setReadOnly(true);
 
+    QDir().mkdir("Server");
+
     qInfo() << "Server init finished";
 }
 
@@ -146,6 +148,7 @@ bool Server::handleincStudentProgressFile(QDataStream& in){
          qDebug() << filecont;
          out << filecont;
          //file.write(in.device()->readAll());
+         file.close();
      }
      else
      {
@@ -277,7 +280,7 @@ bool Server::SendFile(const QString& filename, QTcpSocket *client, quint16 code)
             qDebug() << arrBlock;
             client -> write(arrBlock);
 
-
+            file.close();
        }
     else
         return false;
@@ -374,7 +377,14 @@ void Server::sendToClient(QTcpSocket* Socket, quint16 code,  const QString& str)
 
 void Server::on_returnToL_clicked()
 {
+    QDir::setCurrent("../");
     emit onClose();
+}
+
+
+void Server::onStart(){
+    QDir::setCurrent("Server");
+    this -> show();
 }
 
 
@@ -402,6 +412,26 @@ void Server::on_addStudent_clicked()
         catch(QString message){
             qDebug() << message;
         }
+
+}
+
+
+void Server::on_chooseParent_clicked()
+{
+    QString name = QFileDialog::getOpenFileName(this, "Choose parent course",  QString(), QString("(*") + COURSE_UNIT_FILE_EXTENSION + QString(")"));
+    if (name.length() == 0){
+        return;
+    }
+
+    QFile file(QString("crusial") + MAIN_COURSEUNIT_FILE_EXTENSION);
+
+    if (file.open(QIODevice::WriteOnly))
+       {
+            file.write(name.toUtf8());
+            file.close();
+       }
+    else
+        QMessageBox::critical(this, "While picking course.." , "Can't open crusial file");
 
 }
 
