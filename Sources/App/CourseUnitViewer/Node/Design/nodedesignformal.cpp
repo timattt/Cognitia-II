@@ -24,7 +24,7 @@ void NodeDesignFormal::draw(Node * nd, QPainter *painter, const QStyleOptionGrap
 
     QPen p = painter->pen();
 	if (nd->isSelected()) {
-		p.setColor(SELECT_COLOR);
+		p.setColor(SELECTED_NODE_COLOR);
 	} else {
 		p.setColor(nd->getColor());
 	}

@@ -98,8 +98,8 @@ void NodeDesignOlive::drawSkills(Node * nd, QPainter *painter, const QStyleOptio
 	// center
 	QRadialGradient gr(0, 0, rad * 1.5);
 	if (nd->isSelected()) {
-		gr.setColorAt(1, SELECT_COLOR);
-		gr.setColorAt(0, SELECT_COLOR);
+		gr.setColorAt(1, SELECTED_NODE_COLOR);
+		gr.setColorAt(0, SELECTED_NODE_COLOR);
 	} else {
 		gr.setColorAt(1, QColor(nd->getColor()).darker(200));
 		gr.setColorAt(0, QColor(nd->getColor()));

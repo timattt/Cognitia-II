@@ -12,7 +12,7 @@ Node::Node(CourseUnitViewer *graphWidget)
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
 
-    setName("New node");
+    setName(NODE_DEFAULT_NAME);
 }
 
 void Node::addEdge(Edge *edge)
@@ -23,20 +23,11 @@ void Node::addEdge(Edge *edge)
     edge->adjust();
 }
 
-QList<Edge *> Node::edges() const
-{
-    return edgeList;
-}
-
 void Node::calculateForces()
 {
-	if (graph == nullptr) {
+	if (graph == nullptr || !scene() || scene()->mouseGrabberItem() == this || !graph->nodesCanMove()) {
 		return;
 	}
-
-    if (!scene() || scene()->mouseGrabberItem() == this || !graph->nodesCanMove()) {
-    	return;
-    }
 
     QPointF newPos(0, 0);
 
@@ -81,7 +72,7 @@ void Node::calculateForces()
         yvel -= graph->getAttFac() * vec.y() / len * delta;
     }
 
-    if (qAbs(xvel) < EPSILON && qAbs(yvel) < EPSILON) {
+    if (qAbs(xvel) < NODE_PHYSICS_EPSILON && qAbs(yvel) < NODE_PHYSICS_EPSILON) {
         xvel = yvel = 0;
     }
 
@@ -108,9 +99,7 @@ QPainterPath Node::shape() const
 
 void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget * w)
 {
-	if (graph->getCurrentDesign() == nullptr) {
-		throw QString("No current node design!");
-	}
+	NOT_NULL(graph->getCurrentDesign());
 	graph->getCurrentDesign()->draw(this, painter, option, w);
 }
 
@@ -161,7 +150,7 @@ void Node::removeEdge(Edge *e) {
 	edgeList.removeAll(e);
 }
 
-bool Node::hasEdgeToNode(Node *nd) {
+bool Node::hasEdgeToNode(Node *nd) const {
 	NOT_NULL(nd);
 
 	for (Edge * e : edgeList) {
@@ -173,7 +162,7 @@ bool Node::hasEdgeToNode(Node *nd) {
 	return false;
 }
 
-QColor Node::getColor() {
+QColor Node::getColor() const {
 	return color;
 }
 
@@ -222,7 +211,7 @@ const QMap<QString, int>& Node::getOutSkills() const {
 	return outSkills;
 }
 
-QString Node::getName() {
+QString Node::getName() const {
 	return name;
 }
 
@@ -238,6 +227,9 @@ QString Node::getFile() const {
 }
 
 void Node::setFile(QString file) {
+	if (this->file != file) {
+		update();
+	}
 	this->file = file;
 }
 
@@ -254,11 +246,12 @@ void Node::clearSkills() {
 
 	if (graph != nullptr) {
 		emit graph->nodeSkillsChanged(this);
-		update();
 	}
+
+	update();
 }
 
-QString Node::getDescription() {
+QString Node::getDescription() const {
 	return description;
 }
 
@@ -314,12 +307,8 @@ void fromCourseUnitToNode(CourseUnit *cu, Node *nd) {
 	nd->setPos(cu->getCoords().first, cu->getCoords().second);
 }
 
-CourseUnitViewer* Node::getViewer() {
-	NOT_NULL(graph);
-	return graph;
-}
-
-double Node::getSkillProgress(QString skill) {
+double Node::getSkillProgress(QString skill) const {
+	ASSERTM(progress.contains(skill), "No such skill");
 	return progress[skill];
 }
 
@@ -328,21 +317,18 @@ bool Node::containsProgress(QString skill) {
 }
 
 void Node::setProgress(QString skill, double val) {
-	NOT_NULL(graph);
-
 	progress[skill] = val;
-	if (graph->isNodeSelected(this)) {
+	if (graph != nullptr && graph->isNodeSelected(this)) {
 		emit graph->progressMadeToSelected(skill, val);
 	}
 	update();
 }
 
 bool Node::isSelected() {
-	NOT_NULL(graph);
-	return graph->isNodeSelected(this);
+	return graph != nullptr && graph->isNodeSelected(this);
 }
 
-double Node::getProgressScalar(QString skill) {
+double Node::getProgressScalar(QString skill) const {
 	double from = -1;
 	double to = -1;
 	if (inSkills.contains(skill)) {
@@ -351,6 +337,9 @@ double Node::getProgressScalar(QString skill) {
 	if (outSkills.contains(skill)) {
 		to = outSkills[skill];
 	}
+
+	ASSERTM(from > 0 || to > 0, "No such skill!");
+
 	if (from < 0) {
 		from = to - 1;
 	}
@@ -363,4 +352,5 @@ double Node::getProgressScalar(QString skill) {
 
 void Node::clearStudentProgress() {
 	progress.clear();
+	update();
 }

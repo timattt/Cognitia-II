@@ -3,16 +3,20 @@
 #include "../courseunitviewer.h"
 #include "Design/nodedesign.h"
 
-Edge::Edge(Node *sourceNode, Node *destNode) :
-		source(sourceNode), dest(destNode) {
+Edge::Edge(Node *sourceNode, Node *destNode, CourseUnitViewer * view) :
+		source(sourceNode),
+		dest(destNode),
+		viewer(view) {
 	setAcceptedMouseButtons(Qt::NoButton);
 	source->addEdge(this);
 	dest->addEdge(this);
 	setZValue(-2);
 }
 
-Edge::Edge(Node *sourceNode) :
-		source(sourceNode), dest(nullptr) {
+Edge::Edge(Node *sourceNode, CourseUnitViewer * view) :
+		source(sourceNode),
+		dest(nullptr),
+		viewer(view) {
 	setAcceptedMouseButtons(Qt::NoButton);
 	setZValue(-2);
 }
@@ -71,7 +75,7 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 		return;
 	}
 
-	double factor = source->getViewer()->getCurrentDesign()->getEdgeThickness();
+	double factor = viewer->getCurrentDesign()->getEdgeThickness();
 
 	QLineF line(sourcePoint, destPoint);
 

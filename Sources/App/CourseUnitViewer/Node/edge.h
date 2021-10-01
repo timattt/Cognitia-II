@@ -4,6 +4,7 @@
 #include <QtWidgets>
 
 class Node;
+class CourseUnitViewer;
 
 class Edge : public QGraphicsItem
 {
@@ -19,8 +20,8 @@ public:
 
     // Constructors
     //--------------------------------------
-    Edge(Node *sourceNode);
-    Edge(Node *sourceNode, Node *destNode);
+    Edge(Node *sourceNode, CourseUnitViewer * view);
+    Edge(Node *sourceNode, Node *destNode, CourseUnitViewer * view);
     ~Edge();
     //--------------------------------------
 
@@ -54,6 +55,7 @@ protected:
     QPointF sourcePoint;
     QPointF destPoint;
     QPointF target;
+    CourseUnitViewer * viewer;
     //--------------------------------------
 
 };

@@ -17,9 +17,9 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 		scene(new CourseScene(this)),
 		nodesDesigns(),
 		timerId(0),
-		attFac(DEFAULT_ATT_FAC),
-		repFac(DEFAULT_REP_FAC),
-		ownLength(DEFAULT_OWN_LENGTH),
+		attFac(DEFAULT_NODE_ATT_FAC),
+		repFac(DEFAULT_NODE_REP_FAC),
+		ownLength(DEFAULT_NODE_OWN_LENGTH),
 		editable(true) {
 	SAY("CourseUnitViewer init started");
 
@@ -27,9 +27,9 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 	ui->graphicsView->setScene(scene);
 	timerId = startTimer(1);
 
-	ui->repFact->setText(QString::number(DEFAULT_REP_FAC));
-	ui->ownLength->setText(QString::number(DEFAULT_OWN_LENGTH));
-	ui->attFact->setText(QString::number(DEFAULT_ATT_FAC));
+	ui->repFact->setText(QString::number(DEFAULT_NODE_REP_FAC));
+	ui->ownLength->setText(QString::number(DEFAULT_NODE_OWN_LENGTH));
+	ui->attFact->setText(QString::number(DEFAULT_NODE_ATT_FAC));
 
 	ui->graphicsView->setAcceptDrops(true);
 
@@ -146,7 +146,7 @@ void CourseUnitViewer::on_attFact_editingFinished() {
 	bool ok = 0;
 	double v = ui->attFact->text().toDouble(&ok);
 	if (!ok) {
-		ui->attFact->setText(QString::number(DEFAULT_ATT_FAC));
+		ui->attFact->setText(QString::number(DEFAULT_NODE_ATT_FAC));
 	} else {
 		attFac = v;
 	}
@@ -156,7 +156,7 @@ void CourseUnitViewer::on_repFact_editingFinished() {
 	bool ok = 0;
 	double v = ui->repFact->text().toDouble(&ok);
 	if (!ok) {
-		ui->repFact->setText(QString::number(DEFAULT_REP_FAC));
+		ui->repFact->setText(QString::number(DEFAULT_NODE_REP_FAC));
 	} else {
 		repFac = v;
 	}
@@ -170,7 +170,7 @@ void CourseUnitViewer::on_ownLength_editingFinished() {
 	bool ok = 0;
 	double v = ui->ownLength->text().toDouble(&ok);
 	if (!ok) {
-		ui->ownLength->setText(QString::number(DEFAULT_OWN_LENGTH));
+		ui->ownLength->setText(QString::number(DEFAULT_NODE_OWN_LENGTH));
 	} else {
 		ownLength = v;
 	}
@@ -231,7 +231,7 @@ void CourseUnitViewer::unpack(CourseUnit *head) {
 
 	for (CourseUnit * u : head->getEmbedded()) {
 		for (QString v : u->getConnections()) {
-			addEdge(new Edge(nodes[u->objectName()], nodes[v]));
+			addEdge(new Edge(nodes[u->objectName()], nodes[v], this));
 		}
 	}
 }

@@ -84,7 +84,7 @@ void CourseScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 		} else {
 			if (nd != nullptr) {
 				if (event->button() == Qt::RightButton && view->isEditable()) {
-					addItem(dragEdge = new Edge(nd));
+					addItem(dragEdge = new Edge(nd, view));
 					dragEdge->setTarget(event->lastScenePos());
 					return;
 				} else {

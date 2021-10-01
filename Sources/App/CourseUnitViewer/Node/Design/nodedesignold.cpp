@@ -32,7 +32,7 @@ void NodeDesignOld::draw(Node *nd, QPainter *painter,
 	painter->setFont(f);
     painter->setPen(QPen(Qt::black, NODE_RAD / 100.0));
 	if (nd->isSelected()) {
-		painter->setBrush(SELECT_COLOR);
+		painter->setBrush(SELECTED_NODE_COLOR);
 	} else {
 		painter->setBrush(nd->getColor());
 	}
@@ -85,7 +85,7 @@ void NodeDesignOld::draw(Node *nd, QPainter *painter,
 
 		if (i == 0) {
 			if (nd->isSelected()) {
-				painter->setBrush(SELECT_COLOR);
+				painter->setBrush(SELECTED_NODE_COLOR);
 			} else {
 				painter->setBrush(nd->getColor());
 			}
@@ -145,7 +145,7 @@ void NodeDesignOld::draw(Node *nd, QPainter *painter,
 
 		if (i == 0) {
 			if (nd->isSelected()) {
-				painter->setBrush(SELECT_COLOR);
+				painter->setBrush(SELECTED_NODE_COLOR);
 			} else {
 				painter->setBrush(nd->getColor());
 			}
