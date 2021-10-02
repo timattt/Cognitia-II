@@ -10,9 +10,12 @@
 #include "Node/node.h"
 #include "courseunitviewer.h"
 #include "../Structures/SkillPack/skillpack.h"
+#include "../Core/logger.h"
 
 CourseScene::CourseScene(CourseUnitViewer * v) : QGraphicsScene(v), dragEdge(nullptr), view(v) {
-	setSceneRect(QRect(0, 0, 2500, 2500));
+	NOT_NULL(v);
+
+	setSceneRect(QRect(0, 0, START_SCENE_WIDTH, START_SCENE_HEIGHT));
 }
 
 void CourseScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
@@ -96,6 +99,12 @@ void CourseScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 
 	if (!view->deleteModeIsOn() && event->button() == Qt::LeftButton) {
 		QGraphicsScene::mousePressEvent(event);
+	}
+}
+
+CourseScene::~CourseScene() {
+	if (dragEdge != nullptr) {
+		delete dragEdge;
 	}
 }
 
