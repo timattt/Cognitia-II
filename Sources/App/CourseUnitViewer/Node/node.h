@@ -34,6 +34,13 @@ class Node : public QGraphicsItem
 
 public:
 
+	// public fields
+	//--------------------------------------
+	enum { Type = UserType + 1 };
+	//--------------------------------------
+
+public:
+
     // Constructor
     //--------------------------------------
 	/**
@@ -67,7 +74,7 @@ public:
     /**
      * Reimplemented from QGraphicsItem
      */
-    int type() const override { return UserType + 1; }
+    int type() const override { return Type; }
     /**
      * Updates node physics.
      * It will do nothing if:

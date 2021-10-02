@@ -266,7 +266,7 @@ void CourseUnitViewer::pack(CourseUnit *head) {
 
 		Edge * ed = dynamic_cast<Edge*>(it);
 		if (ed != nullptr) {
-			units[ed->sourceNode()->getName()]->addConnection(ed->destNode()->getName());
+			units[ed->getSourceNode()->getName()]->addConnection(ed->getDestNode()->getName());
 		}
 	}
 }

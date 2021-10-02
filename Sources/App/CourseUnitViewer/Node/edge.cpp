@@ -2,11 +2,17 @@
 #include "node.h"
 #include "../courseunitviewer.h"
 #include "Design/nodedesign.h"
+#include "../../Core/logger.h"
 
 Edge::Edge(Node *sourceNode, Node *destNode, CourseUnitViewer * view) :
 		source(sourceNode),
 		dest(destNode),
 		viewer(view) {
+
+	NOT_NULL(sourceNode);
+	NOT_NULL(destNode);
+	NOT_NULL(view);
+
 	setAcceptedMouseButtons(Qt::NoButton);
 	source->addEdge(this);
 	dest->addEdge(this);
@@ -17,16 +23,22 @@ Edge::Edge(Node *sourceNode, CourseUnitViewer * view) :
 		source(sourceNode),
 		dest(nullptr),
 		viewer(view) {
+
+	NOT_NULL(source);
+	NOT_NULL(view);
+
+	source->addEdge(this);
+
 	setAcceptedMouseButtons(Qt::NoButton);
 	setZValue(-2);
 }
 
-Node* Edge::sourceNode() const
+Node* Edge::getSourceNode() const
 {
     return source;
 }
 
-Node *Edge::destNode() const
+Node *Edge::getDestNode() const
 {
     return dest;
 }
@@ -65,8 +77,15 @@ QRectF Edge::boundingRect() const
 }
 
 void Edge::setTarget(QPointF p) {
+	ASSERTM(dest == nullptr, "trying to set target for edge that has destination node");
+
 	target = p;
 	adjust();
+}
+
+QPointF Edge::getTarget() const {
+	ASSERTM(dest == nullptr, "trying to get target for edge that has destination node");
+	return target;
 }
 
 void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
@@ -117,14 +136,18 @@ Edge::~Edge() {
 	}
 }
 
-bool Edge::isDragable() {
+bool Edge::isDragable() const {
 	return dest == nullptr;
 }
 
 void Edge::connectToNode(Node * dest) {
+	ASSERTM(isDragable(), "trying to connect edge to node. Edge already has dest node!");
+
 	this->dest = dest;
 	dest->addEdge(this);
-	source->addEdge(this);
+
+	target.setX(0);
+	target.setY(0);
 }
 
 double Edge::getArrowSize() const {

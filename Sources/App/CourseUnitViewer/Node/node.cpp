@@ -19,13 +19,15 @@ void Node::addEdge(Edge *edge)
 {
 	NOT_NULL(edge);
 
+	ASSERTM(!edgeList.contains(edge), "Already has such edge!");
+
     edgeList << edge;
     edge->adjust();
 }
 
 void Node::calculateForces()
 {
-	if (graph == nullptr || !scene() || scene()->mouseGrabberItem() == this || !graph->nodesCanMove()) {
+	if (graph == nullptr || scene() == nullptr || scene()->mouseGrabberItem() == this || !graph->nodesCanMove()) {
 		return;
 	}
 
@@ -58,10 +60,14 @@ void Node::calculateForces()
     for (const Edge *edge : qAsConst(edgeList)) {
         QPointF vec;
 
-        if (edge->sourceNode() == this) {
-            vec = mapToItem(edge->destNode(), 0, 0);
+        if (edge->getSourceNode() == this) {
+            vec = mapToItem(edge->getDestNode(), 0, 0);
+            if (edge->isDragable()) {
+            	vec.setX(vec.x() - edge->getTarget().x());
+            	vec.setY(vec.y() - edge->getTarget().y());
+            }
         } else {
-            vec = mapToItem(edge->sourceNode(), 0, 0);
+            vec = mapToItem(edge->getSourceNode(), 0, 0);
         }
 
         double len = qSqrt(vec.x() * vec.x() + vec.y() * vec.y());
@@ -154,7 +160,7 @@ bool Node::hasEdgeToNode(Node *nd) const {
 	NOT_NULL(nd);
 
 	for (Edge * e : edgeList) {
-		if (e->sourceNode() == nd || e->destNode() == nd) {
+		if (e->getSourceNode() == nd || e->getDestNode() == nd) {
 			return true;
 		}
 	}

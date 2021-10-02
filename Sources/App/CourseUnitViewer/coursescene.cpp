@@ -35,7 +35,7 @@ void CourseScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 			}
 		}
 
-		if (nd != nullptr && nd != dragEdge->sourceNode() && !nd->hasEdgeToNode(dragEdge->sourceNode())) {
+		if (nd != nullptr && nd != dragEdge->getSourceNode() && !nd->hasEdgeToNode(dragEdge->getSourceNode())) {
 			dragEdge->connectToNode(nd);
 		} else {
 			delete dragEdge;
