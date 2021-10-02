@@ -205,9 +205,5 @@ bool NodeDesignOlive::verticalSkillsLayout() {
 	return false;
 }
 
-bool NodeDesignOlive::edgeToCenter() {
-	return false;
-}
-
 NodeDesignOlive::NodeDesignOlive(QObject *parent) : NodeDesign(parent) {
 }

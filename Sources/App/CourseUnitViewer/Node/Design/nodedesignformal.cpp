@@ -121,7 +121,3 @@ bool NodeDesignFormal::verticalSkillsLayout() {
 NodeDesignFormal::NodeDesignFormal(QObject *parent) :
 		NodeDesign(parent) {
 }
-
-bool NodeDesignFormal::edgeToCenter() {
-	return true;
-}

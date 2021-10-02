@@ -17,7 +17,6 @@ public:
 	void draw(Node *nd, QPainter *painter,
 			const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 	bool verticalSkillsLayout() override;
-	bool edgeToCenter() override;
 	double getEdgeThickness() override;
 };
 

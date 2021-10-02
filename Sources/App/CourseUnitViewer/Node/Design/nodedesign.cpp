@@ -8,7 +8,6 @@
 #include "nodedesign.h"
 
 NodeDesign::NodeDesign(QObject * parent) : QObject(parent) {}
-NodeDesign::~NodeDesign() {}
 
 void NodeDesign::draw(Node *nd, QPainter *painter,
 		const QStyleOptionGraphicsItem *option, QWidget *widget) {
@@ -19,10 +18,6 @@ void NodeDesign::draw(Node *nd, QPainter *painter,
 }
 
 bool NodeDesign::verticalSkillsLayout() {
-	return false;
-}
-
-bool NodeDesign::edgeToCenter() {
 	return false;
 }
 

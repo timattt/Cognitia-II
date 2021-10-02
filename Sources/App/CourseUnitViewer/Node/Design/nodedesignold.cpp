@@ -189,10 +189,6 @@ bool NodeDesignOld::verticalSkillsLayout() {
 	return false;
 }
 
-bool NodeDesignOld::edgeToCenter() {
-	return false;
-}
-
 double NodeDesignOld::getEdgeThickness() {
 	return 0.01;
 }
