@@ -9,11 +9,10 @@
 #include "../Structures/SkillPack/skillpack.h"
 #include "../CourseUnitViewer/Node/node.h"
 #include "courseeditor.h"
+#include "../Core/logger.h"
 
 SkillsModel::SkillsModel(CourseEditor * p, bool in_) : QStandardItemModel(0, 2, p), editor(p), in(in_) {
-}
-
-SkillsModel::~SkillsModel() {
+	NOT_NULL(p);
 }
 
 bool SkillsModel::canDropMimeData(const QMimeData *data, Qt::DropAction action,
