@@ -17,6 +17,7 @@ CONFIG += console
 SOURCES += \
     ChooseServ/chooseserv.cpp \
     CourseEditor/courseeditor.cpp \
+    CourseUnitViewer/Node/Design/nodedesignshape.cpp \
     CourseUnitViewer/courseunitviewer.cpp \
     Help/smarthelper.cpp \
     Launcher/launcher.cpp \
@@ -47,6 +48,7 @@ SOURCES += \
 HEADERS += \
     ChooseServ/chooseserv.h \
     CourseEditor/courseeditor.h \
+    CourseUnitViewer/Node/Design/nodedesignshape.h \
     CourseUnitViewer/courseunitviewer.h \
     Help/smarthelper.h \
     Launcher/launcher.h \

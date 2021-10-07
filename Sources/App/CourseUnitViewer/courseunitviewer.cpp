@@ -7,6 +7,7 @@
 #include "Node/Design/nodedesignformal.h"
 #include "Node/Design/nodedesignolive.h"
 #include "Node/Design/nodedesignold.h"
+#include "Node/Design/nodedesignshape.h"
 #include "../Structures/StudentProgress/StudentProgress.h"
 #include "../Core/logger.h"
 
@@ -40,6 +41,7 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 	nodesDesigns["Olive"] = new NodeDesignOlive(this);
 	nodesDesigns["Formal"] = new NodeDesignFormal(this);
 	nodesDesigns["Old"] = new NodeDesignOld(this);
+    nodesDesigns["Shape"] = new NodeDesignShape(this);
 
 	ui->designBox->addItems(nodesDesigns.keys());
 	ui->designBox->setCurrentText("Old");
