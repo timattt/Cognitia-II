@@ -1,4 +1,4 @@
-#include "CourseUnit.h"
+#include "courseunit.h"
 
 CourseUnit::CourseUnit(QObject* pobj):
 	QObject(pobj),
