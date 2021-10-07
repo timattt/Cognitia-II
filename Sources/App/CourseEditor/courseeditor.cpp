@@ -14,17 +14,24 @@
 CourseEditor::CourseEditor() :
     QMainWindow(nullptr),
     ui(new Ui::CourseEditor),
-	head(nullptr),
-	lastSkillPackModified(0)
+	skillsLib(),
+	inMd(nullptr),
+	outMd(nullptr),
+	head(new Node(nullptr)),
+	timerId(0),
+	lastSkillPackUpdate(0)
 {
-	qInfo() << "CourseEditor init started";
-    ui->setupUi(this);
+	SAY("CourseEditor init started");
 
-    inMd = new SkillsModel(this, 1);
-    outMd = new SkillsModel(this, 0);
+	ui->setupUi(this);
 
-    ui->inList->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    ui->outList->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	// Skills table
+	//-----------------------------
+	inMd = new SkillsModel(this, 1);
+	outMd = new SkillsModel(this, 0);
+
+	ui->inList->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	ui->outList->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 	ui->inList->setAcceptDrops(true);
 	ui->inList->setDropIndicatorShown(true);
@@ -33,21 +40,24 @@ CourseEditor::CourseEditor() :
 	ui->outList->setDropIndicatorShown(true);
 
 	ui->inList->setModel(inMd);
-    ui->outList->setModel(outMd);
+	ui->outList->setModel(outMd);
+	//-----------------------------
 
-    head = new Node(nullptr);
+	// signals
+	//-----------------------------
+	connect(ui->widget, SIGNAL(nodeSelected(Node*)), this, SLOT(nodeSelected(Node*)));
+	connect(ui->widget, SIGNAL(nodeSkillsChanged(Node*)), this, SLOT(nodeSkillsChanged(Node*)));
+	//-----------------------------
 
-    setNodeToRedactor(head);
+	// clear and refresh everything
+	//-----------------------------
+	clearSkillsLib();
+	clearCourseUnit();
+	//-----------------------------
 
-    connect(ui->widget, SIGNAL(nodeSelected(Node*)), this, SLOT(nodeSelected(Node*)));
-    connect(ui->widget, SIGNAL(nodeSkillsChanged(Node*)), this, SLOT(nodeSkillsChanged(Node*)));
+	timerId = startTimer(SKILL_PACK_UPDATE_TIME);
 
-    clearSkillsLib();
-    clearCourseUnit();
-
-    timerId = startTimer(1000);
-
-    qInfo() << "CourseEditor init finished!";
+	SAY("CourseEditor init finished!");
 }
 
 CourseEditor::~CourseEditor()
@@ -56,14 +66,17 @@ CourseEditor::~CourseEditor()
 	clearSkillsLib();
     delete ui;
     killTimer(timerId);
+    delete head;
 }
 
-void CourseEditor::addSkillToLib(QString name, Skill * sk) {
-	skillsLib[name] = QMap<int, QString>();
+void CourseEditor::addSkillToLib(Skill * sk) {
+	NOT_NULL(sk);
+
+	skillsLib[sk->objectName()] = QMap<int, QString>();
 	for (int i = 0; i < sk->getLevelsCount(); i++) {
-		skillsLib[name][i + 1] = sk->getLevelDescription(i);
+		skillsLib[sk->objectName()][i + 1] = sk->getLevelDescription(i);
 	}
-	ui->skillsSelector->addItem(name);
+	ui->skillsSelector->addItem(sk->objectName());
 }
 
 void CourseEditor::on_addSkill_pressed()
@@ -125,10 +138,10 @@ void CourseEditor::on_removeSkill_pressed() {
 }
 
 void CourseEditor::setNodeToRedactor(Node *nd) {
-	if (nd == nullptr) {
-		nd = head;
-	}
+	NOT_NULL(nd);
 
+	// Update skills table
+	//--------------------------------------------
 	inMd->clear();
 	outMd->clear();
 
@@ -143,14 +156,14 @@ void CourseEditor::setNodeToRedactor(Node *nd) {
 		int lev = nd->getOutSkills()[out];
 		outMd->addSkill(out, lev);
 	}
+	//--------------------------------------------
 
-	QString name = nd->getName();
-	QString file = nd->getFile();
-	QString descr = nd->getDescription();
-
-	ui->nameLineEdit->setText(name);
-	ui->fileLineEdit->setText(file);
-	ui->descrPanel->setText(descr);
+	// update gui panels
+	//--------------------------------------------
+	ui->nameLineEdit->setText(nd->getName());
+	ui->fileLineEdit->setText(nd->getFile());
+	ui->descrPanel->setText(nd->getDescription());
+	//--------------------------------------------
 }
 
 void CourseEditor::on_levelsSelector_currentTextChanged(const QString &arg1)
@@ -189,6 +202,9 @@ void CourseEditor::on_nameLineEdit_textChanged() {
 }
 
 void CourseEditor::nodeSelected(Node *nd) {
+	if (nd == nullptr) {
+		nd = head;
+	}
 	setNodeToRedactor(nd);
 }
 void CourseEditor::nodeSkillsChanged(Node *nd) {
@@ -272,7 +288,6 @@ void CourseEditor::clearSkillsLib() {
 	ui->skillsSelector->clear();
 	ui->levelsSelector->clear();
 	ui->skillPackFile->clear();
-	skillPackPath.clear();
 }
 
 void CourseEditor::clearCourseUnit() {
@@ -286,6 +301,8 @@ void CourseEditor::clearCourseUnit() {
 }
 
 void CourseEditor::fromFileToGui(CourseUnit *crs) {
+	NOT_NULL(crs);
+
 	fromCourseUnitToNode(crs, head);
 
 	ui->widget->unpack(crs);
@@ -294,6 +311,8 @@ void CourseEditor::fromFileToGui(CourseUnit *crs) {
 }
 
 void CourseEditor::fromGuiToFile(CourseUnit *crs) {
+	NOT_NULL(crs);
+
 	fromNodeToCourseUnit(head, crs);
 
 	crs->setFieldSize(ui->widget->getSceneSize().x(), ui->widget->getSceneSize().y());
@@ -339,8 +358,8 @@ void CourseEditor::setSkillPack(QString path) {
 	QFile f = QFile(path);
 
 	if (!f.exists()) {
-		mes("SkillPack file " + skillPackPath + " does not exists!");
-		QMessageBox::critical(this, "Error", "SkillPack file " + skillPackPath + " does not exists!");
+		mes("SkillPack file " + path + " does not exists!");
+		QMessageBox::critical(this, "Error", "SkillPack file " + path + " does not exists!");
 		return;
 	}
 
@@ -349,11 +368,10 @@ void CourseEditor::setSkillPack(QString path) {
 
 	skp.load(&f);
 	for (int i = 0; i < skp.getSkillsCount(); i++) {
-		addSkillToLib(skp.getSkill(i)->objectName(), skp.getSkill(i));
+		addSkillToLib(skp.getSkill(i));
 	}
 
 	mes("SkillPack file " + path + " is loaded!");
-	skillPackPath = path;
 
 	ui->skillsSelector->setCurrentIndex(i1);
 	ui->levelsSelector->setCurrentIndex(i2);
@@ -371,7 +389,7 @@ Node* CourseEditor::getCurrentNode() {
 void CourseEditor::timerEvent(QTimerEvent *event) {
 	Q_UNUSED(event);
 
-	QFile f = QFile(this->skillPackPath);
+	QFile f = QFile(ui->skillPackFile->text());
 	if (!f.exists()) {
 		return;
 	}
@@ -379,9 +397,9 @@ void CourseEditor::timerEvent(QTimerEvent *event) {
 
 	long long t = in.lastModified().toMSecsSinceEpoch();
 
-	if (lastSkillPackModified < t) {
-		lastSkillPackModified = t;
-		setSkillPack(skillPackPath);
+	if (lastSkillPackUpdate < t) {
+		lastSkillPackUpdate = t;
+		setSkillPack(ui->skillPackFile->text());
 	}
 }
 

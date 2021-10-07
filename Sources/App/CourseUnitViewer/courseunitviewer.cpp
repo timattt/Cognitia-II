@@ -40,6 +40,7 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 	nodesDesigns["Olive"] = new NodeDesignOlive(this);
 	nodesDesigns["Formal"] = new NodeDesignFormal(this);
 	nodesDesigns["Old"] = new NodeDesignOld(this);
+	//-------------------------------------------------
 
 	ui->designBox->addItems(nodesDesigns.keys());
 	ui->designBox->setCurrentText("Old");
