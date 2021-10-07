@@ -214,16 +214,16 @@ void CourseEditor::nodeSkillsChanged(Node *nd) {
 }
 
 void CourseEditor::on_actionCourseUnitOpen_triggered() {
+	on_actionClose_courseUnit_triggered();
+
 	QString path = QFileDialog::getOpenFileName(this, "Select course unit file", QString(), QString("(*") + COURSE_UNIT_FILE_EXTENSION + QString(")"));
-	clearCourseUnit();
 
 	QFile f = QFile(path);
 
 	if (!f.exists()) {
+		mes("File " + f.fileName() + " not exists!");
 		return;
 	}
-
-	clearCourseUnit();
 
 	head->setFile(path);
 
@@ -232,7 +232,7 @@ void CourseEditor::on_actionCourseUnitOpen_triggered() {
 		crs.loadCourseUnit(&f);
 		fromFileToGui(&crs);
 
-		mes("Opened course unit file " + path);
+		mes("Opened course unit file " + f.fileName());
 	} catch (QString & ex) {
 		QMessageBox::critical(this, "Error", ex);
 		mes("Error while opening: " + ex);
@@ -249,8 +249,10 @@ void CourseEditor::on_actionCourseUnitSave_triggered() {
 	try {
 		fromGuiToFile(&crs);
 		crs.saveCourseUnit(&f);
+
 		clearCourseUnit();//
 		fromFileToGui(&crs);// to insure that it will write file names into panels
+
 		mes("Saved course unit file " + head->getFile());
 	} catch (QString & ex) {
 		QMessageBox::critical(this, "Error", ex);
@@ -259,12 +261,12 @@ void CourseEditor::on_actionCourseUnitSave_triggered() {
 }
 
 void CourseEditor::on_actionCourseUnitCreate_triggered() {
+	on_actionClose_courseUnit_triggered();
+
 	QString path = QFileDialog::getSaveFileName(this, "Create course unit file", QString(), QString("(*") + COURSE_UNIT_FILE_EXTENSION + QString(")"));
 
 	QFile f = QFile(path);
 	QFileInfo in = QFileInfo(f);
-
-	clearCourseUnit();
 
 	head->setName(in.fileName());
 	head->setFile(path);
@@ -275,7 +277,8 @@ void CourseEditor::on_actionCourseUnitCreate_triggered() {
 		fromGuiToFile(&crs);
 		crs.saveCourseUnit(&f);
 		mes("Created course unit file " + path);
-		fromFileToGui(&crs);
+
+		fromFileToGui(&crs);// to insure that it will write file names into panels
 	} catch (QString err) {
 		QMessageBox::critical(this, "Error", err);
 		mes("Error wjile creating: " + err);
@@ -321,7 +324,8 @@ void CourseEditor::fromGuiToFile(CourseUnit *crs) {
 }
 
 void CourseEditor::on_actionSkillPackOpen_triggered() {
-	clearSkillsLib();
+	on_actionClose_skillPack_triggered();
+
 	QString path = QFileDialog::getOpenFileName(this, "Select skill pack file", QString(), QString("(*") + SKILL_PACK_FILE_EXTENSION + QString(")"));
 
 	setSkillPack(path);

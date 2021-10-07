@@ -231,25 +231,87 @@ private slots:
     void on_removeOut_clicked();
 
     ///////////////////////////courseunit
-
+    /**
+     * Calls close courseunit button.
+     * Uses dialog box to get file path.
+     * Then loads new courseunit.
+     * Then sets it to gui.
+     *
+     * @author timattt
+     */
     void on_actionCourseUnitOpen_triggered();
+    /**
+     * Saves gui to files.
+     * Clears all.				}
+     * Loads gui to files.		} it is doing to ensure that file names in nodes will be set.
+     *
+     * @author timattt
+     */
     void on_actionCourseUnitSave_triggered();
+    /**
+     * Calls close courseunit button.
+     * Uses dialog box to get file path.
+     * Then sets new name and path to head.
+     * Then saves to file.
+     * Then loads from file to ensure that file names in nodes will be set.
+     *
+     * @author timattt
+     */
     void on_actionCourseUnitCreate_triggered();
+    /**
+     * Calls clear courseunit function.
+     *
+     * @author timattt
+     */
     void on_actionClose_courseUnit_triggered();
 
     ///////////////////////////skillpack
 
+    /**
+     * Calls close skillspack.
+     * Calls dialog box to get path.
+     * Sets skillpack.
+     *
+     * @author timattt
+     */
     void on_actionSkillPackOpen_triggered();
+    /**
+     * Clears skills lib.
+     *
+     * @author timattt
+     */
     void on_actionClose_skillPack_triggered();
 
     ///////////////////////////other panel buttons
 
+    /**
+     * Clears all.
+     * Emits signal onClose.
+     *
+     * @author timattt
+     */
     void on_actionReturn_to_launcher_triggered();
+    /**
+     * Execute smarthelper.
+     *
+     * @author timattt
+     */
     void on_actionHelp_me_triggered();
 
     ///////////////////////////other
 
+    /**
+     * Sets parent node to gui.
+     * Selects nullptr node in course unit viewer.
+     *
+     * @author timattt
+     */
     void on_showParent_clicked();
+    /**
+     * Hides or shows markdown preview panel.
+     *
+     * @author timattt
+     */
     void on_markDownShow_stateChanged(int v);
     //--------------------------------------
 
