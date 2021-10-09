@@ -1,12 +1,7 @@
 #ifndef CourseUnit_H
 #define CourseUnit_H
 
-#include <QObject>
-#include <QVector>
-#include <QString>
-#include <QFile>
-#include <QDir>
-#include <QFileInfo>
+#include <QtWidgets>
 
 // Constants
 //-----------------------------------------------
