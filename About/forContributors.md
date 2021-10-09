@@ -6,7 +6,7 @@
 1. [**Для разработчиков**](https://github.com/timattt/Project-Cognitia-II/blob/main/About/forContributors.md#%D0%B4%D0%BB%D1%8F-%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%87%D0%B8%D0%BA%D0%BE%D0%B2)
 * [Система логирования](https://github.com/timattt/Project-Cognitia-II/blob/main/About/forContributors.md#%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0-%D0%BB%D0%BE%D0%B3%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F)
 * [Правила написания кода](https://github.com/timattt/Project-Cognitia-II/blob/main/About/forContributors.md#%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0-%D0%BD%D0%B0%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D1%8F-%D0%BA%D0%BE%D0%B4%D0%B0)
-2. [**Про pullrequest**](https://github.com/timattt/Project-Cognitia-II/blob/main/About/forContributors.md#%D0%BF%D1%80%D0%BE-pullrequest)
+2. [**Для тех, кто делает pullrequest**](https://github.com/timattt/Project-Cognitia-II/blob/main/About/forContributors.md#%D0%BF%D1%80%D0%BE-pullrequest)
 3. [**Для тестировщиков**](https://github.com/timattt/Project-Cognitia-II/blob/main/About/forContributors.md#%D0%B4%D0%BB%D1%8F-%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA%D0%BE%D0%B2)
 
 ## Для разработчиков
@@ -112,7 +112,7 @@ n. action n description
     DESCRIPTION - общее описание. 
     Далее идут отдельные опписания всех изменений.
 
-## Про pullrequest
+## Для тех, кто делает pullrequest
 
 1. Писать подробное описание pull request
 2. Для каждого pullrequest ставить метку (label)
