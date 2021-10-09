@@ -1,5 +1,6 @@
 #include "chooseserv.h"
 #include "ui_chooseserv.h"
+#include "../Core/logger.h"
 
 #define SERVEREXTENTION ".server"
 #define ServDelim "|||"

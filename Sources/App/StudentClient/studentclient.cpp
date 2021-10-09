@@ -1,6 +1,7 @@
 #include "studentclient.h"
 #include "ui_studentclient.h"
 #include "../CourseUnitViewer/Node/node.h"
+#include "../Core/logger.h"
 
 StudentClient::StudentClient(QWidget *parent) :
     QMainWindow(parent),
@@ -17,7 +18,7 @@ StudentClient::StudentClient(QWidget *parent) :
     inworkingrepository(false)
 
 {
-	qInfo() << "StudentClient init started";
+    SAY("StudentClient init started");
     ui->setupUi(this);
     mSocket = new QTcpSocket(this);
     chooseserv = new ChooseServ(this);
@@ -37,7 +38,7 @@ StudentClient::StudentClient(QWidget *parent) :
     ui->courseUnitViewer->setEditable(false);
 
 
-    qInfo() << "StudentClient init finished";
+    SAY("StudentClient init finished");
 }
 
 StudentClient::~StudentClient()
@@ -111,12 +112,13 @@ void StudentClient::startConnection(){
 
 void StudentClient::slotConnected(){
 
-    qDebug() << "connected to serv " << inworkingrepository;
+    SAY("connected to server\n")
     StudentName = chooseserv -> getName();
      chooseserv -> setButtonEnabled();
     QDir dir = QDir();
     if (!inworkingrepository)
     {
+        SAY("Send name to server\n")
         dir.mkdir(StudentName + chooseserv -> getIP());
         QDir::setCurrent(StudentName + chooseserv -> getIP());
         inworkingrepository = true;
@@ -155,10 +157,8 @@ void StudentClient::slotReadyRead(){
         if(mSocket -> bytesAvailable() < nextBlockSize)
             break;
 
-        qDebug() << "nextblock size " << nextBlockSize;
-        qDebug() << "bytes available " << mSocket -> bytesAvailable();
         datafromServer = mSocket -> read(nextBlockSize);
-        qDebug() << "receiving " << datafromServer;
+
         endReception();
         nextBlockSize = 0;
     }
@@ -168,22 +168,22 @@ void StudentClient::slotReadyRead(){
 
 void StudentClient::handleincFile(QDataStream& in){
 
+
      QString filename;
      in >> filename;
-     qDebug() << "handling file" << filename ;
+     SAY("handling file " + filename)
      QFile file(filename);
 
      if (file.open(QIODevice::WriteOnly)){
          QTextStream out(&file);
          QByteArray filecont;
          in >> filecont;
-         qDebug() << filecont;
          out << filecont;
          //file.write(in.device()->readAll());
      }
      else
      {
-         qDebug() << "Cant handle inc file " << filename ;
+         SAY("Cant handle inc file " + filename);
      }
 
 }
@@ -203,14 +203,14 @@ void StudentClient::endReception(){
         break;
     case retrieveFailAutorisation:
     case firstConnectionSuccess:
-        qDebug() << "confirm connection";
+        SAY("confirm connection");
         confirmConnection();
         break;
     case retrieveFail:
-        QMessageBox::critical(this, "Failing", "Last operation wasnt complited");
+        QMessageBox::critical(this, "Failing", "Last operation wasnt complited\n");
         break;
     default:
-        qDebug() << "cant understand the code";
+        SAY("cant understand the code\n");
         break;
     }
 
@@ -265,10 +265,10 @@ void StudentClient::LoadCourse(){
             courseUnit -> loadCourseUnit(&course);
         }
         catch (QString message){
-            qDebug() << message;
+           SAY(message);
         }
     } else {
-        qDebug() << "cant open course main file";
+        SAY("cant open course main file");
     }
 
 }
@@ -281,7 +281,7 @@ void StudentClient::LoadSkillpack(){
         skillpack -> load(&pack);
     }
     catch(QString & message){
-        qDebug() << message;
+        SAY(message);
     }
 }
 
@@ -294,7 +294,7 @@ void StudentClient::LoadStudentsProgresses(){
         progress -> load(&prog);
     }
     catch(QString & message){
-        qDebug() << message;
+        SAY(message);
     }
 }
 
@@ -343,7 +343,6 @@ void StudentClient::sendToServer(quint16 code, const QString& str){
     out << quint32(arrBlock.size() - sizeof(quint32));
 
     mSocket -> write(arrBlock);
-    qDebug() << "sendind to server " << arrBlock;
 }
 
 

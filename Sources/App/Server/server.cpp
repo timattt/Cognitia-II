@@ -1,6 +1,7 @@
 #include "server.h"
 #include "ui_server.h"
 #include "Structures/StudentProgress/StudentProgress.h"
+#include "../Core/logger.h"
 
 Server::Server(QWidget *parent) :
     QWidget(parent),
@@ -11,7 +12,7 @@ Server::Server(QWidget *parent) :
 	Users(),
 	Mentors()
 {
-	qInfo() << "Server init started";
+    SAY("Server init started");
 
     ui->setupUi(this);
     mtcpServ = new QTcpServer(this);
@@ -22,7 +23,7 @@ Server::Server(QWidget *parent) :
 
     QDir().mkdir("Server");
 
-    qInfo() << "Server init finished";
+    SAY("Server init finished")
 }
 
 Server::~Server()
@@ -66,7 +67,7 @@ void Server::slotNewConnection(){
     connect(ClientSocket, SIGNAL(disconnected()), ClientSocket, SLOT(deleteLater()));
     connect(ClientSocket, SIGNAL(disconnected()), SLOT(deleteFromLog()));
     connect(ClientSocket, SIGNAL(readyRead()), this, SLOT(slotReadClient()));
-    qDebug() << "new connection " << ClientSocket;
+    SAY("new connection ")
 }
 
 void Server::slotReadClient(){
@@ -85,7 +86,6 @@ void Server::slotReadClient(){
             break;
 
         QByteArray str = ClientSocket -> read(nextblocksize);
-        qDebug() << "accept sending " << str;
         handleReq(ClientSocket, str);
 
         nextblocksize = 0;
@@ -94,23 +94,10 @@ void Server::slotReadClient(){
 }
 
 
-QTcpSocket* Server::Find_Dead(const QMap<QTcpSocket*, QString>& clients){
-
-
-    for(QTcpSocket* client : clients.keys())
-    {
-        if(client -> state() != QAbstractSocket::ConnectedState){
-            return client;
-        }
-    }
-    return nullptr;
-}
-
-
 
 void Server::deleteFromLog(){
-    QTcpSocket* client;
-    if ((client = Find_Dead(Users))){
+    QTcpSocket* client = static_cast<QTcpSocket*>(sender());
+    if (Users.contains(client)){
 
         QString name = Users[client];
         Users.remove(client);
@@ -120,7 +107,7 @@ void Server::deleteFromLog(){
 
         ui -> Log -> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + name + QString(" disconnected\n"));
     }
-    else if ((client = Find_Dead(Mentors))){
+    else if (Mentors.contains(client)){
         QString name = Mentors[client];
         Mentors.remove(client);
         QString log = ui -> ActiveMentors -> toPlainText();
@@ -145,7 +132,6 @@ bool Server::handleincStudentProgressFile(QDataStream& in){
          QTextStream out(&file);
          QByteArray filecont;
          in >> filecont;
-         qDebug() << filecont;
          out << filecont;
          //file.write(in.device()->readAll());
          file.close();
@@ -161,13 +147,14 @@ bool Server::handleincStudentProgressFile(QDataStream& in){
 
 void Server::handleReq(QTcpSocket* client, const QByteArray &data){
 
+    NOT_NULL(client)
     QDataStream in(data);
 
     QString name;
     in >> name;
     quint16 incCode;
     in >> incCode;
-    qDebug() << "accept name" << name;
+    SAY("accept name " + name);
     if (!CheckClient(name, incCode, client)){
         sendToClient(client, static_cast<quint16>(retrieveFailAutorisation), "");
         return;
@@ -266,18 +253,18 @@ void Server::handleReq(QTcpSocket* client, const QByteArray &data){
 
 bool Server::SendFile(const QString& filename, QTcpSocket *client, quint16 code){
 
+    NOT_NULL(client)
     QFile file(filename);
-    qDebug() << filename;
+    SAY(filename)
     if (file.open(QIODevice::ReadOnly))
        {
             QByteArray arrBlock;
             QDataStream out(&arrBlock, QIODevice::WriteOnly);
-            qDebug() << quint32(0) << code << filename.section("/", -1) << file.readAll();
-            file.seek(0);
+
             out << quint32(0) << code << filename.section("/", -1) << file.readAll();
             out.device()->seek(0);
             out << quint32(arrBlock.size() - sizeof(quint32));
-            qDebug() << arrBlock;
+
             client -> write(arrBlock);
 
             file.close();
@@ -290,6 +277,7 @@ bool Server::SendFile(const QString& filename, QTcpSocket *client, quint16 code)
 
 bool Server::SendCoursetoClient(QTcpSocket *client, const QString &name){
 
+     NOT_NULL(client)
      ui->Log-> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + QString("Sendind course to ") + name);
 
      QStringList filters;
@@ -311,6 +299,8 @@ bool Server::SendCoursetoClient(QTcpSocket *client, const QString &name){
 
 
 bool Server::SendSkillpacktoClient(QTcpSocket *client, const QString &name){
+
+    NOT_NULL(client)
 
      ui->Log-> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + QString("Sendind skillpack to ") + name);
      QDataStream out(client);
@@ -337,6 +327,8 @@ bool Server::SendSkillpacktoClient(QTcpSocket *client, const QString &name){
 
 bool Server::SendStudentProgresstoClient(QTcpSocket *client, const QString &name){
 
+    NOT_NULL(client)
+
      ui->Log-> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + QString("Sendind Student Progress of ") + name);
      QDataStream out(client);
      QDir curdir = QDir(name);
@@ -355,7 +347,8 @@ bool Server::SendStudentProgresstoClient(QTcpSocket *client, const QString &name
 
 
 bool Server::CheckClient(const QString & name, quint16 code, QTcpSocket* client){
-    //qDebug() << QDir::currentPath();
+    //SAY(QDir::currentPath())
+    NOT_NULL(client)
     if (code == getMentorName || Mentors.contains(client))
         return true;
     return  QDir(name).exists();
@@ -364,6 +357,7 @@ bool Server::CheckClient(const QString & name, quint16 code, QTcpSocket* client)
 
 
 void Server::sendToClient(QTcpSocket* Socket, quint16 code,  const QString& str) {
+    NOT_NULL(Socket)
     QByteArray arrBlock;
     QDataStream out(&arrBlock, QIODevice::WriteOnly);
 
@@ -397,7 +391,7 @@ void Server::on_addStudent_clicked()
 
     QDir dir = QDir();
     if(!dir.mkdir(name)){
-        qDebug() << "cannot make new dir " << name ;
+        SAY("cannot make new dir " + name )
         return;
     }
     StudentProgress student = StudentProgress();
@@ -410,7 +404,7 @@ void Server::on_addStudent_clicked()
             student.save(&file);
         }
         catch(QString message){
-            qDebug() << message;
+            SAY(message)
         }
 
 }

@@ -5,6 +5,7 @@
 #include "../Structures/CourseUnit/courseunit.h"
 #include "../CourseUnitViewer/Node/node.h"
 #include "../Structures/StudentProgress/StudentProgress.h"
+#include "../Core/logger.h"
 
 
 MentorClient::MentorClient(QWidget *parent) :
@@ -16,7 +17,7 @@ MentorClient::MentorClient(QWidget *parent) :
 	chooseserv(nullptr),
 	respCode(0)
 {
-	qInfo() << "Init mentor client";
+    SAY("Init mentor client")
 
     ui->setupUi(this);
 
@@ -46,7 +47,7 @@ MentorClient::MentorClient(QWidget *parent) :
 
 
 
-    qInfo() << "Mentor client init finished";
+    SAY("Mentor client init finished")
 }
 
 MentorClient::~MentorClient()
@@ -89,12 +90,13 @@ void MentorClient::startConnection(){
 
 void MentorClient::slotConnected(){
 
-    qDebug() << "connected to serv " << inworkingrepository;
+    SAY("Connected to serv")
     chooseserv -> setButtonEnabled();
 
     QDir dir = QDir();
     if (!inworkingrepository)
     {
+        SAY("sending name")
         dir.mkdir(chooseserv -> getName() + chooseserv -> getIP());
         QDir::setCurrent(chooseserv -> getName() + chooseserv -> getIP());
         inworkingrepository = true;
@@ -133,10 +135,9 @@ void MentorClient::slotReadyRead(){
         if(mSocket -> bytesAvailable() < nextBlockSize)
             break;
 
-        qDebug() << "nextblock size " << nextBlockSize;
-        qDebug() << "bytes available " << mSocket -> bytesAvailable();
+
         datafromServer = mSocket -> read(nextBlockSize);
-        qDebug() << "receiving " << datafromServer;
+
         endReception();
         nextBlockSize = 0;
     }
@@ -148,7 +149,7 @@ void MentorClient::handleincFile(QDataStream& in){
 
      QString filename;
      in >> filename;
-     qDebug() << "handling file" << filename ;
+     SAY("handling file" + filename);
      //filename = filename.section("/", -1);
      QFile file(filename);
 
@@ -156,13 +157,14 @@ void MentorClient::handleincFile(QDataStream& in){
          QTextStream out(&file);
          QByteArray filecont;
          in >> filecont;
-         qDebug() << filecont;
+
          out << filecont;
+         file.close();
          //file.write(in.device()->readAll());
      }
      else
      {
-         qDebug() << "Cant handle inc file " << filename ;
+         SAY("Cant handle inc file " + filename);
      }
 
 }
@@ -182,7 +184,7 @@ void MentorClient::endReception(){
         break;
     case retrieveFailAutorisation:
     case firstConnectionSuccess:
-        qDebug() << "confirm connection";
+        SAY("confirm connection");
         confirmConnection();
         break;
 
@@ -194,7 +196,7 @@ void MentorClient::endReception(){
         QMessageBox::critical(this, "Failing", "Last operation wasnt complited");
         break;
     default:
-        qDebug() << "cant understand the resp code";
+        SAY("cant understand the resp code")
         break;
     }
 
@@ -231,16 +233,19 @@ void MentorClient::LoadCourse(){
     if (fileMain.open(QIODevice::ReadOnly)){
 
         QString filename(fileMain.readAll());
+        fileMain.close();
 
         QFile course(filename);
         try {
             headCourseUnit -> loadCourseUnit(&course);
         }
         catch (QString message){
-            qDebug() << message;
+            SAY(message)
         }
+
+
     } else {
-        qDebug() << "cant open course main file";
+        SAY("cant open course main file")
     }
 
 }
@@ -253,7 +258,7 @@ void MentorClient::LoadSkillpack(){
         skillPack -> load (&pack);
     }
     catch(QString & message){
-        qDebug() << message;
+        SAY(message)
     }
 }
 
@@ -270,7 +275,7 @@ void MentorClient::LoadStudentsProgresses(){
             progress -> load(&prog);;
         }
         catch(QString & message){
-            qDebug() << message;
+            SAY(message)
         }
         students[studentsProg[i].section(".", 0, 0)] = progress;
     }
@@ -299,7 +304,7 @@ void MentorClient::sendToServer(quint16 code, const QString& str){
     out << quint32(arrBlock.size() - sizeof(quint32));
 
     mSocket -> write(arrBlock);
-    qDebug() << "sendind to server " << arrBlock;
+
 }
 
 
@@ -430,6 +435,7 @@ void MentorClient::on_actionReturn_to_Launcher_triggered()
 
 bool MentorClient::SendFile(QFile* file, quint16 code){
 
+    ASSERT(file)
 
     if (file -> open(QIODevice::ReadOnly))
        {
@@ -440,15 +446,14 @@ bool MentorClient::SendFile(QFile* file, quint16 code){
             out << quint32(0) << chooseserv -> getName() << code << file -> fileName() << file -> readAll();
             out.device() -> seek(0);
             out << quint32(arrBlock.size() - sizeof(quint32));
-            qDebug() << arrBlock;
+
             mSocket -> write(arrBlock);
 
        }
     else {
-        QMessageBox::critical(0, "Failing to send Student progresses", "Please try one more time");
-        ui -> statusbar -> showMessage("Failing to send Student progresses");
         return false;
     }
+    file->close();
     return true;
 }
 
@@ -460,7 +465,9 @@ void MentorClient::sendAll(){
         QFile file = QFile(studentname + QString(STUDENT_PROGRESS_FILE_EXTENSION));
 
         if(!SendFile(&file, static_cast<quint16>(saveStudentProgress))){
-          return;
+            QMessageBox::critical(0, "Failing to send Student progresses", "Please try one more time");
+            ui -> statusbar -> showMessage("Failing to send Student progresses");
+            return;
         }
     }
 
@@ -486,7 +493,6 @@ void MentorClient::on_actionSave_all_and_send_triggered()
               student -> save(&file);
           }
           catch (const QString mess){
-              qDebug() << mess;
               QMessageBox::critical(0, mess, "Please try one more time");
               ui -> statusbar -> showMessage("");
           }

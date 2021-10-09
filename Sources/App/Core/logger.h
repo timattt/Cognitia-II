@@ -7,7 +7,6 @@
 
 #ifndef APP_CORE_LOGGER_H_
 #define APP_CORE_LOGGER_H_
-
 #include <QtWidgets>
 
 #define ASSERT(COND) log_assert(COND, "", __FILE__, __LINE__);

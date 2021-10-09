@@ -26,6 +26,20 @@ Class Student Client
 
 Connects to server and retrieve course files.
 After that displays them on window
+
+
+the structure of outcomming datagrams are:
+    quint32 length(except this field) + name + code + data
+
+the structure of incomming datagrams are:
+    quint32 length(code+data) + code + data
+
+
+everytime you connect to the server occurs mkdir(name+IP) that becomes
+new working directory.
+when you changing the server or leave to the launcher, the curdir is setted back
+
+
 @author - arfarafar
 */
 
@@ -96,6 +110,7 @@ private:
 
     /*
     saving as a file data from server
+    the data block is filename + filedata
     @param QDataStream& - data received from the server, needed to save as a file
     @author - arfarafar
     */
@@ -120,7 +135,7 @@ private:
     /*
      * deletes old fields and make new ones
      * called when returned to launcher or new server choosed
-     * @author-arfarafar
+     * @author - arfarafar
      */
     void ReplaceAll();
 

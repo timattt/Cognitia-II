@@ -1,4 +1,5 @@
 #include "courseunit.h"
+#include "../../Core/logger.h"
 
 CourseUnit::CourseUnit(QObject* pobj):
 	QObject(pobj),
@@ -39,7 +40,9 @@ CourseUnit::CourseUnit(size_t w, size_t h, size_t x_, size_t y_, QObject *pobj):
 }
 
 void CourseUnit::saveCourseUnit(QFile *dest) {
-     qDebug() << "Saving CourseUnit" << objectName();
+    ASSERT(dest)
+
+    SAY("Saving CourseUnit " + objectName())
 
      QFileInfo in = QFileInfo(*dest);
      QDir dr = in.dir();
@@ -107,6 +110,7 @@ void CourseUnit::saveCourseUnit(QFile *dest) {
 
 
 void CourseUnit::loadCourseUnit(QFile *res){
+    ASSERT(res)
     if (!res->exists()) {
         throw QString("CourseUnit file [" + res->fileName() + "] not exists");
     }
@@ -256,6 +260,7 @@ const QVector<CourseUnit*>& CourseUnit::getEmbedded() const{
 
 
 void CourseUnit::addConnection(CourseUnit* unit){
+    ASSERT(unit)
     linked_units.push_back(unit -> objectName());
 }
 
@@ -265,6 +270,7 @@ void CourseUnit::addConnection(const QString& objname){
 
 
 void CourseUnit::addEmbedded(CourseUnit* unit){
+    ASSERT(unit)
     embedded_units.push_back(unit);
 }
 
