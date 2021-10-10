@@ -35,6 +35,7 @@ MentorClient::MentorClient(QWidget *parent) :
     connect(ui->courseUnitViewer, SIGNAL(progressMadeToSelected(QString, double)), this, SLOT(progressMade(QString, double)));
 
     connect(ui->skillFlower, SIGNAL(skillLevelChanged(QString, double)), ui->courseUnitViewer, SLOT(makeProgressToSelected(QString, double)));
+    connect(ui->skillsMixerHolder, SIGNAL(skillLevelChanged(QString, double)), ui->courseUnitViewer, SLOT(makeProgressToSelected(QString, double)));
 
     ui->skillFlower->setEditable(true);
     ui->courseUnitViewer->setEditable(false);

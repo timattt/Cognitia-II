@@ -3,12 +3,16 @@
 #include "../CourseUnitViewer/Node/node.h"
 #include "skillsmixer.h"
 #include <QtWidgets>
+#include "../Core/logger.h"
 
 SkillsMixerHolder::SkillsMixerHolder(QWidget *parent) :
-		QWidget(parent), ui(new Ui::SkillsMixerHolder) {
-	qInfo() << "SkillMixerHolder init started";
+		QWidget(parent),
+		ui(new Ui::SkillsMixerHolder) {
+	NOT_NULL(parent);
+
+	SAY("SkillMixerHolder init started");
 	ui->setupUi(this);
-	qInfo() << "SkillMixerHolder init finished";
+	SAY("SkillMixerHolder init finished");
 }
 
 SkillsMixerHolder::~SkillsMixerHolder() {
@@ -82,7 +86,7 @@ void SkillsMixerHolder::nodeSelected(Node *nd) {
 			double from = min[name];
 			double to = max[name];
 			double val = value[name];
-			SkillsMixer * mx = new SkillsMixer(this, from, to ,val, name, nd);
+			SkillsMixer * mx = new SkillsMixer(this, from, to ,val, name);
 			ui->verticalLayout_2->addWidget(mx);
 			mixers[name] = mx;
 			i++;

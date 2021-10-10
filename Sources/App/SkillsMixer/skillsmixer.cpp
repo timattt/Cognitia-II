@@ -1,13 +1,15 @@
 #include "skillsmixer.h"
 #include "ui_skillsmixer.h"
 #include "../CourseUnitViewer/Node/node.h"
+#include "skillsmixerholder.h"
+#include "../Core/logger.h"
 
-SkillsMixer::SkillsMixer(QWidget *parent, double from, double to, double val, QString name, Node *nd) :
+SkillsMixer::SkillsMixer(SkillsMixerHolder *parent, double from, double to, double val, QString name) :
     QWidget(parent),
-	node(nd),
+	holder(parent),
     ui(new Ui::SkillsMixer)
 {
-	qInfo() << "Init skills mixer";
+	SAY("Init skills mixer");
 
     ui->setupUi(this);
 
@@ -21,7 +23,7 @@ SkillsMixer::SkillsMixer(QWidget *parent, double from, double to, double val, QS
     ui->horizontalSlider->setPageStep(2);
     ui->horizontalSlider->setValue(val * 10);
 
-    qInfo() << "Skills mixer init done";
+    SAY("Skills mixer init done");
 }
 
 SkillsMixer::~SkillsMixer()
@@ -32,7 +34,8 @@ SkillsMixer::~SkillsMixer()
 void SkillsMixer::on_horizontalSlider_valueChanged(int a) {
 	double v = (double)a / 10.0;
 	ui->val->setText(QString::number(v));
-	node->setProgress(ui->skillName->text(), v);
+
+	emit holder->skillLevelChanged(ui->skillName->text(), v);
 }
 
 void SkillsMixer::setValue(double v) {
