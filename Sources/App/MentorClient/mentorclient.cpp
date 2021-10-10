@@ -8,8 +8,8 @@
 #include "../Core/logger.h"
 
 
-MentorClient::MentorClient(QWidget *parent) :
-    QMainWindow(parent),
+MentorClient::MentorClient() :
+    QMainWindow(nullptr),
     ui(new Ui::MentorClient),
 	headCourseUnit(nullptr),
 	skillPack(nullptr),
