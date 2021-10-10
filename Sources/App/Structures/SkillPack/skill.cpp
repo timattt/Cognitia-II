@@ -79,11 +79,13 @@ QString Skill::getLevelDescription(int i)
     return levelsDescriptions[i];
 }
 
-void Skill::print()
+QString Skill::toString()
 {
-    qInfo() << "Skill:" << objectName() << "Total levels:" << getLevelsCount();
+    QString res = QString("Skill:") + objectName() + "Total levels:" + QString::number(getLevelsCount());
 
     for (int i = 0; i < levelsDescriptions.size(); i++) {
-        qInfo() << "-> Level" << (i + 1) << ":" << levelsDescriptions[i];
+        res +=  QString("-> Level") + QString::number(i + 1) + ":" + levelsDescriptions[i];
     }
+
+    return res;
 }

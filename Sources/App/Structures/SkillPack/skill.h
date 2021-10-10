@@ -40,7 +40,7 @@ public:
     void clear();
     int getLevelsCount();
     QString getLevelDescription(int i);
-    void print();
+    QString toString();
     //------------------------------------
 };
 

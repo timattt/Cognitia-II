@@ -46,7 +46,7 @@ public:
     //------------------------------------
     void load(QFile * file);
     void save(QFile * file);
-    void print();
+    QString toString();
     int getSkillsCount();
     Skill* getSkill(int i);
     void addSkill(Skill * sk);

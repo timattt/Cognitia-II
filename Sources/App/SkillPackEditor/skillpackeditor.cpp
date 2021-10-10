@@ -1,16 +1,17 @@
 #include "skillpackeditor.h"
 #include "../Help/smarthelper.h"
 #include "ui_skillpackeditor.h"
+#include "../Core/logger.h"
 
 SkillPackEditor::SkillPackEditor() :
     QMainWindow(nullptr),
     ui(new Ui::SkillPackEditor),
     skillPackFile(nullptr),
     model(new QStandardItemModel(0, 1, this)),
-    skillsSelection(new QItemSelectionModel(model, this)),
-    levelsSelection(new QItemSelectionModel(model, this))
+	timerId(0),
+	fileSignature("")
 {
-	qInfo() << "SkillpackEditor init started";
+	SAY("SkillpackEditor init started");
 
     ui->setupUi(this);
 
@@ -21,7 +22,7 @@ SkillPackEditor::SkillPackEditor() :
 
     timerId = startTimer(1000);
 
-    qInfo() << "SkillpackEditor init finished";
+    SAY("SkillpackEditor init finished");
 }
 
 SkillPackEditor::~SkillPackEditor()
@@ -29,16 +30,13 @@ SkillPackEditor::~SkillPackEditor()
     if (skillPackFile != nullptr) {
         delete skillPackFile;
     }
-    delete model;
-    delete skillsSelection;
-    delete levelsSelection;
     delete ui;
     killTimer(timerId);
 }
 
 void SkillPackEditor::on_AddSkill_clicked()
 {
-    if (ensureFileIsValid()) {
+    if (!checkSkillPackAvailable()) {
         return;
     }
 
@@ -62,7 +60,7 @@ void SkillPackEditor::on_AddSkill_clicked()
 
 void SkillPackEditor::on_AddLevel_clicked()
 {
-    if (ensureFileIsValid()) {
+    if (!checkSkillPackAvailable()) {
         return;
     }
 
@@ -86,7 +84,7 @@ void SkillPackEditor::on_AddLevel_clicked()
         QModelIndex levelInd = model->index(row, 0, skill->index());
 
         QStandardItem * level = model->itemFromIndex(levelInd);
-        level->setData("Level " + QString::number(levelInd.row() + 1), Qt::EditRole);
+        level->setData(QString::number(levelInd.row() + 1), Qt::EditRole);
 
         // Add subdir for text
         level->insertColumns(0, 1);
@@ -111,7 +109,8 @@ void SkillPackEditor::fromGui() {
         skp.save(skillPackFile);
         ui->totalSkills->setText(QString::number(model->rowCount()));
         ui->statusbar->showMessage("SkillPack " + skp.objectName() + " is saved into file " + in.baseName() + "!");
-    } catch (QString err) {
+        fileSignature = skp.toString();
+    } catch (QString & err) {
         ui->statusbar->showMessage("Error while saving file: " + err);
     }
 }
@@ -124,7 +123,8 @@ void SkillPackEditor::toGui() {
         SkillPack skp;
         skp.load(skillPackFile);
         transferFromSkillPackStructure(&skp);
-    } catch (QString err) {
+        fileSignature = skp.toString();
+    } catch (QString & err) {
         ui->statusbar->showMessage("Error while opening file: " + err);
     }
 }
@@ -191,74 +191,86 @@ int SkillPackEditor::getTreeItemLevel(QModelIndex ind)
     return -1;
 }
 
-void SkillPackEditor::setSkillPackFile(QString path, bool mayExist)
+void SkillPackEditor::setSkillPack(QString path, bool mayExist)
 {
-    ensureFileIsNull();
+    ensureSkillPackDeleted();
 
     QFileInfo info(path);
     skillPackFile = new QFile(info.path() + "/" + info.completeBaseName() + SKILL_PACK_FILE_EXTENSION);
 
     if (!skillPackFile->exists() && mayExist) {
-        ui->statusbar->showMessage("Opened file not exists");
+        ui->statusbar->showMessage("File not exists");
         delete skillPackFile;
         skillPackFile = nullptr;
         return;
     }
 
-    model->clear();
-    model->setHeaderData(0, Qt::Horizontal, QObject::tr("Skills, levels, descriptions"));
-    model->insertColumns(0, 1);
     ui->skillPackName->setReadOnly(false);
-    ui->currentFileName->setText(QFileInfo(*skillPackFile).baseName());
+    ui->currentFileName->setText(QFileInfo(*skillPackFile).filePath());
+
+    if (!mayExist) {
+    	ui->skillPackName->setText(QFileInfo(*skillPackFile).baseName());
+    }
 }
 
-bool SkillPackEditor::ensureFileIsValid()
+bool SkillPackEditor::checkSkillPackAvailable()
 {
     if (skillPackFile == nullptr || !skillPackFile->exists()) {
          ui->statusbar->showMessage("No skill pack file! Create it!");
-         return 1;
+         return 0;
     }
 
-    return 0;
+    return 1;
 }
 
-void SkillPackEditor::ensureFileIsNull()
+void SkillPackEditor::ensureSkillPackDeleted()
 {
     if (skillPackFile != nullptr) {
-        if (QMessageBox::question(this, "Save file or not",
+        if (isChanged() && QMessageBox::question(this, "Save file or not",
                               "Would you like to save your file before closing it?",
                               QMessageBox::Save | QMessageBox::Discard) == QMessageBox::Save) {
-            on_actionSave_triggered();
+            fromGui();
         }
         delete skillPackFile;
         skillPackFile = nullptr;
         ui->currentFileName->clear();
         ui->skillPackName->setReadOnly(true);
+        delete model;
+        model = new QStandardItemModel(0, 1, this);
+        model->setHeaderData(0, Qt::Horizontal, QObject::tr("Skills, levels, descriptions"));
+        ui->tree->setModel(model);
+        ui->totalSkills->clear();
+        ui->skillPackName->clear();
+        fileSignature = "";
     }
 }
 
 void SkillPackEditor::on_actionCreate_triggered()
 {
+	ensureSkillPackDeleted();
+
     QString path = QFileDialog::getSaveFileName(this, "Create skill pack file", QString(), QString("(*") + SKILL_PACK_FILE_EXTENSION + QString(")"));
 
     if (path.size() == 0) {
         return;
     }
 
-    setSkillPackFile(path, false);
+    setSkillPack(path, false);
 
     fromGui();
 }
 
 void SkillPackEditor::on_actionOpen_triggered()
 {
+	ensureSkillPackDeleted();
+
     QString path = QFileDialog::getOpenFileName(this, "Select skill pack file", QString(), QString("(*") + SKILL_PACK_FILE_EXTENSION + QString(")"));
 
     if (path.size() == 0) {
         return;
     }
 
-    setSkillPackFile(path, true);
+    setSkillPack(path, true);
 
     toGui();
 }
@@ -266,13 +278,17 @@ void SkillPackEditor::on_actionOpen_triggered()
 
 void SkillPackEditor::on_actionSave_triggered()
 {
-    fromGui();
+	if (!checkSkillPackAvailable()) {
+		return;
+	}
+
+	fromGui();
 }
 
 
 void SkillPackEditor::on_remove_clicked()
 {
-    if (ensureFileIsValid()) {
+    if (!checkSkillPackAvailable()) {
         return;
     }
 
@@ -299,12 +315,11 @@ void SkillPackEditor::on_remove_clicked()
 
 void SkillPackEditor::on_actionClose_triggered()
 {
-    ensureFileIsNull();
-    model->clear();
-    model->setHeaderData(0, Qt::Horizontal, QObject::tr("Skills, levels, descriptions"));
-    ui->totalSkills->clear();
-    ui->currentFileName->clear();
-    ui->skillPackName->clear();
+    if (!checkSkillPackAvailable()) {
+        return;
+    }
+
+    ensureSkillPackDeleted();
 }
 
 
@@ -317,7 +332,7 @@ void SkillPackEditor::on_actionHelp_me_triggered()
 
 void SkillPackEditor::on_actionReturn_to_launcher_triggered()
 {
-    on_actionClose_triggered();
+    ensureSkillPackDeleted();
     emit onClose();
 }
 
@@ -345,6 +360,13 @@ void SkillPackEditor::on_autoSave_stateChanged(int v) {
 	} else {
 		ui->statusbar->showMessage("Autosave is on");
 	}
+}
+
+bool SkillPackEditor::isChanged() {
+	SkillPack tmp;
+	transferToSkillPackStructure(&tmp);
+	SAY(tmp.toString() + "|||" + fileSignature);
+	return QString::compare(fileSignature, tmp.toString(), Qt::CaseInsensitive);
 }
 
 void SkillPackEditor::timerEvent(QTimerEvent *event) {

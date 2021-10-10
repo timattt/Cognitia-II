@@ -92,12 +92,14 @@ void SkillPack::save(QFile * file)
     }
 }
 
-void SkillPack::print()
+QString SkillPack::toString()
 {
-    qInfo() << "Skill pack" << objectName() << ", skills count" << skills.size();
+	QString res = "";
+    res +=  (QString("Skill pack") + objectName() + ", skills count" + QString::number(skills.size())) + "\n";
     for (int i = 0; i < skills.size(); i++) {
-        skills[i]->print();
+        res += skills[i]->toString() + "\n";
     }
+    return res;
 }
 
 int SkillPack::getSkillsCount()
