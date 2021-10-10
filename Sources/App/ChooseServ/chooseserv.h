@@ -7,7 +7,7 @@ namespace Ui {
 class ChooseServ;
 }
 
-/*
+/*!
  * Window to connect to the server
  * Opens immediatly after the launch of client
  * Shows every time user want to change current server

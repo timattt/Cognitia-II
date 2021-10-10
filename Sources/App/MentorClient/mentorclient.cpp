@@ -334,7 +334,6 @@ void MentorClient::ReplaceAll(){
 
 
 void MentorClient::display() {
-
     ClearAll();
 
 	ui->courseUnitViewer->unpack(headCourseUnit);
