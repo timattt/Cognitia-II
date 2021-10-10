@@ -1,10 +1,14 @@
 #include "studentclient.h"
 #include "ui_studentclient.h"
 #include "../CourseUnitViewer/Node/node.h"
+#include "../Structures/CourseUnit/courseunit.h"
+#include "../Structures/SkillPack/skillpack.h"
+#include "../Structures/StudentProgress/StudentProgress.h"
+#include "../ChooseServ/chooseserv.h"
 #include "../Core/logger.h"
 
-StudentClient::StudentClient(QWidget *parent) :
-    QMainWindow(parent),
+StudentClient::StudentClient() :
+    QMainWindow(nullptr),
     ui(new Ui::StudentClient),
 	mSocket(nullptr),
 	nextBlockSize(0),
