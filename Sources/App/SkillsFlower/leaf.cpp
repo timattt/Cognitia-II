@@ -9,10 +9,7 @@
 #include <math.h>
 #include "skillsflower.h"
 #include "../CourseUnitViewer/Node/Design/nodedesign.h"
-
-Leaf::~Leaf() {
-}
-
+#include "../Core/logger.h"
 
 QRectF Leaf::boundingRect() const {
 	return QRect( - HANDLER_RAD,  - HANDLER_RAD, 2*HANDLER_RAD, 2*HANDLER_RAD);
@@ -111,13 +108,19 @@ void Leaf::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 	}
 }
 
-Leaf::Leaf(double f, double t, double val, QString te, double a, SkillsFlower * p) : from(f), to(t), value(val), text(te), angle(a), parent(p) {
+Leaf::Leaf(double f, double t, double val, QString te, double a, SkillsFlower * p) :
+			pressed(0),
+			startPoint(),
+			from(f),
+			to(t),
+			value(val),
+			text(te),
+			angle(a),
+			parent(p) {
 }
 
 double Leaf::getLen() const {
-	if (qAbs(to - from) < 0.0001) {
-		exit(-1);
-	}
+	ASSERT(qAbs(to - from) > 0.0001);
 	return (value - from) / (to - from) * (MAX_LEN - MIN_LEN) + MIN_LEN;
 }
 
@@ -130,10 +133,6 @@ void Leaf::refreshPos() {
 	double x = scene()->width() / 2 + 0.5*(2*len) * cos(angle / 180.0 * 3.1415);
 	double y = scene()->height() / 2 + 0.5*(2*len) * sin(angle / 180.0 * 3.1415);
 	setPos(x, y);
-}
-
-double Leaf::getFrom() {
-	return from;
 }
 
 void Leaf::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {

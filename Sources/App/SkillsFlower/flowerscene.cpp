@@ -8,8 +8,10 @@
 #include "flowerscene.h"
 #include "skillsflower.h"
 #include "leaf.h"
+#include "../Core/logger.h"
 
 FlowerScene::FlowerScene(SkillsFlower * v) : QGraphicsScene(v), view(v) {
+	NOT_NULL(v);
 	setSceneRect(QRect(0, 0, 550, 550));
 }
 

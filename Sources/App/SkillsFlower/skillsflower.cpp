@@ -5,20 +5,27 @@
 #include "../Structures/StudentProgress/StudentProgress.h"
 #include "leaf.h"
 #include "../CourseUnitViewer/Node/node.h"
+#include "../Core/logger.h"
 #include <QtWidgets>
 
 SkillsFlower::SkillsFlower(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SkillsFlower),
-	editable(0)
+	scene(nullptr),
+	editable(0),
+	leafs()
 {
-	qInfo() << "SkillFlower init started";
+	NOT_NULL(parent);
+
+	SAY("SkillFlower init started");
+
     ui->setupUi(this);
 
     ui->view->setScene(scene = new FlowerScene(this));
 
     ui->view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
-    qInfo() << "SkillFlower init finished";
+
+    SAY("SkillFlower init finished");
 }
 
 SkillsFlower::~SkillsFlower()
@@ -81,7 +88,10 @@ void SkillsFlower::clearAll() {
 	leafs.clear();
 }
 
-void SkillsFlower::pack(CourseUnit *cu, StudentProgress *prg) {
+void SkillsFlower::pack(CourseUnit *cu, StudentProgress *prg) const {
+	NOT_NULL(cu);
+	NOT_NULL(prg);
+
 	QString courseUnitName = cu->objectName();
 	for (QGraphicsItem *it : scene->items()) {
 		Leaf *lf = (Leaf*) dynamic_cast<Leaf*>(it);
