@@ -8,7 +8,7 @@
 #define SKILL_FILE_EXTENSION  ".Skill"
 
 #define STUDENT_PROGRESS_FILE_EXTENSION ".StudentProgress"
-#define MAIN_COURSEUNIT_FILE_EXTENSION ".mainCourseUnit"
+#define MAIN_COURSEUNIT_FILE_EXTENSION ".CourseInfo"
 
 
 
