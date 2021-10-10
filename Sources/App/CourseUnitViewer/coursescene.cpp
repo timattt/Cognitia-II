@@ -15,7 +15,7 @@
 CourseScene::CourseScene(CourseUnitViewer * v) : QGraphicsScene(v), dragEdge(nullptr), view(v) {
 	NOT_NULL(v);
 
-	setSceneRect(QRect(0, 0, START_SCENE_WIDTH, START_SCENE_HEIGHT));
+	setSceneRect(QRect(-START_SCENE_WIDTH / 2, - START_SCENE_HEIGHT / 2, START_SCENE_WIDTH, START_SCENE_HEIGHT));
 }
 
 void CourseScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {

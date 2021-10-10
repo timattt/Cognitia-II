@@ -115,21 +115,15 @@ void CourseUnitViewer::on_zoomIn_clicked() {
 
 void CourseUnitViewer::on_areaDec_clicked() {
 	QRectF r = scene->sceneRect();
-	QRectF n = QRectF(r);
-	n.setWidth(n.width() / 2);
-	n.setHeight(n.height() / 2);
-	scene->setSceneRect(n);
-	emit sceneSizeChanged(n.width(), n.height());
+	scene->setSceneRect(r.x() / 2, r.y() / 2, r.width() / 2, r.height() / 2);
+	emit sceneSizeChanged(r.width() / 2, r.height() / 2);
 	refit();
 }
 
 void CourseUnitViewer::on_areaIn_clicked() {
 	QRectF r = scene->sceneRect();
-	QRectF n = QRectF(r);
-	n.setWidth(n.width() * 2);
-	n.setHeight(n.height() * 2);
-	scene->setSceneRect(n);
-	emit sceneSizeChanged(n.width(), n.height());
+	scene->setSceneRect(r.x() * 2, r.y() * 2, r.width() * 2, r.height() * 2);
+	emit sceneSizeChanged(r.width() * 2, r.height() * 2);
 	refit();
 }
 
@@ -241,6 +235,8 @@ void CourseUnitViewer::unpack(CourseUnit *head) {
 
 void CourseUnitViewer::pack(CourseUnit *head) {
 	NOT_NULL(head);
+
+	head->setFieldSize(scene->width(), scene->height());
 
 	QMap<QString, CourseUnit*> units;
 

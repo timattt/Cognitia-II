@@ -318,8 +318,6 @@ void CourseEditor::fromGuiToFile(CourseUnit *crs) {
 
 	fromNodeToCourseUnit(head, crs);
 
-	crs->setFieldSize(ui->widget->getSceneSize().x(), ui->widget->getSceneSize().y());
-
 	ui->widget->pack(crs);
 }
 
