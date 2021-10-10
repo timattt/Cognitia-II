@@ -9,9 +9,9 @@ ChooseServ::ChooseServ(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ChooseServ)
 {
-	qInfo() << "ChooseServ init started";
+	SAY("ChooseServ init started");
     ui->setupUi(this);
-    qInfo() << "ChoseServ init finished";
+    SAY("ChoseServ init finished");
 }
 
 ChooseServ::~ChooseServ()
@@ -91,9 +91,8 @@ void ChooseServ::setServ(const QString& path){
 }
 
 
-void ChooseServ::on_actionSave_Server_triggered()
-{
-    qDebug() << "Saving server" << objectName();
+void ChooseServ::on_actionSave_Server_triggered() {
+    SAY("Saving server" + objectName());
 
     QString path = QFileDialog::getSaveFileName(this, "Save file") + SERVEREXTENTION;
 

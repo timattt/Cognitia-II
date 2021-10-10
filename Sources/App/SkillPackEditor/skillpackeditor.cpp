@@ -295,8 +295,6 @@ void SkillPackEditor::on_remove_clicked()
     QModelIndex ind = ui->tree->currentIndex();
     int level = getTreeItemLevel(ind);
 
-    qDebug() << getTreeItemLevel(ind) << ind.row();
-
     QString dat = model->data(ind).toString();
 
     if (level == 2 && model->itemFromIndex(ind)->parent()->rowCount() < 2) {

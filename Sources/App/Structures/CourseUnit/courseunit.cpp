@@ -117,7 +117,7 @@ void CourseUnit::loadCourseUnit(QFile *res){
 
     QFileInfo info = QFileInfo(*res);
 
-    qDebug() <<  "Loading CourseUnit from" << info.absoluteFilePath();
+    SAY("Loading CourseUnit from " + info.absoluteFilePath());
 
     QString data;
     lastFilePath = info.absoluteFilePath();

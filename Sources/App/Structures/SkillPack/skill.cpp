@@ -1,5 +1,5 @@
 #include "skill.h"
-
+#include "../../Core/logger.h"
 
 
 Skill::Skill(QObject *parent) : QObject(parent), levelsDescriptions() {
@@ -12,7 +12,7 @@ void Skill::loadSkill(QFile * file) {
     }
 
     QFileInfo info(*file);
-    qDebug() << "Loading skill from file" << info.fileName();
+    SAY("Loading skill from file " + info.fileName());
 
     QString dat = nullptr;
 
@@ -41,7 +41,7 @@ void Skill::loadSkill(QFile * file) {
 }
 
 void Skill::saveSkill(QFile * dest) {
-    qDebug() << "Saving skill" << objectName();
+    SAY("Saving skill " + objectName());
 
     if (dest->open(QIODevice::WriteOnly)) {
         QTextStream stream(dest);

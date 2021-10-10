@@ -1,16 +1,17 @@
 #include "launcher.h"
 #include "ui_launcher.h"
+#include "../Core/logger.h"
 
 Launcher::Launcher() :
     QWidget(nullptr),
     ui(new Ui::Launcher),
 	mayHideWhenUnused(true)
 {
-	qInfo() << "Launcher init started";
+	SAY("Launcher init started");
     ui->setupUi(this);
 
     this->show();
-    qInfo() << "Launcher init finised";
+    SAY("Launcher init finised");
 }
 
 Launcher::~Launcher()

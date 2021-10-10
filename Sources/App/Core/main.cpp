@@ -43,6 +43,6 @@ int main(int argc, char *argv[])
              return a.exec();
     }
     catch (const QString mess){
-        qDebug() << mess;
+        SAY(mess);
     }
 }

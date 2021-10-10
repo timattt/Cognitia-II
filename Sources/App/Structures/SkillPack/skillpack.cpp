@@ -1,6 +1,5 @@
 #include "skillpack.h"
-
-
+#include "../../Core/logger.h"
 
 SkillPack::SkillPack(QObject *parent) : QObject(parent)
 {
@@ -15,7 +14,7 @@ void SkillPack::load(QFile * file)
 
     QFileInfo info = QFileInfo(*file);
 
-    qDebug() << "Loading skillPack from" << info.fileName();
+    SAY("Loading skillPack from " + info.fileName());
 
     QString dat = nullptr;
 
@@ -44,7 +43,7 @@ void SkillPack::load(QFile * file)
         Skill * skill = new Skill(this);
         try {
             skill->loadSkill(&skillFile);
-        } catch (QString err) {
+        } catch (QString & err) {
             throw QString("Error while loading skill [" + skillPath + "] with error: " + err);
         }
 
@@ -54,7 +53,7 @@ void SkillPack::load(QFile * file)
 
 void SkillPack::save(QFile * file)
 {
-    qDebug() << "Saving skillPack" << objectName();
+    SAY("Saving skillPack " + objectName());
 
     QFileInfo in = QFileInfo(*file);
     QDir dr = in.dir();
@@ -79,7 +78,7 @@ void SkillPack::save(QFile * file)
 
             try {
                 skills[i]->saveSkill(&skillFile);
-            } catch (QString err) {
+            } catch (QString & err) {
                 throw QString("Error while saving skill [" + skills[i]->objectName() + "] with error: " + err);
             }
 
