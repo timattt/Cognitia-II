@@ -125,6 +125,12 @@ public:
     // Public functions
     //======================================================
     /**
+     * Sets file path for all nodes.
+     * @param paths - {QString: name} -> {QString : file path}
+     * @author timattt
+     */
+    void setPaths(QMap<QString, QString> paths);
+    /**
      * Is physics applied currently to nodes.
      * @returns true if freeze checkbox is off.
      * @author timattt

@@ -13,11 +13,12 @@
 
 CourseEditor::CourseEditor() :
     QMainWindow(nullptr),
+	fileSignature(""),
     ui(new Ui::CourseEditor),
 	skillsLib(),
 	inMd(nullptr),
 	outMd(nullptr),
-	head(new Node(nullptr)),
+	head(nullptr),
 	timerId(0),
 	lastSkillPackUpdate(0)
 {
@@ -52,7 +53,7 @@ CourseEditor::CourseEditor() :
 	// clear and refresh everything
 	//-----------------------------
 	clearSkillsLib();
-	clearCourseUnit();
+	ensureGuiLocked();
 	//-----------------------------
 
 	timerId = startTimer(SKILL_PACK_UPDATE_TIME);
@@ -62,11 +63,13 @@ CourseEditor::CourseEditor() :
 
 CourseEditor::~CourseEditor()
 {
-	clearCourseUnit();
+	ensureGuiLocked();
 	clearSkillsLib();
     delete ui;
     killTimer(timerId);
-    delete head;
+    if (head != nullptr) {
+    	delete head;
+    }
 }
 
 void CourseEditor::addSkillToLib(Skill * sk) {
@@ -178,43 +181,75 @@ void CourseEditor::on_levelsSelector_currentTextChanged(const QString &arg1)
 	}
 }
 
+bool CourseEditor::isChanged() {
+	if (!checkCourseUnitAvailable(false)) {
+		return false;
+	}
+
+	CourseUnit cu;
+	fromGuiToFile(&cu);
+	return fileSignature.size() > 0 && QString::compare(fileSignature, cu.print(), Qt::CaseInsensitive);
+}
+
 void CourseEditor::on_showParent_clicked() {
+	if (!checkCourseUnitAvailable(true)) {
+		return;
+	}
+
 	ui->widget->setSelectedNode(nullptr);
 	setNodeToRedactor(head);
 }
 
 void CourseEditor::on_removeIn_clicked() {
+	if (!checkCourseUnitAvailable(true)) {
+		return;
+	}
+
 	int row = ui->inList->currentIndex().row();
 	QString name = inMd->data(inMd->index(row, 0)).toString();
 	getCurrentNode()->removeInSkill(name);
-	inMd->removeRow(row);
+	inMd->removeSkill(name);
 }
 
 void CourseEditor::on_removeOut_clicked() {
+	if (!checkCourseUnitAvailable(true)) {
+		return;
+	}
+
 	int row = ui->outList->currentIndex().row();
 	QString name = outMd->data(outMd->index(row, 0)).toString();
 	getCurrentNode()->removeOutSkill(name);
-	outMd->removeRow(row);
+	outMd->removeSkill(name);
 }
 
 void CourseEditor::on_nameLineEdit_textChanged() {
+	if (!checkCourseUnitAvailable(false)) {
+		return;
+	}
 	getCurrentNode()->setName(ui->nameLineEdit->text());
 }
 
 void CourseEditor::nodeSelected(Node *nd) {
+	if (!checkCourseUnitAvailable(false)) {
+		return;
+	}
+
 	if (nd == nullptr) {
 		nd = head;
 	}
 	setNodeToRedactor(nd);
 }
 void CourseEditor::nodeSkillsChanged(Node *nd) {
+	if (!checkCourseUnitAvailable(false)) {
+		return;
+	}
 	if (nd == getCurrentNode()) {
 		setNodeToRedactor(nd);
 	}
 }
 
 void CourseEditor::on_actionCourseUnitOpen_triggered() {
-	on_actionClose_courseUnit_triggered();
+	ensureGuiLocked();
 
 	QString path = QFileDialog::getOpenFileName(this, "Select course unit file", QString(), QString("(*") + COURSE_UNIT_FILE_EXTENSION + QString(")"));
 
@@ -225,23 +260,31 @@ void CourseEditor::on_actionCourseUnitOpen_triggered() {
 		return;
 	}
 
-	head->setFile(path);
+	unlockGui();
 
 	CourseUnit crs;
 	try {
 		crs.loadCourseUnit(&f);
 		fromFileToGui(&crs);
+		fileSignature = crs.print();
 
 		mes("Opened course unit file " + f.fileName());
 	} catch (QString & ex) {
 		QMessageBox::critical(this, "Error", ex);
 		mes("Error while opening: " + ex);
+		ensureGuiLocked();
 	}
 
 
 }
 
 void CourseEditor::on_actionCourseUnitSave_triggered() {
+	if (!checkCourseUnitAvailable(true)) {
+		return;
+	}
+
+	on_showParent_clicked();
+
 	QFile f = QFile(head->getFile());
 
 	CourseUnit crs;
@@ -249,39 +292,57 @@ void CourseEditor::on_actionCourseUnitSave_triggered() {
 	try {
 		fromGuiToFile(&crs);
 		crs.saveCourseUnit(&f);
-
-		clearCourseUnit();//
-		fromFileToGui(&crs);// to insure that it will write file names into panels
-
+		fileSignature = crs.print();
 		mes("Saved course unit file " + head->getFile());
 	} catch (QString & ex) {
 		QMessageBox::critical(this, "Error", ex);
 		mes("Error while saving: " + ex);
+		return;
 	}
+
+	// PATHS
+	// CU name -> file path
+	QMap<QString, QString> paths;
+
+	paths[crs.objectName()] = crs.getLastFilePath();
+
+	for (CourseUnit * cu : crs.getEmbedded()) {
+		paths[cu->objectName()] = cu->getLastFilePath();
+	}
+
+	head->setFile(paths[head->getName()]);
+	ui->widget->setPaths(paths);
+
+	setNodeToRedactor(head);
 }
 
 void CourseEditor::on_actionCourseUnitCreate_triggered() {
-	on_actionClose_courseUnit_triggered();
+	ensureGuiLocked();
 
 	QString path = QFileDialog::getSaveFileName(this, "Create course unit file", QString(), QString("(*") + COURSE_UNIT_FILE_EXTENSION + QString(")"));
+
+	if (path.length() == 0) {
+		return;
+	}
 
 	QFile f = QFile(path);
 	QFileInfo in = QFileInfo(f);
 
-	head->setName(in.fileName());
-	head->setFile(path);
-
 	CourseUnit crs;
+	crs.setObjectName(in.baseName());
+	crs.setFieldSize(20 * NODE_RAD, 20 * NODE_RAD);
+
+	unlockGui();
 
 	try {
-		fromGuiToFile(&crs);
 		crs.saveCourseUnit(&f);
-		mes("Created course unit file " + path);
+		fromFileToGui(&crs);
 
-		fromFileToGui(&crs);// to insure that it will write file names into panels
-	} catch (QString err) {
+		mes("Created course unit file " + path);
+	} catch (QString & err) {
 		QMessageBox::critical(this, "Error", err);
-		mes("Error wjile creating: " + err);
+		mes("Error while creating: " + err);
+		ensureGuiLocked();
 	}
 
 }
@@ -293,18 +354,46 @@ void CourseEditor::clearSkillsLib() {
 	ui->skillPackFile->clear();
 }
 
-void CourseEditor::clearCourseUnit() {
-	head->setName("Parent course unit");
-	head->setFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + QString("/NEW_COURSE_UNIT") + COURSE_UNIT_FILE_EXTENSION);
-	head->clearSkills();
-	head->setDescription("");
-	setNodeToRedactor(head);
+void CourseEditor::ensureGuiLocked() {
+	if (head != nullptr && isChanged()
+			&& QMessageBox::question(this, "Save file or not",
+					"Would you like to save your file before closing it?",
+					QMessageBox::Save | QMessageBox::Discard)
+					== QMessageBox::Save) {
+		CourseUnit cu;
+		fromGuiToFile(&cu);
+		QFile f = QFile(head->getFile());
+		cu.saveCourseUnit(&f);
+	}
+
+	ui->addSkill->setEnabled(false);
+	ui->removeSkill->setEnabled(false);
+	ui->removeIn->setEnabled(false);
+	ui->removeOut->setEnabled(false);
+	ui->showParent->setEnabled(false);
+	ui->widget->setEditable(false);
+	ui->inList->setEnabled(false);
+	ui->outList->setEnabled(false);
+	ui->nameLineEdit->setEnabled(false);
+	ui->descrPanel->setEnabled(false);
 	ui->widget->clearAllScene();
+	inMd->clear();
+	outMd->clear();
 	ui->descrPanel->clear();
+	ui->nameLineEdit->clear();
+	ui->fileLineEdit->clear();
+	ui->markDownPreview->clear();
+	fileSignature = "";
+
+	if (head != nullptr) {
+		delete head;
+		head = nullptr;
+	}
 }
 
 void CourseEditor::fromFileToGui(CourseUnit *crs) {
 	NOT_NULL(crs);
+	NOT_NULL(head);
 
 	fromCourseUnitToNode(crs, head);
 
@@ -315,6 +404,7 @@ void CourseEditor::fromFileToGui(CourseUnit *crs) {
 
 void CourseEditor::fromGuiToFile(CourseUnit *crs) {
 	NOT_NULL(crs);
+	NOT_NULL(head);
 
 	fromNodeToCourseUnit(head, crs);
 
@@ -326,11 +416,15 @@ void CourseEditor::on_actionSkillPackOpen_triggered() {
 
 	QString path = QFileDialog::getOpenFileName(this, "Select skill pack file", QString(), QString("(*") + SKILL_PACK_FILE_EXTENSION + QString(")"));
 
+	if (path.length() == 0) {
+		return;
+	}
+
 	setSkillPack(path);
 }
 
 void CourseEditor::on_actionReturn_to_launcher_triggered() {
-	clearCourseUnit();
+	ensureGuiLocked();
 	clearSkillsLib();
 	emit onClose();
 }
@@ -349,7 +443,7 @@ void CourseEditor::mes(QString mes) {
 }
 
 void CourseEditor::on_actionClose_courseUnit_triggered() {
-	clearCourseUnit();
+	ensureGuiLocked();
 }
 
 void CourseEditor::setSkillPack(QString path) {
@@ -380,12 +474,39 @@ void CourseEditor::setSkillPack(QString path) {
 }
 
 void CourseEditor::on_descrPanel_textChanged() {
+	if (!checkCourseUnitAvailable(false)) {
+		return;
+	}
 	getCurrentNode()->setDescription(ui->descrPanel->toPlainText());
 	ui->markDownPreview->setMarkdown(ui->descrPanel->toPlainText());
 }
 
 Node* CourseEditor::getCurrentNode() {
+	NOT_NULL(head);
 	return (ui->widget->getSelectedNode() == nullptr ? head : ui->widget->getSelectedNode());
+}
+
+bool CourseEditor::checkCourseUnitAvailable(bool showMessage) {
+	if (head == nullptr && showMessage) {
+		mes("No course unit! Create or open it!");
+	}
+	return head != nullptr;
+}
+
+void CourseEditor::unlockGui() {
+	ASSERT(head == nullptr);
+
+	head = new Node(nullptr);
+	ui->widget->setEditable(true);
+	ui->inList->setEnabled(true);
+	ui->outList->setEnabled(true);
+	ui->nameLineEdit->setEnabled(true);
+	ui->descrPanel->setEnabled(true);
+	ui->addSkill->setEnabled(true);
+	ui->removeSkill->setEnabled(true);
+	ui->removeIn->setEnabled(true);
+	ui->removeOut->setEnabled(true);
+	ui->showParent->setEnabled(true);
 }
 
 void CourseEditor::timerEvent(QTimerEvent *event) {

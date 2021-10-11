@@ -27,9 +27,7 @@ SkillPackEditor::SkillPackEditor() :
 
 SkillPackEditor::~SkillPackEditor()
 {
-    if (skillPackFile != nullptr) {
-        delete skillPackFile;
-    }
+	ensureSkillPackDeleted();
     delete ui;
     killTimer(timerId);
 }
@@ -126,6 +124,7 @@ void SkillPackEditor::toGui() {
         fileSignature = skp.toString();
     } catch (QString & err) {
         ui->statusbar->showMessage("Error while opening file: " + err);
+        ensureSkillPackDeleted();
     }
 }
 
@@ -266,7 +265,9 @@ void SkillPackEditor::on_actionOpen_triggered()
 
     QString path = QFileDialog::getOpenFileName(this, "Select skill pack file", QString(), QString("(*") + SKILL_PACK_FILE_EXTENSION + QString(")"));
 
-    if (path.size() == 0) {
+    QFile f = QFile(path);
+
+	if (!f.exists()) {
         return;
     }
 
@@ -363,7 +364,6 @@ void SkillPackEditor::on_autoSave_stateChanged(int v) {
 bool SkillPackEditor::isChanged() {
 	SkillPack tmp;
 	transferToSkillPackStructure(&tmp);
-	SAY(tmp.toString() + "|||" + fileSignature);
 	return QString::compare(fileSignature, tmp.toString(), Qt::CaseInsensitive);
 }
 
