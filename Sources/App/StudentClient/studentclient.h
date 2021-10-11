@@ -19,7 +19,7 @@ class ChooseServ;
 class CourseUnit;
 //========================================================
 
-/*!
+/**!
  Class Student Client
 
  Connects to server and retrieve course files.
@@ -50,17 +50,17 @@ private:
 	Ui::StudentClient *ui;
 	QTcpSocket *mSocket;
 	quint32 nextBlockSize;
-	/*!
+    /**!
 	 * Current skillpack received from server.
 	 * @author timattt
 	 */
 	SkillPack *skillpack;
-	/*!
+    /**!
 	 * Current courseunit received from server.
 	 * @author timattt
 	 */
 	CourseUnit *courseUnit;
-	/*!
+    /**!
 	 * Current studentprogress received from server.
 	 * @author timattt
 	 */
@@ -86,7 +86,7 @@ private:
 
 	// private functions
 	//========================================================
-	/*!
+    /**!
 	 filling the header of datagramm and send it to the server
 	 @param code - command to server that is choosen from serverCommands.h
 	 @param str - information sent to server
@@ -94,19 +94,19 @@ private:
 	 */
 	void sendToServer(quint16 code, const QString &str);
 
-	/*!
+    /**!
 	 after package from server is accepted, we need to manage it and save what we've received
 	 @author - arfarafar
 	 */
 	void endReception();
 
-	/*!
+    /**!
 	 After the success or fail code was received from the server manages it
 	 @author - arfarafar
 	 */
 	void confirmConnection();
 
-	/*!
+    /**!
 	 Loading all files that were received from server
 
 	 @author - arfarafar
@@ -116,7 +116,7 @@ private:
 	void LoadSkillpack();
 	void LoadStudentsProgresses();
 
-	/*!
+    /**!
 	 saving as a file data from server
 	 the data block is filename + filedata
 	 @param QDataStream& - data received from the server, needed to save as a file
@@ -124,20 +124,20 @@ private:
 	 */
 	void handleincFile(QDataStream&);
 
-	/*!
+    /**!
 	 display Course, skillpack and Student progress on the field
 
 	 @author - timattt
 	 */
 	void display();
 
-	/*!
+    /**!
 	 clears all widgets of the programm window
 	 @author - arfarafar
 	 */
 	void ClearAll();
 
-	/*!
+    /**!
 	 * deletes old fields and make new ones
 	 * called when returned to launcher or new server choosed
 	 * @author - arfarafar
@@ -151,14 +151,14 @@ private slots:
 	//========================================================
 	void on_actionChange_Server_triggered();
 
-	/*!
+    /**!
 	 activates when we can read smth from the socket
 	 read it into the datafromsocket field and call endReception()
 	 @author - arfarafar
 	 */
 	void slotReadyRead();
 
-	/*!
+    /**!
 	 activates when socket crashes
 	 shows the errorstring
 	 @param - error string
@@ -166,14 +166,14 @@ private slots:
 	 */
 	void slotError(QAbstractSocket::SocketError);
 
-	/*!
+    /**!
 	 activates when socket connection succeed
 	 sends to server username and welcome code
 	 @author - arfarafar
 	 */
 	void slotConnected();
 
-	/*!
+    /**!
 	 activates when Connect button has been clicked in chooseserv wigget
 	 try to connect mSocket to server
 	 @author - arfarafar
@@ -184,7 +184,7 @@ private slots:
 
 	void on_actionReturn_to_Launcher_triggered();
 
-	/*!
+    /**!
 	 activates when chooseserv window is closed before the time
 	 makes main window enabled
 	 @author - arfarafar
@@ -192,11 +192,13 @@ private slots:
 	void onChooseServClosed();
 	//========================================================
 
+    void on_actionHelp_me_triggered();
+
 public slots:
 
 	// public slots
 	//===================================================
-	/**
+    /***
 	 * Signal from courseunitviewer.
 	 * Sets panels for this node.
 	 * @author timattt

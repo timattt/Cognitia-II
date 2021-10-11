@@ -1,0 +1,7 @@
+First of all you need to connect to some server, which you choose with Choose Server button.
+Without this step nothing works.
+When connects to server all your previous data erases
+
+After succesful connection, your course and all achivements of all students will display on the screen. 
+the marks are editable. 
+When the work is done, you need to save it and send to server, othervise it will disappear after next connection. 

@@ -14,7 +14,7 @@
 
 
 
-/* CourseUnit class
+/** CourseUnit class
  *
  * The central object in the graph
  *
@@ -65,20 +65,20 @@ public:
 
     // Methods
     //---------------------------------------------------------------------------
-    /*
+    /**
      * load course from coursefile *res
      * Author - arfarafar
      */
     void loadCourseUnit(QFile *res);
 
 
-    /* creates *dest file and save recursively all information about the course
+    /** creates *dest file and save recursively all information about the course
      * Author - arfarafar
      */
     void saveCourseUnit(QFile *dest);
 
 
-    /* Size of the unit on the field
+    /** Size of the unit on the field
      * Author - arfarafar
      */
     void setSize(size_t width, size_t height);
@@ -90,7 +90,7 @@ public:
     std::pair<size_t, size_t> getFieldSize() const; //first - width, second - height
 
 
-    /* coords of the center of the unit on the field
+    /** coords of the center of the unit on the field
      * Author - arfarafar
      */
     void setCoords(double x, double y);
@@ -100,19 +100,19 @@ public:
     void setColour(int colour_);
     int  getColour();
 
-    /* income and outcome required skills + its levels
+    /** income and outcome required skills + its levels
      * Author - arfarafar
      */
     void addIncome(const QString& skill, size_t lvl);
     void addOutcome(const QString& skill, size_t lvl);
 
-    /* returns all income or outcome skills
+    /** returns all income or outcome skills
      * Author - arfarafar
      */
     const QMap<QString, size_t>& getIncome() const;
     const QMap<QString, size_t>& getOutcome() const;
 
-    /* return level of skill name sk
+    /** return level of skill name sk
      * Author - arfarafar
      */
     size_t getInSkillLevel(QString sk);
@@ -125,7 +125,7 @@ public:
     const QString& getDescription() const;
 
 
-    /* the arrow points to the connected unit and not vise versa
+    /** the arrow points to the connected unit and not vise versa
      * Author - arfarafar
      */
     void addConnection(CourseUnit*);
@@ -133,7 +133,7 @@ public:
     const QVector<QString>& getConnections() const;
 
 
-    /* embedded units its a units that are inside current unit
+    /** embedded units its a units that are inside current unit
      * Author - arfarafar
      */
     void addEmbedded(CourseUnit*);

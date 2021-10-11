@@ -2,6 +2,7 @@
 #include "ui_server.h"
 #include "Structures/StudentProgress/StudentProgress.h"
 #include "../Core/logger.h"
+#include "../Help/smarthelper.h"
 
 Server::Server(QWidget *parent) :
     QWidget(parent),
@@ -427,5 +428,12 @@ void Server::on_chooseParent_clicked()
     else
         QMessageBox::critical(this, "While picking course.." , "Can't open crusial file");
 
+}
+
+
+void Server::on_helpButton_clicked()
+{
+    SmartHelper helper(":/help/Help/ServerHelp.txt", this);
+    helper.exec();
 }
 

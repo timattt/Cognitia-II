@@ -5,6 +5,7 @@
 #include "../Structures/SkillPack/skillpack.h"
 #include "../Structures/StudentProgress/StudentProgress.h"
 #include "../ChooseServ/chooseserv.h"
+#include "../Help/smarthelper.h"
 #include "../Core/logger.h"
 
 StudentClient::StudentClient() :
@@ -379,5 +380,12 @@ void StudentClient::on_actionReturn_to_Launcher_triggered()
     }
 
     emit onClose();
+}
+
+
+void StudentClient::on_actionHelp_me_triggered()
+{
+    SmartHelper helper(":/help/Help/StudentClientHelp.txt", this);
+    helper.exec();
 }
 

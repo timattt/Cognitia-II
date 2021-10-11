@@ -1,0 +1,11 @@
+ * To proper work You need to create directories with names of students, who would
+   be allowed to attend the course with the Add student button
+ *
+ * And pick the main course with set course button
+ * --------------------------------------------------------------------------------
+ *
+ * its crusial that all course files and student dirs are in /Server direcrory
+
+
+Start - starts the server, after that all users whoose directories have been already created 
+can connect

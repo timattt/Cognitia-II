@@ -19,7 +19,7 @@ class Server;
 }
 
 
-/* Server
+/** Server
  *
  *
  * When launcher starts mkdir(Server) occurs that becomes new workdir
@@ -69,7 +69,7 @@ public:
 
 private:
 
-    /*
+    /**
     filling the header of datagramm and send it to the client
     @param client - receiver
     @param code - command to server that is choosen from serverCommands.h
@@ -80,7 +80,7 @@ private:
 
 
 
-    /*
+    /**
     after request from client is accepted, we need to reply in an apropriate way
     @param data - request (name + code + data)
     @author - arfarafar
@@ -88,7 +88,7 @@ private:
     void handleReq(QTcpSocket* client, const QByteArray& data);
 
 
-    /*
+    /**
     sends to client and append info to the log
     uses SendFile()
     param1 - client
@@ -101,7 +101,7 @@ private:
 
 
 
-    /*
+    /**
     sends file with @filename with @code to @client
 
     the block data consist of filename + filedata
@@ -111,7 +111,7 @@ private:
 
 
 
-    /*
+    /**
     Stores studentproggress from datastream @in to file and save it
     into the dir with students name
     the data block consist of filename + filedata
@@ -120,7 +120,7 @@ private:
     bool handleincStudentProgressFile(QDataStream& in);
 
 
-    /*
+    /**
     check whether there is a dir with student @name or the name belongs to mentor
     @return - true or false, if true - the course will be transmitted by previous function
     @author - arfarafar
@@ -129,54 +129,56 @@ private:
 
 
 private slots:
-    /*
+    /**
     close server socket
     @author - arfarafar
     */
     void on_StopServ_clicked();
 
-    /*
+    /**
     start server socket
     @author - arfarafar
     */
     void on_StartServ_clicked();
 
 
-    /*
+    /**
     return
     @author - arfarafar
     */
     void on_returnToL_clicked();
 
 
-    /*
+    /**
     when somesocket died delete it from active clients and logs
     @author - arfarafar
     */
     void deleteFromLog();
 
-    /*
+    /**
     Creates a new dir with name of the student
     student then will be allowed to connect
     @author - arfarafar
     */
     void on_addStudent_clicked();
 
-    /*
+    /**
     pick the main courseunit
     @author - arfarafar
     */
     void on_chooseParent_clicked();
 
+    void on_helpButton_clicked();
+
 public slots:
 
-    /*
+    /**
     when new connection appears, signal is catched and socket creates
     @author - arfarafar
     */
     virtual void slotNewConnection();
 
-    /*
+    /**
     activates when client socket becomes ready to read from.
     reads the block and call hendler
     @author - arfarafar
@@ -184,7 +186,7 @@ public slots:
             void slotReadClient();
 
 
-            /*
+            /**
             current dir is set ./Server
             @author - arfarafar
             */

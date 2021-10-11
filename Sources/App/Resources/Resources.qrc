@@ -5,6 +5,9 @@
 	<qresource prefix="/help/">
         <file>Help/SkillPackEditorHelp.txt</file>
         <file>Help/CourseEditorHelp.txt</file>
+        <file>Help/ServerHelp.txt</file>
+        <file>Help/StudentClientHelp.txt</file>
+        <file>Help/MentorClientHelp.txt</file>
     </qresource>
     	<qresource prefix="/icons/">
         <file>Icons/SkillDrag.png</file>

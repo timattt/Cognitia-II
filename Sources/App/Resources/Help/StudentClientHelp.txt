@@ -1,0 +1,6 @@
+First of all you need to connect to some server, which you choose with Change Server Button.
+Without this step nothing works.
+
+When connects to server all your previous data erases.
+
+After succesful connection, your course and all achivements will display on the screen. 

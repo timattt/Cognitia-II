@@ -7,7 +7,7 @@ namespace Ui {
 class ChooseServ;
 }
 
-/*!
+/**!
  * Window to connect to the server
  * Opens immediatly after the launch of client
  * Shows every time user want to change current server
@@ -21,7 +21,7 @@ class ChooseServ : public QMainWindow
     Q_OBJECT
 
 private:
-    /*
+    /**
      *
     open server file and fill out all fields
 
@@ -35,41 +35,41 @@ public:
     ~ChooseServ();
 
 
-    /*
+    /**
     returns ip from the textedit field
     @return - IP adress
     author - Arfarafar
     */
     QString getIP();
 
-    /*
+    /**
     returns port from the textedit field
     @return - port number as string
     author - Arfarafar
     */
     QString getPort();
 
-    /*
+    /**
     returns login name that will be sent to server
     author - Arfarafar
     */
     QString getName();
 
-    /*
+    /**
     disables the connect button while waiting server response
     author - Arfarafar
     */
     void setButtonDisabled();
 
 
-    /*
+    /**
     enables the connect button
     author - Arfarafar
     */
     void setButtonEnabled();
 
 
-    /*
+    /**
     when chooseserv window closes without connection(is closed by user)
     returns client back to life by emiting signal
     author - Arfarafar
@@ -79,20 +79,20 @@ public:
 
 private slots:
 
-    /*
+    /**
     emit signal to client to inform about the action
     author - Arfarafar
     */
     void on_ConnectButton_clicked();
 
-    /*
+    /**
     open a dialog window to pick up the server file
     author - Arfarafar
     */
     void on_actionChoose_server_triggered();
 
 
-    /*
+    /**
     open a dialog window to save information of the fields to the server file
     author - Arfarafar
     */

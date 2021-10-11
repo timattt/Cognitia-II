@@ -9,7 +9,7 @@ class SmartHelper;
 
 /**
  * This dialogbox is used to show help to users.
- * To use it you may have file with help.
+ * To use it you must have file with help.
  * Then you insert code in to your widget:
  *
  * -------

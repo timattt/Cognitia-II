@@ -6,6 +6,7 @@
 #include "../CourseUnitViewer/Node/node.h"
 #include "../Structures/StudentProgress/StudentProgress.h"
 #include "../Core/logger.h"
+#include "../Help/smarthelper.h"
 
 
 MentorClient::MentorClient() :
@@ -504,3 +505,10 @@ void MentorClient::on_actionSave_all_and_send_triggered()
 
       QDir::setCurrent("../");
 }
+
+void MentorClient::on_actionHelp_triggered()
+{
+    SmartHelper helper(":/help/Help/MentorClientHelp.txt", this);
+    helper.exec();
+}
+
