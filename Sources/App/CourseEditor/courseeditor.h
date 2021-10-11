@@ -69,8 +69,8 @@ private:
 	 */
 	void unlockGui();
     /**
-     * Checks if current gui CU data changed in compare to CU field.
-     * @returns True - if gui is not equals to field.
+     * Checks if current gui CU data changed in compare to file in file system.
+     * @returns True - if gui is not equals to CU in file.
      * @author timattt
      */
 	bool isChanged();
@@ -93,7 +93,7 @@ private:
 	* Then deletes head.
 	* @author timattt
 	*/
-	void ensureCourseUnitIsLocked();
+	void ensureGuiLocked();
 	/**
 	 * Transfer all required info from given course unit to this gui.
 	 * @param crs - take info from this course unit.
@@ -290,6 +290,7 @@ private slots:
      */
     void on_actionCourseUnitCreate_triggered();
     /**
+     * Closes CU.
      * Calls ensureCourseUnitIsLocked.
      *
      * @author timattt

@@ -53,7 +53,7 @@ CourseEditor::CourseEditor() :
 	// clear and refresh everything
 	//-----------------------------
 	clearSkillsLib();
-	ensureCourseUnitIsLocked();
+	ensureGuiLocked();
 	//-----------------------------
 
 	timerId = startTimer(SKILL_PACK_UPDATE_TIME);
@@ -63,7 +63,7 @@ CourseEditor::CourseEditor() :
 
 CourseEditor::~CourseEditor()
 {
-	ensureCourseUnitIsLocked();
+	ensureGuiLocked();
 	clearSkillsLib();
     delete ui;
     killTimer(timerId);
@@ -182,9 +182,10 @@ void CourseEditor::on_levelsSelector_currentTextChanged(const QString &arg1)
 }
 
 bool CourseEditor::isChanged() {
-	if (head == nullptr) {
+	if (!checkCourseUnitAvailable(false)) {
 		return false;
 	}
+
 	CourseUnit cu;
 	fromGuiToFile(&cu);
 	return fileSignature.size() > 0 && QString::compare(fileSignature, cu.print(), Qt::CaseInsensitive);
@@ -229,7 +230,7 @@ void CourseEditor::on_nameLineEdit_textChanged() {
 }
 
 void CourseEditor::nodeSelected(Node *nd) {
-	if (!head) {
+	if (!checkCourseUnitAvailable(false)) {
 		return;
 	}
 
@@ -248,7 +249,7 @@ void CourseEditor::nodeSkillsChanged(Node *nd) {
 }
 
 void CourseEditor::on_actionCourseUnitOpen_triggered() {
-	ensureCourseUnitIsLocked();
+	ensureGuiLocked();
 
 	QString path = QFileDialog::getOpenFileName(this, "Select course unit file", QString(), QString("(*") + COURSE_UNIT_FILE_EXTENSION + QString(")"));
 
@@ -271,7 +272,7 @@ void CourseEditor::on_actionCourseUnitOpen_triggered() {
 	} catch (QString & ex) {
 		QMessageBox::critical(this, "Error", ex);
 		mes("Error while opening: " + ex);
-		ensureCourseUnitIsLocked();
+		ensureGuiLocked();
 	}
 
 
@@ -316,7 +317,7 @@ void CourseEditor::on_actionCourseUnitSave_triggered() {
 }
 
 void CourseEditor::on_actionCourseUnitCreate_triggered() {
-	ensureCourseUnitIsLocked();
+	ensureGuiLocked();
 
 	QString path = QFileDialog::getSaveFileName(this, "Create course unit file", QString(), QString("(*") + COURSE_UNIT_FILE_EXTENSION + QString(")"));
 
@@ -341,7 +342,7 @@ void CourseEditor::on_actionCourseUnitCreate_triggered() {
 	} catch (QString & err) {
 		QMessageBox::critical(this, "Error", err);
 		mes("Error while creating: " + err);
-		ensureCourseUnitIsLocked();
+		ensureGuiLocked();
 	}
 
 }
@@ -353,7 +354,7 @@ void CourseEditor::clearSkillsLib() {
 	ui->skillPackFile->clear();
 }
 
-void CourseEditor::ensureCourseUnitIsLocked() {
+void CourseEditor::ensureGuiLocked() {
 	if (head != nullptr && isChanged()
 			&& QMessageBox::question(this, "Save file or not",
 					"Would you like to save your file before closing it?",
@@ -423,7 +424,7 @@ void CourseEditor::on_actionSkillPackOpen_triggered() {
 }
 
 void CourseEditor::on_actionReturn_to_launcher_triggered() {
-	ensureCourseUnitIsLocked();
+	ensureGuiLocked();
 	clearSkillsLib();
 	emit onClose();
 }
@@ -442,7 +443,7 @@ void CourseEditor::mes(QString mes) {
 }
 
 void CourseEditor::on_actionClose_courseUnit_triggered() {
-	ensureCourseUnitIsLocked();
+	ensureGuiLocked();
 }
 
 void CourseEditor::setSkillPack(QString path) {
