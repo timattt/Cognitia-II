@@ -205,7 +205,6 @@ void CourseEditor::on_removeIn_clicked() {
 	}
 
 	int row = ui->inList->currentIndex().row();
-	SAY(QString::number(row));
 	QString name = inMd->data(inMd->index(row, 0)).toString();
 	getCurrentNode()->removeInSkill(name);
 	inMd->removeSkill(name);
