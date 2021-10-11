@@ -63,16 +63,37 @@ private:
 	// private functions
 	//--------------------------------------
 	/**
+	 * This function may be used when course unit is set.
+	 * It makes editable all necessary panels. And initialize head.
+	 * @author timattt
+	 */
+	void unlockGui();
+    /**
+     * Checks if current gui CU data changed in compare to CU field.
+     * @returns True - if gui is not equals to field.
+     * @author timattt
+     */
+	bool isChanged();
+    /**
+     * Checks if current course unit can be edited.
+     * @returns False - if not available. True if available.
+     * @param showMessage - if true then if head is nullptr it will show message about it.
+     * @author timattt
+     */
+	bool checkCourseUnitAvailable(bool showMessage);
+	/**
 	* Fully clears skills lib that was loaded and clears all skill info from gui.
 	* Clears everything about skills in this gui.
 	* @author timattt
 	*/
 	void clearSkillsLib();
 	/**
-	* Fully clears everything about course graph except skillLib and skill information in this gui.
+	* If gui has unsaved info then it proposed user to save it.
+	* Then it clears everyhting in gui.
+	* Then deletes head.
 	* @author timattt
 	*/
-	void clearCourseUnit();
+	void ensureCourseUnitIsLocked();
 	/**
 	 * Transfer all required info from given course unit to this gui.
 	 * @param crs - take info from this course unit.
@@ -116,6 +137,11 @@ private:
 
     // Fields
     //--------------------------------------
+    /**
+     * This string represents data that lies currently in file in filesystem.
+     * @author timattt
+     */
+    QString fileSignature;
 	/**
 	 * Default ui field.
 	 */
@@ -232,34 +258,39 @@ private slots:
 
     ///////////////////////////courseunit
     /**
-     * Calls close courseunit button.
-     * Uses dialog box to get file path.
-     * Then loads new courseunit.
-     * Then sets it to gui.
-     *
+     * Opens new CU file.
+     * Steps:
+     * 1. Calls ensureCourseUnitIsLocked.
+     * 2. Reads path from dialogbox.
+     * 3. If path is valid loads courseunit and calls fromFileToGui method.
+     * 4. Finally saves file signature.
      * @author timattt
      */
     void on_actionCourseUnitOpen_triggered();
     /**
      * Saves gui to files.
-     * Clears all.				}
-     * Loads gui to files.		} it is doing to ensure that file names in nodes will be set.
-     *
+     * Steps:
+     * 1. Calls checkCourseUnitAvailable and on_showParent_clicked.
+     * 2. Then calls fromGuiToFile and saves CU.
+     * 3. Then collects paths from CU and uses setPaths for CUV.
      * @author timattt
      */
     void on_actionCourseUnitSave_triggered();
     /**
-     * Calls close courseunit button.
-     * Uses dialog box to get file path.
-     * Then sets new name and path to head.
-     * Then saves to file.
-     * Then loads from file to ensure that file names in nodes will be set.
+     * Creates new CU file.
+     * Steps:
+     * 1. Calls close courseunit button.
+     * 2. Uses dialog box to get file path.
+     * 3. Then sets new name and path to head.
+     * 4. Then saves to file.
+     * 5. Then loads from file to ensure that file names in nodes will be set.
+     * 6. Finally saves file signature.
      *
      * @author timattt
      */
     void on_actionCourseUnitCreate_triggered();
     /**
-     * Calls clear courseunit function.
+     * Calls ensureCourseUnitIsLocked.
      *
      * @author timattt
      */

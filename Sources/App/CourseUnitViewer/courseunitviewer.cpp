@@ -394,3 +394,12 @@ void CourseUnitViewer::setEditable(bool v) {
 	ui->areaIn->setVisible(v);
 	ui->label_4->setVisible(v);
 }
+
+void CourseUnitViewer::setPaths(QMap<QString, QString> paths) {
+	const QList<QGraphicsItem*> items = scene->items();
+	for (QGraphicsItem *item : items) {
+		if (Node *node = qgraphicsitem_cast<Node*>(item)) {
+			node->setFile(paths[node->getName()]);
+		}
+	}
+}
