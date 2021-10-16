@@ -17,17 +17,17 @@ int main(int argc, char *argv[])
 {
 	log_init();
 
-    try{
-    QApplication a(argc, argv);
+	try {
+		QApplication a(argc, argv);
 
-    a.setWindowIcon(QIcon(":/logos/Logos/Icon.png"));
+		a.setWindowIcon(QIcon(":/logos/Logos/Icon.png"));
 
-    Launcher launcher;
-    SkillPackEditor skillPackEditor;
-    CourseEditor courseEditor;
-    StudentClient studentClient;
-    Server server;
-    MentorClient mentorClient;
+		Launcher launcher;
+		SkillPackEditor skillPackEditor;
+		CourseEditor courseEditor;
+		StudentClient studentClient;
+		Server server;
+		MentorClient mentorClient;
 
     // Start other widgets
     QObject::connect(&launcher, SIGNAL(startSkillPackEditor()), &skillPackEditor, SLOT(show()));
@@ -36,16 +36,15 @@ int main(int argc, char *argv[])
     QObject::connect(&launcher, SIGNAL(startServer()), &server, SLOT(onStart()));
     QObject::connect(&launcher, SIGNAL(startMentorClient()), &mentorClient, SLOT(onStart()));
 
-    RETURNFROM(skillPackEditor)
-    RETURNFROM(courseEditor)
-    RETURNFROM(server)
-    RETURNFROM(studentClient)
-	RETURNFROM(mentorClient)
+		RETURNFROM(skillPackEditor)
+		RETURNFROM(courseEditor)
+		RETURNFROM(server)
+		RETURNFROM(studentClient)
+		RETURNFROM(mentorClient)
 
-             return a.exec();
-    }
-    catch (const QString & mess){
-        SAY(mess);
-        return 0;
-    }
+		return a.exec();
+	} catch (const QString &mess) {
+		SAY(mess);
+		return 0;
+	}
 }
