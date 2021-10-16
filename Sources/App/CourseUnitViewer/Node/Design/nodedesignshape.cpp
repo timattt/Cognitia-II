@@ -64,8 +64,8 @@ void NodeDesignShape::draw(Node *nd, QPainter *painter, const QStyleOptionGraphi
     //========================================
     f = painter->font();
     f.setPointSizeF(side / 20.0);
-    f.setBold(false);
-    f.setWeight(QFont::Normal);
+    f.setBold(true);
+    f.setWeight(QFont::Medium);
     painter->setFont(f);
     painter->setPen(Qt::black);
     descRect = QRect(- side / 2 * 0.95, - side / 8 * 2, side * 0.9, side / 8 * 3);
@@ -78,17 +78,11 @@ void NodeDesignShape::draw(Node *nd, QPainter *painter, const QStyleOptionGraphi
     double h = side / 8;
     double w = side * 0.45;
 
-    double step = qMin(h / 2, side / 2 / (double)total);
+    double step = qMin(h / 2, side / 4 / (double)total);
 
     int i = 0;
     for (QString key : nd->getInSkills().keys()) {
 
-        double x = -side / 4;
-        double y = ((double)i + 1) * step;
-
-        painter->translate(x, y);
-
-        QRect r = QRect(-w / 2, -h / 2, w, h / 2);
 
         if (i == 0) {
             if (nd->isSelected()) {
@@ -97,6 +91,13 @@ void NodeDesignShape::draw(Node *nd, QPainter *painter, const QStyleOptionGraphi
                 painter->setBrush(QColorConstants::Svg::coral);
             }
 
+            double x = -side / 4;
+            double y = ((double)i + 2.5) * step;
+
+            painter->translate(x, y);
+
+            QRect r = QRect(-w / 2, -h / 2, w, h / 2);
+
             painter->setPen(QColorConstants::Svg::tomato);
             painter->drawRect(r);
             painter->setPen(Qt::black);
@@ -104,10 +105,17 @@ void NodeDesignShape::draw(Node *nd, QPainter *painter, const QStyleOptionGraphi
             i++;
             painter->translate(-x, -y);
 
-            y = ((double)i + 1) * step;
-            painter->translate(x, y);
+            y = ((double)i + 0.5) * step;
+            painter->translate(0, y);
             painter->setBrush(QColorConstants::Svg::moccasin);
         }
+
+        double x = -side / 4;
+        double y = (h * 5 / 8) * (double)i; //((double)i + 1) * step;
+
+        painter->translate(x, y);
+
+        QRect r = QRect( - w / 2, 0, w, h * 5 / 8);
 
         painter->setPen(QColorConstants::Svg::tomato);
         painter->drawRect(r);
@@ -122,19 +130,13 @@ void NodeDesignShape::draw(Node *nd, QPainter *painter, const QStyleOptionGraphi
     // Out
     total = nd->getOutSkills().size() + 1;
     h = side / 8;
-    w = side *0.45;
+    w = side * 0.45;
 
     step = qMin(h / 2, side / 2 / (double)total);
 
     i = 0;
     for (QString key : nd->getOutSkills().keys()) {
 
-        double x = side / 4;
-        double y = ((double)i + 1) * step;
-
-        painter->translate(x, y);
-
-        QRect r = QRect(-w / 2, -h / 2, w, h / 2);
 
         if (i == 0) {
             if (nd->isSelected()) {
@@ -143,6 +145,13 @@ void NodeDesignShape::draw(Node *nd, QPainter *painter, const QStyleOptionGraphi
                 painter->setBrush(QColorConstants::Svg::coral);
             }
 
+            double x = side / 4;
+            double y = ((double)i + 1) * step;
+
+            painter->translate(x, y);
+
+            QRect r = QRect(-w / 2, -h / 2, w, h / 2);
+
             painter->setPen(QColorConstants::Svg::tomato);
             painter->drawRect(r);
             painter->setPen(Qt::black);
@@ -150,10 +159,17 @@ void NodeDesignShape::draw(Node *nd, QPainter *painter, const QStyleOptionGraphi
             i++;
             painter->translate(-x, -y);
 
-            y = ((double)i + 1) * step;
-            painter->translate(x, y);
+            //y = ((double)i + 0.5) * step;
+            //painter->translate(0, y);
             painter->setBrush(QColorConstants::Svg::moccasin);
         }
+
+        double x = side / 4;
+        double y = (h * 5 / 8) * (double)i; //((double)i + 1) * step;
+
+        painter->translate(x, y);
+
+        QRect r = QRect( - w / 2, 0, w, h * 5 / 8);
 
         painter->setPen(QColorConstants::Svg::tomato);
         painter->drawRect(r);
