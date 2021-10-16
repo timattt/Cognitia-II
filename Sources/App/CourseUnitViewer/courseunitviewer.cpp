@@ -10,6 +10,7 @@
 #include "Node/Design/nodedesignshape.h"
 #include "../Structures/StudentProgress/StudentProgress.h"
 #include "../Core/logger.h"
+#include "courseunitviewersettings.h"
 
 CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 		QWidget(parent),
@@ -28,10 +29,6 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 	ui->graphicsView->setScene(scene);
 	timerId = startTimer(1);
 
-	ui->repFact->setText(QString::number(DEFAULT_NODE_REP_FAC));
-	ui->ownLength->setText(QString::number(DEFAULT_NODE_OWN_LENGTH));
-	ui->attFact->setText(QString::number(DEFAULT_NODE_ATT_FAC));
-
 	ui->graphicsView->setAcceptDrops(true);
 
 	ui->graphicsView->setCacheMode(QGraphicsView::CacheBackground);
@@ -48,6 +45,9 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 	ui->designBox->setCurrentText("Old");
 	//-------------------------------------------------
 
+	ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
 	SAY("CourseUnitViewer init finished");
 }
 
@@ -60,9 +60,9 @@ CourseUnitViewer::~CourseUnitViewer() {
 void CourseUnitViewer::timerEvent(QTimerEvent *event) {
 	Q_UNUSED(event);
 
-	int total_nodes = 0;
-	int total_edges = 0;
-	int total_items = 0;
+	total_nodes = 0;
+	total_edges = 0;
+	total_items = 0;
 
 	// Update physics
 	QList<Node*> nodes;
@@ -81,18 +81,13 @@ void CourseUnitViewer::timerEvent(QTimerEvent *event) {
 	for (Node *node : qAsConst(nodes)) {
 		node->calculateForces();
 	}
-
-	// Update quantity
-	ui->totalItems->setText(QString::number(total_items));
-	ui->totalEdges->setText(QString::number(total_edges));
-	ui->totalNodes->setText(QString::number(total_nodes));
 }
 
 bool CourseUnitViewer::nodesCanMove() {
 	return !ui->freezeCheckbox->isChecked();
 }
 
-void CourseUnitViewer::on_pushButton_2_clicked() {
+void CourseUnitViewer::on_addNode_clicked() {
 	Node *nd = new Node(this);
 	QPointF pt = ui->graphicsView->mapToScene(ui->graphicsView->rect().center());
 	nd->setPos(pt);
@@ -104,27 +99,11 @@ bool CourseUnitViewer::deleteModeIsOn() {
 }
 
 void CourseUnitViewer::on_zoomOut_clicked() {
-	ui->graphicsView->scale(1.0 / SCALE_PER_PUSH, 1.0 / SCALE_PER_PUSH);
-	ui->zoomPercentage->setText(QString::number(ui->zoomPercentage->text().split("%")[0].toDouble() / SCALE_PER_PUSH) + "%");
+	ui->graphicsView->addScale(SCALE_PER_PUSH);
 }
 
 void CourseUnitViewer::on_zoomIn_clicked() {
-	ui->graphicsView->scale(SCALE_PER_PUSH, SCALE_PER_PUSH);
-	ui->zoomPercentage->setText(QString::number(ui->zoomPercentage->text().split("%")[0].toDouble() * SCALE_PER_PUSH) + "%");
-}
-
-void CourseUnitViewer::on_areaDec_clicked() {
-	QRectF r = scene->sceneRect();
-	scene->setSceneRect(r.x() / 2, r.y() / 2, r.width() / 2, r.height() / 2);
-	emit sceneSizeChanged(r.width() / 2, r.height() / 2);
-	refit();
-}
-
-void CourseUnitViewer::on_areaIn_clicked() {
-	QRectF r = scene->sceneRect();
-	scene->setSceneRect(r.x() * 2, r.y() * 2, r.width() * 2, r.height() * 2);
-	emit sceneSizeChanged(r.width() * 2, r.height() * 2);
-	refit();
+	ui->graphicsView->addScale(-SCALE_PER_PUSH);
 }
 
 double CourseUnitViewer::getAttFac() const {
@@ -139,38 +118,8 @@ double CourseUnitViewer::getRepFac() const {
 	return repFac;
 }
 
-void CourseUnitViewer::on_attFact_editingFinished() {
-	bool ok = 0;
-	double v = ui->attFact->text().toDouble(&ok);
-	if (!ok) {
-		ui->attFact->setText(QString::number(DEFAULT_NODE_ATT_FAC));
-	} else {
-		attFac = v;
-	}
-}
-
-void CourseUnitViewer::on_repFact_editingFinished() {
-	bool ok = 0;
-	double v = ui->repFact->text().toDouble(&ok);
-	if (!ok) {
-		ui->repFact->setText(QString::number(DEFAULT_NODE_REP_FAC));
-	} else {
-		repFac = v;
-	}
-}
-
 void CourseUnitViewer::abortDrag() {
 	scene->stopDrag();
-}
-
-void CourseUnitViewer::on_ownLength_editingFinished() {
-	bool ok = 0;
-	double v = ui->ownLength->text().toDouble(&ok);
-	if (!ok) {
-		ui->ownLength->setText(QString::number(DEFAULT_NODE_OWN_LENGTH));
-	} else {
-		ownLength = v;
-	}
 }
 
 void CourseUnitViewer::clearAllScene() {
@@ -211,8 +160,6 @@ void CourseUnitViewer::addEdge(Edge *e) {
 void CourseUnitViewer::unpack(CourseUnit *head) {
 	NOT_NULL(head);
 
-	setSceneSize(head->getFieldSize().first, head->getFieldSize().second);
-	refit();
 	QMap<QString, Node*> nodes;
 
 	for (CourseUnit * u : head->getEmbedded()) {
@@ -221,7 +168,7 @@ void CourseUnitViewer::unpack(CourseUnit *head) {
 		}
 
 		Node * nd = new Node(this);
-		fromCourseUnitToNode(u, nd);
+		nd->fromCourseUnitToNode(u);
 		nodes[nd->getName()] = nd;
 		addNode(nd);
 	}
@@ -231,6 +178,8 @@ void CourseUnitViewer::unpack(CourseUnit *head) {
 			addEdge(new Edge(nodes[u->objectName()], nodes[v], this));
 		}
 	}
+
+	ui->graphicsView->focusOn();
 }
 
 void CourseUnitViewer::pack(CourseUnit *head) {
@@ -253,7 +202,7 @@ void CourseUnitViewer::pack(CourseUnit *head) {
 			}
 			CourseUnit * un = new CourseUnit(head);
 			head->addEmbedded(un);
-			fromNodeToCourseUnit(nd, un);
+			nd->fromNodeToCourseUnit(un);
 			units[un->objectName()] = un;
 		}
 	}
@@ -311,7 +260,6 @@ void CourseUnitViewer::makeProgressToSelected(QString skill, double val) {
 
 void CourseUnitViewer::unpack(StudentProgress *prg) {
 	NOT_NULL(prg);
-	refit();
 
 	const QList<QGraphicsItem*> items = scene->items();
 	for (QGraphicsItem *item : items) {
@@ -344,13 +292,6 @@ void CourseUnitViewer::pack(StudentProgress *prg) {
 			}
 		}
 	}
-}
-
-void CourseUnitViewer::refit() {
-	ui->graphicsView->scale(1, 1);
-	ui->graphicsView->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
-	ui->zoomPercentage->setText(QString::number(100) + "%");
-	scene->update();
 }
 
 void CourseUnitViewer::clearStudentProgress() {
@@ -388,11 +329,9 @@ bool CourseUnitViewer::isEditable() {
 
 void CourseUnitViewer::setEditable(bool v) {
 	editable = v;
-	ui->pushButton_2->setVisible(v);
+	ui->addNode->setVisible(v);
 	ui->deleteModeCheckbox->setVisible(v);
-	ui->areaDec->setVisible(v);
-	ui->areaIn->setVisible(v);
-	ui->label_4->setVisible(v);
+	ui->focusOn->setVisible(v);
 }
 
 void CourseUnitViewer::setPaths(QMap<QString, QString> paths) {
@@ -402,4 +341,22 @@ void CourseUnitViewer::setPaths(QMap<QString, QString> paths) {
 			node->setFile(paths[node->getName()]);
 		}
 	}
+}
+
+Viewport* CourseUnitViewer::getViewport() {
+	return ui->graphicsView;
+}
+
+void CourseUnitViewer::on_focusOn_clicked() {
+	ui->graphicsView->focusOn();
+}
+
+void CourseUnitViewer::on_options_clicked() {
+	SAY(QString::number(attFac) + " " + QString::number(repFac) + " " + QString::number(ownLength));
+	CourseUnitViewerSettings sets(this, total_nodes, total_edges, total_items, attFac, repFac, ownLength);
+	sets.exec();
+	attFac = sets.attraction;
+	repFac = sets.repulsion;
+	ownLength = sets.ownLength;
+	SAY(QString::number(attFac) + " " + QString::number(repFac) + " " + QString::number(ownLength));
 }

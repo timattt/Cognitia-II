@@ -38,6 +38,8 @@ void log_say(QString mes, const char *file, int line) {
 
 	stream << m << '\n';
 	qInfo() << m;
+	printf("%s\n", m.toStdString().c_str());
+	fflush(stdout);
 
 	stream.flush();
 }

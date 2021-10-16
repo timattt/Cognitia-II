@@ -111,6 +111,13 @@ CourseScene::~CourseScene() {
 void CourseScene::drawBackground(QPainter *painter, const QRectF &rect) {
     // Shadow
     QRectF sceneRect = this->sceneRect();
+    double bias = 0.1;
+    double w = sceneRect.width();
+    double h = sceneRect.height();
+    double x = sceneRect.x();
+    double y = sceneRect.y();
+    sceneRect = {x - w * bias / 2, y - h * bias / 2, w + w * bias, h + h * bias};
+
     QRectF rightShadow(sceneRect.right(), sceneRect.top() + 5, 5, sceneRect.height());
     QRectF bottomShadow(sceneRect.left() + 5, sceneRect.bottom(), sceneRect.width(), 5);
     if (rightShadow.intersects(rect) || rightShadow.contains(rect))

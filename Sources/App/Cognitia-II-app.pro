@@ -5,20 +5,18 @@ QT += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++11
-
-OUTPUT += Console
-CONFIG += console
+CONFIG += c++17
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
-DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+# DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
     ChooseServ/chooseserv.cpp \
     CourseEditor/courseeditor.cpp \
     CourseUnitViewer/Node/Design/nodedesignshape.cpp \
     CourseUnitViewer/courseunitviewer.cpp \
+    CourseUnitViewer/courseunitviewersettings.cpp \
     Help/smarthelper.cpp \
     Launcher/launcher.cpp \
     Core/main.cpp \
@@ -35,6 +33,7 @@ SOURCES += \
     CourseUnitViewer/Node/edge.cpp \
     Structures/StudentProgress/StudentProgress.cpp \
     CourseUnitViewer/coursescene.cpp \
+    CourseUnitViewer/viewport.cpp \
     CourseEditor/skillsmodel.cpp \
     Server/server.cpp \
     StudentClient/studentclient.cpp \
@@ -47,9 +46,11 @@ SOURCES += \
 
 HEADERS += \
     ChooseServ/chooseserv.h \
+    CourseUnitViewer/viewport.h \
     CourseEditor/courseeditor.h \
     CourseUnitViewer/Node/Design/nodedesignshape.h \
     CourseUnitViewer/courseunitviewer.h \
+    CourseUnitViewer/courseunitviewersettings.h \
     Help/smarthelper.h \
     Launcher/launcher.h \
     Core/logger.h \
@@ -81,6 +82,7 @@ FORMS += \
     ChooseServ/chooseserv.ui \
     CourseEditor/courseeditor.ui \
     CourseUnitViewer/courseunitviewer.ui \
+    CourseUnitViewer/courseunitviewersettings.ui \
     Help/smarthelper.ui \
     Launcher/launcher.ui \
     MentorClient/mentorclient.ui \

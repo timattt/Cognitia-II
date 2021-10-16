@@ -3,6 +3,7 @@
 #include "../../Structures/CourseUnit/courseunit.h"
 #include "../courseunitviewer.h"
 #include "../../Core/logger.h"
+#include "../viewport.h"
 
 Node::Node(CourseUnitViewer *graphWidget)
     : graph(graphWidget)
@@ -82,10 +83,10 @@ void Node::calculateForces()
         xvel = yvel = 0;
     }
 
-    QRectF sceneRect = scene()->sceneRect();
+    //QRectF sceneRect = scene()->sceneRect();
     newPos = pos() + QPointF(xvel, yvel);
-    newPos.setX(qMin(qMax(newPos.x(), sceneRect.left() + NODE_RAD), sceneRect.right() - NODE_RAD));
-    newPos.setY(qMin(qMax(newPos.y(), sceneRect.top() + NODE_RAD), sceneRect.bottom() - NODE_RAD));
+    //newPos.setX(qMin(qMax(newPos.x(), sceneRect.left() + NODE_RAD), sceneRect.right() - NODE_RAD));
+    //newPos.setY(qMin(qMax(newPos.y(), sceneRect.top() + NODE_RAD), sceneRect.bottom() - NODE_RAD));
 
     setPos(newPos);
 }
@@ -268,49 +269,55 @@ void Node::setDescription(QString str) {
 	description = str;
 }
 
-void fromNodeToCourseUnit(Node *nd, CourseUnit *cu) {
-	NOT_NULL(nd);
+void Node::fromNodeToCourseUnit(CourseUnit *cu) {
 	NOT_NULL(cu);
 
-	cu->setObjectName(nd->getName());
-	cu->setDescription(nd->getDescription());
-	cu->setColour(nd->getColor().rgb());
+	cu->setObjectName(getName());
+	cu->setDescription(getDescription());
+	cu->setColour(getColor().rgb());
 
-	for (QString sk : nd->getInSkills().keys()) {
-		int lev = nd->getInSkills()[sk];
+	for (QString sk : getInSkills().keys()) {
+		int lev = getInSkills()[sk];
 
         cu->addIncome(sk, lev);
 	}
 
-	for (QString sk : nd->getOutSkills().keys()) {
-		int lev = nd->getOutSkills()[sk];
+	for (QString sk : getOutSkills().keys()) {
+		int lev = getOutSkills()[sk];
 
         cu->addOutcome(sk, lev);
 	}
 
-	cu->setCoords(nd->pos().x(), nd->pos().y());
+	if (graph != nullptr) {
+		cu->setCoords(pos().x() - graph->getViewport()->getCameraPos().x(), pos().y() - graph->getViewport()->getCameraPos().y());
+	} else {
+		cu->setCoords(pos().x(), pos().y());
+	}
 }
 
-void fromCourseUnitToNode(CourseUnit *cu, Node *nd) {
+void Node::fromCourseUnitToNode(CourseUnit *cu) {
 	NOT_NULL(cu);
-	NOT_NULL(nd);
 
-	nd->setName(cu->objectName());
-	nd->setFile(cu->getLastFilePath());
-	nd->setDescription(cu->getDescription());
-	nd->setColor(QColor(cu->getColour()));
+	setName(cu->objectName());
+	setFile(cu->getLastFilePath());
+	setDescription(cu->getDescription());
+	setColor(QColor(cu->getColour()));
 
     const QMap<QString, size_t>& inskills = cu->getIncome();
     for (QString in : inskills.keys()) {
-        nd->addInSkill(in, inskills[in]);
+        addInSkill(in, inskills[in]);
 	}
 
     const QMap<QString, size_t>& outskills = cu->getOutcome();
     for (QString out : outskills.keys()) {
-        nd->addOutSkill(out, outskills[out]);
+        addOutSkill(out, outskills[out]);
 	}
 
-	nd->setPos(cu->getCoords().first, cu->getCoords().second);
+    if (graph != nullptr) {
+    	setPos(cu->getCoords().first + graph->getViewport()->getCameraPos().x(), cu->getCoords().second + graph->getViewport()->getCameraPos().y());
+    } else {
+    	setPos(cu->getCoords().first, cu->getCoords().second);
+    }
 }
 
 double Node::getSkillProgress(QString skill) const {

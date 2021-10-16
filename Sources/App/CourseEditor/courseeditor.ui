@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1011</width>
-    <height>749</height>
+    <width>907</width>
+    <height>690</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,15 +35,26 @@ QSplitter::handle:vertical {
     background-color: green;
 }</string>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_4">
+   <layout class="QHBoxLayout" name="horizontalLayout_6">
     <item>
      <widget class="QSplitter" name="splitter_2">
       <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+       <enum>Qt::Vertical</enum>
       </property>
+      <widget class="CourseUnitViewer" name="widget" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+      </widget>
       <widget class="QSplitter" name="splitter">
        <property name="orientation">
-        <enum>Qt::Vertical</enum>
+        <enum>Qt::Horizontal</enum>
        </property>
        <widget class="QWidget" name="baseInfoAndSkills" native="true">
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -338,17 +349,6 @@ QSplitter::handle:vertical {
         </layout>
        </widget>
       </widget>
-      <widget class="CourseUnitViewer" name="widget" native="true">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>100</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-      </widget>
      </widget>
     </item>
    </layout>
@@ -358,7 +358,7 @@ QSplitter::handle:vertical {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1011</width>
+     <width>907</width>
      <height>21</height>
     </rect>
    </property>

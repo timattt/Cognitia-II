@@ -65,6 +65,20 @@ public:
     // public functions
     //--------------------------------------
     /**
+     * Transfers information from courseUnit into given node.
+     * @param cu - CourseUnit object. From it info is taken.
+     * @param nd - Node object. Where to place info.
+     * @author timattt
+     */
+    void fromCourseUnitToNode(CourseUnit * cu);
+    /**
+     * Transfers information from node into given courseUnit.
+     * @param nd - Node object. From it info is taken.
+     * @param cu - CourseUnit object. Where to place info.
+     * @author timattt
+     */
+    void fromNodeToCourseUnit(CourseUnit * cu);
+    /**
      * Connects edge to this node (adds to edgeList).
      * Calls adjust method for edge.
      * @param edge - edge to be added. May not be nullptr.
@@ -93,6 +107,7 @@ public:
      * Reimplemented from QGraphicsItem
      */
     QPainterPath shape() const override;
+
     /**
      * Reimplemented from QGraphicsItem.
      * Uses graph field and its current design.
@@ -339,23 +354,4 @@ private:
     QColor color = Qt::lightGray;
     //--------------------------------------
 };
-
-// global functions
-//--------------------------------------
-/**
- * Transfers information from courseUnit into given node.
- * @param cu - CourseUnit object. From it info is taken.
- * @param nd - Node object. Where to place info.
- * @author timattt
- */
-void fromCourseUnitToNode(CourseUnit * cu, Node * nd);
-/**
- * Transfers information from node into given courseUnit.
- * @param nd - Node object. From it info is taken.
- * @param cu - CourseUnit object. Where to place info.
- * @author timattt
- */
-void fromNodeToCourseUnit(Node * nd, CourseUnit * cu);
-//--------------------------------------
-
 #endif

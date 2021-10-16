@@ -19,8 +19,8 @@ class CourseUnitViewer;
 
 // Constants
 //====================================
-#define START_SCENE_WIDTH 2000
-#define START_SCENE_HEIGHT 2000
+#define START_SCENE_WIDTH 200
+#define START_SCENE_HEIGHT 200
 //====================================
 
 class CourseScene: public QGraphicsScene {

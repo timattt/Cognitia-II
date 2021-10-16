@@ -9,7 +9,7 @@
 
 // Constants
 //======================================================
-#define SCALE_PER_PUSH 1.3
+#define SCALE_PER_PUSH 0.3
 //======================================================
 
 // Classes that are used by this class.
@@ -18,6 +18,7 @@ class Edge;
 class Node;
 class CourseScene;
 class CourseUnit;
+class Viewport;
 class StudentProgress;
 //======================================================
 
@@ -60,6 +61,21 @@ private:
 
     // Fields
     //======================================================
+    /**
+     * Total nodes currently on scene.
+     * @author timattt
+     */
+	int total_nodes = 0;
+    /**
+     * Total edges currently on scene.
+     * @author timattt
+     */
+	int total_edges = 0;
+    /**
+     * Total items currently on scene.
+     * @author timattt
+     */
+	int total_items = 0;
     /**
      * Regular QT ui field
      * @author timattt
@@ -217,12 +233,21 @@ public:
 	 * @author timattt
 	 */
 	Node* getSelectedNode();
+	/**
+	 * Gives component that represents graphics view.
+	 * It has functions that controls camera.
+	 * @returns Viewport object - this widget contains it.
+	 * @author timattt
+	 */
+	Viewport* getViewport();
     //======================================================
 
 public slots:
 
 	// public slots
 	//======================================================
+
+
 	/**
 	 * This function clear every node from this scene.
 	 * Before it aborts drag and set no node to be selected. For this it uses functions:
@@ -290,27 +315,19 @@ public slots:
 	 * @author timattt
 	 */
 	void makeProgressToSelected(QString skill, double val);
-	/**
-	 * Scales grapjicsView to ensure scene fits it.
-	 * @author timattt
-	 */
-	void refit();
 	//======================================================
     
 private slots:
 
     // Slots
 	//======================================================
-	void on_pushButton_2_clicked();
+	void on_addNode_clicked();
 	void on_zoomOut_clicked();
 	void on_zoomIn_clicked();
-	void on_areaDec_clicked();
-	void on_areaIn_clicked();
-	void on_attFact_editingFinished();
-    void on_repFact_editingFinished();
-    void on_ownLength_editingFinished();
     void on_repaintAll_stateChanged(int v);
     void on_designBox_currentTextChanged(QString v);
+    void on_focusOn_clicked();
+    void on_options_clicked();
     //======================================================
 
 signals:
@@ -364,5 +381,6 @@ signals:
 	 */
 	void progressMadeToSelected(QString skill, double lev);
 	//======================================================
+
 };
 #endif

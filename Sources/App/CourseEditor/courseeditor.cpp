@@ -395,7 +395,7 @@ void CourseEditor::fromFileToGui(CourseUnit *crs) {
 	NOT_NULL(crs);
 	NOT_NULL(head);
 
-	fromCourseUnitToNode(crs, head);
+	head->fromCourseUnitToNode(crs);
 
 	ui->widget->unpack(crs);
 
@@ -406,7 +406,7 @@ void CourseEditor::fromGuiToFile(CourseUnit *crs) {
 	NOT_NULL(crs);
 	NOT_NULL(head);
 
-	fromNodeToCourseUnit(head, crs);
+	head->fromNodeToCourseUnit(crs);
 
 	ui->widget->pack(crs);
 }
