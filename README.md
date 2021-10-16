@@ -11,6 +11,9 @@
 5. [**Для участников проекта**](https://github.com/timattt/Project-Cognitia-II/blob/main/About/forContributors.md)
 6. [**Текущие задачи**](https://github.com/timattt/Project-Cognitia-II/projects/1)
 
+
+<img src="https://github.com/timattt/Project-Cognitia-II/blob/main/About/WorkingImages/Icon.jpg" alt="drawing" width="200"/>
+
 # Описание проекта
 
 Проект призван упростить жизнь составителям курсов и методистам, предложив им гибкую и удобную систему редактирования материала, планирования времени и контроля знаний учеников.
