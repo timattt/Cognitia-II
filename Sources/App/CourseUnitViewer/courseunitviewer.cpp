@@ -321,6 +321,8 @@ void CourseUnitViewer::on_designBox_currentTextChanged(QString v) {
 			node->update();
 		}
 	}
+
+	scene->update();
 }
 
 bool CourseUnitViewer::isEditable() {

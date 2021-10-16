@@ -132,7 +132,7 @@ float Viewport::getCurScale() const {
 }
 
 void Viewport::wheelEvent(QWheelEvent *event) {
-	float v = event->angleDelta().y() / 750.0;
+	float v = event->angleDelta().y() / 1500.0;
 	addScale(v);
 
 	QPointF d = {event->position().x() - width() / 2, event->position().y() - height() / 2};
