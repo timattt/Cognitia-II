@@ -20,6 +20,8 @@ int main(int argc, char *argv[])
     try{
     QApplication a(argc, argv);
 
+    a.setWindowIcon(QIcon(":/logos/Logos/Icon.png"));
+
     Launcher launcher;
     SkillPackEditor skillPackEditor;
     CourseEditor courseEditor;
