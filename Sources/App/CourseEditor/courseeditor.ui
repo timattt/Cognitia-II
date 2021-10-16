@@ -458,7 +458,7 @@ QSplitter::handle:vertical {
     <string>Open skillPack</string>
    </property>
    <property name="toolTip">
-    <string>Open CourseUnit</string>
+    <string>Open skillPack</string>
    </property>
   </action>
   <action name="actionHelp_me">
