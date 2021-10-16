@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>907</width>
+    <width>940</width>
     <height>690</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>CourseEditor</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
@@ -358,7 +358,7 @@ QSplitter::handle:vertical {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>907</width>
+     <width>940</width>
      <height>21</height>
     </rect>
    </property>

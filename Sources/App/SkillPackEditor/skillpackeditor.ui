@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>SkillPackEditor</string>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>

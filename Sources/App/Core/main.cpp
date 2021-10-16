@@ -44,7 +44,8 @@ int main(int argc, char *argv[])
 
              return a.exec();
     }
-    catch (const QString mess){
+    catch (const QString & mess){
         SAY(mess);
+        return 0;
     }
 }
