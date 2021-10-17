@@ -32,7 +32,16 @@ void Viewport::mouseMoveEvent(QMouseEvent *event) {
 void Viewport::mousePressEvent(QMouseEvent *event) {
 	prev = mapToScene(event->pos());
 
-	if (event->button() == Qt::LeftButton && scene()->items(prev).size() == 0) {
+	bool ok = true;
+
+	for (QGraphicsItem * it : scene()->items(prev)) {
+		Node * nd = dynamic_cast<Node*>(it);
+		if (nd != nullptr) {
+			ok = false;
+		}
+	}
+
+	if (event->button() == Qt::LeftButton && ok) {
 		pressed = true;
 	} else {
 		pressed = false;
