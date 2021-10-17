@@ -333,7 +333,6 @@ void CourseUnitViewer::setEditable(bool v) {
 	editable = v;
 	ui->addNode->setVisible(v);
 	ui->deleteModeCheckbox->setVisible(v);
-	ui->focusOn->setVisible(v);
 }
 
 void CourseUnitViewer::setPaths(QMap<QString, QString> paths) {
