@@ -60,6 +60,8 @@ private:
     quint32 nextblocksize;
     QMap<QTcpSocket*, QString> Users;
     QMap<QTcpSocket*, QString> Mentors;
+    QString courseUnitdir;
+    QString skillpackdir;
 
 public:
     explicit Server(QWidget *parent = nullptr);
@@ -169,6 +171,8 @@ private slots:
     void on_chooseParent_clicked();
 
     void on_helpButton_clicked();
+
+    void on_setskpButton_clicked();
 
 public slots:
 

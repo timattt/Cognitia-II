@@ -37,7 +37,6 @@ void log_say(QString mes, const char *file, int line) {
 	QString m = formHeader(file, line) + (mes);
 
 	stream << m << '\n';
-	qInfo() << m;
 	printf("%s\n", m.toStdString().c_str());
 	fflush(stdout);
 

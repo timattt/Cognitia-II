@@ -48,6 +48,11 @@ void Server::on_StopServ_clicked()
 void Server::on_StartServ_clicked()
 {
 
+    if(!(ui -> skplineEdit -> text().size() && ui -> courselineEdit -> text().size())){
+        ui->Log->append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + "Please choose course and skillpack to start Server\n");
+        return;
+    }
+
     if (mtcpServ -> isListening())
     {
         ui->Log->append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + "Server has already been started!\n");
@@ -177,7 +182,7 @@ void Server::handleReq(QTcpSocket* client, const QByteArray &data){
             !SendSkillpacktoClient(client, name) ||
             !SendStudentProgresstoClient(client, name))
         {
-            sendToClient(client, static_cast<quint16>(retrieveFail), "");
+            sendToClient(client, static_cast<quint16>(retrieveFailAutorisation), "");
             ui->Log-> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + QString("Fail! to send CU + SkP to ") + name);
             break;
         }
@@ -196,14 +201,14 @@ void Server::handleReq(QTcpSocket* client, const QByteArray &data){
         if (!SendCoursetoClient(client, name) ||
             !SendSkillpacktoClient(client, name))
         {
-            sendToClient(client, static_cast<quint16>(retrieveFail), "");
+            sendToClient(client, static_cast<quint16>(retrieveFailAutorisation), "");
             ui->Log-> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + QString("Fail! to send CU + SkP to ") + name);
             break;
         }
 
         for (int i = 0; i < students.size(); ++i){
             if(!SendStudentProgresstoClient(client, students[i])){
-                sendToClient(client, static_cast<quint16>(retrieveFail), "");
+                sendToClient(client, static_cast<quint16>(retrieveFailAutorisation), "");
                 ui->Log-> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + QString("Fail! to send SP ") + students[i]
                                  + QString(" to ") + name);
                 return;
@@ -270,8 +275,10 @@ bool Server::SendFile(const QString& filename, QTcpSocket *client, quint16 code)
 
             file.close();
        }
-    else
+    else{
+        SAY("Cant open the file " + filename)
         return false;
+    }
     return true;
 }
 
@@ -282,14 +289,14 @@ bool Server::SendCoursetoClient(QTcpSocket *client, const QString &name){
      ui->Log-> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + QString("Sendind course to ") + name);
 
      QStringList filters;
-     QDir curdir = QDir();
+     QDir curdir = QDir(courseUnitdir);
      filters << QString("*") + MAIN_COURSEUNIT_FILE_EXTENSION << QString("*") + QString(COURSE_UNIT_FILE_EXTENSION);
      curdir.setNameFilters(filters);
      QStringList courseFiles = curdir.entryList();
 
      for (int i = 0; i < courseFiles.size(); ++i){
 
-         if(!SendFile(courseFiles[i], client, static_cast<quint16>(retrieveCourseUnit)))
+         if(!SendFile(courseUnitdir + '/' + courseFiles[i], client, static_cast<quint16>(retrieveCourseUnit)))
              return false;
 
      }
@@ -305,7 +312,7 @@ bool Server::SendSkillpacktoClient(QTcpSocket *client, const QString &name){
 
      ui->Log-> append("[" + QTime::currentTime().toString("hh:mm:ss.zzz") + "] " + QString("Sendind skillpack to ") + name);
      QDataStream out(client);
-     QDir curdir = QDir();
+     QDir curdir = QDir(skillpackdir);
 
      QStringList filters;
      filters << QString("*") + QString(SKILL_FILE_EXTENSION) << QString("*") + QString(SKILL_PACK_FILE_EXTENSION);
@@ -315,7 +322,7 @@ bool Server::SendSkillpacktoClient(QTcpSocket *client, const QString &name){
 
      for (int i = 0; i < courseFiles.size(); ++i){
 
-         if(!SendFile(courseFiles[i], client, static_cast<quint16>(retrieveSkillpack)))
+         if(!SendFile(skillpackdir + '/' + courseFiles[i], client, static_cast<quint16>(retrieveSkillpack)))
              return false;
 
      }
@@ -418,7 +425,12 @@ void Server::on_chooseParent_clicked()
         return;
     }
 
-    QFile file(QString("crusial") + MAIN_COURSEUNIT_FILE_EXTENSION);
+    courseUnitdir = QFileInfo(name).absoluteDir().absolutePath();
+
+    QFile file(courseUnitdir + '/' + QString("crusial") + MAIN_COURSEUNIT_FILE_EXTENSION);
+
+
+    ui -> courselineEdit -> setText(courseUnitdir + name);
 
     if (file.open(QIODevice::WriteOnly))
        {
@@ -435,5 +447,17 @@ void Server::on_helpButton_clicked()
 {
     SmartHelper helper(":/help/Help/ServerHelp.txt", this);
     helper.exec();
+}
+
+
+void Server::on_setskpButton_clicked()
+{
+    skillpackdir = QFileDialog::getExistingDirectory(this, "Choose the directory with the skillpack");
+    if (skillpackdir.length() == 0){
+        return;
+    }
+
+    ui -> skplineEdit -> setText(skillpackdir);
+
 }
 

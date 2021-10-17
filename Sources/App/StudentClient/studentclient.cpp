@@ -258,8 +258,12 @@ void StudentClient::LoadCourse(){
     filters << QString("*") + MAIN_COURSEUNIT_FILE_EXTENSION;
     curdir.setNameFilters(filters);
 
-    QFile fileMain( curdir.entryList()[0]);
+    QStringList list = curdir.entryList();
+    ASSERT(list.size())
 
+    QFile fileMain(list[0]);
+
+    SAY("lOAD COURSE")
 
     if (fileMain.open(QIODevice::ReadOnly)){
 
@@ -281,7 +285,10 @@ void StudentClient::LoadCourse(){
 
 void StudentClient::LoadSkillpack(){
     QDir curdir = QDir();
-    QFile pack(curdir.entryList(QStringList() << QString("*") + QString(SKILL_PACK_FILE_EXTENSION))[0]);
+    QStringList list = curdir.entryList(QStringList() << QString("*") + QString(SKILL_PACK_FILE_EXTENSION));
+    ASSERT(list.size())
+    QFile pack(list[0]);
+    SAY("LOAD SKILLPACK")
     try {
         skillpack -> load(&pack);
     }
@@ -294,7 +301,11 @@ void StudentClient::LoadSkillpack(){
 void StudentClient::LoadStudentsProgresses(){
     QDir curdir = QDir();
 
-    QFile prog(curdir.entryList(QStringList() << QString("*") + QString(STUDENT_PROGRESS_FILE_EXTENSION))[0]);
+    QStringList list = curdir.entryList(QStringList() << QString("*") + QString(STUDENT_PROGRESS_FILE_EXTENSION));
+    ASSERT(list.size())
+    QFile prog(list[0]);
+
+    SAY("LOAD  PROGRESS ")
     try {
         progress -> load(&prog);
     }
