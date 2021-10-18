@@ -36,6 +36,8 @@ SOURCES += \
     CourseUnitViewer/viewport.cpp \
     CourseEditor/skillsmodel.cpp \
     Server/server.cpp \
+    StudentClient/AllSkillsGui/allskills.cpp \
+    StudentClient/InAbsoluteSkillGui/inabsoluteskill.cpp \
     StudentClient/studentclient.cpp \
     CourseUnitViewer/Node/Design/nodedesign.cpp \
     CourseUnitViewer/Node/Design/nodedesignformal.cpp \
@@ -70,6 +72,8 @@ HEADERS += \
     CourseEditor/skillsmodel.h\
     Server/server.h \
     Structures/fileExtensions.h \
+    StudentClient/AllSkillsGui/allskills.h \
+    StudentClient/InAbsoluteSkillGui/inabsoluteskill.h \
     StudentClient/studentclient.h \
     CourseUnitViewer/Node/Design/nodedesign.h \
     CourseUnitViewer/Node/Design/nodedesignolive.h \
@@ -91,6 +95,8 @@ FORMS += \
     SkillsFlower/skillsflower.ui \
     SkillsMixer/skillsmixer.ui \
     SkillsMixer/skillsmixerholder.ui \
+    StudentClient/AllSkillsGui/allskills.ui \
+    StudentClient/InAbsoluteSkillGui/inabsoluteskill.ui \
     StudentClient/studentclient.ui
 
 # Default rules for deployment.

@@ -35,11 +35,13 @@ StudentClient::StudentClient() :
     connect(mSocket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), SLOT(slotError(QAbstractSocket::SocketError)));
     connect(chooseserv, SIGNAL(onServConnectclicked()), SLOT(startConnection()));
     connect(chooseserv, SIGNAL(chooseServClosed()), SLOT(onChooseServClosed()));
-    connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->flower, SLOT(unpack(Node*)));
-    connect(ui->flower, SIGNAL(skillLevelChanged(QString, double)), ui->courseUnitViewer, SLOT(makeProgressToSelected(QString, double)));
+
+    connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->inAbsolute, SLOT(unpack(Node*)));
+    connect(ui->courseUnitViewer, SIGNAL(progressMadeToSelected(QString, double)), ui->inAbsolute, SLOT(progressMade(QString, double)));
+    connect(ui->inAbsolute, SIGNAL(skillLevelChanged(QString, double)), ui->courseUnitViewer, SLOT(makeProgressToSelected(QString, double)));
+
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), this, SLOT(nodeSelected(Node*)));
 
-    ui->flower->setEditable(false);
     ui->courseUnitViewer->setEditable(false);
 
 
@@ -235,20 +237,25 @@ void StudentClient::confirmConnection(){
 
     chooseserv -> hide();
     this -> setEnabled(true);
-    ui -> StudentName -> setText(chooseserv -> getName());
-    ui -> statusbar -> showMessage("");
+
+    ui -> statusbar -> showMessage("Student connected: " + chooseserv -> getName());
     OpenCourse();
 }
 
 void StudentClient::nodeSelected(Node *nd) {
 	if (nd == nullptr) {
-		ui->childDescr->clear();
-		ui->childCu->clear();
+		ui->cuDescription->clear();
+		ui->cuName->clear();
 
-		ui->flower->unpackEmbed(courseUnit, progress);
+		ui->inAbsolute->clearAll();
+
+		if (courseUnit != nullptr) {
+			ui->cuName->setText(this->courseUnit->objectName());
+			ui->cuDescription->setMarkdown(this->courseUnit->getDescription());
+		}
 	} else {
-		ui->childDescr->setMarkdown(nd->getDescription());
-		ui->childCu->setText(nd->getName());
+		ui->cuDescription->setMarkdown(nd->getDescription());
+		ui->cuName->setText(nd->getName());
 	}
 }
 
@@ -273,7 +280,7 @@ void StudentClient::LoadCourse(){
         try {
             courseUnit -> loadCourseUnit(&course);
         }
-        catch (QString message){
+        catch (QString & message){
            SAY(message);
         }
     } else {
@@ -328,25 +335,21 @@ void StudentClient::OpenCourse(){
 void StudentClient::ClearAll(){
     ui->courseUnitViewer->clearAllScene();
 
-    ui->flower->unpackEmbed(nullptr, nullptr);
+    ui->inAbsolute->clearAll();
 
-    ui->childDescr->clear();
-    ui->parentDescr->clear();
-
-    ui->childCu->clear();
-    ui->parentCu->clear();
+    ui->cuName->clear();
+    ui->cuDescription->clear();
 }
 
 
 void StudentClient::display(){
     ClearAll();
 
-	ui->parentDescr->setMarkdown(courseUnit->getDescription());
+	ui->cuDescription->setMarkdown(courseUnit->getDescription());
 	ui->courseUnitViewer->unpack(courseUnit);
-	ui->parentCu->setText(courseUnit->objectName());
+	ui->cuName->setText(courseUnit->objectName());
 
 	ui->courseUnitViewer->unpack(progress);
-	ui->flower->unpackEmbed(courseUnit, progress);
 }
 
 void StudentClient::sendToServer(quint16 code, const QString& str){
