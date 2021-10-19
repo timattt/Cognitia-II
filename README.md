@@ -2,7 +2,9 @@
 
 ![](https://github.com/timattt/Project-Cognitia-II/blob/main/About/WorkingImages/Logo.jpg)
 
-**Visit** [www.timattt.su](www.timattt.su)
+
+
+**Visit** [www.timattt.su](http://timattt.su/Cognitia-II.html)
 
 # Содержание
 
