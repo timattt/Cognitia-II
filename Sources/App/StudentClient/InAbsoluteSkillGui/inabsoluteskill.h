@@ -7,21 +7,33 @@ namespace Ui {
 class InAbsoluteSkill;
 }
 
+// used classes
+//==============================================
 class Node;
 class StudentProgress;
 class CourseUnit;
+//==============================================
 
+/**
+ * This class is used to show all income skills and student progress in it for given node.
+ *
+ */
 class InAbsoluteSkill : public QWidget
 {
     Q_OBJECT
 
 public:
 
+	// constructor and destructor
+	//==============================================
     InAbsoluteSkill(QWidget *parent);
     ~InAbsoluteSkill();
+    //==============================================
 
 public slots:
 
+	// public slots
+	//==============================================
 	/**
 	 * Clears everything from this widget.
 	 * @author timattt
@@ -36,13 +48,14 @@ public slots:
 	void progressMade(QString skill, double lev);
 
     /**
-     * Unpacks to this gui single node.
+     * Unpacks single node to this gui.
      * This will be called when some node is selected.
-     * If argument are nullptr then it will only clears everything.
+     * Can be nullptr if no node is selected.
      * @param nd - node that will be unpacked. Can be nullptr.
      * @author timattt
      */
     void unpack(Node * nd);
+    //==============================================
 
 signals:
 
@@ -60,7 +73,11 @@ signals:
 
 private:
 
+	// private functions
+	//==============================================
     Ui::InAbsoluteSkill *ui;
+    //==============================================
+
 };
 
 #endif // INABSOLUTESKILL_H

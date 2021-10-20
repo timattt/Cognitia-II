@@ -168,6 +168,7 @@ QSplitter::handle:vertical {
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionExpand"/>
    <addaction name="actionChange_Server"/>
    <addaction name="actionSave_all_and_send"/>
    <addaction name="actionTest_Connection"/>
@@ -197,6 +198,11 @@ QSplitter::handle:vertical {
   <action name="actionReturn_to_Launcher">
    <property name="text">
     <string>Return to Launcher</string>
+   </property>
+  </action>
+  <action name="actionExpand">
+   <property name="text">
+    <string>Expand</string>
    </property>
   </action>
  </widget>

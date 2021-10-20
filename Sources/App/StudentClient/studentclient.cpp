@@ -89,14 +89,15 @@ void StudentClient::on_actionChange_Server_triggered()
     chooseserv -> show();
 }
 
-
 void StudentClient::onChooseServClosed(){
     this -> setEnabled(true);
      chooseserv -> setButtonEnabled();
     ui->statusbar->showMessage("Server isnt connected, Please connect to the server");
 }
 
-
+void StudentClient::on_actionExpand_triggered() {
+	ui->allSkills->setVisible(!ui->allSkills->isVisible());
+}
 
 void StudentClient::onStart(){
     this -> setEnabled(false);

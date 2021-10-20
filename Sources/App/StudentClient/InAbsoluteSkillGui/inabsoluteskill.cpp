@@ -1,5 +1,6 @@
 #include "inabsoluteskill.h"
 #include "ui_inabsoluteskill.h"
+#include "../../Core/logger.h"
 
 InAbsoluteSkill::InAbsoluteSkill(QWidget *parent) :
     QWidget(parent),
@@ -17,7 +18,10 @@ void InAbsoluteSkill::clearAll() {
 }
 
 void InAbsoluteSkill::progressMade(QString skill, double lev) {
+	Q_UNUSED(skill);
+	Q_UNUSED(lev);
 }
 
 void InAbsoluteSkill::unpack(Node *nd) {
+	Q_UNUSED(nd);
 }

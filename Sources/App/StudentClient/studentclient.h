@@ -182,6 +182,8 @@ private slots:
 
 	void on_actionSave_all_and_send_triggered();
 
+	void on_actionExpand_triggered();
+
 	void on_actionReturn_to_Launcher_triggered();
 
     /**!
