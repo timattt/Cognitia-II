@@ -76,7 +76,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="chat" native="true">
+     <widget class="ClientChat" name="chat" native="true">
       <property name="minimumSize">
        <size>
         <width>100</width>
@@ -93,6 +93,12 @@
    <class>OutDeltaSkills</class>
    <extends>QWidget</extends>
    <header>StudentClient/CourseUnitInfoPanel/outdeltaskills.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ClientChat</class>
+   <extends>QWidget</extends>
+   <header>ClientChat/clientchat.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

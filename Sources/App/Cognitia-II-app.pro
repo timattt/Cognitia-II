@@ -13,6 +13,7 @@ CONFIG += c++17
 
 SOURCES += \
     ChooseServ/chooseserv.cpp \
+    ClientChat/clientchat.cpp \
     CourseEditor/courseeditor.cpp \
     CourseUnitViewer/Node/Design/nodedesignshape.cpp \
     CourseUnitViewer/courseunitviewer.cpp \
@@ -51,6 +52,7 @@ SOURCES += \
 
 HEADERS += \
     ChooseServ/chooseserv.h \
+    ClientChat/clientchat.h \
     CourseUnitViewer/viewport.h \
     CourseEditor/courseeditor.h \
     CourseUnitViewer/Node/Design/nodedesignshape.h \
@@ -90,6 +92,7 @@ HEADERS += \
 
 FORMS += \
     ChooseServ/chooseserv.ui \
+    ClientChat/clientchat.ui \
     CourseEditor/courseeditor.ui \
     CourseUnitViewer/courseunitviewer.ui \
     CourseUnitViewer/courseunitviewersettings.ui \
