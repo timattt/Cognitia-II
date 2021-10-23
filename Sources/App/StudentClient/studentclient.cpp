@@ -36,14 +36,20 @@ StudentClient::StudentClient() :
     connect(chooseserv, SIGNAL(onServConnectclicked()), SLOT(startConnection()));
     connect(chooseserv, SIGNAL(chooseServClosed()), SLOT(onChooseServClosed()));
 
+    connect(ui->courseUnitViewer, SIGNAL(nodeDoubleClicked(Node*)), this, SLOT(nodeDoubleClicked(Node*)));
+
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->inAbsolute, SLOT(unpack(Node*)));
     connect(ui->courseUnitViewer, SIGNAL(progressMadeToSelected(QString, double)), ui->inAbsolute, SLOT(progressMade(QString, double)));
     connect(ui->inAbsolute, SIGNAL(skillLevelChanged(QString, double)), ui->courseUnitViewer, SLOT(makeProgressToSelected(QString, double)));
 
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), this, SLOT(nodeSelected(Node*)));
+    connect(ui->courseUnitViewer, SIGNAL(nodeDoubleClicked(Node*)), ui->cuPanel, SLOT(prepareNode(Node*)));
 
     ui->courseUnitViewer->setEditable(false);
+    setCUInfoVisible(false);
 
+    ui->cuPanel->setClient(this);
+    ui->cuPanel->setVisible(false);
 
     SAY("StudentClient init finished");
 }
@@ -254,6 +260,7 @@ void StudentClient::nodeSelected(Node *nd) {
 			ui->cuName->setText(this->courseUnit->objectName());
 			ui->cuDescription->setMarkdown(this->courseUnit->getDescription());
 		}
+
 	} else {
 		ui->cuDescription->setMarkdown(nd->getDescription());
 		ui->cuName->setText(nd->getName());
@@ -335,7 +342,7 @@ void StudentClient::OpenCourse(){
 
 void StudentClient::ClearAll(){
     ui->courseUnitViewer->clearAllScene();
-
+    ui->allSkills->clearAll();
     ui->inAbsolute->clearAll();
 
     ui->cuName->clear();
@@ -349,6 +356,7 @@ void StudentClient::display(){
 	ui->cuDescription->setMarkdown(courseUnit->getDescription());
 	ui->courseUnitViewer->unpack(courseUnit);
 	ui->cuName->setText(courseUnit->objectName());
+	ui->allSkills->setSkp(skillpack);
 
 	ui->courseUnitViewer->unpack(progress);
 }
@@ -404,3 +412,55 @@ void StudentClient::on_actionHelp_me_triggered()
     helper.exec();
 }
 
+void StudentClient::setCUInfoVisible(bool v) {
+	ui->cuPanel->setVisible(v);
+	ui->mainPanel->setVisible(!v);
+	ui->allSkills->setVisible(false);
+}
+
+CourseUnitViewer* StudentClient::getCourseUnitViewer() {
+	return ui->courseUnitViewer;
+}
+
+void StudentClient::on_actionSet_course_unit_triggered() {
+	QString path = QFileDialog::getOpenFileName(this, "Select course unit file", QString(), QString("(*") + COURSE_UNIT_FILE_EXTENSION + QString(")"));
+
+    QFile f = QFile(path);
+
+    if (!f.exists()) {
+    	ui->statusbar->showMessage("Bad course unit!");
+    	return;
+    }
+
+    try {
+    	courseUnit->loadCourseUnit(&f);
+    } catch (QString & err) {
+    	ui->statusbar->showMessage("Bad course unit!");
+    }
+
+    display();
+}
+
+void StudentClient::on_actionSet_skill_pack_triggered() {
+	QString path = QFileDialog::getOpenFileName(this, "Select skill pack file", QString(), QString("(*") + SKILL_PACK_FILE_EXTENSION + QString(")"));
+
+    QFile f = QFile(path);
+
+    if (!f.exists()) {
+    	ui->statusbar->showMessage("Bad skill pack!");
+    	return;
+    }
+
+    try {
+    	skillpack->load(&f);
+    } catch (QString & err) {
+    	ui->statusbar->showMessage("Bad skill pack!");
+    }
+
+    display();
+}
+
+void StudentClient::nodeDoubleClicked(Node *nd) {
+	Q_UNUSED(nd);
+	setCUInfoVisible(true);
+}

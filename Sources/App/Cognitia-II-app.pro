@@ -37,6 +37,9 @@ SOURCES += \
     CourseEditor/skillsmodel.cpp \
     Server/server.cpp \
     StudentClient/AllSkillsGui/allskills.cpp \
+    StudentClient/AllSkillsGui/skillwidget.cpp \
+    StudentClient/CourseUnitInfoPanel/courseunitinfo.cpp \
+    StudentClient/CourseUnitInfoPanel/outdeltaskills.cpp \
     StudentClient/InAbsoluteSkillGui/inabsoluteskill.cpp \
     StudentClient/studentclient.cpp \
     CourseUnitViewer/Node/Design/nodedesign.cpp \
@@ -73,6 +76,9 @@ HEADERS += \
     Server/server.h \
     Structures/fileExtensions.h \
     StudentClient/AllSkillsGui/allskills.h \
+    StudentClient/AllSkillsGui/skillwidget.h \
+    StudentClient/CourseUnitInfoPanel/courseunitinfo.h \
+    StudentClient/CourseUnitInfoPanel/outdeltaskills.h \
     StudentClient/InAbsoluteSkillGui/inabsoluteskill.h \
     StudentClient/studentclient.h \
     CourseUnitViewer/Node/Design/nodedesign.h \
@@ -96,6 +102,9 @@ FORMS += \
     SkillsMixer/skillsmixer.ui \
     SkillsMixer/skillsmixerholder.ui \
     StudentClient/AllSkillsGui/allskills.ui \
+    StudentClient/AllSkillsGui/skillwidget.ui \
+    StudentClient/CourseUnitInfoPanel/courseunitinfo.ui \
+    StudentClient/CourseUnitInfoPanel/outdeltaskills.ui \
     StudentClient/InAbsoluteSkillGui/inabsoluteskill.ui \
     StudentClient/studentclient.ui
 

@@ -37,21 +37,11 @@ QSplitter::handle:vertical {
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
-     <widget class="AllSkills" name="allSkills" native="true">
-      <property name="minimumSize">
-       <size>
-        <width>100</width>
-        <height>100</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item>
      <widget class="QSplitter" name="splitter_2">
       <property name="orientation">
-       <enum>Qt::Vertical</enum>
+       <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="CourseUnitViewer" name="courseUnitViewer" native="true">
+      <widget class="AllSkills" name="allSkills" native="true">
        <property name="minimumSize">
         <size>
          <width>100</width>
@@ -59,65 +49,11 @@ QSplitter::handle:vertical {
         </size>
        </property>
       </widget>
-      <widget class="QSplitter" name="splitter">
+      <widget class="QSplitter" name="mainPanel">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Vertical</enum>
        </property>
-       <widget class="QSplitter" name="courseUnitInfo">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <widget class="QWidget" name="parentInfo" native="true">
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <item>
-             <widget class="QLabel" name="label">
-              <property name="font">
-               <font>
-                <pointsize>8</pointsize>
-                <weight>50</weight>
-                <bold>false</bold>
-               </font>
-              </property>
-              <property name="text">
-               <string>CourseUnit name:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="cuName">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>Description:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QTextEdit" name="cuDescription">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </widget>
-       <widget class="InAbsoluteSkill" name="inAbsolute" native="true">
+       <widget class="CourseUnitViewer" name="courseUnitViewer" native="true">
         <property name="minimumSize">
          <size>
           <width>100</width>
@@ -125,6 +61,81 @@ QSplitter::handle:vertical {
          </size>
         </property>
        </widget>
+       <widget class="QSplitter" name="splitter">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <widget class="QSplitter" name="courseUnitInfo">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <widget class="QWidget" name="parentInfo" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QLabel" name="label">
+               <property name="font">
+                <font>
+                 <pointsize>8</pointsize>
+                 <weight>50</weight>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>CourseUnit name:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="cuName">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>Description:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTextEdit" name="cuDescription">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+        <widget class="InAbsoluteSkill" name="inAbsolute" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>100</height>
+          </size>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="CourseUnitInfo" name="cuPanel" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>100</height>
+        </size>
+       </property>
       </widget>
      </widget>
     </item>
@@ -154,8 +165,16 @@ QSplitter::handle:vertical {
     <addaction name="actionHelp_me"/>
     <addaction name="actionReturn_to_Launcher"/>
    </widget>
+   <widget class="QMenu" name="menuDev">
+    <property name="title">
+     <string>Dev</string>
+    </property>
+    <addaction name="actionSet_course_unit"/>
+    <addaction name="actionSet_skill_pack"/>
+   </widget>
    <addaction name="menuServer"/>
    <addaction name="menuHelp"/>
+   <addaction name="menuDev"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -205,6 +224,16 @@ QSplitter::handle:vertical {
     <string>Expand</string>
    </property>
   </action>
+  <action name="actionSet_course_unit">
+   <property name="text">
+    <string>Set course unit</string>
+   </property>
+  </action>
+  <action name="actionSet_skill_pack">
+   <property name="text">
+    <string>Set skill pack</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -223,6 +252,12 @@ QSplitter::handle:vertical {
    <class>AllSkills</class>
    <extends>QWidget</extends>
    <header>StudentClient/AllSkillsGui/allskills.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CourseUnitInfo</class>
+   <extends>QWidget</extends>
+   <header>StudentClient/CourseUnitInfoPanel/courseunitinfo.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -17,6 +17,7 @@ class SkillPack;
 class StudentProgress;
 class ChooseServ;
 class CourseUnit;
+class CourseUnitViewer;
 //========================================================
 
 /**!
@@ -80,6 +81,13 @@ public:
 	//========================================================
 	StudentClient();
 	~StudentClient();
+	//========================================================
+
+public:
+
+	// public functions
+	//========================================================
+	void setCUInfoVisible(bool v);
 	//========================================================
 
 private:
@@ -184,6 +192,10 @@ private slots:
 
 	void on_actionExpand_triggered();
 
+	void on_actionSet_course_unit_triggered();
+
+	void on_actionSet_skill_pack_triggered();
+
 	void on_actionReturn_to_Launcher_triggered();
 
     /**!
@@ -196,6 +208,18 @@ private slots:
 
     void on_actionHelp_me_triggered();
 
+public:
+
+    // public slots
+    //========================================================
+    /**
+     * Gives CUV instance from this UI.
+     * @param CUV object
+     * @author timattt
+     */
+    CourseUnitViewer* getCourseUnitViewer();
+    //========================================================
+
 public slots:
 
 	// public slots
@@ -207,6 +231,7 @@ public slots:
 	 */
 	void nodeSelected(Node *nd);
 	void onStart();
+	void nodeDoubleClicked(Node * nd);
 	//===================================================
 
 signals:

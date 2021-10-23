@@ -233,3 +233,23 @@ void CourseScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event) {
 	// Do not delete this function. It is used in drag and drop skill operation
 	Q_UNUSED(event);
 }
+
+void CourseScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
+	QList<QGraphicsItem*> its = this->items(event->lastScenePos());
+
+	Node *nd = nullptr;
+	Edge *ed = nullptr;
+
+	for (QGraphicsItem *it : its) {
+		if (nd == nullptr) {
+			nd = dynamic_cast<Node*>(it);
+		}
+		if (ed == nullptr) {
+			ed = dynamic_cast<Edge*>(it);
+		}
+	}
+
+	if (nd != nullptr && !view->deleteModeIsOn() && dragEdge == nullptr) {
+		emit view->nodeDoubleClicked(nd);
+	}
+}

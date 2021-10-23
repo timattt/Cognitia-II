@@ -380,6 +380,13 @@ signals:
 	 * @author timattt
 	 */
 	void progressMadeToSelected(QString skill, double lev);
+	/**
+	 * This signal is emited when some node is double clicked.
+	 * Delete mode may be off and viewer may be editable.
+	 * @param nd - Node which was doubleclicked
+	 * @author timattt
+	 */
+	void nodeDoubleClicked(Node * nd);
 	//======================================================
 
 };

@@ -19,7 +19,9 @@ QTextStream stream(&logFile);
 //==================================================================
 QString formHeader(const char *file, int line) {
 	 QString res = "[" + QDateTime::currentDateTime().toString() + "]";
-	 res += QString("[") + QString(file) + ":" + QString::number(line) + "] ";
+	 if (file != nullptr && strlen(file) > 0) {
+		 res += QString("[") + QString(file) + ":" + QString::number(line) + "] ";
+	 }
 	 return res;
 }
 //==================================================================
@@ -27,7 +29,29 @@ QString formHeader(const char *file, int line) {
 
 // global functions
 //==================================================================
+void cognitiaMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+	QByteArray localMsg = msg.toLocal8Bit();
+	switch (type) {
+	case QtDebugMsg:
+		log_say(localMsg.constData(), context.file, context.line);
+		break;
+	case QtInfoMsg:
+		log_say(localMsg.constData(), context.file, context.line);
+		break;
+	case QtWarningMsg:
+		log_say(localMsg.constData(), context.file, context.line);
+		break;
+	case QtCriticalMsg:
+		log_say(localMsg.constData(), context.file, context.line);
+		break;
+	case QtFatalMsg:
+		log_say(localMsg.constData(), context.file, context.line);
+		abort();
+	}
+}
 void log_init() {
+	qInstallMessageHandler(cognitiaMessageOutput);
 	logFile.remove();
 
 	logFile.open(QIODevice::WriteOnly);

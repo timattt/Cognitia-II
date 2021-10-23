@@ -353,11 +353,9 @@ void CourseUnitViewer::on_focusOn_clicked() {
 }
 
 void CourseUnitViewer::on_options_clicked() {
-	SAY(QString::number(attFac) + " " + QString::number(repFac) + " " + QString::number(ownLength));
 	CourseUnitViewerSettings sets(this, total_nodes, total_edges, total_items, attFac, repFac, ownLength);
 	sets.exec();
 	attFac = sets.attraction;
 	repFac = sets.repulsion;
 	ownLength = sets.ownLength;
-	SAY(QString::number(attFac) + " " + QString::number(repFac) + " " + QString::number(ownLength));
 }
