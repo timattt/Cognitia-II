@@ -104,7 +104,6 @@ FORMS += \
     SkillsFlower/skillsflower.ui \
     SkillsMixer/skillsmixer.ui \
     SkillsMixer/skillsmixerholder.ui \
-    StudentClient/AllSkillsGui/allskills.ui \
     StudentClient/AllSkillsGui/skillwidget.ui \
     StudentClient/CourseUnitInfoPanel/courseunitinfo.ui \
     StudentClient/CourseUnitInfoPanel/outdeltaskills.ui \

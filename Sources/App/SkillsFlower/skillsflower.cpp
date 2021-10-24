@@ -33,6 +33,9 @@ SkillsFlower::~SkillsFlower()
     delete ui;
 }
 
+/**
+ * @Deprecated
+ */
 void SkillsFlower::unpackEmbed(CourseUnit *cu, StudentProgress * prg) {
 	clearAll();
 

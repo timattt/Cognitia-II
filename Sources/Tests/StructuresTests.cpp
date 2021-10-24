@@ -70,6 +70,11 @@ void Test_Structures::saveAndLoadStudentProgress() {
 	sp.addProgress("CourseUnit4", "Skill4", 3.4);
 	sp.addProgress("CourseUnit5", "Skill5", 4.4);
 
+	sp.addMessage("CourseUnit1", "someone", "dfofodnddasdrt");
+	sp.addMessage("CourseUnit2", "some356one", "dfofodnddasddfghrt");
+	sp.addMessage("CourseUnit3", "someo2345ne", "dfofodnddfghdasdrt");
+	sp.addMessage("CourseUnit4", "someo2345ne", "dfosdfghfodnddasdrt");
+
 	QFile fl = QFile("test.cognitiaStudentProgress");
 
 	sp.save(&fl);

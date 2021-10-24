@@ -4,16 +4,11 @@
 #include "skillwidget.h"
 
 AllSkills::AllSkills(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::AllSkills),
-	skillPack(nullptr)
+	QWidget(parent),
+	skillPack(nullptr),
+	layout(nullptr)
 {
-    ui->setupUi(this);
-}
-
-AllSkills::~AllSkills()
-{
-    delete ui;
+	layout = new QVBoxLayout(this);
 }
 
 void AllSkills::clearAll() {
@@ -35,6 +30,11 @@ void AllSkills::setSkp(SkillPack *skp) {
 	for (int i = 0; i < skp->getSkillsCount(); i++) {
 		Skill * sk = skp->getSkill(i);
 		SkillWidget * w = new SkillWidget(this, sk);
-		this->ui->verticalLayout->addWidget(w);
+		layout->addWidget(w);
+	}
+	for (int i = 0; i < skp->getSkillsCount(); i++) {
+		Skill * sk = skp->getSkill(i);
+		SkillWidget * w = new SkillWidget(this, sk);
+		layout->addWidget(w);
 	}
 }

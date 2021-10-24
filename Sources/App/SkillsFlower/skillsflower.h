@@ -24,6 +24,8 @@ class Leaf;
  *
  * In this flower user can move leafs to change progress. Or you can just view progress.
  *
+ * @Deprecated
+ *
  * @author timattt
  */
 class SkillsFlower : public QWidget

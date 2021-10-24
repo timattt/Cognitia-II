@@ -1,11 +1,7 @@
 #ifndef ALLSKILLS_H
 #define ALLSKILLS_H
 
-#include <QWidget>
-
-namespace Ui {
-class AllSkills;
-}
+#include <QtWidgets>
 
 // used classes
 //==============================================
@@ -20,23 +16,23 @@ public:
 
 	// constructor and destructor
 	//==============================================
-    AllSkills(QWidget *parent);
-    ~AllSkills();
+    AllSkills(QWidget *parent = nullptr);
+    ~AllSkills() = default;
     //==============================================
 
-public:
+public slots:
 
-    // public functions
-    //==============================================
-    void clearAll();
-    void setSkp(SkillPack * skp);
-    //==============================================
+	// public slots
+	//==============================================
+	void setSkp(SkillPack * skp);
+	void clearAll();
+	//==============================================
 
 private:
 
     //==============================================
-    Ui::AllSkills *ui;
     SkillPack * skillPack;
+    QVBoxLayout *layout;
     //==============================================
 
 };

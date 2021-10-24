@@ -67,7 +67,12 @@ private:
 	 */
 	StudentProgress *progress;
 	ChooseServ *chooseserv;
-	QString StudentName;
+	/**
+	 * Represents name of the current user.
+	 * IF YO WANT TO CHANGE IT USE SETTER!!!
+	 * OTHERWISE IT WILL NOT WORK!!!
+	 */
+	QString studentName;
 
 	QByteArray datafromServer;
 	quint16 respCode;
@@ -94,6 +99,7 @@ private:
 
 	// private functions
 	//========================================================
+	void setStudentName(QString name);
     /**!
 	 filling the header of datagramm and send it to the server
 	 @param code - command to server that is choosen from serverCommands.h
@@ -138,12 +144,6 @@ private:
 	 @author - timattt
 	 */
 	void display();
-
-    /**!
-	 clears all widgets of the programm window
-	 @author - arfarafar
-	 */
-	void ClearAll();
 
     /**!
 	 * deletes old fields and make new ones
@@ -210,7 +210,7 @@ private slots:
 
 public:
 
-    // public slots
+    // public functions
     //========================================================
     /**
      * Gives CUV instance from this UI.
@@ -218,6 +218,7 @@ public:
      * @author timattt
      */
     CourseUnitViewer* getCourseUnitViewer();
+    QString getStudentName();
     //========================================================
 
 public slots:
@@ -239,6 +240,11 @@ signals:
 	// signals
 	//========================================================
 	void onClose();
+	void newStudentProgress(StudentProgress * prg);
+	void newCourseUnit(CourseUnit * cu);
+	void newSkillPack(SkillPack * skp);
+	void clearAll();
+	void newStudentName(QString name);
 	//========================================================
 };
 

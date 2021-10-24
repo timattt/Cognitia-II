@@ -11,6 +11,7 @@ class CourseUnitInfo;
 //=======================================
 class StudentClient;
 class Node;
+class StudentProgress;
 //=======================================
 
 class CourseUnitInfo : public QWidget
@@ -25,19 +26,6 @@ public:
     ~CourseUnitInfo();
     //=======================================
 
-public:
-
-    // public functions
-    //=======================================
-    /**
-     * Sets client gui this widget works with.
-     * May be initialized as soon as posible.
-     * @param cl - StudentClient class object.
-     * @author timattt
-	 */
-	void setClient(StudentClient *cl);
-	//=======================================
-
 public slots:
 
 	// public slots
@@ -48,6 +36,7 @@ public slots:
 	 * @author timattt
 	 */
 	void prepareNode(Node * nd);
+	void clearAll();
 	//=======================================
 
 private slots:
