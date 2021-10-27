@@ -1,5 +1,4 @@
 #include "allskills.h"
-#include "ui_allskills.h"
 #include "../../Structures/SkillPack/skillpack.h"
 #include "skillwidget.h"
 

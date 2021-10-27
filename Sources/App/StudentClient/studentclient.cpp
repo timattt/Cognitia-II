@@ -58,7 +58,7 @@ StudentClient::StudentClient() :
     connect(this, SIGNAL(clearAll()), ui->cuDescription, SLOT(clear()));
 
     ui->courseUnitViewer->setEditable(false);
-    setCUInfoVisible(false);
+    hideInfoPanel();
 
     ui->cuPanel->setVisible(false);
 
@@ -117,7 +117,7 @@ void StudentClient::onStart(){
     this -> setEnabled(false);
     chooseserv -> setEnabled(true);
     chooseserv -> show();
-    this -> show();
+    this -> showMaximized();
     ui->statusbar->showMessage("Server isnt connected");
 }
 
@@ -134,7 +134,8 @@ void StudentClient::startConnection(){
 
 void StudentClient::slotConnected(){
 	SAY("connected to server\n")
-	setStudentName(chooseserv->getName());
+	studentName = chooseserv->getName();
+	emit newStudentName(chooseserv->getName());
 	chooseserv->setButtonEnabled();
 	QDir dir = QDir();
 	if (!inworkingrepository) {
@@ -334,13 +335,11 @@ void StudentClient::LoadStudentsProgresses(){
 
 
 void StudentClient::OpenCourse(){
-
     LoadCourse();
     LoadSkillpack();
     LoadStudentsProgresses();
 
     display();
-
 }
 
 void StudentClient::display(){
@@ -413,12 +412,6 @@ void StudentClient::on_actionHelp_me_triggered()
     helper.exec();
 }
 
-void StudentClient::setCUInfoVisible(bool v) {
-	ui->cuPanel->setVisible(v);
-	ui->mainPanel->setVisible(!v);
-	ui->skillsList->setVisible(false);
-}
-
 CourseUnitViewer* StudentClient::getCourseUnitViewer() {
 	return ui->courseUnitViewer;
 }
@@ -461,16 +454,19 @@ void StudentClient::on_actionSet_skill_pack_triggered() {
     display();
 }
 
-QString StudentClient::getStudentName() {
-	return studentName;
-}
-
-void StudentClient::setStudentName(QString name) {
-	studentName = name;
-	emit newStudentName(name);
-}
-
 void StudentClient::nodeDoubleClicked(Node *nd) {
 	Q_UNUSED(nd);
-	setCUInfoVisible(true);
+	showInfoPanel();
+}
+
+void StudentClient::hideInfoPanel() {
+	ui->cuPanel->setVisible(false);
+	ui->mainPanel->setVisible(true);
+	ui->skillsList->setVisible(false);
+}
+
+void StudentClient::showInfoPanel() {
+	ui->cuPanel->setVisible(true);
+	ui->mainPanel->setVisible(false);
+	ui->skillsList->setVisible(false);
 }

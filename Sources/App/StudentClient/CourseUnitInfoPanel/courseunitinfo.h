@@ -39,19 +39,11 @@ public slots:
 	void clearAll();
 	//=======================================
 
-private slots:
-
-	// private slots
-	//=======================================
-	void on_returnBack_clicked();
-	//=======================================
-
 private:
 
 	// private fields
     //=======================================
     Ui::CourseUnitInfo *ui;
-    StudentClient * client;
     //=======================================
 
 };

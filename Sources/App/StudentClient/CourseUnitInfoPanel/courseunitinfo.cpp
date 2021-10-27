@@ -9,12 +9,11 @@
 
 CourseUnitInfo::CourseUnitInfo(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::CourseUnitInfo),
-	client(nullptr)
+    ui(new Ui::CourseUnitInfo)
 {
     ui->setupUi(this);
 
-    client = dynamic_cast<StudentClient*>(parent->parent());
+    StudentClient * client = dynamic_cast<StudentClient*>(parent->parent());
 
     NOT_NULL(client);
 
@@ -25,6 +24,8 @@ CourseUnitInfo::CourseUnitInfo(QWidget *parent) :
     connect(client, SIGNAL(clearAll()), ui->chat, SLOT(clearAll()));
     connect(client, SIGNAL(newStudentName(QString)), ui->chat, SLOT(studentNameChanged(QString)));
     connect(client, SIGNAL(clearAll()), ui->outDeltaSkills, SLOT(clearAll()));
+    connect(ui->returnBack, SIGNAL(clicked()), client, SLOT(hideInfoPanel()));
+
 }
 
 CourseUnitInfo::~CourseUnitInfo()
@@ -42,7 +43,4 @@ void CourseUnitInfo::clearAll() {
 	ui->cuName->clear();
 }
 
-void CourseUnitInfo::on_returnBack_clicked() {
-	client->setCUInfoVisible(false);
-}
 

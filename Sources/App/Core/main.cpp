@@ -11,7 +11,7 @@
 
 #define RETURNFROM(x) \
     QObject::connect(&x, SIGNAL(onClose()), &x, SLOT(hide())); \
-    QObject::connect(&x, SIGNAL(onClose()), &launcher, SLOT(show()));
+    QObject::connect(&x, SIGNAL(onClose()), &launcher, SLOT(showMaximized()));
 
 int main(int argc, char *argv[])
 {
@@ -30,8 +30,8 @@ int main(int argc, char *argv[])
 		MentorClient mentorClient;
 
     // Start other widgets
-    QObject::connect(&launcher, SIGNAL(startSkillPackEditor()), &skillPackEditor, SLOT(show()));
-    QObject::connect(&launcher, SIGNAL(startCourseEditor()), &courseEditor, SLOT(show()));
+    QObject::connect(&launcher, SIGNAL(startSkillPackEditor()), &skillPackEditor, SLOT(showMaximized()));
+    QObject::connect(&launcher, SIGNAL(startCourseEditor()), &courseEditor, SLOT(showMaximized()));
     QObject::connect(&launcher, SIGNAL(startStudentClient()), &studentClient, SLOT(onStart()));
     QObject::connect(&launcher, SIGNAL(startServer()), &server, SLOT(onStart()));
     QObject::connect(&launcher, SIGNAL(startMentorClient()), &mentorClient, SLOT(onStart()));
