@@ -434,7 +434,7 @@ void Server::on_chooseParent_clicked()
 
     if (file.open(QIODevice::WriteOnly))
        {
-            file.write(name.toUtf8());
+            file.write(name.section("/", -1).toUtf8());
             file.close();
        }
     else
