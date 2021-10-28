@@ -1,8 +1,9 @@
-#include "allskills.h"
-#include "../../Structures/SkillPack/skillpack.h"
-#include "skillwidget.h"
+#include "studentskillspanel.h"
 
-AllSkills::AllSkills(QWidget *parent) :
+#include "../../Structures/SkillPack/skillpack.h"
+#include "../StudentSkillsPanel/skillwidget.h"
+
+StudentSkillsPanel::StudentSkillsPanel(QWidget *parent) :
 	QWidget(parent),
 	skillPack(nullptr),
 	layout(nullptr)
@@ -10,7 +11,7 @@ AllSkills::AllSkills(QWidget *parent) :
 	layout = new QVBoxLayout(this);
 }
 
-void AllSkills::clearAll() {
+void StudentSkillsPanel::clearAll() {
 	QList<SkillWidget*> toDelete;
 
 	for (QObject *o : this->children()) {
@@ -25,7 +26,7 @@ void AllSkills::clearAll() {
 	}
 }
 
-void AllSkills::setSkp(SkillPack *skp) {
+void StudentSkillsPanel::setSkp(SkillPack *skp) {
 	for (int i = 0; i < skp->getSkillsCount(); i++) {
 		Skill * sk = skp->getSkill(i);
 		SkillWidget * w = new SkillWidget(this, sk);

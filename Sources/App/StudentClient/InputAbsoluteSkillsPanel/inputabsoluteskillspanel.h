@@ -4,7 +4,7 @@
 #include <QWidget>
 
 namespace Ui {
-class InAbsoluteSkill;
+class InputAbsoluteSkillsPanel;
 }
 
 // used classes
@@ -18,7 +18,7 @@ class CourseUnit;
  * This class is used to show all income skills and student progress in it for given node.
  *
  */
-class InAbsoluteSkill : public QWidget
+class InputAbsoluteSkillsPanel : public QWidget
 {
     Q_OBJECT
 
@@ -26,8 +26,8 @@ public:
 
 	// constructor and destructor
 	//==============================================
-    InAbsoluteSkill(QWidget *parent);
-    ~InAbsoluteSkill();
+    InputAbsoluteSkillsPanel(QWidget *parent);
+    ~InputAbsoluteSkillsPanel();
     //==============================================
 
 public slots:
@@ -75,7 +75,7 @@ private:
 
 	// private functions
 	//==============================================
-    Ui::InAbsoluteSkill *ui;
+    Ui::InputAbsoluteSkillsPanel *ui;
     //==============================================
 
 };

@@ -54,7 +54,7 @@ QSplitter::handle:vertical {
          <property name="widgetResizable">
           <bool>true</bool>
          </property>
-         <widget class="AllSkills" name="allSkills">
+         <widget class="StudentSkillsPanel" name="allSkills">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -140,7 +140,7 @@ QSplitter::handle:vertical {
          </layout>
         </widget>
        </widget>
-       <widget class="InAbsoluteSkill" name="inAbsolute" native="true">
+       <widget class="InputAbsoluteSkillsPanel" name="inAbsolute" native="true">
         <property name="minimumSize">
          <size>
           <width>100</width>
@@ -152,7 +152,7 @@ QSplitter::handle:vertical {
      </widget>
     </item>
     <item>
-     <widget class="CourseUnitInfo" name="cuPanel" native="true">
+     <widget class="CourseUnitDetailsPanel" name="cuPanel" native="true">
       <property name="minimumSize">
        <size>
         <width>100</width>
@@ -265,21 +265,21 @@ QSplitter::handle:vertical {
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>InAbsoluteSkill</class>
+   <class>InputAbsoluteSkillsPanel</class>
    <extends>QWidget</extends>
-   <header>StudentClient/InAbsoluteSkillGui/inabsoluteskill.h</header>
+   <header>StudentClient/InputAbsoluteSkillsPanel/inputabsoluteskillspanel.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>CourseUnitInfo</class>
+   <class>CourseUnitDetailsPanel</class>
    <extends>QWidget</extends>
-   <header>StudentClient/CourseUnitInfoPanel/courseunitinfo.h</header>
+   <header>StudentClient/CourseUnitDetailsPanel/courseunitdetailspanel.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>AllSkills</class>
+   <class>StudentSkillsPanel</class>
    <extends>QWidget</extends>
-   <header>StudentClient/AllSkillsGui/allskills.h</header>
+   <header>StudentClient/StudentSkillsPanel/studentskillspanel.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

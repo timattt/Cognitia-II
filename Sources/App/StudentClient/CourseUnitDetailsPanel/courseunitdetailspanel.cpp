@@ -1,13 +1,13 @@
-#include "courseunitinfo.h"
-#include "ui_courseunitinfo.h"
+#include "courseunitdetailspanel.h"
+
+#include "ui_courseunitdetailspanel.h"
 #include "../studentclient.h"
 #include "../../CourseUnitViewer/Node/node.h"
 #include "../../Core/logger.h"
 #include "../../CourseUnitViewer/courseunitviewer.h"
-#include "outdeltaskills.h"
 #include "../../Structures/StudentProgress/StudentProgress.h"
 
-CourseUnitInfo::CourseUnitInfo(QWidget *parent) :
+CourseUnitDetailsPanel::CourseUnitDetailsPanel(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CourseUnitInfo)
 {
@@ -28,17 +28,17 @@ CourseUnitInfo::CourseUnitInfo(QWidget *parent) :
 
 }
 
-CourseUnitInfo::~CourseUnitInfo()
+CourseUnitDetailsPanel::~CourseUnitDetailsPanel()
 {
     delete ui;
 }
 
-void CourseUnitInfo::prepareNode(Node *nd) {
+void CourseUnitDetailsPanel::prepareNode(Node *nd) {
 	ui->cuName->setText(nd->getName());
 	ui->cuDescr->setMarkdown(nd->getDescription());
 }
 
-void CourseUnitInfo::clearAll() {
+void CourseUnitDetailsPanel::clearAll() {
 	ui->cuDescr->clear();
 	ui->cuName->clear();
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>OutDeltaSkills</class>
- <widget class="QWidget" name="OutDeltaSkills">
+ <class>InputAbsoluteSkillsPanel</class>
+ <widget class="QWidget" name="InputAbsoluteSkillsPanel">
   <property name="geometry">
    <rect>
     <x>0</x>

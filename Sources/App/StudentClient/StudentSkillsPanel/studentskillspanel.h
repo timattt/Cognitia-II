@@ -8,7 +8,7 @@
 class SkillPack;
 //==============================================
 
-class AllSkills : public QWidget
+class StudentSkillsPanel : public QWidget
 {
     Q_OBJECT
 
@@ -16,8 +16,8 @@ public:
 
 	// constructor and destructor
 	//==============================================
-    AllSkills(QWidget *parent = nullptr);
-    ~AllSkills() = default;
+    StudentSkillsPanel(QWidget *parent = nullptr);
+    ~StudentSkillsPanel() = default;
     //==============================================
 
 public slots:

@@ -14,7 +14,7 @@ class Node;
 class StudentProgress;
 //=======================================
 
-class CourseUnitInfo : public QWidget
+class CourseUnitDetailsPanel : public QWidget
 {
     Q_OBJECT
 
@@ -22,8 +22,8 @@ public:
 
 	// constructor and destructor
 	//=======================================
-    CourseUnitInfo(QWidget *parent);
-    ~CourseUnitInfo();
+    CourseUnitDetailsPanel(QWidget *parent);
+    ~CourseUnitDetailsPanel();
     //=======================================
 
 public slots:

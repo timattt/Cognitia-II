@@ -19,7 +19,7 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="OutDeltaSkills" name="outDeltaSkills" native="true">
+     <widget class="OutputRelativeSkillsPanel" name="outDeltaSkills" native="true">
       <property name="minimumSize">
        <size>
         <width>100</width>
@@ -90,9 +90,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>OutDeltaSkills</class>
+   <class>OutputRelativeSkillsPanel</class>
    <extends>QWidget</extends>
-   <header>StudentClient/CourseUnitInfoPanel/outdeltaskills.h</header>
+   <header>StudentClient/OutputRelativeSkillsPanel/outputrelativeskillspanel.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

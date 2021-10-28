@@ -4,12 +4,12 @@
 #include <QWidget>
 
 namespace Ui {
-class OutDeltaSkills;
+class OutputRelativeSkillsPanel;
 }
 
 class Node;
 
-class OutDeltaSkills : public QWidget
+class OutputRelativeSkillsPanel : public QWidget
 {
     Q_OBJECT
 
@@ -17,15 +17,15 @@ public:
 
 	// constructor and destructor
 	//===============================================
-    OutDeltaSkills(QWidget *parent);
-    ~OutDeltaSkills();
+    OutputRelativeSkillsPanel(QWidget *parent);
+    ~OutputRelativeSkillsPanel();
     //===============================================
 
 private:
 
     // private fields
     //===============================================
-    Ui::OutDeltaSkills *ui;
+    Ui::OutputRelativeSkillsPanel *ui;
     //===============================================
 
 public slots:

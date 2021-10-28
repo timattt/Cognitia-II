@@ -37,11 +37,11 @@ SOURCES += \
     CourseUnitViewer/viewport.cpp \
     CourseEditor/skillsmodel.cpp \
     Server/server.cpp \
-    StudentClient/AllSkillsGui/allskills.cpp \
-    StudentClient/AllSkillsGui/skillwidget.cpp \
-    StudentClient/CourseUnitInfoPanel/courseunitinfo.cpp \
-    StudentClient/CourseUnitInfoPanel/outdeltaskills.cpp \
-    StudentClient/InAbsoluteSkillGui/inabsoluteskill.cpp \
+    StudentClient/StudentSkillsPanel/studentskillspanel.cpp \
+    StudentClient/StudentSkillsPanel/skillwidget.cpp \
+    StudentClient/CourseUnitDetailsPanel/courseunitdetailspanel.cpp \
+    StudentClient/OutputRelativeSkillsPanel/outputrelativeskillspanel.cpp \
+    StudentClient/InputAbsoluteSkillsPanel/inputabsoluteskillspanel.cpp \
     StudentClient/studentclient.cpp \
     CourseUnitViewer/Node/Design/nodedesign.cpp \
     CourseUnitViewer/Node/Design/nodedesignformal.cpp \
@@ -77,11 +77,11 @@ HEADERS += \
     CourseEditor/skillsmodel.h\
     Server/server.h \
     Structures/fileExtensions.h \
-    StudentClient/AllSkillsGui/allskills.h \
-    StudentClient/AllSkillsGui/skillwidget.h \
-    StudentClient/CourseUnitInfoPanel/courseunitinfo.h \
-    StudentClient/CourseUnitInfoPanel/outdeltaskills.h \
-    StudentClient/InAbsoluteSkillGui/inabsoluteskill.h \
+    StudentClient/StudentSkillsPanel/studentskillspanel.h \
+    StudentClient/StudentSkillsPanel/skillwidget.h \
+    StudentClient/CourseUnitDetailsPanel/courseunitdetailspanel.h \
+    StudentClient/OutputRelativeSkillsPanel/outputrelativeskillspanel.h \
+    StudentClient/InputAbsoluteSkillsPanel/inputabsoluteskillspanel.h \
     StudentClient/studentclient.h \
     CourseUnitViewer/Node/Design/nodedesign.h \
     CourseUnitViewer/Node/Design/nodedesignolive.h \
@@ -104,10 +104,10 @@ FORMS += \
     SkillsFlower/skillsflower.ui \
     SkillsMixer/skillsmixer.ui \
     SkillsMixer/skillsmixerholder.ui \
-    StudentClient/AllSkillsGui/skillwidget.ui \
-    StudentClient/CourseUnitInfoPanel/courseunitinfo.ui \
-    StudentClient/CourseUnitInfoPanel/outdeltaskills.ui \
-    StudentClient/InAbsoluteSkillGui/inabsoluteskill.ui \
+    StudentClient/StudentSkillsPanel/skillwidget.ui \
+    StudentClient/CourseUnitDetailsPanel/courseunitdetailspanel.ui \
+    StudentClient/OutputRelativeSkillsPanel/outputrelativeskillspanel.ui \
+    StudentClient/InputAbsoluteSkillsPanel/inputabsoluteskillspanel.ui \
     StudentClient/studentclient.ui
 
 # Default rules for deployment.
