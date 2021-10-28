@@ -13,6 +13,7 @@ CONFIG += c++17
 
 SOURCES += \
     ChooseServ/chooseserv.cpp \
+    ClientChat/clientchat.cpp \
     CourseEditor/courseeditor.cpp \
     CourseUnitViewer/Node/Design/nodedesignshape.cpp \
     CourseUnitViewer/courseunitviewer.cpp \
@@ -36,6 +37,11 @@ SOURCES += \
     CourseUnitViewer/viewport.cpp \
     CourseEditor/skillsmodel.cpp \
     Server/server.cpp \
+    StudentClient/AllSkillsGui/allskills.cpp \
+    StudentClient/AllSkillsGui/skillwidget.cpp \
+    StudentClient/CourseUnitInfoPanel/courseunitinfo.cpp \
+    StudentClient/CourseUnitInfoPanel/outdeltaskills.cpp \
+    StudentClient/InAbsoluteSkillGui/inabsoluteskill.cpp \
     StudentClient/studentclient.cpp \
     CourseUnitViewer/Node/Design/nodedesign.cpp \
     CourseUnitViewer/Node/Design/nodedesignformal.cpp \
@@ -46,6 +52,7 @@ SOURCES += \
 
 HEADERS += \
     ChooseServ/chooseserv.h \
+    ClientChat/clientchat.h \
     CourseUnitViewer/viewport.h \
     CourseEditor/courseeditor.h \
     CourseUnitViewer/Node/Design/nodedesignshape.h \
@@ -70,6 +77,11 @@ HEADERS += \
     CourseEditor/skillsmodel.h\
     Server/server.h \
     Structures/fileExtensions.h \
+    StudentClient/AllSkillsGui/allskills.h \
+    StudentClient/AllSkillsGui/skillwidget.h \
+    StudentClient/CourseUnitInfoPanel/courseunitinfo.h \
+    StudentClient/CourseUnitInfoPanel/outdeltaskills.h \
+    StudentClient/InAbsoluteSkillGui/inabsoluteskill.h \
     StudentClient/studentclient.h \
     CourseUnitViewer/Node/Design/nodedesign.h \
     CourseUnitViewer/Node/Design/nodedesignolive.h \
@@ -80,6 +92,7 @@ HEADERS += \
 
 FORMS += \
     ChooseServ/chooseserv.ui \
+    ClientChat/clientchat.ui \
     CourseEditor/courseeditor.ui \
     CourseUnitViewer/courseunitviewer.ui \
     CourseUnitViewer/courseunitviewersettings.ui \
@@ -91,6 +104,10 @@ FORMS += \
     SkillsFlower/skillsflower.ui \
     SkillsMixer/skillsmixer.ui \
     SkillsMixer/skillsmixerholder.ui \
+    StudentClient/AllSkillsGui/skillwidget.ui \
+    StudentClient/CourseUnitInfoPanel/courseunitinfo.ui \
+    StudentClient/CourseUnitInfoPanel/outdeltaskills.ui \
+    StudentClient/InAbsoluteSkillGui/inabsoluteskill.ui \
     StudentClient/studentclient.ui
 
 # Default rules for deployment.

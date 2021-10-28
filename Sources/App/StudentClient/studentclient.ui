@@ -35,137 +35,45 @@ QSplitter::handle:vertical {
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
-     <widget class="QSplitter" name="splitter_2">
+     <widget class="QWidget" name="skillsList" native="true">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>All skills:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QScrollArea" name="scrollArea">
+         <property name="horizontalScrollBarPolicy">
+          <enum>Qt::ScrollBarAlwaysOff</enum>
+         </property>
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="AllSkills" name="allSkills">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>584</width>
+            <height>583</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QSplitter" name="mainPanel">
       <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+       <enum>Qt::Vertical</enum>
       </property>
-      <widget class="QSplitter" name="splitter">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <widget class="QWidget" name="studentName" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <widget class="QLabel" name="label_5">
-           <property name="text">
-            <string>Student name:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="StudentName">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="parentInfo" native="true">
-        <layout class="QVBoxLayout" name="verticalLayout_3">
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <item>
-            <widget class="QLabel" name="label">
-             <property name="font">
-              <font>
-               <pointsize>8</pointsize>
-               <weight>50</weight>
-               <bold>false</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Parent courseUnit name:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="parentCu">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>Description:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QTextEdit" name="parentDescr">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="childInfo" native="true">
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-           <item>
-            <widget class="QLabel" name="label_3">
-             <property name="text">
-              <string>Child courseUnit name:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="childCu">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>Descripion:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QTextEdit" name="childDescr">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="SkillsFlower" name="flower" native="true">
-        <property name="minimumSize">
-         <size>
-          <width>100</width>
-          <height>100</height>
-         </size>
-        </property>
-       </widget>
-      </widget>
       <widget class="CourseUnitViewer" name="courseUnitViewer" native="true">
        <property name="minimumSize">
         <size>
@@ -174,6 +82,83 @@ QSplitter::handle:vertical {
         </size>
        </property>
       </widget>
+      <widget class="QSplitter" name="splitter">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <widget class="QSplitter" name="courseUnitInfo">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <widget class="QWidget" name="parentInfo" native="true">
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="font">
+               <font>
+                <pointsize>8</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>CourseUnit name:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="cuName">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Description:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTextEdit" name="cuDescription">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="InAbsoluteSkill" name="inAbsolute" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>100</height>
+         </size>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="CourseUnitInfo" name="cuPanel" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>100</width>
+        <height>100</height>
+       </size>
+      </property>
      </widget>
     </item>
    </layout>
@@ -184,7 +169,7 @@ QSplitter::handle:vertical {
      <x>0</x>
      <y>0</y>
      <width>1008</width>
-     <height>28</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuServer">
@@ -202,8 +187,16 @@ QSplitter::handle:vertical {
     <addaction name="actionHelp_me"/>
     <addaction name="actionReturn_to_Launcher"/>
    </widget>
+   <widget class="QMenu" name="menuDev">
+    <property name="title">
+     <string>Dev</string>
+    </property>
+    <addaction name="actionSet_course_unit"/>
+    <addaction name="actionSet_skill_pack"/>
+   </widget>
    <addaction name="menuServer"/>
    <addaction name="menuHelp"/>
+   <addaction name="menuDev"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -216,6 +209,7 @@ QSplitter::handle:vertical {
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionExpand"/>
    <addaction name="actionChange_Server"/>
    <addaction name="actionSave_all_and_send"/>
    <addaction name="actionTest_Connection"/>
@@ -247,18 +241,45 @@ QSplitter::handle:vertical {
     <string>Return to Launcher</string>
    </property>
   </action>
+  <action name="actionExpand">
+   <property name="text">
+    <string>Expand</string>
+   </property>
+  </action>
+  <action name="actionSet_course_unit">
+   <property name="text">
+    <string>Set course unit</string>
+   </property>
+  </action>
+  <action name="actionSet_skill_pack">
+   <property name="text">
+    <string>Set skill pack</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>SkillsFlower</class>
-   <extends>QWidget</extends>
-   <header>SkillsFlower/skillsflower.h</header>
-   <container>1</container>
-  </customwidget>
   <customwidget>
    <class>CourseUnitViewer</class>
    <extends>QWidget</extends>
    <header>CourseUnitViewer/courseunitviewer.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>InAbsoluteSkill</class>
+   <extends>QWidget</extends>
+   <header>StudentClient/InAbsoluteSkillGui/inabsoluteskill.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CourseUnitInfo</class>
+   <extends>QWidget</extends>
+   <header>StudentClient/CourseUnitInfoPanel/courseunitinfo.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AllSkills</class>
+   <extends>QWidget</extends>
+   <header>StudentClient/AllSkillsGui/allskills.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

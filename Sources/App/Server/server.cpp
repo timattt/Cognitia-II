@@ -386,7 +386,7 @@ void Server::on_returnToL_clicked()
 
 void Server::onStart(){
     QDir::setCurrent("Server");
-    this -> show();
+    this -> showMaximized();
 }
 
 

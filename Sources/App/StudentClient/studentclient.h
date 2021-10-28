@@ -17,6 +17,7 @@ class SkillPack;
 class StudentProgress;
 class ChooseServ;
 class CourseUnit;
+class CourseUnitViewer;
 //========================================================
 
 /**!
@@ -66,11 +67,13 @@ private:
 	 */
 	StudentProgress *progress;
 	ChooseServ *chooseserv;
-	QString StudentName;
-
+	/**
+	 * Represents name of the current user.
+	 * @author timattt
+	 */
+	QString studentName;
 	QByteArray datafromServer;
 	quint16 respCode;
-
 	bool inworkingrepository;
 	//========================================================
 
@@ -86,7 +89,8 @@ private:
 
 	// private functions
 	//========================================================
-    /**!
+	//////////////////////////////network
+	/**!
 	 filling the header of datagramm and send it to the server
 	 @param code - command to server that is choosen from serverCommands.h
 	 @param str - information sent to server
@@ -94,28 +98,17 @@ private:
 	 */
 	void sendToServer(quint16 code, const QString &str);
 
-    /**!
+	/**!
 	 after package from server is accepted, we need to manage it and save what we've received
 	 @author - arfarafar
 	 */
 	void endReception();
 
-    /**!
+	/**!
 	 After the success or fail code was received from the server manages it
 	 @author - arfarafar
 	 */
 	void confirmConnection();
-
-    /**!
-	 Loading all files that were received from server
-
-	 @author - arfarafar
-	 */
-	void OpenCourse();
-	void LoadCourse();
-	void LoadSkillpack();
-	void LoadStudentsProgresses();
-
     /**!
 	 saving as a file data from server
 	 the data block is filename + filedata
@@ -124,19 +117,20 @@ private:
 	 */
 	void handleincFile(QDataStream&);
 
+	//////////////////////////////opening and loading course
+    /**!
+	 Loading all files that were received from server
+	 @author - arfarafar
+	 */
+	void OpenCourse();
+	void LoadCourse();
+	void LoadSkillpack();
+	void LoadStudentsProgresses();
     /**!
 	 display Course, skillpack and Student progress on the field
-
 	 @author - timattt
 	 */
 	void display();
-
-    /**!
-	 clears all widgets of the programm window
-	 @author - arfarafar
-	 */
-	void ClearAll();
-
     /**!
 	 * deletes old fields and make new ones
 	 * called when returned to launcher or new server choosed
@@ -149,15 +143,14 @@ private slots:
 
 	// private slots
 	//========================================================
+	//////////////////////////////network actions
 	void on_actionChange_Server_triggered();
-
     /**!
 	 activates when we can read smth from the socket
 	 read it into the datafromsocket field and call endReception()
 	 @author - arfarafar
 	 */
 	void slotReadyRead();
-
     /**!
 	 activates when socket crashes
 	 shows the errorstring
@@ -165,46 +158,58 @@ private slots:
 	 @author - arfarafar
 	 */
 	void slotError(QAbstractSocket::SocketError);
-
     /**!
 	 activates when socket connection succeed
 	 sends to server username and welcome code
 	 @author - arfarafar
 	 */
 	void slotConnected();
-
     /**!
 	 activates when Connect button has been clicked in chooseserv wigget
 	 try to connect mSocket to server
 	 @author - arfarafar
 	 */
 	void startConnection();
-
+	/**
+	 *
+	 */
 	void on_actionSave_all_and_send_triggered();
-
-	void on_actionReturn_to_Launcher_triggered();
-
     /**!
 	 activates when chooseserv window is closed before the time
 	 makes main window enabled
 	 @author - arfarafar
 	 */
 	void onChooseServClosed();
+
+	//////////////////////////////gui actions
+	void on_actionExpand_triggered();
+	void on_actionSet_course_unit_triggered();
+	void on_actionSet_skill_pack_triggered();
+	void on_actionReturn_to_Launcher_triggered();
+	void on_actionHelp_me_triggered();
 	//========================================================
 
-    void on_actionHelp_me_triggered();
+public:
+
+    // public functions
+    //========================================================
+    /**
+     * Gives CUV instance from this UI.
+     * @param CUV object
+     * @author timattt
+     */
+    CourseUnitViewer* getCourseUnitViewer();
+    //========================================================
 
 public slots:
 
 	// public slots
 	//===================================================
-    /***
-	 * Signal from courseunitviewer.
-	 * Sets panels for this node.
-	 * @author timattt
-	 */
 	void nodeSelected(Node *nd);
 	void onStart();
+	void nodeDoubleClicked(Node * nd);
+	void hideInfoPanel();
+	void showInfoPanel();
 	//===================================================
 
 signals:
@@ -212,6 +217,11 @@ signals:
 	// signals
 	//========================================================
 	void onClose();
+	void newStudentProgress(StudentProgress * prg);
+	void newCourseUnit(CourseUnit * cu);
+	void newSkillPack(SkillPack * skp);
+	void clearAll();
+	void newStudentName(QString name);
 	//========================================================
 };
 

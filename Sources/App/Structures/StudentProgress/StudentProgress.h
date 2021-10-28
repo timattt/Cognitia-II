@@ -8,17 +8,16 @@
 #ifndef APP_STRUCTURES_STUDENTPROGRESS_H_
 #define APP_STRUCTURES_STUDENTPROGRESS_H_
 
-#include <qobject.h>
-
-#include <QMap>
-#include <QString>
-#include <QFile>
-#include <QFileInfo>
-#include <QDir>
+#include <QtWidgets>
 
 #define STUDENT_PROGRESS_DELIMITER "|%|"
 #define STUDENT_PROGRESS_COURSEUNIT_DELIMITER "&&&"
 #include "../fileExtensions.h"
+
+struct message {
+	QString author;
+	QString text;
+};
 
 class CourseUnit;
 
@@ -36,6 +35,7 @@ private:
 	// fields
 	//----------------------------------
 	QMap<QString, QMap<QString, double>> progress;
+	QMap<QString, QVector<message>> messages;
 	//----------------------------------
 
 public:
@@ -44,10 +44,15 @@ public:
 	//----------------------------------
 	void load(QFile * fl);
 	void save(QFile * fl);
+	void addMessage(QString cu, QString author, QString text);
+	QVector<message>& getMessages(QString cu);
 	void addProgress(QString courseUnit, QString skill, double level);
 	double getLevel(QString courseUnit, QString skill);
 	bool containsLevel(QString courseUnit, QString skill);
 	QString toString();
+	/**
+	 * @Deprecated
+	 */
 	void collectAbsolute(CourseUnit * cu, QMap<QString, double> & res);
 	//----------------------------------
 };

@@ -47,10 +47,21 @@ void StudentProgress::load(QFile *file) {
 
     	QString courseUnitName = split[0];
 
-    	for (int i = 1; i < split.length(); i+=2) {
-    		QString skillName = split[i];
-    		double lev = split[i + 1].toDouble();
+    	int totalSkills = split[1].toInt();
+
+    	for (int i = 0; i < totalSkills * 2; i+=2) {
+    		QString skillName = split[i + 2];
+    		double lev = split[i + 3].toDouble();
     		addProgress(courseUnitName, skillName, lev);
+    	}
+
+    	int totalMes = split[2 + totalSkills * 2].toInt();
+
+    	for (int i = 0; i < totalMes * 2; i += 2) {
+    		QString author = split[3 + totalSkills * 2 + i];
+    		QString text = split[3 + totalSkills * 2 + i + 1];
+
+    		messages[courseUnitName].push_back({author, text});
     	}
     }
 }
@@ -73,10 +84,20 @@ void StudentProgress::save(QFile *file) {
 
             stream << courseUnitName << STUDENT_PROGRESS_COURSEUNIT_DELIMITER;
 
+            stream << skills.size() << STUDENT_PROGRESS_COURSEUNIT_DELIMITER;
+
             for (QString skill : skills.keys()) {
             	double level = skills[skill];
 
             	stream << skill << STUDENT_PROGRESS_COURSEUNIT_DELIMITER << QString::number(level) << STUDENT_PROGRESS_COURSEUNIT_DELIMITER;
+            }
+
+            int totalMes = messages[courseUnitName].size();
+
+            stream << totalMes << STUDENT_PROGRESS_COURSEUNIT_DELIMITER;
+
+            for (message mes : messages[courseUnitName]) {
+            	stream << mes.author << STUDENT_PROGRESS_COURSEUNIT_DELIMITER << mes.text << STUDENT_PROGRESS_COURSEUNIT_DELIMITER;
             }
 
             stream << STUDENT_PROGRESS_DELIMITER;
@@ -106,6 +127,10 @@ QString StudentProgress::toString() {
 		for (QString skill : skills.keys()) {
 			double lev = skills[skill];
 			r += "---> Skill:" + skill + " level: " + QString::number(lev) + "\n";
+		}
+
+		for (message m : messages[courseUnitName]) {
+			r += "Message from " + m.author + " with text: " + m.text + "\n";
 		}
 	}
 
@@ -143,4 +168,12 @@ void StudentProgress::collectAbsolute(CourseUnit *cu, QMap<QString, double> &res
 		res[sk] = qMax(res[sk], progress[cu->objectName()][sk]);
 	}
 
+}
+
+void StudentProgress::addMessage(QString cu, QString author, QString text) {
+	messages[cu].push_back({author, text});
+}
+
+QVector<message>& StudentProgress::getMessages(QString cu) {
+	return messages[cu];
 }

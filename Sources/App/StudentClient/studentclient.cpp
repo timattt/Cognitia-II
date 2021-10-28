@@ -17,7 +17,7 @@ StudentClient::StudentClient() :
 	courseUnit(nullptr),
 	progress(nullptr),
 	chooseserv(nullptr),
-	StudentName(),
+	studentName(),
 	datafromServer(),
     respCode(0),
     inworkingrepository(false)
@@ -30,18 +30,37 @@ StudentClient::StudentClient() :
     skillpack = new SkillPack(this);
     courseUnit = new CourseUnit(this);
     progress = new StudentProgress(this);
+
+    // network
     connect(mSocket, SIGNAL(connected()), SLOT(slotConnected()));
     connect(mSocket, SIGNAL(readyRead()), SLOT(slotReadyRead()));
     connect(mSocket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), SLOT(slotError(QAbstractSocket::SocketError)));
     connect(chooseserv, SIGNAL(onServConnectclicked()), SLOT(startConnection()));
     connect(chooseserv, SIGNAL(chooseServClosed()), SLOT(onChooseServClosed()));
-    connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->flower, SLOT(unpack(Node*)));
-    connect(ui->flower, SIGNAL(skillLevelChanged(QString, double)), ui->courseUnitViewer, SLOT(makeProgressToSelected(QString, double)));
+
+    // gui
+    connect(ui->courseUnitViewer, SIGNAL(nodeDoubleClicked(Node*)), this, SLOT(nodeDoubleClicked(Node*)));
+    connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->inAbsolute, SLOT(unpack(Node*)));
+    connect(ui->courseUnitViewer, SIGNAL(progressMadeToSelected(QString, double)), ui->inAbsolute, SLOT(progressMade(QString, double)));
+    connect(ui->inAbsolute, SIGNAL(skillLevelChanged(QString, double)), ui->courseUnitViewer, SLOT(makeProgressToSelected(QString, double)));
+
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), this, SLOT(nodeSelected(Node*)));
+    connect(ui->courseUnitViewer, SIGNAL(nodeDoubleClicked(Node*)), ui->cuPanel, SLOT(prepareNode(Node*)));
 
-    ui->flower->setEditable(false);
+    connect(this, SIGNAL(newCourseUnit(CourseUnit*)), ui->courseUnitViewer, SLOT(unpack(CourseUnit*)));
+    connect(this, SIGNAL(newSkillPack(SkillPack*)), ui->allSkills, SLOT(setSkp(SkillPack*)));
+
+    connect(this, SIGNAL(clearAll()), ui->cuPanel, SLOT(clearAll()));
+    connect(this, SIGNAL(clearAll()), ui->allSkills, SLOT(clearAll()));
+    connect(this, SIGNAL(clearAll()), ui->courseUnitViewer, SLOT(clearAllScene()));
+    connect(this, SIGNAL(clearAll()), ui->inAbsolute, SLOT(clearAll()));
+    connect(this, SIGNAL(clearAll()), ui->cuName, SLOT(clear()));
+    connect(this, SIGNAL(clearAll()), ui->cuDescription, SLOT(clear()));
+
     ui->courseUnitViewer->setEditable(false);
+    hideInfoPanel();
 
+    ui->cuPanel->setVisible(false);
 
     SAY("StudentClient init finished");
 }
@@ -53,7 +72,7 @@ StudentClient::~StudentClient()
 
 
 
-void StudentClient::ReplaceAll(){
+void StudentClient::ReplaceAll() {
     delete courseUnit;
     delete skillpack;
     courseUnit = new CourseUnit(this);
@@ -68,11 +87,8 @@ void StudentClient::on_actionChange_Server_triggered()
 {
     ui->statusbar->showMessage("Changing server");
 
-    ClearAll();
+    emit clearAll();
     ReplaceAll();
-
-
-
 
     if(mSocket -> state() == QAbstractSocket::ConnectedState){
         mSocket -> close();
@@ -87,20 +103,21 @@ void StudentClient::on_actionChange_Server_triggered()
     chooseserv -> show();
 }
 
-
 void StudentClient::onChooseServClosed(){
     this -> setEnabled(true);
      chooseserv -> setButtonEnabled();
     ui->statusbar->showMessage("Server isnt connected, Please connect to the server");
 }
 
-
+void StudentClient::on_actionExpand_triggered() {
+	ui->skillsList->setVisible(!ui->skillsList->isVisible());
+}
 
 void StudentClient::onStart(){
     this -> setEnabled(false);
     chooseserv -> setEnabled(true);
     chooseserv -> show();
-    this -> show();
+    this -> showMaximized();
     ui->statusbar->showMessage("Server isnt connected");
 }
 
@@ -116,22 +133,18 @@ void StudentClient::startConnection(){
 }
 
 void StudentClient::slotConnected(){
-
-    SAY("connected to server\n")
-    StudentName = chooseserv -> getName();
-     chooseserv -> setButtonEnabled();
-    QDir dir = QDir();
-    if (!inworkingrepository)
-    {
-        SAY("Send name to server\n")
-        dir.mkdir(StudentName + chooseserv -> getIP());
-        QDir::setCurrent(StudentName + chooseserv -> getIP());
-        inworkingrepository = true;
-        this -> sendToServer(static_cast<quint16>(getUserName), "");
-    }
-
-
-
+	SAY("connected to server\n")
+	studentName = chooseserv->getName();
+	emit newStudentName(chooseserv->getName());
+	chooseserv->setButtonEnabled();
+	QDir dir = QDir();
+	if (!inworkingrepository) {
+		SAY("Send name to server\n")
+		dir.mkdir(studentName + chooseserv->getIP());
+		QDir::setCurrent(studentName + chooseserv->getIP());
+		inworkingrepository = true;
+		this->sendToServer(static_cast<quint16>(getUserName), "");
+	}
 }
 
 void StudentClient::slotError(QAbstractSocket::SocketError error){
@@ -228,27 +241,33 @@ void StudentClient::confirmConnection(){
         mSocket -> close();
         QDir::setCurrent("../");
         QDir dir = QDir();
-        dir.rmdir(StudentName + chooseserv -> getIP());
+        dir.rmdir(studentName + chooseserv -> getIP());
         inworkingrepository = false;
         return;
     }
 
     chooseserv -> hide();
     this -> setEnabled(true);
-    ui -> StudentName -> setText(chooseserv -> getName());
-    ui -> statusbar -> showMessage("");
+
+    ui -> statusbar -> showMessage("Student connected: " + chooseserv -> getName());
     OpenCourse();
 }
 
 void StudentClient::nodeSelected(Node *nd) {
 	if (nd == nullptr) {
-		ui->childDescr->clear();
-		ui->childCu->clear();
+		ui->cuDescription->clear();
+		ui->cuName->clear();
 
-		ui->flower->unpackEmbed(courseUnit, progress);
+		ui->inAbsolute->clearAll();
+
+		if (courseUnit != nullptr) {
+			ui->cuName->setText(this->courseUnit->objectName());
+			ui->cuDescription->setMarkdown(this->courseUnit->getDescription());
+		}
+
 	} else {
-		ui->childDescr->setMarkdown(nd->getDescription());
-		ui->childCu->setText(nd->getName());
+		ui->cuDescription->setMarkdown(nd->getDescription());
+		ui->cuName->setText(nd->getName());
 	}
 }
 
@@ -273,7 +292,7 @@ void StudentClient::LoadCourse(){
         try {
             courseUnit -> loadCourseUnit(&course);
         }
-        catch (QString message){
+        catch (QString & message){
            SAY(message);
         }
     } else {
@@ -316,37 +335,24 @@ void StudentClient::LoadStudentsProgresses(){
 
 
 void StudentClient::OpenCourse(){
-
     LoadCourse();
     LoadSkillpack();
     LoadStudentsProgresses();
 
     display();
-
 }
-
-void StudentClient::ClearAll(){
-    ui->courseUnitViewer->clearAllScene();
-
-    ui->flower->unpackEmbed(nullptr, nullptr);
-
-    ui->childDescr->clear();
-    ui->parentDescr->clear();
-
-    ui->childCu->clear();
-    ui->parentCu->clear();
-}
-
 
 void StudentClient::display(){
-    ClearAll();
+    emit clearAll();
 
-	ui->parentDescr->setMarkdown(courseUnit->getDescription());
-	ui->courseUnitViewer->unpack(courseUnit);
-	ui->parentCu->setText(courseUnit->objectName());
+    // TODO
+    //check if this is necessary
+	ui->cuDescription->setMarkdown(courseUnit->getDescription());
+	ui->cuName->setText(courseUnit->objectName());
 
-	ui->courseUnitViewer->unpack(progress);
-	ui->flower->unpackEmbed(courseUnit, progress);
+	emit newSkillPack(skillpack);
+	emit newCourseUnit(courseUnit);
+	emit newStudentProgress(progress);
 }
 
 void StudentClient::sendToServer(quint16 code, const QString& str){
@@ -354,7 +360,7 @@ void StudentClient::sendToServer(quint16 code, const QString& str){
     QByteArray arrBlock;
     QDataStream out(&arrBlock, QIODevice::WriteOnly);
 
-    out << quint32(0) << StudentName << code << str;
+    out << quint32(0) << studentName << code << str;
     out.device()->seek(0);
     out << quint32(arrBlock.size() - sizeof(quint32));
 
@@ -370,6 +376,13 @@ void StudentClient::on_actionSave_all_and_send_triggered()
      }
 
      ui->statusbar->showMessage("Save");
+
+
+     /*
+      * !!!!!!!!!!!!!!!!!!
+      * Call here function that will get chat history from chat widget.
+      * !!!!!!!!!!!!!!!!!!
+      */
 }
 
 
@@ -377,9 +390,8 @@ void StudentClient::on_actionSave_all_and_send_triggered()
 
 void StudentClient::on_actionReturn_to_Launcher_triggered()
 {
-    ClearAll();
-
-    ReplaceAll();
+	emit clearAll();
+	ReplaceAll();
 
     if(mSocket -> state() == QAbstractSocket::ConnectedState){
         mSocket -> close();
@@ -400,3 +412,61 @@ void StudentClient::on_actionHelp_me_triggered()
     helper.exec();
 }
 
+CourseUnitViewer* StudentClient::getCourseUnitViewer() {
+	return ui->courseUnitViewer;
+}
+
+void StudentClient::on_actionSet_course_unit_triggered() {
+	QString path = QFileDialog::getOpenFileName(this, "Select course unit file", QString(), QString("(*") + COURSE_UNIT_FILE_EXTENSION + QString(")"));
+
+    QFile f = QFile(path);
+
+    if (!f.exists()) {
+    	ui->statusbar->showMessage("Bad course unit!");
+    	return;
+    }
+
+    try {
+    	courseUnit->loadCourseUnit(&f);
+    } catch (QString & err) {
+    	ui->statusbar->showMessage("Bad course unit!");
+    }
+
+    display();
+}
+
+void StudentClient::on_actionSet_skill_pack_triggered() {
+	QString path = QFileDialog::getOpenFileName(this, "Select skill pack file", QString(), QString("(*") + SKILL_PACK_FILE_EXTENSION + QString(")"));
+
+    QFile f = QFile(path);
+
+    if (!f.exists()) {
+    	ui->statusbar->showMessage("Bad skill pack!");
+    	return;
+    }
+
+    try {
+    	skillpack->load(&f);
+    } catch (QString & err) {
+    	ui->statusbar->showMessage("Bad skill pack!");
+    }
+
+    display();
+}
+
+void StudentClient::nodeDoubleClicked(Node *nd) {
+	Q_UNUSED(nd);
+	showInfoPanel();
+}
+
+void StudentClient::hideInfoPanel() {
+	ui->cuPanel->setVisible(false);
+	ui->mainPanel->setVisible(true);
+	ui->skillsList->setVisible(false);
+}
+
+void StudentClient::showInfoPanel() {
+	ui->cuPanel->setVisible(true);
+	ui->mainPanel->setVisible(false);
+	ui->skillsList->setVisible(false);
+}

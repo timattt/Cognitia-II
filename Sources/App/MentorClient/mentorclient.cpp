@@ -75,7 +75,7 @@ void MentorClient::onStart(){
     this -> setEnabled(false);
     chooseserv -> setEnabled(true);
     chooseserv -> show();
-    this -> show();
+    this -> showMaximized();
     ui->statusbar->showMessage("Server isnt connected");
 }
 
