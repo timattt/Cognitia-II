@@ -7,6 +7,8 @@ import server_codes as scodes
 
 
 def send_files(sock, master_dir, files):
+	""" Send files  'files' from 'master_dir' directory to client
+	"""
     for file in files:
         ba = QtCore.QByteArray()
         FLAG = QtCore.QIODeviceBase.OpenModeFlag.WriteOnly
@@ -27,6 +29,8 @@ def send_files(sock, master_dir, files):
 
 
 def send_cource(sock, name):
+	""" Send course to client
+	"""
     COURSE_DIR = os.getenv("COURSE_DIR")
     MAIN_COURSEUNIT_FILE_EXTENSION = os.getenv("MAIN_COURSEUNIT_FILE_EXTENSION")
     COURSE_UNIT_FILE_EXTENSION = os.getenv("COURSE_UNIT_FILE_EXTENSION")
@@ -45,6 +49,8 @@ def send_cource(sock, name):
 
 
 def send_skillpack(sock, name):
+	""" Send skillpack to client
+	"""
     SKILL_DIR = os.getenv("SKILL_DIR")
     SKILL_PACK_FILE_EXTENSION = os.getenv("SKILL_PACK_FILE_EXTENSION")
     SKILL_FILE_EXTENSION = os.getenv("SKILL_FILE_EXTENSION")
@@ -63,6 +69,8 @@ def send_skillpack(sock, name):
 
 
 def send_progress(sock, name):
+	""" Send progress file to client
+	"""
     PROGRESS_DIR = os.getenv("PROGRESS_DIR")
     STUDENT_PROGRESS_FILE_EXTENSION = os.getenv("STUDENT_PROGRESS_FILE_EXTENSION")
 
@@ -75,7 +83,10 @@ def send_progress(sock, name):
     send_files(sock, PROGRESS_DIR, PROGRESS)
 
 
-def reg_usr_handler(sock, name, str):
+def usr_handler(sock, name, str):
+	""" Handle client connection
+	Send cource, skillpack and progress file to client
+	"""
     send_cource(sock, name)
     print("send_cource done")
 
@@ -100,20 +111,23 @@ def reg_usr_handler(sock, name, str):
 
 
 if __name__ == "__main__":
+	# Load .env file
     load_dotenv()
     print(os.getenv("VAR"))
 
+    # Server configuration
     sock = socket.socket()
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind(("127.0.0.1", 1917))
     sock.listen(1)
 
-    # Wating for clients
     while True:
+    	# Wating for clients
         conn, addr = sock.accept()
         print("New client connected!")
         print(addr)
 
+        # Get client request
         data = conn.recv(2048)
 
         byte_array = QtCore.QByteArray(data)
@@ -125,7 +139,7 @@ if __name__ == "__main__":
         CODE = qdata_stream.readUInt16()
         SOME_STR1 = qdata_stream.readQString()
 
-        reg_usr_handler(conn, SOME_STR0, SOME_STR1)
+        usr_handler(conn, SOME_STR0, SOME_STR1)
 
         conn.close()
         print("Connection closed")
