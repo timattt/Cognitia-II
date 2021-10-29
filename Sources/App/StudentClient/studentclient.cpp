@@ -269,6 +269,9 @@ void StudentClient::LoadCourse(){
 
         QString filename(fileMain.readAll());
 
+        // TODO: убрать этот костыль
+        filename = filename.left(filename.length() - 1);
+
         QFile course(filename);
         try {
             courseUnit -> loadCourseUnit(&course);
