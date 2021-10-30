@@ -7,7 +7,7 @@
 #include "../Structures/StudentProgress/StudentProgress.h"
 #include "../Core/logger.h"
 #include "../Help/smarthelper.h"
-
+#include "StudentsChooserPanel/studentschooserpanel.h"
 
 MentorClient::MentorClient() :
     QMainWindow(nullptr),
@@ -27,27 +27,48 @@ MentorClient::MentorClient() :
     skillPack = new SkillPack(this);
     headCourseUnit = new CourseUnit(this);
 
-    connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->skillFlower, SLOT(unpack(Node*)));
+    ///////////////////////////////Course unit viewer
+    // node double clicked
+    connect(ui->courseUnitViewer, SIGNAL(nodeDoubleClicked(Node*)), this, SLOT(nodeDoubleClicked(Node*)));
+
+    // node selected
+    connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->chat, SLOT(nodeSelected(Node*)));
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->skillsMixerHolder, SLOT(nodeSelected(Node*)));
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), this, SLOT(nodeSelected(Node*)));
 
-    connect(ui->courseUnitViewer, SIGNAL(progressMadeToSelected(QString, double)), ui->skillFlower, SLOT(progressMade(QString, double)));
+    // progress made to selected
     connect(ui->courseUnitViewer, SIGNAL(progressMadeToSelected(QString, double)), ui->skillsMixerHolder, SLOT(progressMade(QString, double)));
     connect(ui->courseUnitViewer, SIGNAL(progressMadeToSelected(QString, double)), this, SLOT(progressMade(QString, double)));
 
-    connect(ui->skillFlower, SIGNAL(skillLevelChanged(QString, double)), ui->courseUnitViewer, SLOT(makeProgressToSelected(QString, double)));
+    // skill level changed
     connect(ui->skillsMixerHolder, SIGNAL(skillLevelChanged(QString, double)), ui->courseUnitViewer, SLOT(makeProgressToSelected(QString, double)));
 
-    ui->skillFlower->setEditable(true);
-    ui->courseUnitViewer->setEditable(false);
+    ///////////////////////////////Student client
+    // new course unit
+    connect(this, SIGNAL(newCourseUnit(CourseUnit*)), ui->courseUnitViewer, SLOT(unpack(CourseUnit*)));
 
+    // clear all
+    connect(this, SIGNAL(clearAll()), ui->courseUnitViewer, SLOT(clearAllScene()));
+    connect(this, SIGNAL(clearAll()), ui->students, SLOT(clearAll()));
+    connect(this, SIGNAL(clearAll()), ui->cuName, SLOT(clear()));
+    connect(this, SIGNAL(clearAll()), ui->cuDescription, SLOT(clear()));
+    connect(this, SIGNAL(clearAll()), ui->chat, SLOT(clearAll()));
+
+    // new student progress
+    connect(this, SIGNAL(newStudentProgress(StudentProgress*)), ui->chat, SLOT(setStudentProgress(StudentProgress*)));
+    connect(this, SIGNAL(newStudentProgress(StudentProgress*)), ui->courseUnitViewer, SLOT(unpack(StudentProgress*)));
+
+    // student selected
+    connect(ui->students, SIGNAL(studentSelected(QString)), this, SLOT(newStudentSelected(QString)));
+
+    ///////////////////////////////NET
     connect(mSocket, SIGNAL(connected()), SLOT(slotConnected()));
     connect(mSocket, SIGNAL(readyRead()), SLOT(slotReadyRead()));
     connect(mSocket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), SLOT(slotError(QAbstractSocket::SocketError)));
     connect(chooseserv, SIGNAL(onServConnectclicked()), SLOT(startConnection()));
     connect(chooseserv, SIGNAL(chooseServClosed()), SLOT(onChooseServClosed()));
 
-
+    ui->courseUnitViewer->setEditable(false);
 
     SAY("Mentor client init finished")
 }
@@ -66,8 +87,8 @@ void MentorClient::onChooseServClosed(){
 }
 
 void MentorClient::progressMade(QString skill, double val) {
-	if (students.contains(ui->studentChooser->currentText())) {
-		students[ui->studentChooser->currentText()]->addProgress(ui->courseUnitViewer->getSelectedNode()->getName(), skill, val);
+	if (students.contains(ui->students->getCurrentStudent())) {
+		students[ui->students->getCurrentStudent()]->addProgress(ui->courseUnitViewer->getSelectedNode()->getName(), skill, val);
 	}
 }
 
@@ -215,7 +236,7 @@ void MentorClient::confirmConnection(){
         inworkingrepository = false;
         return;
     }
-
+    ui->chat->senderNameChanged(chooseserv->getName());
     chooseserv -> hide();
     this -> setEnabled(true);
     ui -> statusbar -> showMessage("");
@@ -241,7 +262,7 @@ void MentorClient::LoadCourse(){
         try {
             headCourseUnit -> loadCourseUnit(&course);
         }
-        catch (QString message){
+        catch (QString & message){
             SAY(message)
         }
 
@@ -279,6 +300,7 @@ void MentorClient::LoadStudentsProgresses(){
         catch(QString & message){
             SAY(message)
         }
+        SAY("Loaded student progress for student: [" + studentsProg[i].section(".", 0, 0) + "], progress: [" + progress->toString() + "]");
         students[studentsProg[i].section(".", 0, 0)] = progress;
     }
 
@@ -309,17 +331,6 @@ void MentorClient::sendToServer(quint16 code, const QString& str){
 
 }
 
-
-void MentorClient::ClearAll(){
-    ui->courseUnitViewer->clearAllScene();
-    ui->studentChooser->clear();
-    ui->childDescr->clear();
-    ui->parentDescr->clear();
-    ui->childCu->clear();
-    ui->parentCu->clear();
-}
-
-
 void MentorClient::ReplaceAll(){
 
     delete headCourseUnit;
@@ -335,66 +346,42 @@ void MentorClient::ReplaceAll(){
 
 
 void MentorClient::display() {
-    ClearAll();
+    emit clearAll();
 
-	ui->courseUnitViewer->unpack(headCourseUnit);
+	emit newSkillPack(this->skillPack);
+	emit newCourseUnit(this->headCourseUnit);
 
-	ui->studentChooser->addItems(students.keys());
-
-	ui->parentDescr->setMarkdown(headCourseUnit->getDescription());
-
-	ui->parentCu->setText(headCourseUnit->objectName());
+	ui->students->setStudents(students.keys());
 }
 
-void MentorClient::on_studentChooser_currentTextChanged(const QString &name) {
-
-
-	if (students.contains(currentStudent)) {
-		ui->courseUnitViewer->pack(students[currentStudent]);
-	}
-
+void MentorClient::newStudentSelected(QString name) {
 	ui->courseUnitViewer->clearStudentProgress();
 
-    if(name.size()){
-        ui->courseUnitViewer->unpack(students[name]);
+    if (students.contains(name)) {
+    	emit newStudentProgress(students[name]);
     }
-
-	currentStudent = name;
 
 	ui->courseUnitViewer->setSelectedNode(ui->courseUnitViewer->getSelectedNode());
 }
 
-void MentorClient::pack() {
-	if (students.contains(ui->studentChooser->currentText())) {
-		ui->courseUnitViewer->pack(students[ui->studentChooser->currentText()]);
-	}
-}
-
 void MentorClient::nodeSelected(Node *nd) {
+	if (headCourseUnit == nullptr) {
+		ui->cuDescription->clear();
+		ui->cuName->clear();
+		return;
+	}
 	if (nd == nullptr) {
-		ui->childDescr->clear();
-		ui->childCu->clear();
-
-		if (students.contains(ui->studentChooser->currentText())) {
-			ui->skillFlower->setEditable(false);
-			ui->skillFlower->unpackEmbed(headCourseUnit, students[ui->studentChooser->currentText()]);
-		}
+		ui->cuName->setText(headCourseUnit->objectName());
+		ui->cuDescription->setMarkdown(headCourseUnit->getDescription());
 	} else {
-		ui->skillFlower->setEditable(true);
-		ui->childDescr->setMarkdown(nd->getDescription());
-		ui->childCu->setText(nd->getName());
+		ui->cuName->setText(nd->getName());
+		ui->cuDescription->setMarkdown(nd->getDescription());
 	}
 }
-
-
-
-
 
 void MentorClient::on_actionChoose_Server_triggered()
 {
-
-    ClearAll();
-
+	emit clearAll();
     ReplaceAll();
 
     if(mSocket -> state() == QAbstractSocket::ConnectedState){
@@ -415,7 +402,7 @@ void MentorClient::on_actionChoose_Server_triggered()
 
 void MentorClient::on_actionReturn_to_Launcher_triggered()
 {
-    ClearAll();
+	emit clearAll();
 
     ReplaceAll();
 
@@ -479,7 +466,6 @@ void MentorClient::sendAll(){
 void MentorClient::on_actionSave_all_and_send_triggered()
 {
       ui -> statusbar -> showMessage("Saving student progresses..");
-      pack();
 
       QDir dir = QDir();
       dir.mkdir("localsave");
@@ -490,10 +476,12 @@ void MentorClient::on_actionSave_all_and_send_triggered()
           StudentProgress* student = students[studentname];
           QFile file = QFile(studentname + QString(STUDENT_PROGRESS_FILE_EXTENSION));
 
+          SAY("Sending student progress for student: [" + studentname + "], progress: [" + student->toString() + "]");
+
           try {
               student -> save(&file);
           }
-          catch (const QString mess){
+          catch (const QString & mess){
               QMessageBox::critical(0, mess, "Please try one more time");
               ui -> statusbar -> showMessage("");
           }
@@ -511,4 +499,3 @@ void MentorClient::on_actionHelp_triggered()
     SmartHelper helper(":/help/Help/MentorClientHelp.txt", this);
     helper.exec();
 }
-

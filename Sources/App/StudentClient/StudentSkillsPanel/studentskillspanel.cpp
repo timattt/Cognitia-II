@@ -32,9 +32,4 @@ void StudentSkillsPanel::setSkp(SkillPack *skp) {
 		SkillWidget * w = new SkillWidget(this, sk);
 		layout->addWidget(w);
 	}
-	for (int i = 0; i < skp->getSkillsCount(); i++) {
-		Skill * sk = skp->getSkill(i);
-		SkillWidget * w = new SkillWidget(this, sk);
-		layout->addWidget(w);
-	}
 }

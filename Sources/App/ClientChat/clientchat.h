@@ -27,7 +27,7 @@ public slots:
     void setStudentProgress(StudentProgress * prog);
     void clearAll();
     void nodeSelected(Node * nd);
-    void studentNameChanged(QString name);
+    void senderNameChanged(QString name);
 
 private:
 
@@ -36,7 +36,7 @@ private:
     Ui::ClientChat *ui;
     StudentProgress * currentStp;
     Node * currentNode;
-    QString studentName;
+    QString senderName;
     //=======================================
 
 private slots:
@@ -50,7 +50,7 @@ private:
 
 	// private functions
 	//=======================================
-	void addMessage(QString text);
+	void addMessage(QString author, QString text);
 	void clearGui();
 	//=======================================
 

@@ -49,6 +49,7 @@ StudentClient::StudentClient() :
 
     connect(this, SIGNAL(newCourseUnit(CourseUnit*)), ui->courseUnitViewer, SLOT(unpack(CourseUnit*)));
     connect(this, SIGNAL(newSkillPack(SkillPack*)), ui->allSkills, SLOT(setSkp(SkillPack*)));
+    connect(this, SIGNAL(newStudentProgress(StudentProgress*)), ui->courseUnitViewer, SLOT(unpack(StudentProgress*)));
 
     connect(this, SIGNAL(clearAll()), ui->cuPanel, SLOT(clearAll()));
     connect(this, SIGNAL(clearAll()), ui->allSkills, SLOT(clearAll()));
@@ -56,6 +57,7 @@ StudentClient::StudentClient() :
     connect(this, SIGNAL(clearAll()), ui->inAbsolute, SLOT(clearAll()));
     connect(this, SIGNAL(clearAll()), ui->cuName, SLOT(clear()));
     connect(this, SIGNAL(clearAll()), ui->cuDescription, SLOT(clear()));
+    connect(this, SIGNAL(clearAll()), this, SLOT(hideInfoPanel()));
 
     ui->courseUnitViewer->setEditable(false);
     hideInfoPanel();

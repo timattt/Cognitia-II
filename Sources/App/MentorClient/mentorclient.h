@@ -71,11 +71,6 @@ private:
 	 * @author timattt
 	 */
 	QMap<QString, StudentProgress*> students;
-    /**!
-	 * Currently selected student.
-	 * @author timattt
-	 */
-	QString currentStudent;
 
 	QTcpSocket *mSocket;
 	quint32 nextBlockSize = 0;
@@ -83,7 +78,6 @@ private:
 
 	QByteArray datafromServer;
 	quint16 respCode;
-
 	bool inworkingrepository = false;
 	//===================================================
 
@@ -97,18 +91,6 @@ private:
 	 * @author timattt
 	 */
 	void display();
-
-    /**! call this when you want to extract data from gui into studentprogress.
-	 * After this function they will be ready to send.
-	 * @author timattt
-	 */
-	void pack();
-
-    /**!
-	 clears all widgets of the programm window
-	 @author - arfarafar
-	 */
-	void ClearAll();
 
     /**!
 	 * deletes old fields and make new ones
@@ -180,6 +162,10 @@ signals:
 	 * This is used by launcher. When this widget is closed launcher is opened again.
 	 */
 	void onClose();
+	void newStudentProgress(StudentProgress * prg);
+	void newCourseUnit(CourseUnit * cu);
+	void newSkillPack(SkillPack * skp);
+	void clearAll();
 	//===================================================
 
 private slots:
@@ -191,7 +177,7 @@ private slots:
 	 * When user changed current student.
 	 * @author timattt
 	 */
-	void on_studentChooser_currentTextChanged(const QString &arg1);
+	void newStudentSelected(QString arg1);
 
     /**!
 	 activates when we can read smth from the socket

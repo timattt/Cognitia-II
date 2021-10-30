@@ -35,7 +35,7 @@ public slots:
 	 * @param nd - node to be set in this widget.
 	 * @author timattt
 	 */
-	void prepareNode(Node * nd);
+	void nodeSelected(Node * nd);
 	void clearAll();
 	//=======================================
 

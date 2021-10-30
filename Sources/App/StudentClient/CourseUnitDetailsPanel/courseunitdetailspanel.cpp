@@ -22,7 +22,7 @@ CourseUnitDetailsPanel::CourseUnitDetailsPanel(QWidget *parent) :
 	connect(client->getCourseUnitViewer(), SIGNAL(nodeSelected(Node*)), this->ui->chat, SLOT(nodeSelected(Node*)));
 	connect(client->getCourseUnitViewer(), SIGNAL(progressMadeToSelected(QString, double)), this->ui->outDeltaSkills, SLOT(progressMade(QString, double)));
     connect(client, SIGNAL(clearAll()), ui->chat, SLOT(clearAll()));
-    connect(client, SIGNAL(newStudentName(QString)), ui->chat, SLOT(studentNameChanged(QString)));
+    connect(client, SIGNAL(newStudentName(QString)), ui->chat, SLOT(senderNameChanged(QString)));
     connect(client, SIGNAL(clearAll()), ui->outDeltaSkills, SLOT(clearAll()));
     connect(ui->returnBack, SIGNAL(clicked()), client, SLOT(hideInfoPanel()));
 
@@ -33,7 +33,7 @@ CourseUnitDetailsPanel::~CourseUnitDetailsPanel()
     delete ui;
 }
 
-void CourseUnitDetailsPanel::prepareNode(Node *nd) {
+void CourseUnitDetailsPanel::nodeSelected(Node *nd) {
 	ui->cuName->setText(nd->getName());
 	ui->cuDescr->setMarkdown(nd->getDescription());
 }

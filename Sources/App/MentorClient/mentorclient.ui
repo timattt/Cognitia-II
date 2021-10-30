@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>991</width>
-    <height>719</height>
+    <width>940</width>
+    <height>638</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,93 +36,47 @@ QSplitter::handle:vertical {
 }
 </string>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_3">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="StudentsChooserPanel" name="students" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>100</width>
+        <height>100</height>
+       </size>
+      </property>
+     </widget>
+    </item>
     <item>
      <widget class="QSplitter" name="splitter_2">
       <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+       <enum>Qt::Vertical</enum>
       </property>
+      <widget class="CourseUnitViewer" name="courseUnitViewer" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>100</height>
+        </size>
+       </property>
+      </widget>
       <widget class="QSplitter" name="splitter">
        <property name="orientation">
-        <enum>Qt::Vertical</enum>
+        <enum>Qt::Horizontal</enum>
        </property>
-       <widget class="QWidget" name="studentsChooser" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="QLabel" name="studentChooserLabel">
-           <property name="text">
-            <string>Available students:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="studentChooser"/>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="parentInfo" native="true">
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-           <item>
-            <widget class="QLabel" name="label">
-             <property name="font">
-              <font>
-               <pointsize>8</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>Parent node:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="parentCu">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_4">
-           <item>
-            <widget class="QLabel" name="label_3">
-             <property name="text">
-              <string>Description:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QTextEdit" name="parentDescr">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
+       <widget class="SkillsMixerHolder" name="skillsMixerHolder" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>100</height>
+         </size>
+        </property>
        </widget>
        <widget class="QWidget" name="childInfo" native="true">
         <layout class="QVBoxLayout" name="verticalLayout">
@@ -136,7 +90,7 @@ QSplitter::handle:vertical {
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="childCu">
+            <widget class="QLineEdit" name="cuName">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -172,7 +126,7 @@ QSplitter::handle:vertical {
           </layout>
          </item>
          <item>
-          <widget class="QTextEdit" name="childDescr">
+          <widget class="QTextEdit" name="cuDescription">
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -183,52 +137,23 @@ QSplitter::handle:vertical {
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="skillsView" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_6">
-         <item>
-          <widget class="SkillsFlower" name="skillFlower" native="true">
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>100</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item alignment="Qt::AlignHCenter">
-          <widget class="SkillsMixerHolder" name="skillsMixerHolder" native="true">
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>100</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
       </widget>
-      <widget class="CourseUnitViewer" name="courseUnitViewer" native="true">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>464</height>
-        </size>
-       </property>
-      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="ClientChat" name="chat" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>100</width>
+        <height>0</height>
+       </size>
+      </property>
      </widget>
     </item>
    </layout>
@@ -238,8 +163,8 @@ QSplitter::handle:vertical {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>991</width>
-     <height>26</height>
+     <width>940</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuServer">
@@ -298,12 +223,6 @@ QSplitter::handle:vertical {
  </widget>
  <customwidgets>
   <customwidget>
-   <class>SkillsFlower</class>
-   <extends>QWidget</extends>
-   <header>SkillsFlower/skillsflower.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>CourseUnitViewer</class>
    <extends>QWidget</extends>
    <header>CourseUnitViewer/courseunitviewer.h</header>
@@ -313,6 +232,18 @@ QSplitter::handle:vertical {
    <class>SkillsMixerHolder</class>
    <extends>QWidget</extends>
    <header>SkillsMixer/skillsmixerholder.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ClientChat</class>
+   <extends>QWidget</extends>
+   <header>ClientChat/clientchat.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>StudentsChooserPanel</class>
+   <extends>QWidget</extends>
+   <header>MentorClient/StudentsChooserPanel/studentschooserpanel.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

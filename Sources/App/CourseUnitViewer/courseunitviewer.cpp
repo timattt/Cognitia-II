@@ -282,6 +282,7 @@ void CourseUnitViewer::unpack(StudentProgress *prg) {
 
 void CourseUnitViewer::pack(StudentProgress *prg) {
 	NOT_NULL(prg);
+	prg->clearProgress();
 	const QList<QGraphicsItem*> items = scene->items();
 	for (QGraphicsItem *item : items) {
 		if (Node *node = qgraphicsitem_cast<Node*>(item)) {

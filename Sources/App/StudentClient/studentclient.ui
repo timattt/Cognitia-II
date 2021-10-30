@@ -38,6 +38,12 @@ QSplitter::handle:vertical {
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
      <widget class="QWidget" name="skillsList" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QLabel" name="label_3">
@@ -59,7 +65,7 @@ QSplitter::handle:vertical {
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>584</width>
+            <width>68</width>
             <height>583</height>
            </rect>
           </property>
@@ -153,6 +159,12 @@ QSplitter::handle:vertical {
     </item>
     <item>
      <widget class="CourseUnitDetailsPanel" name="cuPanel" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="minimumSize">
        <size>
         <width>100</width>

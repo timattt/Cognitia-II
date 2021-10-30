@@ -22,6 +22,6 @@ void OutputRelativeSkillsPanel::progressMade(QString skill, double lev) {
 	Q_UNUSED(lev);
 }
 
-void OutputRelativeSkillsPanel::unpack(Node *nd) {
+void OutputRelativeSkillsPanel::nodeSelected(Node *nd) {
 	Q_UNUSED(nd);
 }

@@ -42,12 +42,12 @@ void ClientChat::nodeSelected(Node *nd) {
 	currentNode = nd;
 
 	for (message mes : currentStp->getMessages(nd->getName())) {
-		addMessage(mes.author + ":" + mes.text);
+		addMessage(mes.author, mes.text);
 	}
 }
 
-void ClientChat::studentNameChanged(QString name) {
-	studentName = name;
+void ClientChat::senderNameChanged(QString name) {
+	senderName = name;
 }
 
 void ClientChat::on_sendButton_clicked() {
@@ -56,14 +56,14 @@ void ClientChat::on_sendButton_clicked() {
 
 	QString mes = ui->newMessage->text();
 	ui->newMessage->clear();
-	addMessage(mes);
+	addMessage(senderName, mes);
 
-	currentStp->addMessage(currentNode->getName(), studentName, mes);
+	currentStp->addMessage(currentNode->getName(), senderName, mes);
 }
 
-void ClientChat::addMessage(QString text) {
+void ClientChat::addMessage(QString author, QString text) {
 	QLabel *lab = new QLabel(ui->scrollAreaWidgetContents);
-	lab->setText(studentName + ":" + text);
+	lab->setText(author + ":" + text);
 	ui->verticalLayout_2->addWidget(lab);
 	ui->scrollArea->verticalScrollBar()->setValue(ui->scrollArea->verticalScrollBar()->maximum());
 }

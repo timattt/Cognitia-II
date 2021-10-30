@@ -50,6 +50,7 @@ public:
 	double getLevel(QString courseUnit, QString skill);
 	bool containsLevel(QString courseUnit, QString skill);
 	QString toString();
+	void clearProgress();
 	/**
 	 * @Deprecated
 	 */

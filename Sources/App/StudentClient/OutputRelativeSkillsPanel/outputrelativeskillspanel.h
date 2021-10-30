@@ -52,7 +52,7 @@ public slots:
 	 * @param nd - node that will be unpacked. Can be nullptr.
 	 * @author timattt
 	 */
-	void unpack(Node *nd);
+	void nodeSelected(Node *nd);
 	//==============================================
 };
 

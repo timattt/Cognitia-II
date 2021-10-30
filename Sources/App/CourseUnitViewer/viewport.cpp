@@ -113,7 +113,11 @@ void Viewport::focusOn() {
 	scene()->setSceneRect(QRectF(-w/2, -h/2, w, h));
 	scene()->update();
 	fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
+
+	double tmp = curScale;
 	curScale = 1;
+
+	setScale(tmp);
 }
 
 void Viewport::setCameraPos(QPointF p) {
@@ -141,7 +145,7 @@ float Viewport::getCurScale() const {
 }
 
 void Viewport::wheelEvent(QWheelEvent *event) {
-	float v = event->angleDelta().y() / 1500.0;
+	float v = -event->angleDelta().y() / 1500.0;
 	addScale(v);
 
 	QPointF d = {event->position().x() - width() / 2, event->position().y() - height() / 2};

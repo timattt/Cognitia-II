@@ -23,6 +23,6 @@ void InputAbsoluteSkillsPanel::progressMade(QString skill, double lev) {
 	Q_UNUSED(lev);
 }
 
-void InputAbsoluteSkillsPanel::unpack(Node *nd) {
+void InputAbsoluteSkillsPanel::nodeSelected(Node *nd) {
 	Q_UNUSED(nd);
 }

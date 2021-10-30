@@ -177,3 +177,7 @@ void StudentProgress::addMessage(QString cu, QString author, QString text) {
 QVector<message>& StudentProgress::getMessages(QString cu) {
 	return messages[cu];
 }
+
+void StudentProgress::clearProgress() {
+	progress.clear();
+}
