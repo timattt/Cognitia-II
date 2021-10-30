@@ -5,10 +5,9 @@
 #include <QtWidgets>
 #include "../Core/logger.h"
 
-SkillsMixerHolder::SkillsMixerHolder(QWidget *parent) :
-		QWidget(parent),
+SkillsMixerHolder::SkillsMixerHolder() :
+		QWidget(nullptr),
 		ui(new Ui::SkillsMixerHolder) {
-	NOT_NULL(parent);
 
 	SAY("SkillMixerHolder init started");
 	ui->setupUi(this);

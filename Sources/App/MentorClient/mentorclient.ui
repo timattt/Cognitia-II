@@ -77,13 +77,20 @@ QSplitter::handle:vertical {
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <widget class="SkillsMixerHolder" name="skillsMixerHolder" native="true">
-        <property name="minimumSize">
-         <size>
-          <width>100</width>
-          <height>100</height>
-         </size>
+       <widget class="QScrollArea" name="scrollArea_2">
+        <property name="widgetResizable">
+         <bool>true</bool>
         </property>
+        <widget class="SkillsMixerHolder" name="skillsMixerHolder">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>248</width>
+           <height>389</height>
+          </rect>
+         </property>
+        </widget>
        </widget>
        <widget class="QWidget" name="childInfo" native="true">
         <layout class="QVBoxLayout" name="verticalLayout">
@@ -148,26 +155,13 @@ QSplitter::handle:vertical {
      </widget>
     </item>
     <item>
-     <widget class="QScrollArea" name="scrollArea_2">
+     <widget class="ClientChat" name="chat" native="true">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="widgetResizable">
-       <bool>true</bool>
-      </property>
-      <widget class="ClientChat" name="chat">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>68</width>
-         <height>546</height>
-        </rect>
-       </property>
-      </widget>
      </widget>
     </item>
    </layout>

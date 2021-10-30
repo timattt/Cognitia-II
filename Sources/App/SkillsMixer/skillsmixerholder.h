@@ -33,7 +33,7 @@ public:
 	 * Simple init constructor.
 	 * @author timattt
 	 */
-    SkillsMixerHolder(QWidget *parent);
+    SkillsMixerHolder();
     /**
      * Classical widget destructor.
      * @author timattt
