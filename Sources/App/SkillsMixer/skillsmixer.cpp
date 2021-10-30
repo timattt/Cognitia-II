@@ -16,12 +16,9 @@ SkillsMixer::SkillsMixer(SkillsMixerHolder *parent, double from, double to, doub
     ui->skillName->setText(name);
     ui->from->setText(QString::number(from) + " <");
     ui->to->setText("< " + QString::number(to));
-    ui->val->setText(QString::number(val, 'g', (val > 10 ? 3 : 2)));
+    ui->val->setText(QString::number(val, 'g', 3));
 
-    ui->horizontalSlider->setRange(from * 10, to * 10);
-    ui->horizontalSlider->setSingleStep(1);
-    ui->horizontalSlider->setPageStep(2);
-    ui->horizontalSlider->setValue(val * 10);
+    ui->dial->setRange(from * 10, to * 10);
 
     SAY("Skills mixer init done");
 }
@@ -31,15 +28,15 @@ SkillsMixer::~SkillsMixer()
     delete ui;
 }
 
-void SkillsMixer::on_horizontalSlider_valueChanged(int a) {
-	double v = (double)a / 10.0;
+void SkillsMixer::on_dial_valueChanged(int a) {
+	double v = (double)a/10;
 	ui->val->setText(QString::number(v));
 
 	emit holder->skillLevelChanged(ui->skillName->text(), v);
 }
 
 void SkillsMixer::setValue(double v) {
-	ui->horizontalSlider->setValue(v * 10);
-	ui->val->setText(QString::number(v, 'g', (v > 10 ? 3 : 2)));
+	ui->dial->setValue(v*10);
+	ui->val->setText(QString::number(v, 'g', 3));
 	update();
 }

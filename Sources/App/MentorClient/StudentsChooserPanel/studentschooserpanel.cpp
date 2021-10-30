@@ -1,7 +1,7 @@
 #include "studentschooserpanel.h"
 
-StudentsChooserPanel::StudentsChooserPanel(QWidget *parent) :
-    QWidget(parent),
+StudentsChooserPanel::StudentsChooserPanel() :
+    QWidget(nullptr),
 	layout(nullptr),
 	groupBox(nullptr),
 	lastStudent("")

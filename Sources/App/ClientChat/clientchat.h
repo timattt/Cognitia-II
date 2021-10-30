@@ -18,7 +18,7 @@ public:
 
 	// constructor and destructor
 	//=======================================
-    ClientChat(QWidget *parent);
+    ClientChat(QWidget * parent = nullptr);
     ~ClientChat();
     //=======================================
 

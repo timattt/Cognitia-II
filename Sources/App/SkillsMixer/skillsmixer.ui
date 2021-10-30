@@ -88,9 +88,30 @@
       </spacer>
      </item>
      <item>
-      <widget class="QSlider" name="horizontalSlider">
+      <widget class="QDial" name="dial">
+       <property name="maximum">
+        <number>10</number>
+       </property>
+       <property name="pageStep">
+        <number>1</number>
+       </property>
+       <property name="sliderPosition">
+        <number>0</number>
+       </property>
+       <property name="tracking">
+        <bool>false</bool>
+       </property>
        <property name="orientation">
-        <enum>Qt::Vertical</enum>
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="invertedAppearance">
+        <bool>false</bool>
+       </property>
+       <property name="wrapping">
+        <bool>false</bool>
+       </property>
+       <property name="notchesVisible">
+        <bool>true</bool>
        </property>
       </widget>
      </item>

@@ -61,7 +61,7 @@ private slots:
 
 	// private slots
 	//====================================
-	void on_horizontalSlider_valueChanged(int a);
+	void on_dial_valueChanged(int a);
 	//====================================
 
 public:

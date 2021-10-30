@@ -28,9 +28,6 @@ MentorClient::MentorClient() :
     headCourseUnit = new CourseUnit(this);
 
     ///////////////////////////////Course unit viewer
-    // node double clicked
-    connect(ui->courseUnitViewer, SIGNAL(nodeDoubleClicked(Node*)), this, SLOT(nodeDoubleClicked(Node*)));
-
     // node selected
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->chat, SLOT(nodeSelected(Node*)));
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), ui->skillsMixerHolder, SLOT(nodeSelected(Node*)));

@@ -10,7 +10,7 @@ public:
 
 	// constructor and destructor
 	//====================================================
-	StudentsChooserPanel(QWidget *parent);
+	StudentsChooserPanel();
 	~StudentsChooserPanel() = default;
 	//====================================================
 

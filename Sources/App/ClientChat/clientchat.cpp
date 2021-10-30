@@ -4,7 +4,7 @@
 #include "../Core/logger.h"
 #include "../CourseUnitViewer/Node/node.h"
 
-ClientChat::ClientChat(QWidget *parent) :
+ClientChat::ClientChat(QWidget * parent) :
     QWidget(parent),
     ui(new Ui::ClientChat),
 	currentStp(nullptr),

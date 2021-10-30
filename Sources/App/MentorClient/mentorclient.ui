@@ -38,19 +38,26 @@ QSplitter::handle:vertical {
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="StudentsChooserPanel" name="students" native="true">
+     <widget class="QScrollArea" name="scrollArea">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="minimumSize">
-       <size>
-        <width>100</width>
-        <height>100</height>
-       </size>
+      <property name="widgetResizable">
+       <bool>true</bool>
       </property>
+      <widget class="StudentsChooserPanel" name="students">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>68</width>
+         <height>546</height>
+        </rect>
+       </property>
+      </widget>
      </widget>
     </item>
     <item>
@@ -141,19 +148,26 @@ QSplitter::handle:vertical {
      </widget>
     </item>
     <item>
-     <widget class="ClientChat" name="chat" native="true">
+     <widget class="QScrollArea" name="scrollArea_2">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="minimumSize">
-       <size>
-        <width>100</width>
-        <height>0</height>
-       </size>
+      <property name="widgetResizable">
+       <bool>true</bool>
       </property>
+      <widget class="ClientChat" name="chat">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>68</width>
+         <height>546</height>
+        </rect>
+       </property>
+      </widget>
      </widget>
     </item>
    </layout>
