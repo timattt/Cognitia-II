@@ -38,6 +38,8 @@ SOURCES += \
     CourseUnitViewer/viewport.cpp \
     CourseEditor/skillsmodel.cpp \
     Server/server.cpp \
+    StudentClient/InputAbsoluteSkillsPanel/circle.cpp \
+    StudentClient/InputAbsoluteSkillsPanel/circlescene.cpp \
     StudentClient/StudentSkillsPanel/studentskillspanel.cpp \
     StudentClient/StudentSkillsPanel/skillwidget.cpp \
     StudentClient/CourseUnitDetailsPanel/courseunitdetailspanel.cpp \
@@ -79,6 +81,8 @@ HEADERS += \
     CourseEditor/skillsmodel.h\
     Server/server.h \
     Structures/fileExtensions.h \
+    StudentClient/InputAbsoluteSkillsPanel/circle.h \
+    StudentClient/InputAbsoluteSkillsPanel/circlescene.h \
     StudentClient/StudentSkillsPanel/studentskillspanel.h \
     StudentClient/StudentSkillsPanel/skillwidget.h \
     StudentClient/CourseUnitDetailsPanel/courseunitdetailspanel.h \
