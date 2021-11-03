@@ -66,7 +66,12 @@ void InputAbsoluteSkillsPanel::unpack(Node *nd) {
     int elem = 0;
     for(i = inSkills.begin(); i != inSkills.end(); i++, elem++) {
         Circle * circle = nullptr;
-        scene->addItem(circle = new Circle(nd->getSkillProgress(i.key()), i.value(), i.key(), size, elem));
+
+        if (nd->containsProgress(i.key()) == true)
+            scene->addItem(circle = new Circle(nd->getSkillProgress(i.key()), i.value(), i.key(), size, elem));
+        else
+            scene->addItem(circle = new Circle(0, i.value(), i.key(), size, elem));
+
         circles[i.key()] = circle;
     }
 
