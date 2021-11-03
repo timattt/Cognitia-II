@@ -18,7 +18,7 @@ CourseUnitDetailsPanel::CourseUnitDetailsPanel(QWidget *parent) :
     NOT_NULL(client);
 
     connect(client, SIGNAL(newStudentProgress(StudentProgress*)), ui->chat, SLOT(setStudentProgress(StudentProgress*)));
-	connect(client->getCourseUnitViewer(), SIGNAL(nodeSelected(Node*)), this->ui->outDeltaSkills, SLOT(unpack(Node*)));
+	connect(client->getCourseUnitViewer(), SIGNAL(nodeSelected(Node*)), this->ui->outDeltaSkills, SLOT(nodeSelected(Node*)));
 	connect(client->getCourseUnitViewer(), SIGNAL(nodeSelected(Node*)), this->ui->chat, SLOT(nodeSelected(Node*)));
 	connect(client->getCourseUnitViewer(), SIGNAL(progressMadeToSelected(QString, double)), this->ui->outDeltaSkills, SLOT(progressMade(QString, double)));
     connect(client, SIGNAL(clearAll()), ui->chat, SLOT(clearAll()));

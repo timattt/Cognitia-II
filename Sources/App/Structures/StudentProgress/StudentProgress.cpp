@@ -7,6 +7,7 @@
 
 #include "StudentProgress.h"
 #include "../CourseUnit/courseunit.h"
+#include "../../CourseUnitViewer/Node/node.h"
 
 StudentProgress::StudentProgress(QObject *parent) : QObject(parent)
 {
@@ -61,7 +62,7 @@ void StudentProgress::load(QFile *file) {
     		QString author = split[3 + totalSkills * 2 + i];
     		QString text = split[3 + totalSkills * 2 + i + 1];
 
-    		messages[courseUnitName].push_back({author, text});
+    		addMessage(courseUnitName, author, text);
     	}
     }
 }
@@ -112,6 +113,10 @@ void StudentProgress::save(QFile *file) {
 
 void StudentProgress::addProgress(QString courseUnit, QString skill, double level) {
 	progress[courseUnit][skill] = level;
+	if (!absoluteProgress.contains(skill)) {
+		absoluteProgress[skill] = 0;
+	}
+	absoluteProgress[skill] = qMax(absoluteProgress[skill], level);
 }
 
 QString StudentProgress::toString() {
@@ -145,31 +150,6 @@ bool StudentProgress::containsLevel(QString courseUnit, QString skill) {
 	return progress.contains(courseUnit) && progress[courseUnit].contains(skill);
 }
 
-void StudentProgress::collectAbsolute(CourseUnit *cu, QMap<QString, double> &res) {
-	if (!progress.contains(cu->objectName())) {
-		return;
-	}
-
-	for (QString sk : progress[cu->objectName()].keys()) {
-		double val = progress[cu->objectName()][sk];
-
-		if (cu->containsInSkill(sk)) {
-			if (qAbs(val - cu->getInSkillLevel(sk)) < 0.001) {
-				continue;
-			}
-		} else if (cu->containsOutSkill(sk)) {
-			if (qAbs(val - (cu->getOutSkillLevel(sk) - 1)) < 0.001) {
-				continue;
-			}
-		}
- 		if (!res.contains(sk)) {
-			res[sk] = 0;
-		}
-		res[sk] = qMax(res[sk], progress[cu->objectName()][sk]);
-	}
-
-}
-
 void StudentProgress::addMessage(QString cu, QString author, QString text) {
 	messages[cu].push_back({author, text});
 }
@@ -180,4 +160,13 @@ QVector<message>& StudentProgress::getMessages(QString cu) {
 
 void StudentProgress::clearProgress() {
 	progress.clear();
+	absoluteProgress.clear();
+}
+
+double StudentProgress::getAbsoluteProgressForSkill(QString skill) {
+	return absoluteProgress[skill];
+}
+
+bool StudentProgress::hasProgressInSkill(QString skillName) {
+	return absoluteProgress.contains(skillName);
 }

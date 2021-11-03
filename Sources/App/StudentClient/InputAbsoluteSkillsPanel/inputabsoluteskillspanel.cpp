@@ -18,6 +18,7 @@
 InputAbsoluteSkillsPanel::InputAbsoluteSkillsPanel(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::InputAbsoluteSkillsPanel),
+	currentProgress(nullptr),
     scene(nullptr)
 {
     NOT_NULL(parent);
@@ -56,6 +57,8 @@ void InputAbsoluteSkillsPanel::unpack(Node *nd) {
         return;
     }
 
+    NOT_NULL(currentProgress);
+
     clearAll();
 
     QMap<QString, int> inSkills = nd->getInSkills();
@@ -67,16 +70,25 @@ void InputAbsoluteSkillsPanel::unpack(Node *nd) {
     for(i = inSkills.begin(); i != inSkills.end(); i++, elem++) {
         Circle * circle = nullptr;
 
-        if (nd->containsProgress(i.key()) == true)
-            scene->addItem(circle = new Circle(nd->getSkillProgress(i.key()), i.value(), i.key(), size, elem));
-        else
+        if (currentProgress->hasProgressInSkill(i.key())) {
+            scene->addItem(circle = new Circle(currentProgress->getAbsoluteProgressForSkill(i.key()), i.value(), i.key(), size, elem));
+        } else {
             scene->addItem(circle = new Circle(0, i.value(), i.key(), size, elem));
+        }
 
         circles[i.key()] = circle;
     }
 
     scene->update();
     ui->view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+}
+
+void InputAbsoluteSkillsPanel::newStudent(StudentProgress *prg) {
+	currentProgress = prg;
+
+	if (!currentProgress) {
+		clearAll();
+	}
 }
 
 void InputAbsoluteSkillsPanel::resizeEvent(QResizeEvent * event) {

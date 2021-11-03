@@ -1,7 +1,6 @@
 #include "mentorclient.h"
 #include "ui_mentorclient.h"
 #include "../CourseUnitViewer/courseunitviewer.h"
-#include "../SkillsFlower/skillsflower.h"
 #include "../Structures/CourseUnit/courseunit.h"
 #include "../CourseUnitViewer/Node/node.h"
 #include "../Structures/StudentProgress/StudentProgress.h"

@@ -25,7 +25,6 @@ SOURCES += \
     MentorClient/StudentsChooserPanel/studentschooserpanel.cpp \
     MentorClient/mentorclient.cpp \
     SkillPackEditor/skillpackeditor.cpp \
-    SkillsFlower/skillsflower.cpp \
     SkillsMixer/skillsmixer.cpp \
     SkillsMixer/skillsmixerholder.cpp \
     Structures/CourseUnit/courseunit.cpp \
@@ -49,9 +48,7 @@ SOURCES += \
     CourseUnitViewer/Node/Design/nodedesign.cpp \
     CourseUnitViewer/Node/Design/nodedesignformal.cpp \
     CourseUnitViewer/Node/Design/nodedesignold.cpp \
-    SkillsFlower/flowerscene.cpp \
-    SkillsFlower/leaf.cpp \
-        CourseUnitViewer/Node/Design/nodedesignolive.cpp
+    CourseUnitViewer/Node/Design/nodedesignolive.cpp
 
 HEADERS += \
     ChooseServ/chooseserv.h \
@@ -67,7 +64,6 @@ HEADERS += \
     MentorClient/StudentsChooserPanel/studentschooserpanel.h \
     MentorClient/mentorclient.h \
     SkillPackEditor/skillpackeditor.h \
-    SkillsFlower/skillsflower.h \
     SkillsMixer/skillsmixer.h \
     SkillsMixer/skillsmixerholder.h \
     Structures/CourseUnit/courseunit.h \
@@ -92,8 +88,6 @@ HEADERS += \
     CourseUnitViewer/Node/Design/nodedesign.h \
     CourseUnitViewer/Node/Design/nodedesignolive.h \
     CourseUnitViewer/Node/Design/nodedesignold.h \
-    SkillsFlower/flowerscene.h \
-    SkillsFlower/leaf.h \
     CourseUnitViewer/Node/Design/nodedesignformal.h
 
 FORMS += \
@@ -107,7 +101,6 @@ FORMS += \
     MentorClient/mentorclient.ui \
     SkillPackEditor/skillpackeditor.ui\
     Server/server.ui \
-    SkillsFlower/skillsflower.ui \
     SkillsMixer/skillsmixer.ui \
     SkillsMixer/skillsmixerholder.ui \
     StudentClient/StudentSkillsPanel/skillwidget.ui \

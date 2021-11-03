@@ -67,6 +67,8 @@ public slots:
      * @author ZoomZero
      */
     void unpack(Node * nd);
+
+    void newStudent(StudentProgress * prg);
     //==============================================
 
 signals:
@@ -85,16 +87,21 @@ signals:
 
 private:
 
-	// private functions
+	// private fields
 	//==============================================
     Ui::InputAbsoluteSkillsPanel *ui;
-
+    StudentProgress * currentProgress;
     CircleScene * scene;
-
     QMap<QString, Circle*> circles;
     //==============================================
+
 protected:
+
+    // protected functions
+    //==============================================
     void resizeEvent(QResizeEvent *event);
+    //==============================================
+
 };
 
 #endif // INABSOLUTESKILL_H

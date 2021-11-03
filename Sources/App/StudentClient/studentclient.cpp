@@ -7,6 +7,7 @@
 #include "../ChooseServ/chooseserv.h"
 #include "../Help/smarthelper.h"
 #include "../Core/logger.h"
+#include "InputAbsoluteSkillsPanel/inputabsoluteskillspanel.h"
 
 StudentClient::StudentClient() :
     QMainWindow(nullptr),
@@ -45,11 +46,12 @@ StudentClient::StudentClient() :
     connect(ui->inAbsolute, SIGNAL(skillLevelChanged(QString, double)), ui->courseUnitViewer, SLOT(makeProgressToSelected(QString, double)));
 
     connect(ui->courseUnitViewer, SIGNAL(nodeSelected(Node*)), this, SLOT(nodeSelected(Node*)));
-    connect(ui->courseUnitViewer, SIGNAL(nodeDoubleClicked(Node*)), ui->cuPanel, SLOT(prepareNode(Node*)));
+    connect(ui->courseUnitViewer, SIGNAL(nodeDoubleClicked(Node*)), ui->cuPanel, SLOT(nodeSelected(Node*)));
 
     connect(this, SIGNAL(newCourseUnit(CourseUnit*)), ui->courseUnitViewer, SLOT(unpack(CourseUnit*)));
     connect(this, SIGNAL(newSkillPack(SkillPack*)), ui->allSkills, SLOT(setSkp(SkillPack*)));
     connect(this, SIGNAL(newStudentProgress(StudentProgress*)), ui->courseUnitViewer, SLOT(unpack(StudentProgress*)));
+    connect(this, SIGNAL(newStudentProgress(StudentProgress*)), ui->inAbsolute, SLOT(newStudent(StudentProgress*)));
 
     connect(this, SIGNAL(clearAll()), ui->cuPanel, SLOT(clearAll()));
     connect(this, SIGNAL(clearAll()), ui->allSkills, SLOT(clearAll()));

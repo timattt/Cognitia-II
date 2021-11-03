@@ -20,6 +20,7 @@ struct message {
 };
 
 class CourseUnit;
+class Node;
 
 class StudentProgress: public QObject {
 public:
@@ -36,6 +37,7 @@ private:
 	//----------------------------------
 	QMap<QString, QMap<QString, double>> progress;
 	QMap<QString, QVector<message>> messages;
+	QMap<QString, double> absoluteProgress;
 	//----------------------------------
 
 public:
@@ -51,10 +53,8 @@ public:
 	bool containsLevel(QString courseUnit, QString skill);
 	QString toString();
 	void clearProgress();
-	/**
-	 * @Deprecated
-	 */
-	void collectAbsolute(CourseUnit * cu, QMap<QString, double> & res);
+	double getAbsoluteProgressForSkill(QString skill);
+	bool hasProgressInSkill(QString skillName);
 	//----------------------------------
 };
 

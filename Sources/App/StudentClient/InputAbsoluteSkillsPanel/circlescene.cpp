@@ -31,6 +31,7 @@ void CircleScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 void CircleScene::drawBackground(QPainter *painter, const QRectF &rect) {
     // Shadow
     QRectF sceneRect = this->sceneRect();
+    sceneRect = QRectF(sceneRect.x() - 20, sceneRect.y() - 20, sceneRect.width() + 40, sceneRect.height() + 40);
     QRectF rightShadow(sceneRect.right(), sceneRect.top() + 5, 5, sceneRect.height());
     QRectF bottomShadow(sceneRect.left() + 5, sceneRect.bottom(), sceneRect.width(), 5);
     if (rightShadow.intersects(rect) || rightShadow.contains(rect))
