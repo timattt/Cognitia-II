@@ -200,6 +200,7 @@ void StudentClient::handleincFile(QDataStream& in){
          QTextStream out(&file);
          QByteArray filecont;
          in >> filecont;
+         filecont.remove(filecont.size() - 1, 2);
          out << filecont;
          //file.write(in.device()->readAll());
      }
