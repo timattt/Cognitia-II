@@ -1,30 +1,30 @@
 /*
  * circle.h
  *
- *  Created on: Oct, 26, 2021
+ *  Created on: Nov, 19, 2021
  *      Author: ZoomZero
  */
 
-#ifndef CIRCLE_H
-#define CIRCLE_H
+#ifndef OUTCIRCLE_H
+#define OUTCIRCLE_H
 
 #include <QtWidgets>
 
 // Used classes
 //====================================
-class InputAbsoluteSkillsPanel;
+class OutputRelativeSkillsPanel;
 //====================================
 
 /**
- * This class represents circle in inabsoluteskill.
- * Circle represents certain in skill for this node.
+ * This class represents circle in outputrelativeskill.
+ * Circle represents reltive progress in out skill.
  * Ring shows how much progress i made in given skill.
  * Field to and from represents level bounds in which value field (which represents current user progress) may be.
- * This class may be used only by inabsoluteskill.
+ * This class may be used only by outputrelativeskill.
  *
  * @author ZoomZero
  */
-class Circle: public QGraphicsItem {
+class OutCircle: public QGraphicsItem {
 
 public:
 
@@ -34,8 +34,8 @@ public:
      * Simple constructor that inits all class fields.
      * @author ZoomZero
      */
-    Circle(double level, double levelTo, QString text, int skillsCount, int elem);
-    ~Circle() = default;
+    OutCircle(double level, double levelTo, QString text, int skillsCount, int elem);
+    ~OutCircle() = default;
     //=====================================
 
 private:
@@ -72,7 +72,7 @@ private:
      * Parent object.
      * @author ZoomZero
      */
-    InputAbsoluteSkillsPanel * parent;
+    OutputRelativeSkillsPanel * parent;
     //=====================================
 
 private:
@@ -113,4 +113,4 @@ protected:
 
 };
 
-#endif // CIRCLE_H
+#endif // OUTCIRCLE_H

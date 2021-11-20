@@ -1,17 +1,17 @@
 /*
  * circle.cpp
  *
- *  Created on: Oct, 28, 2021
+ *  Created on: Nov, 19, 2021
  *      Author: ZoomZero
  */
 
-#include "circle.h"
+#include "outcircle.h"
 #include <QtGlobal>
-#include "inputabsoluteskillspanel.h"
+#include "outputrelativeskillspanel.h"
 #include "../../CourseUnitViewer/Node/Design/nodedesign.h"
 #include "../../Core/logger.h"
 
-QRectF Circle::boundingRect() const {
+QRectF OutCircle::boundingRect() const {
     int w = scene()->width();
     int h = scene()->height();
     int y = h / 2;
@@ -22,18 +22,18 @@ QRectF Circle::boundingRect() const {
     return r;
 }
 
-void Circle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+void OutCircle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         QWidget *widget) {
     Q_UNUSED(option);
     Q_UNUSED(widget);
 
     int w = scene()->width();
     int h = scene()->height();
-    painter->translate(- w/2, -h/2);
+    painter->translate(-w/2, -h/2);
 
-    int x = w * (2*(elem + 1) - 1) / (2 * skillsCount);
-    int y = h / 2;
-    double radi = qMin(w / (1.2 * skillsCount), y / 1.2);
+    int x = w / 2;
+    int y = h * (2*(elem + 1) - 1) / (2 * skillsCount);
+    double radi = qMin(h / (1.4 * skillsCount), x / 1.4);
 
     painter->translate(x - radi / 2, y - radi / 2);
 
@@ -86,21 +86,17 @@ void Circle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->translate(-x + radi / 2 , - y + radi / 2);
 }
 
-void Circle::setLevel(double lev)
+void OutCircle::setLevel(double lev)
 {
     level = lev;
     scene()->update();
 }
 
 
-Circle::Circle(double l, double lt, QString te, int sc, int e) :
+OutCircle::OutCircle(double l, double lt, QString te, int sc, int e) :
             level(l),
             levelTo(lt),
             text(te),
             skillsCount(sc),
             elem(e) {
 }
-
-
-
-
