@@ -66,10 +66,6 @@ StudentClient::StudentClient() :
 
     ui->cuPanel->setVisible(false);
 
-    QFile f("/home/ivan/Загрузки/dedCourse/sem1.CourseUnit");
-        courseUnit->loadCourseUnit(&f);
-        display();
-
     SAY("StudentClient init finished");
 }
 

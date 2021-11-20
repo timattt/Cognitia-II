@@ -72,23 +72,8 @@ void InputAbsoluteSkillsPanel::unpack(Node *nd) {
         Circle * circle = nullptr;
 
         if (currentProgress->hasProgressInSkill(i.key())) {
-            //FOR DEBUG
-            //------------------------------------------------------------------
-            QMap<QString, int>::Iterator j;
-            for(j = inSkills.begin(); j != inSkills.end(); j++) {
-                nd->setProgress(j.key(), (rand() % 3 + 1));
-            }
-            //------------------------------------------------------------------
             scene->addItem(circle = new Circle(currentProgress->getAbsoluteProgressForSkill(i.key()), i.value(), i.key(), size, elem));
         } else {
-            //FOR DEBUG
-            //------------------------------------------------------------------
-            QMap<QString, int>::Iterator j;
-            for(j = inSkills.begin(); j != inSkills.end(); j++) {
-                nd->setProgress(j.key(), (rand() % 3 + 1));
-            }
-            //------------------------------------------------------------------
-
             scene->addItem(circle = new Circle(0, i.value(), i.key(), size, elem));
         }
 
