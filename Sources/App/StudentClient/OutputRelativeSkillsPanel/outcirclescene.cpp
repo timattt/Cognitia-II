@@ -1,34 +1,34 @@
 /*
  * circlescene.cpp
  *
- *  Created on: Oct, 26, 2021
+ *  Created on: Nov, 19, 2021
  *      Author: ZoomZero
  */
 
-#include "circlescene.h"
-#include "inputabsoluteskillspanel.h"
-#include "circle.h"
+#include "outcirclescene.h"
+#include "outputrelativeskillspanel.h"
+#include "outcircle.h"
 #include "../../Core/logger.h"
 #include <QtWidgets>
 
-CircleScene::CircleScene(InputAbsoluteSkillsPanel * v) : QGraphicsScene(v), view(v) {
+OutCircleScene::OutCircleScene(OutputRelativeSkillsPanel * v) : QGraphicsScene(v), view(v) {
     NOT_NULL(v);
-    setSceneRect(QRect(0, 0, 900, 500));
+    setSceneRect(QRect(0, 0, 400, 600));
 }
 
-void CircleScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
+void OutCircleScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     QGraphicsScene::mouseMoveEvent(event);
 }
 
-void CircleScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+void OutCircleScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     QGraphicsScene::mouseReleaseEvent(event);
 }
 
-void CircleScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+void OutCircleScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     QGraphicsScene::mousePressEvent(event);
 }
 
-void CircleScene::drawBackground(QPainter *painter, const QRectF &rect) {
+void OutCircleScene::drawBackground(QPainter *painter, const QRectF &rect) {
     // Shadow
     QRectF sceneRect = this->sceneRect();
     sceneRect = QRectF(sceneRect.x() - 20, sceneRect.y() - 20, sceneRect.width() + 40, sceneRect.height() + 40);

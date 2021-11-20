@@ -39,6 +39,8 @@ SOURCES += \
     Server/server.cpp \
     StudentClient/InputAbsoluteSkillsPanel/circle.cpp \
     StudentClient/InputAbsoluteSkillsPanel/circlescene.cpp \
+    StudentClient/OutputRelativeSkillsPanel/outcircle.cpp \
+    StudentClient/OutputRelativeSkillsPanel/outcirclescene.cpp \
     StudentClient/StudentSkillsPanel/studentskillspanel.cpp \
     StudentClient/StudentSkillsPanel/skillwidget.cpp \
     StudentClient/CourseUnitDetailsPanel/courseunitdetailspanel.cpp \
@@ -79,6 +81,8 @@ HEADERS += \
     Structures/fileExtensions.h \
     StudentClient/InputAbsoluteSkillsPanel/circle.h \
     StudentClient/InputAbsoluteSkillsPanel/circlescene.h \
+    StudentClient/OutputRelativeSkillsPanel/outcircle.h \
+    StudentClient/OutputRelativeSkillsPanel/outcirclescene.h \
     StudentClient/StudentSkillsPanel/studentskillspanel.h \
     StudentClient/StudentSkillsPanel/skillwidget.h \
     StudentClient/CourseUnitDetailsPanel/courseunitdetailspanel.h \

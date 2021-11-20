@@ -30,6 +30,7 @@ InputAbsoluteSkillsPanel::InputAbsoluteSkillsPanel(QWidget *parent) :
     ui->view->setScene(scene = new CircleScene(this));
 
     scene->update();
+    //resizeEvent(nullptr);
 
     //ui->view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
 

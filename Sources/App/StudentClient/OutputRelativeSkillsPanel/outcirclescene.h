@@ -1,12 +1,12 @@
 /*
  * circlescene.h
  *
- *  Created on: Oct, 26, 2021
+ *  Created on: Nov, 19, 2021
  *      Author: ZoomZero
  */
 
-#ifndef CIRCLESCENE_H
-#define CIRCLESCENE_H
+#ifndef OUTCIRCLESCENE_H
+#define OUTCIRCLESCENE_H
 
 #include <QtWidgets>
 
@@ -14,7 +14,7 @@
 //====================================
 class Edge;
 class Node;
-class InputAbsoluteSkillsPanel;
+class OutputRelativeSkillsPanel;
 //====================================
 
 /**
@@ -23,7 +23,7 @@ class InputAbsoluteSkillsPanel;
  *
  * @author ZoomZero
  */
-class CircleScene : public QGraphicsScene {
+class OutCircleScene: public QGraphicsScene {
 public:
 
     // Constructor and destructor
@@ -32,8 +32,8 @@ public:
      * Simple init constructor.
      * @author ZoomZero
      */
-    CircleScene(InputAbsoluteSkillsPanel * v);
-    ~CircleScene() = default;
+    OutCircleScene(OutputRelativeSkillsPanel * v);
+    ~OutCircleScene() = default;
     //-----------------------------------
 
 private:
@@ -44,7 +44,7 @@ private:
      * Parent object.
      * @author ZoomZero
      */
-    InputAbsoluteSkillsPanel * view;
+    OutputRelativeSkillsPanel * view;
     //-----------------------------------
 
 protected:
@@ -59,4 +59,4 @@ protected:
 
 };
 
-#endif // CIRCLESCENE_H
+#endif // OUTCIRCLESCENE_H
