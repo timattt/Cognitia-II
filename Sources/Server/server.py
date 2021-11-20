@@ -2,38 +2,10 @@ import socket
 import os
 from dotenv import load_dotenv
 from PyQt6 import QtCore
-import sqlite3
+
+from db_interface import DBQuery
 
 import server_codes as scodes
-
-connection = None
-cursor = None
-
-def db_open(db_name):
-    """ Connect to database
-    """
-    global connection
-    global cursor
-
-    connection = sqlite3.connect(db_name)
-    cursor = connection.cursor()
-
-
-def db_get_user_info(name):
-    """ Find information about user with name "name"
-    """
-    if not name.isalpha():
-        raise ValueError("ERR: letters only: " + name)
-
-    cursor.execute('select * from users where name="' + name + '"')
-    return cursor.fetchall()
-
-
-def db_get_all_users(role='student'):
-    """ Find all users with role "role"
-    """
-    cursor.execute('select * from users where role="' + role + '"')
-    return cursor.fetchall()
 
 
 def send_files(sock, master_dir, files):
@@ -101,7 +73,7 @@ def send_skillpack(sock, name):
 def send_progress(sock, user_info):
     """ Send progress file to client
     """
-    PROGRESS_DIR = os.getenv("PROGRESS_DIR") + "/" + user_info[2]
+    PROGRESS_DIR = os.getenv("PROGRESS_DIR") + "/" + dbq.get_students_folders_pathes(user_info[1])[0][1]
     STUDENT_PROGRESS_FILE_EXTENSION = os.getenv("STUDENT_PROGRESS_FILE_EXTENSION")
 
     PROGRESS = os.listdir(PROGRESS_DIR)
@@ -150,7 +122,7 @@ def mentor_handler(sock, mentor_info, str):
     send_skillpack(sock, mentor_info)
     print("send_skillpack done")
 
-    students = db_get_all_users(role='student')
+    students = dbq.get_mentor_students(mentor_info[0])
     for student_info in students:
         send_progress(sock, student_info)
         print("send_progress of student", student_info[0], "done")
@@ -176,8 +148,7 @@ def user_handler(sock, name, param):
     if not name.isalpha() or not param.isalpha():
         print("ERR: letters only!!!")
 
-    user_info = db_get_user_info(name)
-
+    user_info = dbq.get_users(name)
 
     if len(user_info) == 1:
         user_info = user_info[0]
@@ -197,6 +168,9 @@ if __name__ == "__main__":
     load_dotenv()
     print(os.getenv("VAR"))
 
+    global dbq
+    dbq = DBQuery(os.getenv("DB_PATH"))
+
     PORT = int(os.getenv("PORT"))
 
     # Server configuration
@@ -204,9 +178,6 @@ if __name__ == "__main__":
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind(("127.0.0.1", PORT))
     sock.listen(1)
-
-    # connect to db
-    db_open(os.getenv("DB_DIR") + "/users.db")
 
     while True:
         # Wating for clients
