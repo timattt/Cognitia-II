@@ -2,8 +2,27 @@ import socket
 import os
 from dotenv import load_dotenv
 from PyQt6 import QtCore
+import sqlite3
 
 import server_codes as scodes
+
+connection = None
+cursor = None
+
+def db_open(db_name):
+    global connection
+    global cursor
+
+    connection = sqlite3.connect(db_name)
+    cursor = connection.cursor()
+
+
+def db_get_user_info(user):
+    if not user.isalpha():
+        raise ValueError("ERR: letters only: " + user)
+
+    cursor.execute('select * from users where name="' + user + '"')
+    return cursor.fetchall()
 
 
 def send_files(sock, master_dir, files):
@@ -68,10 +87,10 @@ def send_skillpack(sock, name):
     send_files(sock, SKILL_DIR, SKILLS)
 
 
-def send_progress(sock, name):
+def send_progress(sock, user_info):
     """ Send progress file to client
     """
-    PROGRESS_DIR = os.getenv("PROGRESS_DIR")
+    PROGRESS_DIR = os.getenv("PROGRESS_DIR") + "/" + user_info[2]
     STUDENT_PROGRESS_FILE_EXTENSION = os.getenv("STUDENT_PROGRESS_FILE_EXTENSION")
 
     PROGRESS = os.listdir(PROGRESS_DIR)
@@ -83,17 +102,29 @@ def send_progress(sock, name):
     send_files(sock, PROGRESS_DIR, PROGRESS)
 
 
-def usr_handler(sock, name, str):
+
+
+def user_handler(sock, name, str):
     """ Handle client connection
     Send cource, skillpack and progress file to client
     """
-    send_cource(sock, name)
+    if not name.isalpha() or not str.isalpha():
+        print("ERR: letters only!!!")
+
+    user_info = db_get_user_info(name)
+
+    if len(user_info) == 1:
+        user_info = user_info[0]
+    else:
+        print("ERR: too many users:", user_info)
+
+    send_cource(sock, user_info)
     print("send_cource done")
 
-    send_skillpack(sock, name)
+    send_skillpack(sock, user_info)
     print("send_skillpack done")
 
-    send_progress(sock, name)
+    send_progress(sock, user_info)
     print("send_progress done")
 
     ba = QtCore.QByteArray()
@@ -115,11 +146,16 @@ if __name__ == "__main__":
     load_dotenv()
     print(os.getenv("VAR"))
 
+    PORT = int(os.getenv("PORT"))
+
     # Server configuration
     sock = socket.socket()
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    sock.bind(("127.0.0.1", 1917))
+    sock.bind(("127.0.0.1", PORT))
     sock.listen(1)
+
+    # connect to db
+    db_open(os.getenv("DB_DIR") + "/users.db")
 
     while True:
         # Wating for clients
@@ -139,7 +175,7 @@ if __name__ == "__main__":
         CODE = qdata_stream.readUInt16()
         SOME_STR1 = qdata_stream.readQString()
 
-        usr_handler(conn, SOME_STR0, SOME_STR1)
+        user_handler(conn, SOME_STR0, SOME_STR1)
 
         conn.close()
-        print("Connection closed")
+        print("Connection closed\n")
