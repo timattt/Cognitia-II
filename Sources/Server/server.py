@@ -10,6 +10,8 @@ connection = None
 cursor = None
 
 def db_open(db_name):
+    """ Connect to database
+    """
     global connection
     global cursor
 
@@ -17,11 +19,20 @@ def db_open(db_name):
     cursor = connection.cursor()
 
 
-def db_get_user_info(user):
-    if not user.isalpha():
-        raise ValueError("ERR: letters only: " + user)
+def db_get_user_info(name):
+    """ Find information about user with name "name"
+    """
+    if not name.isalpha():
+        raise ValueError("ERR: letters only: " + name)
 
-    cursor.execute('select * from users where name="' + user + '"')
+    cursor.execute('select * from users where name="' + name + '"')
+    return cursor.fetchall()
+
+
+def db_get_all_users(role='student'):
+    """ Find all users with role "role"
+    """
+    cursor.execute('select * from users where role="' + role + '"')
     return cursor.fetchall()
 
 
@@ -102,29 +113,17 @@ def send_progress(sock, user_info):
     send_files(sock, PROGRESS_DIR, PROGRESS)
 
 
-
-
-def user_handler(sock, name, str):
-    """ Handle client connection
-    Send cource, skillpack and progress file to client
+def student_handler(sock, student_info, str):
+    """ Handle student connection
+    Send cource, skillpack and progress files
     """
-    if not name.isalpha() or not str.isalpha():
-        print("ERR: letters only!!!")
-
-    user_info = db_get_user_info(name)
-
-    if len(user_info) == 1:
-        user_info = user_info[0]
-    else:
-        print("ERR: too many users:", user_info)
-
-    send_cource(sock, user_info)
+    send_cource(sock, student_info)
     print("send_cource done")
 
-    send_skillpack(sock, user_info)
+    send_skillpack(sock, student_info)
     print("send_skillpack done")
 
-    send_progress(sock, user_info)
+    send_progress(sock, student_info)
     print("send_progress done")
 
     ba = QtCore.QByteArray()
@@ -139,6 +138,58 @@ def user_handler(sock, name, str):
     dstream.writeUInt32(ba.size() - 4)
 
     sock.send(ba.data())
+
+
+def mentor_handler(sock, mentor_info, str):
+    """ Handle mentor connection
+    Send cource, skillpack and progress of each student files
+    """
+    send_cource(sock, mentor_info)
+    print("send_cource done")
+
+    send_skillpack(sock, mentor_info)
+    print("send_skillpack done")
+
+    students = db_get_all_users(role='student')
+    for student_info in students:
+        send_progress(sock, student_info)
+        print("send_progress of student", student_info[0], "done")
+
+    ba = QtCore.QByteArray()
+    FLAG = QtCore.QIODeviceBase.OpenModeFlag.WriteOnly
+    dstream = QtCore.QDataStream(ba, FLAG)
+
+    dstream.writeUInt32(0)
+    dstream.writeUInt16(scodes.ServerReplies.firstConnectionSuccess)
+    dstream.writeQString("")
+
+    dstream.device().seek(0)
+    dstream.writeUInt32(ba.size() - 4)
+
+    sock.send(ba.data())
+
+
+def user_handler(sock, name, param):
+    """ Handle client connection
+    Authentication, authorization and call right handler for client
+    """
+    if not name.isalpha() or not param.isalpha():
+        print("ERR: letters only!!!")
+
+    user_info = db_get_user_info(name)
+
+
+    if len(user_info) == 1:
+        user_info = user_info[0]
+    else:
+        print("ERR: too many users:", user_info)
+
+    if user_info[1] == 'student':
+        student_handler(sock, user_info, param)
+    elif user_info[1] == 'mentor':
+        mentor_handler(sock, user_info, param)
+    else:
+        print("ERR: something went wrong with user:", user_info)
 
 
 if __name__ == "__main__":
