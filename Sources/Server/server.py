@@ -9,8 +9,7 @@ import server_codes as scodes
 
 
 def send_files(sock, master_dir, files):
-    """ Send files  'files' from 'master_dir' directory to client
-    """
+    """Send files  'files' from 'master_dir' directory to client"""
     for file in files:
         ba = QtCore.QByteArray()
         FLAG = QtCore.QIODeviceBase.OpenModeFlag.WriteOnly
@@ -31,8 +30,7 @@ def send_files(sock, master_dir, files):
 
 
 def send_cource(sock, name):
-    """ Send course to client
-    """
+    """Send course to client"""
     COURSE_DIR = os.getenv("COURSE_DIR")
     MAIN_COURSEUNIT_FILE_EXTENSION = os.getenv("MAIN_COURSEUNIT_FILE_EXTENSION")
     COURSE_UNIT_FILE_EXTENSION = os.getenv("COURSE_UNIT_FILE_EXTENSION")
@@ -51,8 +49,7 @@ def send_cource(sock, name):
 
 
 def send_skillpack(sock, name):
-    """ Send skillpack to client
-    """
+    """Send skillpack to client"""
     SKILL_DIR = os.getenv("SKILL_DIR")
     SKILL_PACK_FILE_EXTENSION = os.getenv("SKILL_PACK_FILE_EXTENSION")
     SKILL_FILE_EXTENSION = os.getenv("SKILL_FILE_EXTENSION")
@@ -71,9 +68,12 @@ def send_skillpack(sock, name):
 
 
 def send_progress(sock, user_info):
-    """ Send progress file to client
-    """
-    PROGRESS_DIR = os.getenv("PROGRESS_DIR") + "/" + dbq.get_students_folders_pathes(user_info[1])[0][1]
+    """Send progress file to client"""
+    PROGRESS_DIR = (
+        os.getenv("PROGRESS_DIR")
+        + "/"
+        + dbq.get_students_folders_pathes(user_info[1])[0][1]
+    )
     STUDENT_PROGRESS_FILE_EXTENSION = os.getenv("STUDENT_PROGRESS_FILE_EXTENSION")
 
     PROGRESS = os.listdir(PROGRESS_DIR)
@@ -86,7 +86,7 @@ def send_progress(sock, user_info):
 
 
 def student_handler(sock, student_info, str):
-    """ Handle student connection
+    """Handle student connection
     Send cource, skillpack and progress files
     """
     send_cource(sock, student_info)
@@ -113,7 +113,7 @@ def student_handler(sock, student_info, str):
 
 
 def mentor_handler(sock, mentor_info, str):
-    """ Handle mentor connection
+    """Handle mentor connection
     Send cource, skillpack and progress of each student files
     """
     send_cource(sock, mentor_info)
@@ -142,7 +142,7 @@ def mentor_handler(sock, mentor_info, str):
 
 
 def user_handler(sock, name, param):
-    """ Handle client connection
+    """Handle client connection
     Authentication, authorization and call right handler for client
     """
     if not name.isalpha() or not param.isalpha():
@@ -155,9 +155,9 @@ def user_handler(sock, name, param):
     else:
         print("ERR: too many users:", user_info)
 
-    if user_info[1] == 'student':
+    if user_info[1] == "student":
         student_handler(sock, user_info, param)
-    elif user_info[1] == 'mentor':
+    elif user_info[1] == "mentor":
         mentor_handler(sock, user_info, param)
     else:
         print("ERR: something went wrong with user:", user_info)
