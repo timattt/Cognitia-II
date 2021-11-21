@@ -57,7 +57,7 @@ void ChooseServ::setButtonEnabled(){
 void ChooseServ::on_actionChoose_server_triggered()
 {
     QString filter = QString("(*") + QString(SERVEREXTENTION) + QString(")");
-    QString path = QFileDialog::getOpenFileName(this, "Select server file", QString(), filter);
+    QString path = QFileDialog::getOpenFileName(this, "Select server file", QDir().absolutePath(), filter);
 
     setServ(path);
 }

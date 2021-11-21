@@ -426,14 +426,14 @@ void StudentClient::on_actionSet_course_unit_triggered() {
     QFile f = QFile(path);
 
     if (!f.exists()) {
-    	ui->statusbar->showMessage("Bad course unit!");
+        ui->statusbar->showMessage("Bad course unit! (dont exist)");
     	return;
     }
 
     try {
     	courseUnit->loadCourseUnit(&f);
     } catch (QString & err) {
-    	ui->statusbar->showMessage("Bad course unit!");
+        ui->statusbar->showMessage("Bad course unit! (cant load)");
     }
 
     display();
@@ -445,14 +445,14 @@ void StudentClient::on_actionSet_skill_pack_triggered() {
     QFile f = QFile(path);
 
     if (!f.exists()) {
-    	ui->statusbar->showMessage("Bad skill pack!");
+        ui->statusbar->showMessage("Bad skill pack! (dont exist)");
     	return;
     }
 
     try {
     	skillpack->load(&f);
     } catch (QString & err) {
-    	ui->statusbar->showMessage("Bad skill pack!");
+        ui->statusbar->showMessage("Bad skill pack! (cant load)");
     }
 
     display();

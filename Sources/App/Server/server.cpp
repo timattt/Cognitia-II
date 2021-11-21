@@ -290,7 +290,7 @@ bool Server::SendCoursetoClient(QTcpSocket *client, const QString &name){
 
      QStringList filters;
      QDir curdir = QDir(courseUnitdir);
-     filters << QString("*") + MAIN_COURSEUNIT_FILE_EXTENSION << QString("*") + QString(COURSE_UNIT_FILE_EXTENSION);
+     filters << QString("*") + QString(COURSE_UNIT_FILE_EXTENSION);
      curdir.setNameFilters(filters);
      QStringList courseFiles = curdir.entryList();
 
@@ -301,6 +301,9 @@ bool Server::SendCoursetoClient(QTcpSocket *client, const QString &name){
 
      }
 
+             if(!SendFile(QDir().absolutePath() + '/' + QDir().entryList(QStringList() << QString("*") + QString(MAIN_COURSEUNIT_FILE_EXTENSION))[0],
+                          client, static_cast<quint16>(retrieveCourseUnit)))
+                 return false;
      return true;
 }
 
@@ -392,7 +395,7 @@ void Server::onStart(){
 
 void Server::on_addStudent_clicked()
 {
-    QString name = QFileDialog::getSaveFileName(this, "Create student Directory");
+    QString name = QFileDialog::getSaveFileName(this, "Create student Directory", QDir().absolutePath());
     if (name.length() == 0){
         return;
     }
@@ -427,10 +430,10 @@ void Server::on_chooseParent_clicked()
 
     courseUnitdir = QFileInfo(name).absoluteDir().absolutePath();
 
-    QFile file(courseUnitdir + '/' + QString("crusial") + MAIN_COURSEUNIT_FILE_EXTENSION);
+    QFile file(QDir().absolutePath() + '/' + QString("crusial") + MAIN_COURSEUNIT_FILE_EXTENSION);
 
 
-    ui -> courselineEdit -> setText(courseUnitdir + name);
+    ui -> courselineEdit -> setText(name);
 
     if (file.open(QIODevice::WriteOnly))
        {
