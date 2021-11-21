@@ -55,6 +55,7 @@ private:
      */
     SkillsMixerHolder * holder;
     Ui::SkillsMixer *ui;
+    bool ready;
     //====================================
 
 private slots:
