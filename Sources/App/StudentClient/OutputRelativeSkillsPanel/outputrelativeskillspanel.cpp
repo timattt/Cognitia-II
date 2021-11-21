@@ -60,7 +60,7 @@ void OutputRelativeSkillsPanel::nodeSelected(Node *nd) {
     for(i = outSkills.begin(); i != outSkills.end(); i++, elem++) {
         OutCircle * circle = nullptr;
 
-        scene->addItem(circle = new OutCircle(nd->getProgressScalar(i.key()), 1, i.key(), size, elem));
+        scene->addItem(circle = new OutCircle(nd->containsProgress(i.key()) ? nd->getProgressScalar(i.key()) : 0, 1, i.key(), size, elem));
 
         circles[i.key()] = circle;
     }

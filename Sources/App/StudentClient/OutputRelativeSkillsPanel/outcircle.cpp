@@ -98,5 +98,6 @@ OutCircle::OutCircle(double l, double lt, QString te, int sc, int e) :
             levelTo(lt),
             text(te),
             skillsCount(sc),
-            elem(e) {
+            elem(e),
+			parent(nullptr) {
 }
