@@ -17,6 +17,8 @@
 5. [**Для участников проекта**](https://github.com/timattt/Project-Cognitia-II/blob/main/About/forContributors.md)
 6. [**Текущие задачи**](https://github.com/timattt/Project-Cognitia-II/projects/1)
 7. [**Инструкция по запуску сервера**](https://github.com/timattt/Project-Cognitia-II/blob/main/About/HowToDeploy.md)
+8. [**Конкурентные преимущества**](https://github.com/timattt/Project-Cognitia-II/blob/main/About/Competitive%20advantages.md)
+9. [**План на версию 0.7**](https://github.com/timattt/Project-Cognitia-II/blob/main/About/ToDo.md)
 
 
 <img src="https://github.com/timattt/Project-Cognitia-II/blob/main/About/WorkingImages/Icon.jpg" alt="drawing" width="200"/>
