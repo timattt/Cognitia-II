@@ -416,7 +416,7 @@ void CourseEditor::fromGuiToFile(CourseUnit *crs) {
 	ui->widget->pack(crs);
 
 	for (CourseUnit * cu : crs->getEmbedded()) {
-		if (cu->objectName() == crs->objectName()) {
+		if (cu->objectName().toLower() == crs->objectName().toLower()) {
 			throw QString("Head courseunit has same name as child courseunit!");
 		}
 	}
