@@ -207,3 +207,11 @@ bool NodeDesignOlive::verticalSkillsLayout() {
 
 NodeDesignOlive::NodeDesignOlive(QObject *parent) : NodeDesign(parent) {
 }
+
+QPainterPath NodeDesignOlive::getShape() {
+    QPainterPath path;
+
+    path.addEllipse(-NODE_RAD, -NODE_RAD, 2 * NODE_RAD, 2 * NODE_RAD);
+
+    return path;
+}

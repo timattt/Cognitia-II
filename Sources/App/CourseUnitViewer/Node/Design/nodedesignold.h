@@ -18,6 +18,7 @@ public:
 			const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 	bool verticalSkillsLayout() override;
 	double getEdgeThickness() override;
+	QPainterPath getShape() override;
 };
 
 #endif /* APP_COURSEUNITVIEWER_NODE_DESIGN_NODEDESIGNOLD_H_ */

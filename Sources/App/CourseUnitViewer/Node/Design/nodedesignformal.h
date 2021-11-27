@@ -11,4 +11,6 @@ public:
 
 	NodeDesignFormal(QObject * parent);
 	~NodeDesignFormal() = default;
+
+	QPainterPath getShape() override;
 };

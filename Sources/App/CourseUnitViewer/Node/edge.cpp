@@ -55,13 +55,16 @@ void Edge::adjust()
 	qreal length = line.length();
 
 	prepareGeometryChange();
-
+/*
 	if (length > qreal(2 * NODE_RAD)) {
 		sourcePoint = line.p1();
 		destPoint = line.p2();
 	} else {
 		sourcePoint = destPoint = line.p1();
 	}
+	*/
+	sourcePoint = line.p1();
+	destPoint = line.p2();
 }
 
 QRectF Edge::boundingRect() const

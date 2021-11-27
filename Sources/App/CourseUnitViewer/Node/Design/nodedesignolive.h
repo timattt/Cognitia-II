@@ -15,5 +15,5 @@ public:
 	NodeDesignOlive(QObject * parent);
 	~NodeDesignOlive() = default;
 
-
+	QPainterPath getShape() override;
 };

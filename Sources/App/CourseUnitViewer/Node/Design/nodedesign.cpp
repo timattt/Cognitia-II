@@ -49,3 +49,6 @@ QString rebuildStr(QString str, int max) {
 double NodeDesign::getEdgeThickness() {
 	return 0.05;
 }
+
+QPainterPath NodeDesign::getShape() {
+}

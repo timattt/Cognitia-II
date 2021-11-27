@@ -190,3 +190,10 @@ NodeDesignShape::NodeDesignShape(QObject * parent) :
     NodeDesign(parent) {
 
 }
+
+QPainterPath NodeDesignShape::getShape() {
+    QPainterPath path;
+	double side = 2*NODE_RAD;
+    path.addRect(-side/2, -side/2,side, side);
+    return path;
+}

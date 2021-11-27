@@ -4,9 +4,11 @@
 #include "../courseunitviewer.h"
 #include "../../Core/logger.h"
 #include "../viewport.h"
+#include "Design/nodedesign.h"
 
 Node::Node(CourseUnitViewer *graphWidget)
-    : graph(graphWidget)
+    : graph(graphWidget),
+	  currentDesign(nullptr)
 {
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
@@ -100,13 +102,19 @@ QRectF Node::boundingRect() const
 QPainterPath Node::shape() const
 {
     QPainterPath path;
-    path.addEllipse(-NODE_RAD, -NODE_RAD, 2 * NODE_RAD, 2 * NODE_RAD);
+    if (graph == nullptr) {
+    	path.addRect(boundingRect());
+    } else {
+    	path.addPath(graph->getCurrentDesign()->getShape());
+    }
     return path;
 }
 
 void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget * w)
 {
+	NOT_NULL(graph);
 	NOT_NULL(graph->getCurrentDesign());
+	updateDesign();
 	graph->getCurrentDesign()->draw(this, painter, option, w);
 }
 
@@ -366,4 +374,16 @@ double Node::getProgressScalar(QString skill) const {
 void Node::clearStudentProgress() {
 	progress.clear();
 	update();
+}
+
+void Node::updateDesign() {
+	if (graph == nullptr) {
+		currentDesign = nullptr;
+		return;
+	}
+
+	if (graph->getCurrentDesign() != currentDesign) {
+		prepareGeometryChange();
+		currentDesign = graph->getCurrentDesign();
+	}
 }

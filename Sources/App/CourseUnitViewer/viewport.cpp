@@ -108,8 +108,6 @@ void Viewport::focusOn() {
 	double x = (minX + maxX) / 2;
 	double y = (minY + maxY) / 2;
 
-	setCameraPos({-x, -y});
-
 	scene()->setSceneRect(QRectF(-w/2, -h/2, w, h));
 	scene()->update();
 	fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
@@ -118,6 +116,8 @@ void Viewport::focusOn() {
 	curScale = 1;
 
 	setScale(tmp);
+
+	setCameraPos({-x, -y});
 }
 
 void Viewport::setCameraPos(QPointF p) {

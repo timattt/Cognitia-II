@@ -86,6 +86,13 @@ public:
 	 * @author timattt
 	 */
 	virtual double getEdgeThickness();
+	/**
+	 * Gives area in which design is drawed.
+	 * You may not draw outside this shape.
+	 * Shape is in this items coordinates system.
+	 * @returns shape to draw in
+	 */
+	virtual QPainterPath getShape();
 	//==================================================
 
 };

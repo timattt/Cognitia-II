@@ -33,6 +33,7 @@ public:
      * @author ZoomZero
      */
     bool verticalSkillsLayout() override;
+    QPainterPath getShape() override;
     //==================================================
 
     // Constructor and destructor
@@ -40,4 +41,5 @@ public:
     NodeDesignShape(QObject * parent);
     ~NodeDesignShape() = default;
     //==================================================
+
 };

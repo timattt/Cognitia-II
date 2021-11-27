@@ -121,3 +121,10 @@ bool NodeDesignFormal::verticalSkillsLayout() {
 NodeDesignFormal::NodeDesignFormal(QObject *parent) :
 		NodeDesign(parent) {
 }
+
+QPainterPath NodeDesignFormal::getShape() {
+    QPainterPath path;
+    path.addEllipse(-NODE_RAD, -NODE_RAD, 2 * NODE_RAD, 2 * NODE_RAD);
+
+    return path;
+}

@@ -8,6 +8,7 @@
 class Edge;
 class CourseUnitViewer;
 class CourseUnit;
+class NodeDesign;
 //====================================
 
 // Constants
@@ -281,6 +282,11 @@ public:
 	 * @author timattt
 	 */
 	void clearStudentProgress();
+	/**
+	 * Checks if this node scene design is different between current node design field and updates bounding rect if needed.
+	 * @author timattt
+	 */
+	void updateDesign();
     //--------------------------------------
 
 protected:
@@ -352,6 +358,10 @@ private:
      * @author timattt
      */
     QColor color = Qt::lightGray;
+    /**
+     * Current design of this node.
+     */
+    NodeDesign * currentDesign;
     //--------------------------------------
 };
 #endif

@@ -182,13 +182,18 @@ void CourseEditor::on_levelsSelector_currentTextChanged(const QString &arg1)
 }
 
 bool CourseEditor::isChanged() {
-	if (!checkCourseUnitAvailable(false)) {
-		return false;
-	}
+	try {
+		if (!checkCourseUnitAvailable(false)) {
+			return false;
+		}
 
-	CourseUnit cu;
-	fromGuiToFile(&cu);
-	return fileSignature.size() > 0 && QString::compare(fileSignature, cu.print(), Qt::CaseInsensitive);
+		CourseUnit cu;
+		fromGuiToFile(&cu);
+		return fileSignature.size() > 0 && QString::compare(fileSignature, cu.print(), Qt::CaseInsensitive);
+	} catch (QString & err) {
+		QMessageBox::information(this, "Error", err);
+		return 0;
+	}
 }
 
 void CourseEditor::on_showParent_clicked() {

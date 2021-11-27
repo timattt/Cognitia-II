@@ -31,6 +31,16 @@ void NodeDesignOld::draw(Node *nd, QPainter *painter,
 	f.setWeight(QFont::ExtraBold);
 	painter->setFont(f);
     painter->setPen(QPen(Qt::black, NODE_RAD / 100.0));
+    //========================================
+
+    // main background
+    //========================================
+    //painter->setBrush(Qt::lightGray);
+    //painter->drawRect(-side/2, -side/2, side, side);
+    //========================================
+
+    // color
+    //========================================
 	if (nd->isSelected()) {
 		painter->setBrush(SELECTED_NODE_COLOR);
 	} else {
@@ -191,4 +201,11 @@ bool NodeDesignOld::verticalSkillsLayout() {
 
 double NodeDesignOld::getEdgeThickness() {
 	return 0.01;
+}
+
+QPainterPath NodeDesignOld::getShape() {
+    QPainterPath path;
+	double side = 2*NODE_RAD;
+    path.addRect(-side/2, -side/2,side, side/2);
+    return path;
 }
