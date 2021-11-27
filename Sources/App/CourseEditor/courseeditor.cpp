@@ -414,6 +414,12 @@ void CourseEditor::fromGuiToFile(CourseUnit *crs) {
 	head->fromNodeToCourseUnit(crs);
 
 	ui->widget->pack(crs);
+
+	for (CourseUnit * cu : crs->getEmbedded()) {
+		if (cu->objectName() == crs->objectName()) {
+			throw QString("Head courseunit has same name as child courseunit!");
+		}
+	}
 }
 
 void CourseEditor::on_actionSkillPackOpen_triggered() {
