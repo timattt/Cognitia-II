@@ -197,13 +197,13 @@ void CourseUnitViewer::pack(CourseUnit *head) {
 		Node * nd = dynamic_cast<Node*>(it);
 
 		if (nd != nullptr) {
-			if (units.contains(nd->getName())) {
+			if (units.contains(nd->getName().toLower())) {
 				throw QString("Some nodes have same name!");
 			}
 			CourseUnit * un = new CourseUnit(head);
 			head->addEmbedded(un);
 			nd->fromNodeToCourseUnit(un);
-			units[un->objectName()] = un;
+			units[un->objectName().toLower()] = un;
 		}
 	}
 
@@ -214,7 +214,7 @@ void CourseUnitViewer::pack(CourseUnit *head) {
 
 		Edge * ed = dynamic_cast<Edge*>(it);
 		if (ed != nullptr) {
-			units[ed->getSourceNode()->getName()]->addConnection(ed->getDestNode()->getName());
+			units[ed->getSourceNode()->getName().toLower()]->addConnection(ed->getDestNode()->getName());
 		}
 	}
 }
