@@ -111,9 +111,13 @@ protected:
 	 * Grey background is drawing here
 	 */
 	void drawBackground		(QPainter *painter, const QRectF &rect) override;
-	
+	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 	//-----------------------------------
+
+private:
+
+	void makeMenu(QGraphicsSceneMouseEvent * event);
 };
 
 #endif /* APP_COURSEUNITVIEWER_COURSESCENE_H_ */

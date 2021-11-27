@@ -38,6 +38,8 @@ void CourseScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 			}
 		}
 
+		Node * src = dragEdge->getSourceNode();
+
 		if (nd != nullptr && nd != dragEdge->getSourceNode() && !nd->hasEdgeToNode(dragEdge->getSourceNode())) {
 			dragEdge->connectToNode(nd);
 		} else {
@@ -45,7 +47,14 @@ void CourseScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 		}
 
 		dragEdge = nullptr;
+
+		if (nd == src && event->button() == Qt::RightButton && view->isEditable()) {
+			makeMenu(event);
+		}
 	} else {
+		if (event->button() == Qt::RightButton && view->isEditable()) {
+			makeMenu(event);
+		}
 		QGraphicsScene::mouseReleaseEvent(event);
 	}
 }
@@ -251,5 +260,58 @@ void CourseScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
 
 	if (nd != nullptr && !view->deleteModeIsOn() && dragEdge == nullptr) {
 		emit view->nodeDoubleClicked(nd);
+	}
+}
+
+void CourseScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
+	QGraphicsScene::contextMenuEvent(event);
+}
+
+void CourseScene::makeMenu(QGraphicsSceneMouseEvent * event) {
+	QMenu menu(this->view);
+	menu.addAction("New node");
+
+	QList<QGraphicsItem*> its = this->items(event->scenePos());
+
+	Node *nd = nullptr;
+	Edge *ed = nullptr;
+
+	for (QGraphicsItem *it : its) {
+		if (nd == nullptr) {
+			nd = dynamic_cast<Node*>(it);
+		}
+		if (ed == nullptr) {
+			ed = dynamic_cast<Edge*>(it);
+		}
+	}
+
+	if (nd != nullptr || ed != nullptr) {
+		menu.addAction("Delete");
+	}
+
+	QAction * a = menu.exec(event->screenPos());
+
+	if (a == nullptr) {
+		return;
+	}
+
+	QString t = a->text();
+
+	if (t == "New node") {
+		Node *nd_ = new Node(this->view);
+		QPointF pt = event->scenePos();
+		nd_->setPos(pt);
+		this->view->addNode(nd_);
+	}
+	if (t == "Delete") {
+		if (ed != nullptr) {
+			emit view->edgeDeleted(ed);
+			delete ed;
+		}
+		else if (nd != nullptr) {
+			view->setSelectedNode(nullptr);
+			emit view->nodeDeleted(nd);
+			delete nd;
+		}
 	}
 }

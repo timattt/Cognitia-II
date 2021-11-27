@@ -65,10 +65,14 @@ void Node::calculateForces()
 
         if (edge->getSourceNode() == this) {
             vec = mapToItem(edge->getDestNode(), 0, 0);
+
+            // drag
+            //-----------------------------
             if (edge->isDragable()) {
             	vec.setX(vec.x() - edge->getTarget().x());
             	vec.setY(vec.y() - edge->getTarget().y());
             }
+            //-----------------------------
         } else {
             vec = mapToItem(edge->getSourceNode(), 0, 0);
         }
@@ -76,6 +80,10 @@ void Node::calculateForces()
         double len = qSqrt(vec.x() * vec.x() + vec.y() * vec.y());
 
         double delta = -graph->getOwnLength() + len;
+
+        if (delta < 0 && edge->isDragable()) {
+        	continue;
+        }
 
         xvel -= graph->getAttFac() * vec.x() / len * delta;
         yvel -= graph->getAttFac() * vec.y() / len * delta;

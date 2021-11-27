@@ -52,7 +52,7 @@ void Edge::adjust()
 	} else {
 		line = QLineF(mapFromItem(source, 0, 0), target);
 	}
-	qreal length = line.length();
+	//qreal length = line.length();
 
 	prepareGeometryChange();
 /*
