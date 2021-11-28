@@ -53,6 +53,7 @@ SOURCES += \
     CourseUnitViewer/Node/Design/nodedesignolive.cpp \
     CourseUnitViewer/Label/Label.cpp \
     CourseUnitViewer/Label/LabelBonus.cpp \
+    CourseUnitViewer/Label/LabelInvalid.cpp \
     CourseUnitViewer/Label/LabelHidden.cpp
     
 
@@ -99,6 +100,7 @@ HEADERS += \
     CourseUnitViewer/Node/Design/nodedesignformal.h \
     CourseUnitViewer/Label/Label.h \
     CourseUnitViewer/Label/LabelBonus.h \
+    CourseUnitViewer/Label/LabelInvalid.h \
     CourseUnitViewer/Label/LabelHidden.h
 
 FORMS += \

@@ -7,6 +7,8 @@
 
 #include "nodedesignold.h"
 #include "../node.h"
+#include "../../CourseUnitViewer.h"
+#include "../../Label/Label.h"
 
 NodeDesignOld::NodeDesignOld(QObject * parent) : NodeDesign(parent) {
 }
@@ -15,7 +17,7 @@ NodeDesignOld::~NodeDesignOld() {
 }
 
 void NodeDesignOld::draw(Node *nd, QPainter *painter,
-		const QStyleOptionGraphicsItem *option, QWidget *widget) {
+		const QStyleOptionGraphicsItem *option, CourseUnitViewer *widget) {
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
 
@@ -208,17 +210,33 @@ void NodeDesignOld::draw(Node *nd, QPainter *painter,
 
     }
 
-    if (nd->containsLabel("Bonus")) {
-    	QRect r = QRect(-side / 2, -side / 10, side, side / 10);
-    	f = painter->font();
-    	f.setPointSizeF(side / 15);
-    	f.setBold(true);
-    	f.setWeight(QFont::ExtraBold);
-    	painter->setFont(f);
-    	painter->setBrush(Qt::red);
-    	painter->drawRect(r);
-    	painter->drawText(r, Qt::AlignCenter, "Bonus");
+    int total = nd->getLabels().size();
+
+    if (nd->getLabels().contains("Hidden")) {
+    	total--;
     }
+
+    if (total == 0) {
+    	return;
+    }
+
+    int i = 0;
+	for (QString lab : nd->getLabels()) {
+		if (lab == "Hidden") {
+			continue;
+		}
+		QRect r = QRect(-side / 2 + ((double)(i)) * side / total, -side / 10, side / total, side / 10);
+		f = painter->font();
+		f.setPointSizeF(side / 15);
+		f.setBold(true);
+		f.setWeight(QFont::ExtraBold);
+		painter->setFont(f);
+		painter->setBrush(widget->getLabelsLibrary()[lab]->getColor());
+		painter->drawRect(r);
+		painter->drawText(r, Qt::AlignCenter, lab);
+		i++;
+	}
+
 }
 
 bool NodeDesignOld::verticalSkillsLayout() {

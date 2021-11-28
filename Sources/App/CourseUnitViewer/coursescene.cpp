@@ -299,13 +299,21 @@ void CourseScene::makeMenu(QGraphicsSceneMouseEvent * event) {
 	QMenu labelsMenu("Labels", &menu);
 	if (nd != nullptr) {
 
+		bool hasSomething = 0;
+
 		for (QString name : this->view->getLabelsLibrary().keys()) {
-			//Label * label = this->view->getLabelsLibrary()[name];
+			Label * label = this->view->getLabelsLibrary()[name];
+			if (!label->isSelectable()) {
+				continue;
+			}
+			hasSomething = 1;
 			QAction * ac = labelsMenu.addAction(name);
 			ac->setCheckable(true);
 			ac->setChecked(nd->containsLabel(name));
 		}
-		menu.addMenu(&labelsMenu);
+		if (hasSomething) {
+			menu.addMenu(&labelsMenu);
+		}
 	}
 
 	QAction * a = menu.exec(event->screenPos());

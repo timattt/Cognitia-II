@@ -30,12 +30,21 @@ private:
 	//=========================================
 	QString name;
 	QColor color;
+	bool selectable;
+	bool saveable;
 	//=========================================
 
 public:
 
 	//=========================================
 	virtual void update(Node * node);
+
+	const QColor& getColor() const;
+	const QString& getName() const;
+	bool isSelectable() const;
+	void setSelectable(bool selectable);
+	bool isSaveable() const;
+	void setSaveable(bool saveable);
 	//=========================================
 
 };

@@ -10,7 +10,7 @@
 NodeDesign::NodeDesign(QObject * parent) : QObject(parent) {}
 
 void NodeDesign::draw(Node *nd, QPainter *painter,
-		const QStyleOptionGraphicsItem *option, QWidget *widget) {
+		const QStyleOptionGraphicsItem *option, CourseUnitViewer *widget) {
 	Q_UNUSED(nd);
 	Q_UNUSED(painter);
 	Q_UNUSED(option);
@@ -51,4 +51,9 @@ double NodeDesign::getEdgeThickness() {
 }
 
 QPainterPath NodeDesign::getShape() {
+    QPainterPath path;
+
+    path.addEllipse(-NODE_RAD, -NODE_RAD, 2 * NODE_RAD, 2 * NODE_RAD);
+
+    return path;
 }

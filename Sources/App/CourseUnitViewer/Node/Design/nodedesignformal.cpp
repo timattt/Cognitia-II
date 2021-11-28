@@ -2,7 +2,7 @@
 #include <QtWidgets>
 #include "../node.h"
 
-void NodeDesignFormal::draw(Node * nd, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+void NodeDesignFormal::draw(Node * nd, QPainter *painter, const QStyleOptionGraphicsItem *option, CourseUnitViewer *widget) {
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
 

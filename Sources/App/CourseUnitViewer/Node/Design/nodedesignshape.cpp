@@ -9,7 +9,7 @@
 #include "../node.h"
 #include <QtWidgets>
 
-void NodeDesignShape::draw(Node *nd, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+void NodeDesignShape::draw(Node *nd, QPainter *painter, const QStyleOptionGraphicsItem *option, CourseUnitViewer *widget) {
     Q_UNUSED(option);
     Q_UNUSED(widget);
 

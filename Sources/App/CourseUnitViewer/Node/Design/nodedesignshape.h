@@ -24,7 +24,7 @@ public:
      * @param painter - use this to draw
      * @author ZoomZero
      */
-    void draw(Node * nd, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    void draw(Node * nd, QPainter *painter, const QStyleOptionGraphicsItem *option, CourseUnitViewer *widget) override;
     /**
      * Checks skills orientation for selection.
      * Vertical orientation is when in skills are on the left and out are on the right part of node.

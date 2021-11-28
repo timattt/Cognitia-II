@@ -5,7 +5,7 @@
 #define PI 3.14159265359
 
 void NodeDesignOlive::drawSkills(Node * nd, QPainter *painter, const QStyleOptionGraphicsItem *option,
-		QWidget *widget) {
+		CourseUnitViewer *widget) {
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
 
@@ -171,7 +171,7 @@ void NodeDesignOlive::drawSkills(Node * nd, QPainter *painter, const QStyleOptio
 
 }
 
-void NodeDesignOlive::draw(Node * nd, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
+void NodeDesignOlive::draw(Node * nd, QPainter *painter, const QStyleOptionGraphicsItem *option, CourseUnitViewer *widget){
 
 	// Shadow
     painter->setPen(Qt::NoPen);

@@ -15,7 +15,7 @@ public:
 	NodeDesignOld(QObject * parent);
 	~NodeDesignOld();
 	void draw(Node *nd, QPainter *painter,
-			const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+			const QStyleOptionGraphicsItem *option, CourseUnitViewer *widget) override;
 	bool verticalSkillsLayout() override;
 	double getEdgeThickness() override;
 	QPainterPath getShape() override;

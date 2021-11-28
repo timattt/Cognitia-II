@@ -331,6 +331,12 @@ public:
 	 * @author timattt
 	 */
 	int getOutcomeEdgesCount();
+	/**
+	 * Gives all edges that are connected to this node.
+	 * @return QList with edges
+	 * @author timattt
+	 */
+	QList<Edge*> getEdges();
     //--------------------------------------
 
 protected:

@@ -14,6 +14,7 @@ class Node;
 class QPainter;
 class QStyleOptionGraphicsItem;
 class QWidget;
+class CourseUnitViewer;
 
 // Constants
 //==================================================
@@ -71,7 +72,7 @@ public:
 	 * @param painter - use this to draw
 	 * @author timattt
 	 */
-	virtual void draw(Node * nd, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+	virtual void draw(Node * nd, QPainter *painter, const QStyleOptionGraphicsItem *option, CourseUnitViewer *cuv);
 	/**
 	 * Checks skills orientation for selection.
 	 * Vertical orientation is when in skills are on the left and out are on the right part of node.

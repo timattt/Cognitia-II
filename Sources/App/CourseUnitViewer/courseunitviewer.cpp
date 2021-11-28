@@ -13,6 +13,7 @@
 #include "courseunitviewersettings.h"
 #include "Label/LabelHidden.h"
 #include "Label/LabelBonus.h"
+#include "Label/LabelInvalid.h"
 #include "Label/Label.h"
 
 CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
@@ -387,6 +388,7 @@ void CourseUnitViewer::updateLabels() {
 void CourseUnitViewer::initLabels() {
 	labelsLibrary["Hidden"] = new LabelHidden(this);
 	labelsLibrary["Bonus"] = new LabelBonus(this);
+	labelsLibrary["Invalid"] = new LabelInvalid(this);
 }
 
 QMap<QString, Label*>& CourseUnitViewer::getLabelsLibrary() {

@@ -6,7 +6,7 @@ class NodeDesignFormal : public NodeDesign {
 
 public:
 	void draw(Node *nd, QPainter *painter,
-			const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+			const QStyleOptionGraphicsItem *option, CourseUnitViewer *widget) override;
 	bool verticalSkillsLayout() override;
 
 	NodeDesignFormal(QObject * parent);

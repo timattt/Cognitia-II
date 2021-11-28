@@ -5,6 +5,7 @@
 #include "../../Core/logger.h"
 #include "../viewport.h"
 #include "Design/nodedesign.h"
+#include "../Label/Label.h"
 
 Node::Node(CourseUnitViewer *graphWidget)
     : graph(graphWidget),
@@ -120,10 +121,11 @@ QPainterPath Node::shape() const
 
 void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget * w)
 {
+	Q_UNUSED(w);
 	NOT_NULL(graph);
 	NOT_NULL(graph->getCurrentDesign());
 	updateDesign();
-	graph->getCurrentDesign()->draw(this, painter, option, w);
+	graph->getCurrentDesign()->draw(this, painter, option, this->graph);
 }
 
 QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -299,7 +301,11 @@ void Node::fromNodeToCourseUnit(CourseUnit *cu) {
 	cu->setObjectName(getName());
 	cu->setDescription(getDescription());
 	cu->setColour(getColor().rgb());
-	cu->setLabels(getLabels());
+	for (QString lab : getLabels()) {
+		if (graph->getLabelsLibrary()[lab]->isSaveable()) {
+			cu->addLabel(lab);
+		}
+	}
 
 	for (QString sk : getInSkills().keys()) {
 		int lev = getInSkills()[sk];
@@ -438,4 +444,8 @@ int Node::getOutcomeEdgesCount() {
 		}
 	}
 	return n;
+}
+
+QList<Edge*> Node::getEdges() {
+	return edgeList;
 }
