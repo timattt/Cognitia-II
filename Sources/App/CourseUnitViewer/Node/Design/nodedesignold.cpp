@@ -56,6 +56,18 @@ void NodeDesignOld::draw(Node *nd, QPainter *painter,
 
     painter->setBrush(Qt::white);
 
+    if (nd->containsLabel("Hidden")) {
+    	QRect descRect = QRect(-side / 2, -side / 8 * 3, side, side / 8 * 3);
+    	f = painter->font();
+    	f.setPointSizeF(side / 15 * 3);
+    	f.setBold(true);
+    	f.setWeight(QFont::ExtraBold);
+    	painter->setFont(f);
+    	painter->drawRect(descRect);
+    	descRect = QRect(-side / 2, -side / 8 * 3, side, side / 8 * 3 - side/10);
+    	painter->drawText(descRect, Qt::AlignCenter, "?");
+    } else {
+
     // text
     //========================================
     QRect textRect = QRect(-side/2 * 0.9, -side/2 * 1.01, side * 0.9, side/8);
@@ -193,6 +205,20 @@ void NodeDesignOld::draw(Node *nd, QPainter *painter,
 
 		i++;
 	}
+
+    }
+
+    if (nd->containsLabel("Bonus")) {
+    	QRect r = QRect(-side / 2, -side / 10, side, side / 10);
+    	f = painter->font();
+    	f.setPointSizeF(side / 15);
+    	f.setBold(true);
+    	f.setWeight(QFont::ExtraBold);
+    	painter->setFont(f);
+    	painter->setBrush(Qt::red);
+    	painter->drawRect(r);
+    	painter->drawText(r, Qt::AlignCenter, "Bonus");
+    }
 }
 
 bool NodeDesignOld::verticalSkillsLayout() {

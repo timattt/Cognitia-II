@@ -20,6 +20,7 @@ class CourseScene;
 class CourseUnit;
 class Viewport;
 class StudentProgress;
+class Label;
 //======================================================
 
 namespace Ui {
@@ -123,6 +124,7 @@ private:
      * @author timattt
      */
     bool editable;
+    QMap<QString, Label*> labelsLibrary;
     //======================================================
 
 private:
@@ -130,10 +132,13 @@ private:
     // Private functions
     //======================================================
     /**
-     * This function updates scene physics.
+     * This function updates scene physics and labels.
      * @author timattt
      */
     void timerEvent(QTimerEvent * event);
+    void updatePhysics();
+    void updateLabels();
+    void initLabels();
     //======================================================
 
 public:
@@ -240,6 +245,12 @@ public:
 	 * @author timattt
 	 */
 	Viewport* getViewport();
+	/**
+	 * Gives labels library. {QString: label name} -> {Label object}
+	 * @returns QMap with labels
+	 * @author timattt
+	 */
+	QMap<QString, Label*>& getLabelsLibrary();
     //======================================================
 
 public slots:

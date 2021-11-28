@@ -50,7 +50,11 @@ SOURCES += \
     CourseUnitViewer/Node/Design/nodedesign.cpp \
     CourseUnitViewer/Node/Design/nodedesignformal.cpp \
     CourseUnitViewer/Node/Design/nodedesignold.cpp \
-    CourseUnitViewer/Node/Design/nodedesignolive.cpp
+    CourseUnitViewer/Node/Design/nodedesignolive.cpp \
+    CourseUnitViewer/Label/Label.cpp \
+    CourseUnitViewer/Label/LabelBonus.cpp \
+    CourseUnitViewer/Label/LabelHidden.cpp
+    
 
 HEADERS += \
     ChooseServ/chooseserv.h \
@@ -92,7 +96,10 @@ HEADERS += \
     CourseUnitViewer/Node/Design/nodedesign.h \
     CourseUnitViewer/Node/Design/nodedesignolive.h \
     CourseUnitViewer/Node/Design/nodedesignold.h \
-    CourseUnitViewer/Node/Design/nodedesignformal.h
+    CourseUnitViewer/Node/Design/nodedesignformal.h \
+    CourseUnitViewer/Label/Label.h \
+    CourseUnitViewer/Label/LabelBonus.h \
+    CourseUnitViewer/Label/LabelHidden.h
 
 FORMS += \
     ChooseServ/chooseserv.ui \

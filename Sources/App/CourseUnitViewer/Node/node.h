@@ -9,6 +9,7 @@ class Edge;
 class CourseUnitViewer;
 class CourseUnit;
 class NodeDesign;
+class Label;
 //====================================
 
 // Constants
@@ -287,6 +288,49 @@ public:
 	 * @author timattt
 	 */
 	void updateDesign();
+	/**
+	 * Adds label to this node labels list.
+	 * @param nm - label name to add
+	 * @author timattt
+	 */
+	void addLabel(QString nm);
+	/**
+	 * Checks if this node is marked with given label.
+	 * @param nm - label to check
+	 * @return true if contains such level.
+	 * @author timattt
+	 */
+	bool containsLabel(QString nm);
+	/**
+	 * Removes label from this node.
+	 * @param name - name of label to remove
+	 * @author timattt
+	 */
+	void removeLabel(QString name);
+	/**
+	 * Sets new labels vector for this node.
+	 * @param labs - vector with labels
+	 * @author timattt
+	 */
+	void setLabels(QVector<QString> labs);
+	/**
+	 * Gives all labels for this node.
+	 * @returns vector with labels
+	 * @author timattt
+	 */
+	QVector<QString> getLabels();
+	/**
+	 * Gives number of income edges.
+	 * @return n - income edges
+	 * @author timattt
+	 */
+	int getIncomeEdgesCount();
+	/**
+	 * Gives number of outcome edges.
+	 * @return n - outcome edges
+	 * @author timattt
+	 */
+	int getOutcomeEdgesCount();
     //--------------------------------------
 
 protected:
@@ -360,8 +404,10 @@ private:
     QColor color = Qt::lightGray;
     /**
      * Current design of this node.
+     * @author timattt
      */
     NodeDesign * currentDesign;
+    QVector<QString> labels;
     //--------------------------------------
 };
 #endif

@@ -151,6 +151,14 @@ const QMap<QString, double>& Node::getProgress() const {
 	return progress;
 }
 
+void Node::setLabels(QVector<QString> labs) {
+	labels = labs;
+}
+
+QVector<QString> Node::getLabels() {
+	return labels;
+}
+
 void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     update();
@@ -291,6 +299,7 @@ void Node::fromNodeToCourseUnit(CourseUnit *cu) {
 	cu->setObjectName(getName());
 	cu->setDescription(getDescription());
 	cu->setColour(getColor().rgb());
+	cu->setLabels(getLabels());
 
 	for (QString sk : getInSkills().keys()) {
 		int lev = getInSkills()[sk];
@@ -318,6 +327,7 @@ void Node::fromCourseUnitToNode(CourseUnit *cu) {
 	setFile(cu->getLastFilePath());
 	setDescription(cu->getDescription());
 	setColor(QColor(cu->getColour()));
+	setLabels(cu->getLabels());
 
     const QMap<QString, size_t>& inskills = cu->getIncome();
     for (QString in : inskills.keys()) {
@@ -328,7 +338,6 @@ void Node::fromCourseUnitToNode(CourseUnit *cu) {
     for (QString out : outskills.keys()) {
         addOutSkill(out, outskills[out]);
 	}
-
     if (graph != nullptr) {
     	setPos(cu->getCoords().first + graph->getViewport()->getCameraPos().x(), cu->getCoords().second + graph->getViewport()->getCameraPos().y());
     } else {
@@ -394,4 +403,39 @@ void Node::updateDesign() {
 		prepareGeometryChange();
 		currentDesign = graph->getCurrentDesign();
 	}
+}
+
+void Node::addLabel(QString nm) {
+	ASSERT(!labels.contains(nm));
+	labels.push_back(nm);
+	update();
+}
+
+bool Node::containsLabel(QString nm) {
+	return labels.contains(nm);
+}
+
+void Node::removeLabel(QString name) {
+	labels.removeAll(name);
+	update();
+}
+
+int Node::getIncomeEdgesCount() {
+	int n = 0;
+	for (Edge * e : edgeList) {
+		if (e->getDestNode() == this) {
+			n++;
+		}
+	}
+	return n;
+}
+
+int Node::getOutcomeEdgesCount() {
+	int n = 0;
+	for (Edge * e : edgeList) {
+		if (e->getSourceNode() == this) {
+			n++;
+		}
+	}
+	return n;
 }

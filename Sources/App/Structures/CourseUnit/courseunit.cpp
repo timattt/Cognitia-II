@@ -80,7 +80,14 @@ void CourseUnit::saveCourseUnit(QFile *dest) {
          }
          stream << FIELDSSEPARATOR;
          stream << field_height << FIELDSSEPARATOR;
-         stream << field_width;
+         stream << field_width << FIELDSSEPARATOR;
+
+         for (QString label : labels) {
+        	 stream << label << VECTORSEPARATOR;
+         }
+
+         stream << FIELDSSEPARATOR;
+
          stream << UNITSEPARATOR;
 
          for (int i = 0; i < embedded_units.size(); ++i) {
@@ -169,6 +176,12 @@ void CourseUnit::loadCourseUnit(QFile *res){
 
     field_height = fields_data[10].toULong();
     field_width = fields_data[11].toULong();
+
+    vector_data = fields_data[12].split(VECTORSEPARATOR, Qt::SkipEmptyParts);
+
+    for(int i = 0; i < vector_data.size(); ++i){
+        labels.push_back(vector_data[i]);
+    }
 
     embedded_units.reserve(unit_data.size() - 1);
 
@@ -337,4 +350,16 @@ size_t CourseUnit::getOutSkillLevel(QString sk) {
         return outcome[sk];
     }
 	return -1;
+}
+
+void CourseUnit::addLabel(QString lab) {
+	labels.push_back(lab);
+}
+
+QVector<QString> CourseUnit::getLabels() {
+	return labels;
+}
+
+void CourseUnit::setLabels(QVector<QString> labs) {
+	labels = labs;
 }

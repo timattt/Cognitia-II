@@ -11,6 +11,7 @@
 #include "courseunitviewer.h"
 #include "../Structures/SkillPack/skillpack.h"
 #include "../Core/logger.h"
+#include "Label/Label.h"
 
 CourseScene::CourseScene(CourseUnitViewer * v) : QGraphicsScene(v), dragEdge(nullptr), view(v) {
 	NOT_NULL(v);
@@ -48,11 +49,11 @@ void CourseScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 
 		dragEdge = nullptr;
 
-		if (nd == src && event->button() == Qt::RightButton && view->isEditable()) {
+		if (nd == src && event->button() == Qt::RightButton) {
 			makeMenu(event);
 		}
 	} else {
-		if (event->button() == Qt::RightButton && view->isEditable()) {
+		if (event->button() == Qt::RightButton) {
 			makeMenu(event);
 		}
 		QGraphicsScene::mouseReleaseEvent(event);
@@ -268,8 +269,14 @@ void CourseScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
 }
 
 void CourseScene::makeMenu(QGraphicsSceneMouseEvent * event) {
+	if (!view->isEditable()) {
+		return;
+	}
+
 	QMenu menu(this->view);
 	menu.addAction("New node");
+	menu.addAction("Show all");
+	menu.addAction("Smart hide");
 
 	QList<QGraphicsItem*> its = this->items(event->scenePos());
 
@@ -289,6 +296,18 @@ void CourseScene::makeMenu(QGraphicsSceneMouseEvent * event) {
 		menu.addAction("Delete");
 	}
 
+	QMenu labelsMenu("Labels", &menu);
+	if (nd != nullptr) {
+
+		for (QString name : this->view->getLabelsLibrary().keys()) {
+			//Label * label = this->view->getLabelsLibrary()[name];
+			QAction * ac = labelsMenu.addAction(name);
+			ac->setCheckable(true);
+			ac->setChecked(nd->containsLabel(name));
+		}
+		menu.addMenu(&labelsMenu);
+	}
+
 	QAction * a = menu.exec(event->screenPos());
 
 	if (a == nullptr) {
@@ -304,14 +323,52 @@ void CourseScene::makeMenu(QGraphicsSceneMouseEvent * event) {
 		this->view->addNode(nd_);
 	}
 	if (t == "Delete") {
-		if (ed != nullptr) {
-			emit view->edgeDeleted(ed);
-			delete ed;
-		}
-		else if (nd != nullptr) {
+		if (nd != nullptr) {
 			view->setSelectedNode(nullptr);
 			emit view->nodeDeleted(nd);
 			delete nd;
 		}
+		else if (ed != nullptr) {
+			emit view->edgeDeleted(ed);
+			delete ed;
+		}
 	}
+	for (QString name : this->view->getLabelsLibrary().keys()) {
+		//Label * label = this->view->getLabelsLibrary()[name];
+		if (name == t) {
+			if (nd->containsLabel(name)) {
+				nd->removeLabel(name);
+			} else {
+				nd->addLabel(name);
+			}
+		}
+	}
+	if (t == "Show all") {
+		its = this->items();
+
+		nd = nullptr;
+
+		for (QGraphicsItem *it : its) {
+			nd = dynamic_cast<Node*>(it);
+			if (nd != nullptr) {
+				nd->removeLabel("Hidden");
+			}
+		}
+	}
+	if (t == "Smart hide") {
+		its = this->items();
+
+		nd = nullptr;
+
+		for (QGraphicsItem *it : its) {
+			nd = dynamic_cast<Node*>(it);
+			if (nd != nullptr) {
+				nd->removeLabel("Hidden");
+				if (nd->getIncomeEdgesCount() > 0) {
+					nd->addLabel("Hidden");
+				}
+			}
+		}
+	}
+
 }

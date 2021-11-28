@@ -23,6 +23,8 @@ void Test_Structures::saveAndLoadCourseUnit(){
         course[i] -> addOutcome("skill", i*2);
         course[i] -> addOutcome("skill", i*2+8);
 
+        course[i]->addLabel("testLabel");
+
         course[i] -> setDescription("Description!");
         QString name = "obj";
         course[i] -> setObjectName(name.append(static_cast<char>(i+48)));

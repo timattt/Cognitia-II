@@ -50,6 +50,7 @@ private:
     QString lastFilePath;
     size_t field_width;
     size_t field_height;
+    QVector<QString> labels;
     //------------------------------------------
 
 public:
@@ -65,6 +66,10 @@ public:
 
     // Methods
     //---------------------------------------------------------------------------
+    void addLabel(QString lab);
+    QVector<QString> getLabels();
+    void setLabels(QVector<QString> labs);
+
     /**
      * load course from coursefile *res
      * Author - arfarafar

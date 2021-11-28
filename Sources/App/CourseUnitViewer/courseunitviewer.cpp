@@ -11,6 +11,9 @@
 #include "../Structures/StudentProgress/StudentProgress.h"
 #include "../Core/logger.h"
 #include "courseunitviewersettings.h"
+#include "Label/LabelHidden.h"
+#include "Label/LabelBonus.h"
+#include "Label/Label.h"
 
 CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 		QWidget(parent),
@@ -23,6 +26,7 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 		repFac(DEFAULT_NODE_REP_FAC),
 		ownLength(DEFAULT_NODE_OWN_LENGTH),
 		editable(true) {
+
 	SAY("CourseUnitViewer init started");
 
 	ui->setupUi(this);
@@ -48,6 +52,8 @@ CourseUnitViewer::CourseUnitViewer(QWidget *parent) :
 	ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+	initLabels();
+
 	SAY("CourseUnitViewer init finished");
 }
 
@@ -60,27 +66,8 @@ CourseUnitViewer::~CourseUnitViewer() {
 void CourseUnitViewer::timerEvent(QTimerEvent *event) {
 	Q_UNUSED(event);
 
-	total_nodes = 0;
-	total_edges = 0;
-	total_items = 0;
-
-	// Update physics
-	QList<Node*> nodes;
-	const QList<QGraphicsItem*> items = scene->items();
-	for (QGraphicsItem *item : items) {
-		if (Node *node = qgraphicsitem_cast<Node*>(item)) {
-			nodes << node;
-			total_nodes++;
-		}
-		if (qgraphicsitem_cast<Edge*>(item)) {
-			total_edges++;
-		}
-		total_items++;
-	}
-
-	for (Node *node : qAsConst(nodes)) {
-		node->calculateForces();
-	}
+	updatePhysics();
+	updateLabels();
 }
 
 bool CourseUnitViewer::nodesCanMove() {
@@ -359,4 +346,49 @@ void CourseUnitViewer::on_options_clicked() {
 	attFac = sets.attraction;
 	repFac = sets.repulsion;
 	ownLength = sets.ownLength;
+}
+
+void CourseUnitViewer::updatePhysics() {total_nodes = 0;
+	total_edges = 0;
+	total_items = 0;
+
+	// Update physics
+	QList<Node*> nodes;
+	const QList<QGraphicsItem*> items = scene->items();
+	for (QGraphicsItem *item : items) {
+		if (Node *node = qgraphicsitem_cast<Node*>(item)) {
+			nodes << node;
+			total_nodes++;
+		}
+		if (qgraphicsitem_cast<Edge*>(item)) {
+			total_edges++;
+		}
+		total_items++;
+	}
+
+	for (Node *node : qAsConst(nodes)) {
+		node->calculateForces();
+	}
+}
+
+void CourseUnitViewer::updateLabels() {
+	const QList<QGraphicsItem*> items = scene->items();
+	for (QGraphicsItem *item : items) {
+		Node *node = qgraphicsitem_cast<Node*>(item);
+
+		if (node != nullptr) {
+			for (QString name : labelsLibrary.keys()) {
+				labelsLibrary[name]->update(node);
+			}
+		}
+	}
+}
+
+void CourseUnitViewer::initLabels() {
+	labelsLibrary["Hidden"] = new LabelHidden(this);
+	labelsLibrary["Bonus"] = new LabelBonus(this);
+}
+
+QMap<QString, Label*>& CourseUnitViewer::getLabelsLibrary() {
+	return labelsLibrary;
 }
