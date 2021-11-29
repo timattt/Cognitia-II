@@ -217,14 +217,6 @@ public:
 	 */
 	NodeDesign* getCurrentDesign();
 	/**
-	 * User can select node. So inwoke this function if you want some node to be selected.
-	 * This function modifies selectedNode field. And emits signal nodeSelected.
-	 * Also it updates your node and previously selected node.
-	 * @param nd - node to select. Can be nullptr, in this case no node is now selected.
-	 * @author timattt
-	 */
-	void setSelectedNode(Node * nd);
-	/**
 	 * True if given node is equals to currently selected.
 	 * If nd is nullptr and no node is selected to it will be true.
 	 * @param nd - node to check
@@ -257,8 +249,14 @@ public slots:
 
 	// public slots
 	//======================================================
-
-
+	/**
+	 * User can select node. So inwoke this function if you want some node to be selected.
+	 * This function modifies selectedNode field. And emits signal nodeSelected.
+	 * Also it updates your node and previously selected node.
+	 * @param nd - node to select. Can be nullptr, in this case no node is now selected.
+	 * @author timattt
+	 */
+	void setSelectedNode(Node *nd);
 	/**
 	 * This function clear every node from this scene.
 	 * Before it aborts drag and set no node to be selected. For this it uses functions:

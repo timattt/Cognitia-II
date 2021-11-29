@@ -14,7 +14,10 @@ CONFIG += c++17
 SOURCES += \
     ChooseServ/chooseserv.cpp \
     ClientChat/clientchat.cpp \
+    CourseEditor/baseinfoandskills.cpp \
     CourseEditor/courseeditor.cpp \
+    CourseEditor/courseunitdescription.cpp \
+    CourseEditor/skillschooser.cpp \
     CourseUnitViewer/Node/Design/nodedesignshape.cpp \
     CourseUnitViewer/courseunitviewer.cpp \
     CourseUnitViewer/courseunitviewersettings.cpp \
@@ -60,6 +63,9 @@ SOURCES += \
 HEADERS += \
     ChooseServ/chooseserv.h \
     ClientChat/clientchat.h \
+    CourseEditor/baseinfoandskills.h \
+    CourseEditor/courseunitdescription.h \
+    CourseEditor/skillschooser.h \
     CourseUnitViewer/viewport.h \
     CourseEditor/courseeditor.h \
     CourseUnitViewer/Node/Design/nodedesignshape.h \
@@ -106,7 +112,10 @@ HEADERS += \
 FORMS += \
     ChooseServ/chooseserv.ui \
     ClientChat/clientchat.ui \
+    CourseEditor/baseinfoandskills.ui \
     CourseEditor/courseeditor.ui \
+    CourseEditor/courseunitdescription.ui \
+    CourseEditor/skillschooser.ui \
     CourseUnitViewer/courseunitviewer.ui \
     CourseUnitViewer/courseunitviewersettings.ui \
     Help/smarthelper.ui \
