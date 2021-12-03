@@ -110,6 +110,8 @@ public:
      * @author timattt
      */
 	void connectToNode(Node * dest);
+
+	void setCourseUnitViewer(CourseUnitViewer * cuv);
     //--------------------------------------
 
 private:

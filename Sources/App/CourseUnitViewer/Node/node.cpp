@@ -176,6 +176,14 @@ Node::~Node() {
 	if (scene() != nullptr) {
 		scene()->removeItem(this);
 	}
+	if (parentNode != nullptr) {
+		parentNode->childNodes.removeAll(this);
+	}
+	while (!childNodes.isEmpty()) {
+		Node * ch = childNodes.first();
+		childNodes.removeFirst();
+		delete ch;
+	}
 }
 
 void Node::removeEdge(Edge *e) {
@@ -448,4 +456,21 @@ int Node::getOutcomeEdgesCount() {
 
 QList<Edge*> Node::getEdges() {
 	return edgeList;
+}
+
+void Node::addChildNode(Node *nd) {
+	childNodes.push_back(nd);
+	nd->parentNode = this;
+}
+
+QVector<Node*> Node::getChildNodes() {
+	return childNodes;
+}
+
+Node* Node::getParentNode() {
+	return parentNode;
+}
+
+void Node::setCourseUnitViewer(CourseUnitViewer *cuv) {
+	this->graph = cuv;
 }

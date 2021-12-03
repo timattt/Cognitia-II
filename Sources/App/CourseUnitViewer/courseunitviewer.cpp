@@ -79,7 +79,7 @@ void CourseUnitViewer::on_addNode_clicked() {
 	Node *nd = new Node(this);
 	QPointF pt = ui->graphicsView->mapToScene(ui->graphicsView->rect().center());
 	nd->setPos(pt);
-	addNode(nd);
+	registerNodeToScene(nd);
 }
 
 bool CourseUnitViewer::deleteModeIsOn() {
@@ -129,45 +129,24 @@ void CourseUnitViewer::clearAllScene() {
 		scene->removeItem(nd);
 		delete nd;
 	}
+
+	ASSERT(scene->items().size() == 0);
 }
 
-void CourseUnitViewer::addNode(Node *nd) {
+void CourseUnitViewer::registerNodeToScene(Node *nd) {
 	NOT_NULL(nd);
 
+	nd->setCourseUnitViewer(this);
 	scene->addItem(nd);
 	emit nodeAdded(nd);
 	scene->update();
 }
 
-void CourseUnitViewer::addEdge(Edge *e) {
+void CourseUnitViewer::registerEdgeToScene(Edge *e) {
 	NOT_NULL(e);
 
+	e->setCourseUnitViewer(this);
 	scene->addItem(e);
-}
-
-void CourseUnitViewer::unpack(CourseUnit *head) {
-	NOT_NULL(head);
-
-	QMap<QString, Node*> nodes;
-
-	for (CourseUnit * u : head->getEmbedded()) {
-		if (nodes.contains(u->objectName())) {
-			throw QString("Some course units have same name!");
-		}
-
-		Node * nd = new Node(this);
-		nd->fromCourseUnitToNode(u);
-		nodes[nd->getName()] = nd;
-		addNode(nd);
-	}
-
-	for (CourseUnit * u : head->getEmbedded()) {
-		for (QString v : u->getConnections()) {
-			addEdge(new Edge(nodes[u->objectName()], nodes[v], this));
-		}
-	}
-
-	ui->graphicsView->focusOn();
 }
 
 void CourseUnitViewer::pack(CourseUnit *head) {
@@ -283,7 +262,7 @@ void CourseUnitViewer::pack(StudentProgress *prg) {
 	}
 }
 
-void CourseUnitViewer::clearStudentProgress() {
+void CourseUnitViewer::newStudent(QString name) {
 	const QList<QGraphicsItem*> items = scene->items();
 	for (QGraphicsItem *item : items) {
 		if (Node *node = qgraphicsitem_cast<Node*>(item)) {
@@ -393,4 +372,41 @@ void CourseUnitViewer::initLabels() {
 
 QMap<QString, Label*>& CourseUnitViewer::getLabelsLibrary() {
 	return labelsLibrary;
+}
+
+void CourseUnitViewer::unpack(CourseUnit *head) {
+	NOT_NULL(head);
+
+	QMap<QString, Node*> nodes;
+
+	for (CourseUnit * u : head->getEmbedded()) {
+		if (nodes.contains(u->objectName())) {
+			throw QString("Some course units have same name!");
+		}
+
+		Node * nd = new Node(this);
+		nd->fromCourseUnitToNode(u);
+		nodes[nd->getName()] = nd;
+		registerNodeToScene(nd);
+	}
+
+	for (CourseUnit * u : head->getEmbedded()) {
+		for (QString v : u->getConnections()) {
+			registerEdgeToScene(new Edge(nodes[u->objectName()], nodes[v], this));
+		}
+	}
+
+	ui->graphicsView->focusOn();
+}
+
+void CourseUnitViewer::setHead(Node *head) {
+	clearAllScene();
+
+	for (Node * nd : head->getChildNodes()) {
+		registerNodeToScene(nd);
+	}
+}
+
+void CourseUnitViewer::getHead(Node *&he) {
+	he = head;
 }

@@ -27,6 +27,7 @@ SOURCES += \
     Core/logger.cpp \
     MentorClient/StudentsChooserPanel/studentschooserpanel.cpp \
     MentorClient/mentorclient.cpp \
+    NodesConverter/nodesconverter.cpp \
     SkillPackEditor/skillpackeditor.cpp \
     SkillsMixer/skillsmixer.cpp \
     SkillsMixer/skillsmixerholder.cpp \
@@ -76,6 +77,7 @@ HEADERS += \
     Core/logger.h \
     MentorClient/StudentsChooserPanel/studentschooserpanel.h \
     MentorClient/mentorclient.h \
+    NodesConverter/nodesconverter.h \
     SkillPackEditor/skillpackeditor.h \
     SkillsMixer/skillsmixer.h \
     SkillsMixer/skillsmixerholder.h \

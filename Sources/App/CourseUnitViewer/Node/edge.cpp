@@ -11,7 +11,6 @@ Edge::Edge(Node *sourceNode, Node *destNode, CourseUnitViewer * view) :
 
 	NOT_NULL(sourceNode);
 	NOT_NULL(destNode);
-	NOT_NULL(view);
 
 	setAcceptedMouseButtons(Qt::NoButton);
 	source->addEdge(this);
@@ -156,4 +155,8 @@ void Edge::connectToNode(Node * dest) {
 double Edge::getArrowSize() const {
 	QLineF line(sourcePoint, destPoint);
 	return qMin(line.length(), NODE_RAD / 5.0);
+}
+
+void Edge::setCourseUnitViewer(CourseUnitViewer *cuv) {
+	this->viewer = cuv;
 }

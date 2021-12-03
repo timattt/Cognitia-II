@@ -125,6 +125,7 @@ private:
      */
     bool editable;
     QMap<QString, Label*> labelsLibrary;
+    Node * head;
     //======================================================
 
 private:
@@ -270,21 +271,28 @@ public slots:
 	 * For every node on this scene it calls clearStudentProgress function and updates node.
 	 * @author timattt
 	 */
-	void clearStudentProgress();
+	void newStudent(QString name);
 	/**
 	 * Adds node to scene. Calls nodeAdded signal and updates scene.
 	 * Only this function can add node correctly. So do not add nodes manually.
 	 * @param nd - pointer to node that will be added. May not be nullptr.
 	 * @author timattt
 	 */
-	void addNode(Node *nd);
+	void registerNodeToScene(Node *nd);
 	/**
 	 * Adds edge to this scene.
 	 * To add edge use only this function.
 	 * @param e - pointer to edge that will be added. May not be nullptr.
 	 * @author timattt
 	 */
-	void addEdge(Edge *e);
+	void registerEdgeToScene(Edge *e);
+
+
+	void setHead(Node * head);
+	void getHead(Node *& head);
+
+
+	////////////BAD
 	/**
 	 * Transfers data from CourseUnit to this scene. From the second level of hierarchy of this course unit.
 	 * Sets scene size from this courseUnit values. Also calls refit function.
@@ -315,6 +323,11 @@ public slots:
 	 * Calls stopDrag in scene. Drag edge will be deleted and then set to null.
 	 * @author timattt
 	 */
+	////////////BAD
+
+
+
+
 	void abortDrag();
 	/**
 	 * If some node is selected. Then sets progress for it.

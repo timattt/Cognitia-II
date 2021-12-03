@@ -328,7 +328,7 @@ void CourseScene::makeMenu(QGraphicsSceneMouseEvent * event) {
 		Node *nd_ = new Node(this->view);
 		QPointF pt = event->scenePos();
 		nd_->setPos(pt);
-		this->view->addNode(nd_);
+		this->view->registerNodeToScene(nd_);
 	}
 	if (t == "Delete") {
 		if (nd != nullptr) {

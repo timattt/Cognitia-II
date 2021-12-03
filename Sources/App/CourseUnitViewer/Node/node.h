@@ -66,6 +66,12 @@ public:
 
     // public functions
     //--------------------------------------
+    void newStudent(QString name);
+    void addChildNode(Node * nd);
+    QVector<Node*> getChildNodes();
+    Node* getParentNode();
+    void setCourseUnitViewer(CourseUnitViewer * cuv);
+    QMap<QString, double> getCurrentProgress();
     /**
      * Transfers information from courseUnit into given node.
      * @param cu - CourseUnit object. From it info is taken.
@@ -383,11 +389,9 @@ private:
      * @author timattt
      */
     QMap<QString, int> outSkills;
-    /**
-     * Map {QString: skill name} - > {int: skill level} that represents progress in this node.
-     * @author timattt
-     */
-    QMap<QString, double> progress;
+
+
+    QMap<QString, QMap<QString, double>> progress;
     /**
      * File path where this node is stored.
      * @author timattt
@@ -414,6 +418,8 @@ private:
      */
     NodeDesign * currentDesign;
     QVector<QString> labels;
+    Node * parentNode;
+    QVector<Node*> childNodes;
     //--------------------------------------
 };
 #endif
