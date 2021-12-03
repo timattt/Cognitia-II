@@ -24,10 +24,10 @@ CourseEditor::CourseEditor() :
 
 	// signals
 	//-----------------------------
-	connect(ui->widget, SIGNAL(nodeSelected(Node*)), this, SLOT(nodeSelected(Node*)));
 	connect(ui->widget, SIGNAL(nodeSelected(Node*)), this->ui->skillsChooser, SLOT(nodeSelected(Node*)));
 	connect(ui->widget, SIGNAL(nodeSelected(Node*)), this->ui->description, SLOT(nodeSelected(Node*)));
 	connect(ui->widget, SIGNAL(nodeSelected(Node*)), this->ui->baseInfoAndSkills, SLOT(nodeSelected(Node*)));
+	connect(ui->widget, SIGNAL(nodeSelected(Node*)), this, SLOT(nodeSelected(Node*)));
 	connect(ui->widget, SIGNAL(nodeSkillsChanged(Node*)), this, SLOT(nodeSkillsChanged(Node*)));
 	connect(this, SIGNAL(selectNode(Node*)), ui->widget, SLOT(setSelectedNode(Node *)));
 	connect(this, SIGNAL(clearSkillsLib()), ui->skillsChooser, SLOT(clearSkillsLib()));

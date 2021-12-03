@@ -119,6 +119,7 @@ void BaseInfoAndSkills::unlock() {
 }
 
 void BaseInfoAndSkills::on_nameLineEdit_textChanged() {
+	////SLOTS ARE NOT WORKING!!!
 	if (!editor->checkCourseUnitAvailable(false)) {
 		return;
 	}
